@@ -1,0 +1,368 @@
+import { Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
+import Swal from "sweetalert2";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+
+const getSmartPaginationButtons = (totalPages, currentPage) => {
+  const buttons = [];
+
+  if (totalPages <= 5) {
+    for (let i = 1; i <= totalPages; i++) buttons.push(i);
+    return buttons;
+  }
+
+  if (currentPage <= 3) {
+    buttons.push(1, 2, 3, "...", totalPages);
+  } else if (currentPage >= totalPages - 2) {
+    buttons.push(1, "...", totalPages - 2, totalPages - 1, totalPages);
+  } else {
+    buttons.push(1, "...", currentPage, "...", totalPages);
+  }
+
+  return buttons;
+};
+
+const AllUsers = () => {
+  const [users, setUsers] = useState([]);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [totalPages, setTotalPages] = useState(0);
+  const axiosSecure = useAxiosSecure();
+
+  const fetchUsers = () => {
+    axiosSecure
+      .get(`/users/all?page=${page}&limit=${limit}`)
+      .then((res) => {
+        setUsers(res.data.users);
+        setTotalPages(res.data.pages);
+      })
+      .catch((err) => console.error("Failed to fetch users:", err));
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, [page, limit]);
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to delete this user?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure
+          .delete(`/users/delete/${id}`)
+          .then(() => {
+            Swal.fire("Deleted!", "User has been deleted.", "success");
+            fetchUsers();
+          })
+          .catch((error) => {
+            Swal.fire("Error!", "Failed to delete user.", "error");
+            console.error(error);
+          });
+      }
+    });
+  };
+
+  return (
+    <div>
+      <Helmet>
+        <title>Admin | All Users</title>
+      </Helmet>
+      <div className="py-10 max-w-7xl mx-auto">
+        {/* History Table Section */}
+        <div className="bg-white p-6 rounded-xl shadow-md border border-indigo-200">
+          <h3 className="text-xl font-semibold mb-4 text-indigo-600">
+          All Users
+        </h3>
+
+          <div className="flex items-center gap-4 mb-6">
+            <label className="text-sm font-medium text-gray-700">
+              Show per page:
+            </label>
+            <select
+              value={limit}
+              onChange={(e) => {
+                setPage(1);
+                setLimit(parseInt(e.target.value));
+              }}
+              className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-indigo-200"
+            >
+              <option value="10">10</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="table-auto w-full border-collapse border border-gray-200">
+              <thead>
+                <tr className="bg-indigo-50 text-left text-gray-700">
+                  <th className="px-4 py-2 border">#</th>
+                  <th className="px-4 py-2 border">Name</th>
+                  <th className="px-4 py-2 border">Email</th>
+                  <th className="px-4 py-2 border">Role</th>
+                  <th className="px-4 py-2 border text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((user, index) => (
+                  <tr key={user._id} className="hover:bg-gray-50">
+                    <td className="px-4 py-2 border">
+                      {(page - 1) * limit + index + 1}
+                    </td>
+                    <td className="px-4 py-2 border">{user.name}</td>
+                    <td className="px-4 py-2 border">{user.email}</td>
+                    <td className="px-4 py-2 border capitalize">
+                      {user.role || "user"}
+                    </td>
+                    <td className="px-4 py-2 border text-center space-x-2">
+                      {user.role !== "admin" && (
+                        <button
+                          onClick={() => handleDelete(user._id)}
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+                {users.length === 0 && (
+                  <tr>
+                    <td colSpan={5} className="text-center py-12 text-gray-500">
+                      No users found.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Pagination */}
+          <div className="mt-6 flex flex-wrap gap-3 justify-center items-center">
+            <button
+              className={`px-4 py-2 border rounded-md ${
+                page === 1
+                  ? "bg-gray-100 cursor-not-allowed"
+                  : "hover:bg-indigo-50"
+              }`}
+              disabled={page === 1}
+              onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+            >
+              « Prev
+            </button>
+
+            {getSmartPaginationButtons(totalPages, page).map((btn, idx) =>
+              btn === "..." ? (
+                <span key={idx} className="px-4 py-2">
+                  ...
+                </span>
+              ) : (
+                <button
+                  key={idx}
+                  onClick={() => setPage(btn)}
+                  className={`px-4 py-2 border rounded-md ${
+                    btn === page
+                      ? "bg-indigo-600 text-white"
+                      : "hover:bg-indigo-50"
+                  }`}
+                >
+                  {btn}
+                </button>
+              )
+            )}
+
+            <button
+              className={`px-4 py-2 border rounded-md ${
+                page === totalPages
+                  ? "bg-gray-100 cursor-not-allowed"
+                  : "hover:bg-indigo-50"
+              }`}
+              disabled={page === totalPages}
+              onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+            >
+              Next »
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AllUsers;
+
+// import { Trash2 } from "lucide-react";
+// import { useEffect, useState } from "react";
+// import Swal from "sweetalert2";
+// import useAxiosSecure from "../../../hooks/useAxiosSecure";
+
+// const getSmartPaginationButtons = (totalPages, currentPage) => {
+//   const buttons = [];
+
+//   if (totalPages <= 5) {
+//     for (let i = 1; i <= totalPages; i++) buttons.push(i);
+//     return buttons;
+//   }
+
+//   if (currentPage <= 3) {
+//     buttons.push(1, 2, 3, "...", totalPages);
+//   } else if (currentPage >= totalPages - 2) {
+//     buttons.push(1, "...", totalPages - 2, totalPages - 1, totalPages);
+//   } else {
+//     buttons.push(1, "...", currentPage, "...", totalPages);
+//   }
+
+//   return buttons;
+// };
+
+// const AllUsers = () => {
+//   const [users, setUsers] = useState([]);
+//   const [page, setPage] = useState(1);
+//   const [limit, setLimit] = useState(10);
+//   const [totalPages, setTotalPages] = useState(0);
+//   const axiosSecure = useAxiosSecure();
+
+//   const fetchUsers = () => {
+//     axiosSecure
+//       .get(`/users/all?page=${page}&limit=${limit}`)
+//       .then((res) => {
+//         setUsers(res.data.users);
+//         setTotalPages(res.data.pages);
+//       })
+//       .catch((err) => console.error("Failed to fetch users:", err));
+//   };
+
+//   useEffect(() => {
+//     fetchUsers();
+//   }, [page, limit]);
+
+//   const handleDelete = (id) => {
+//     Swal.fire({
+//       title: "Are you sure?",
+//       text: "You want to delete this user?",
+//       icon: "warning",
+//       showCancelButton: true,
+//       confirmButtonColor: "#d33",
+//       cancelButtonColor: "#3085d6",
+//       confirmButtonText: "Yes, delete it!",
+//     }).then((result) => {
+//       if (result.isConfirmed) {
+//         axiosSecure
+//           .delete(`/users/delete/${id}`)
+//           .then(() => {
+//             Swal.fire("Deleted!", "User has been deleted.", "success");
+//             fetchUsers();
+//           })
+//           .catch((error) => {
+//             Swal.fire("Error!", "Failed to delete user.", "error");
+//             console.error(error);
+//           });
+//       }
+//     });
+//   };
+
+//   return (
+//     <div className="p-3 md:p-5 w-full border border-indigo-500 rounded-md max-w-7xl mx-auto">
+//       <h2 className="text-2xl font-bold mb-4">All Users</h2>
+
+//       <div className="flex items-center gap-4 mb-4">
+//         <label>Show per page:</label>
+//         <select
+//           value={limit}
+//           onChange={(e) => {
+//             setPage(1);
+//             setLimit(parseInt(e.target.value));
+//           }}
+//           className="select select-bordered"
+//         >
+//           <option value="10">10</option>
+//           <option value="50">50</option>
+//           <option value="100">100</option>
+//         </select>
+//       </div>
+
+//       <div className="overflow-x-auto">
+//         <table className="table table-zebra w-full">
+//           <thead className="bg-indigo-700 text-white rounded-2xl mb-4">
+//             <tr>
+//               <th>#</th>
+//               <th>Name</th>
+//               <th>Email</th>
+//               <th>Role</th>
+//               <th>Action</th>
+//             </tr>
+//           </thead>
+//           <tbody>
+//             {users.map((user, index) => (
+//               <tr key={user._id}>
+//                 <th>{(page - 1) * limit + index + 1}</th>
+//                 <td className="text-sm font-semibold ">{user.name}</td>
+//                 <td className="text-sm font-semibold">{user.email}</td>
+//                 <td className="capitalize font-semibold">
+//                   {user.role || "user"}
+//                 </td>
+//                 <td>
+//                   {user.role !== "admin" && (
+//                     <button
+//                       onClick={() => handleDelete(user._id)}
+//                       className="text-red-500 hover:text-red-700"
+//                     >
+//                       <Trash2 size={20} />
+//                     </button>
+//                   )}
+//                 </td>
+//               </tr>
+//             ))}
+//           </tbody>
+//         </table>
+//       </div>
+
+//       <div className="mt-6 flex flex-wrap gap-3  justify-center items-center">
+//         <button
+//           className="btn btn-sm btn-outline"
+//           disabled={page === 1}
+//           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+//         >
+//           « Prev
+//         </button>
+
+//         {/* Dynamic Smart Buttons */}
+//         {getSmartPaginationButtons(totalPages, page).map((btn, idx) =>
+//           btn === "..." ? (
+//             <span key={idx} className="btn btn-sm btn-disabled">
+//               ...
+//             </span>
+//           ) : (
+//             <button
+//               key={idx}
+//               onClick={() => setPage(btn)}
+//               className={`btn btn-sm ${
+//                 btn === page ? "btn-primary" : "btn-outline"
+//               }`}
+//             >
+//               {btn}
+//             </button>
+//           )
+//         )}
+
+//         {/* Next Button */}
+//         <button
+//           className="btn btn-sm btn-outline"
+//           disabled={page === totalPages}
+//           onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+//         >
+//           Next »
+//         </button>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default AllUsers;

@@ -1,0 +1,45 @@
+import { Helmet } from "react-helmet-async";
+import ResourceCard from "../../../components/CustomResources/ResourceCard";
+import TittleAnimation from "../../../components/TittleAnimation/TittleAnimation";
+
+const OlevelPhysics = () => {
+  const resources = [
+    {
+      title: "CLASS NOTES",
+      description: "Complete notes for  A levels from the session Session",
+      link: "https://drive.google.com/drive/folders/1JuC8P-Isjb8k8OA9QAcHaISluO-uuXoj",
+    },
+    {
+      title: "PAST PAPER RESOURCES",
+      description: "solved Past Papers (Marathons).",
+      link: "https://drive.google.com/drive/folders/1JuC8P-Isjb8k8OA9QAcHaISluO-uuXoj",
+    },
+    {
+      title: "PAST PAPER SESSION",
+      description:
+        "Topical worksheets with complete step-by-step solutions to boost your confidence and understanding.",
+      link: "https://drive.google.com/drive/folders/1JuC8P-Isjb8k8OA9QAcHaISluO-uuXoj",
+    },
+    {
+      title: "BOOKS",
+      description: "Reference Books for CAIE Preparation",
+      link: "https://drive.google.com/drive/folders/1JuC8P-Isjb8k8OA9QAcHaISluO-uuXoj",
+    },
+  ];
+
+  return (
+    <div className="py-3">
+      <Helmet>
+        <title>Nasmatics | O-Level-Physics</title>
+      </Helmet>
+      <TittleAnimation tittle="Resources O Level" subtittle="Physics" />
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5 lg:gap-6 w-full max-w-7xl mx-auto">
+        {resources.map((res, index) => (
+          <ResourceCard key={index} {...res} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default OlevelPhysics;

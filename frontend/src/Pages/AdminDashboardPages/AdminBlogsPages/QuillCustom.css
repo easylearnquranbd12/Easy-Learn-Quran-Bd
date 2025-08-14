@@ -1,0 +1,60 @@
+/* Toolbar background */
+.ql-toolbar.ql-snow {
+  background-color: #2b1688;
+  color: white;
+  border: none;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+/* Make all toolbar icons and picker labels white */
+.ql-toolbar button,
+.ql-toolbar button svg,
+.ql-toolbar .ql-picker,
+.ql-toolbar .ql-picker-label,
+.ql-toolbar .ql-picker-label::before,
+.ql-toolbar .ql-picker-label::after,
+.ql-toolbar .ql-picker-item {
+  color: white !important;
+  fill: white !important;
+  stroke: white !important;
+}
+
+/* Toolbar dropdown menu background and text */
+.ql-toolbar .ql-picker-options {
+  background-color: #3448dd;
+  color: white;
+}
+
+/* Hover and active toolbar buttons */
+.ql-toolbar button:hover,
+.ql-toolbar button.ql-active,
+.ql-toolbar .ql-picker-label:hover,
+.ql-toolbar .ql-picker-label.ql-active {
+  color: white !important;
+  fill: white !important;
+  stroke: white !important;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Editor background and text */
+.ql-container.ql-snow {
+  background-color: #f9fafb;
+  color: #244ba0;
+  border: none;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  min-height: 200px;
+}
+
+/* Editor text color */
+.ql-editor {
+  color: #000000;
+}
+
+/* Tooltip (link popup, etc.) */
+.ql-tooltip {
+  background-color: #1e293b;
+  color: white;
+  border: 1px solid #475569;
+}

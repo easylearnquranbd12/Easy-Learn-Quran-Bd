@@ -1,0 +1,80 @@
+const express = require("express");
+
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const dotenv = require("dotenv");
+
+const { connectDB } = require("./config/db");
+
+const authRouter = require("./routes/authRoutes");
+const userRouter = require("./routes/userRoutes");
+const blogRouter = require("./routes/blogRoutes");
+const courseRouter = require("./routes/courseRoutes");
+const userDashboardRouter = require("./routes/userDashboardRoutes");
+const enrollMentRoute = require("./routes/enrollmentRoute");
+const instructorsRoute = require("./routes/instructorsRoute");
+const bannerRouter = require("./routes/bannerRoutes");
+const dashboardRouter = require("./routes/dashboardRoute");
+const paymentMethodRouter = require("./routes/paymentMethodRoutes");
+const notesRouter = require("./routes/userNotesRoutes");
+const imageandTextRouter = require("./routes/authorRoutes");
+const youtubeVideoRouter = require("./routes/youtubeVideoRoutes");
+const authorRoute = require("./routes/authorRoutes");
+const socialLinksRouter = require("./routes/socialLinksRoutes");
+// Load environment variables from .env file
+dotenv.config();
+
+// Create express app
+const app = express();
+const port = process.env.PORT || 9000;
+
+// middleware
+// app.use(
+//   cors({
+//     origin: true,       // allow any origin
+//     credentials: true,  // allow cookies/auth headers
+//   })
+// );
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      callback(null, origin); // reflect the request origin
+    },
+    credentials: true,
+  })
+);
+
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
+app.use(cookieParser());
+
+// Connect to MongoDB
+connectDB().catch((err) => console.error("MongoDB connection error:", err));
+
+// Routes
+app.use("/auth", authRouter);
+app.use("/users", userRouter);
+app.use("/api/user", userDashboardRouter);
+app.use("/courses", courseRouter);
+app.use("/blog", blogRouter);
+app.use("/api", enrollMentRoute);
+app.use("/banner", bannerRouter);
+app.use("/instructors", instructorsRoute);
+app.use("/api/dashboard", dashboardRouter);
+app.use("/paymentMethod", paymentMethodRouter);
+app.use("/api/user", notesRouter);
+app.use("/media", youtubeVideoRouter);
+app.use("/upload-media", youtubeVideoRouter);
+app.use("/imageandtext", imageandTextRouter);
+app.use("/authorInfo", authorRoute);
+app.use("/api/admin/social-links", socialLinksRouter);
+// Root route
+app.get("/", (req, res) => {
+  res.send("Learning Quiz Platfrom Server Running");
+});
+
+// Start server
+app.listen(port, () => {
+  console.log(`✅ Server is running on port ${port}`);
+});
