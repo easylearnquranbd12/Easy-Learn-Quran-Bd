@@ -42,7 +42,7 @@ const getNavigationLinks = (user) => {
     {
       title: "Language",
       subLinks: [
-         { title: "বাংলা", action: "setLanguage", lang: "bn" },
+        { title: "বাংলা", action: "setLanguage", lang: "bn" },
         { title: "English", action: "setLanguage", lang: "en" },
       ],
     }
@@ -170,11 +170,7 @@ const Navbar = () => {
     <div className="fixed top-0 left-0 w-full bg-white shadow-2xl z-50 px-1 py-1.5">
       <div className="max-w-[1400px] mx-auto h-[70px] flex justify-between items-center">
         <div>
-          <img
-            className="h-8 w-16 cursor-pointer"
-            src={imageLogo}
-            alt="Logo"
-          />
+          <img className="h-8 w-16 cursor-pointer" src={imageLogo} alt="Logo" />
         </div>
 
         {/* Desktop Menu */}
@@ -193,8 +189,8 @@ const Navbar = () => {
                     whileTap={{ scale: 0.95 }}
                     className={`inline-block rounded-md text-xl font-semibold transition duration-200 cursor-pointer ${
                       isActive(item.link)
-                        ? "text-white bg-[#1f4e43] px-4 py-1.5 shadow-md"
-                        : "text-black hover:text-[#1f4e43] px-4 py-1.5"
+                        ? "text-activeTextPrimary"
+                        : "text-black hover:text-hoverTextPrimary px-2 py-1.5"
                     }`}
                   >
                     {item.title}
@@ -212,8 +208,8 @@ const Navbar = () => {
                     whileTap={{ scale: 0.95 }}
                     className={`inline-block rounded-md text-base md:text-lg font-semibold transition duration-200 ${
                       isActive(item.link)
-                        ? "text-teal-500"
-                        : "text-black hover:text-[#1f4e43] px-4 py-1.5"
+                        ? "text-activeTextPrimary"
+                        : "text-black hover:text-hoverTextPrimary px-4 py-1.5"
                     }`}
                   >
                     {item.title}
@@ -242,8 +238,8 @@ const Navbar = () => {
                             transition={{ duration: 0.1 }}
                             className={`block text-base font-medium transition duration-200 rounded-md mx-2 px-4 py-2 ${
                               location.pathname === subItem.link
-                                ? "text-white bg-[#1f4e43] shadow"
-                                : "text-black hover:text-[#1f4e43] hover:bg-gray-50"
+                                ? "text-activeTextPrimary "
+                                : "text-black hover:text-hoverTextPrimary hover:bg-gray-50"
                             }`}
                           >
                             {subItem.title}
@@ -273,8 +269,8 @@ const Navbar = () => {
                 whileTap={{ scale: 0.95 }}
                 className={`inline-block px-4 py-1.5 rounded-md ${
                   location.pathname === "/login"
-                    ? "bg-[#1f4e43] text-white"
-                    : "text-white bg-blue-700 hover:bg-[#3b6b53]"
+                    ? "bg-bgButton text-white"
+                    : "text-white bg-bgButton hover:bg-hoverBgButton"
                 }`}
               >
                 Login
@@ -287,12 +283,12 @@ const Navbar = () => {
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="bg-[#b7e4d9] rounded-md px-3 py-2 hover:bg-[#96e7bc] cursor-pointer md:hidden"
+          className="bg-[#d6a772] rounded-md px-3 py-2 hover:bg-[#bb874a] cursor-pointer md:hidden"
         >
           <FaBars
             onClick={() => setIsOpen(true)}
             size={24}
-            className="text-[#1f4e43]"
+            className="text-white"
           />
         </motion.button>
       </div>
@@ -339,7 +335,7 @@ const Navbar = () => {
 
               <div className="flex-1 overflow-y-auto">
                 {/* Mobile Navigation Links */}
-                <div className="flex flex-col gap-3 font-medium text-lg">
+                <div className="flex flex-col gap-3 font-medium text-lg ">
                   {navigationLinks.map((item, index) => (
                     <motion.div
                       key={index}
@@ -355,10 +351,10 @@ const Navbar = () => {
                           onClick={() => toggleSubMenu(index)}
                         >
                           <span
-                            className={`font-semibold transition duration-200 ${
+                            className={`font-semibold transition duration-200 px-2 py-1.5 ${
                               isActive(item.link)
-                                ? "text-white bg-[#1f4e43] px-2 py-1.5 rounded-md shadow"
-                                : "text-black hover:text-[#1f4e43] px-2 py-1.5"
+                                ? "text-activeTextPrimary"
+                                : "text-black hover:text-hoverTextPrimary "
                             }`}
                           >
                             {item.title}
@@ -373,10 +369,10 @@ const Navbar = () => {
                         <Link
                           to={item.link}
                           onClick={handleMobileMenuClick}
-                          className={`inline-block font-semibold transition duration-200 rounded-md ${
+                          className={`inline-block font-semibold transition duration-200 rounded-md px-2 py-1.5 ${
                             isActive(item.link)
-                              ? "text-white bg-[#1f4e43] px-2 py-1.5 shadow"
-                              : "text-black hover:text-[#1f4e43] px-2 py-1.5"
+                              ? "text-activeTextPrimary"
+                              : "text-black hover:text-hoverTextPrimary "
                           }`}
                         >
                           {item.title}
@@ -404,8 +400,8 @@ const Navbar = () => {
                                   onClick={handleMobileMenuClick}
                                   className={`block text-base border-t font-medium transition duration-200 rounded-md px-4 py-2 ${
                                     location.pathname === subItem.link
-                                      ? "text-white bg-[#1f4e43] shadow"
-                                      : "text-black hover:text-[#1f4e43] hover:bg-gray-100"
+                                      ? "text-activeTextPrimary"
+                                      : "text-black hover:text-hoverTextPrimary hover:bg-gray-100"
                                   }`}
                                 >
                                   {subItem.title}
@@ -438,7 +434,7 @@ const Navbar = () => {
                   <Link
                     to="/login"
                     onClick={handleMobileMenuClick}
-                    className="block w-full text-center py-3 bg-[#1f4e43] hover:bg-[#3b6b53] text-white rounded-md font-semibold"
+                    className="block w-full text-center py-2 bg-bgButton hover:bg-hoverBgButton text-white rounded-md font-semibold"
                   >
                     Login
                   </Link>
@@ -453,4 +449,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

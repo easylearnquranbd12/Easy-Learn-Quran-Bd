@@ -225,7 +225,7 @@ import { useEffect, useState } from "react";
 import { FaFacebook, FaPhoneAlt, FaYoutube } from "react-icons/fa";
 import { MdEmail, MdLocationOn } from "react-icons/md";
 import { Link } from "react-router-dom";
-import imageLogo from "../../../public/nas-2png.png";
+import imageLogo from "../../assets/logo.svg";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -255,17 +255,17 @@ const Footer = () => {
         backgroundSize: "10px 10px, 100% 100%",
       }}
     >
-      <div className="max-w-7xl mx-auto px-5 py-12 grid grid-cols-1 md:grid-cols-3 gap-10 text-base-content relative z-10">
+      <div className="max-w-[1400px] mx-auto px-2 py-12 grid grid-cols-1 md:grid-cols-3 gap-10 text-base-content relative z-10">
         {/* Logo & Contact Info */}
         <div>
-          <img src={imageLogo} alt="Mathematics Logo" className="h-20 mb-2" />
+          <img src={imageLogo} alt="Mathematics Logo" className="h-12 mb-2" />
           <p className="mb-4 font-bold uppercase text-base">Office Address</p>
 
           <p className="flex items-center gap-2 mb-1">
             <FaPhoneAlt /> 01331223469
           </p>
           <p className="flex items-center gap-2 mb-1">
-            <MdEmail /> info@nasmatics.com
+            <MdEmail /> info@.com
           </p>
           <p className="flex items-center gap-2">
             <MdLocationOn /> House 15, road 11, Uttara sector 3
@@ -340,7 +340,7 @@ const Footer = () => {
       {/* Copyright */}
       <div className="border-t border-gray-300 text-center text-sm p-4 bg-base-100 relative z-10">
         <p>
-          &copy; {currentYear} Nasmatics || Developed by{" "}
+          &copy; {currentYear} Learning Quiz || Developed by{" "}
           <a
             href="https://github.com/Mozammel772"
             target="_blank"

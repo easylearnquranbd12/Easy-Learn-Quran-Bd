@@ -1,7 +1,4 @@
-"use client";
-
 import Lottie from "lottie-react";
-import { Building } from "lucide-react";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Controller, useForm } from "react-hook-form";
@@ -10,6 +7,7 @@ import { FiLock, FiMail, FiPhone, FiUser } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import error from "../../lottie-animation/error.json";
 import success from "../../lottie-animation/success.json";
+import imageLogo from "../assets/logo.svg";
 import useAuth from "../hooks/useAuth";
 import useAxiosPublic from "../hooks/useAxiosPublic";
 
@@ -49,7 +47,6 @@ const Register = () => {
         name: data.fullName,
         email: data.email,
         phone: data.phoneNumber,
-        instituteName: data.institutionName || "",
       };
 
       console.log("Sending user data to MongoDB:", userInfo);
@@ -119,13 +116,14 @@ const Register = () => {
         <title>Mathematics | Sign Up</title>
       </Helmet>
       <div className="flex justify-center items-center min-h-[80vh] py-6">
-        <div className="w-full max-w-xl bg-white shadow-2xl rounded-xl overflow-hidden border border-indigo-100">
-          {/* Header */}
-          <div className="bg-[#1f4e43] py-4 px-5 lg:py-6 lg:px-8 text-white">
-            <h1 className="text-2xl font-bold">Create Your Account</h1>
-            <p className="text-white mt-1">
-              Join us and start your learning journey
-            </p>
+        <div className="w-full max-w-xl bg-white shadow-2xl rounded-xl overflow-hidden border border-gray-200">
+          <div className="text-center mt-8">
+            <img
+              className="h-16 w-16 cursor-pointer mx-auto "
+              src={imageLogo}
+              alt="Logo"
+            />
+            <p className=" mt-1">Join us and start your learning journey</p>
           </div>
 
           {/* Form */}
@@ -174,7 +172,7 @@ const Register = () => {
                                 error
                                   ? "border-red-500"
                                   : field.value
-                                  ? "border-green-300"
+                                  ? "border-green-200"
                                   : "border-gray-300"
                               }`}
                               aria-invalid={!!error}
@@ -236,7 +234,7 @@ const Register = () => {
                                 error
                                   ? "border-red-500"
                                   : field.value
-                                  ? "border-green-300"
+                                  ? "border-green-200"
                                   : "border-gray-300"
                               }`}
                               placeholder="example@gmail.com"
@@ -302,7 +300,7 @@ const Register = () => {
                                 error
                                   ? "border-red-500"
                                   : field.value
-                                  ? "border-green-300"
+                                  ? "border-green-200"
                                   : "border-gray-300"
                               }`}
                               value={`+88${field.value}`}
@@ -326,62 +324,6 @@ const Register = () => {
                               className="text-green-600 text-sm mt-1 flex items-center"
                             >
                               Phone Number is Valid
-                            </p>
-                          ) : null}
-                        </>
-                      );
-                    }}
-                  />
-                </div>
-
-                {/* Institution Name */}
-
-                <div className="form-control">
-                  <label htmlFor="institutionName" className="label">
-                    <span className="label-text text-base mb-1 font-medium text-gray-700">
-                      Institution Name (Optional) :
-                    </span>
-                  </label>
-                  <Controller
-                    name="institutionName"
-                    defaultValue=""
-                    control={control}
-                    render={({ field, fieldState }) => {
-                      const { error } = fieldState;
-                      return (
-                        <>
-                          <div className="relative">
-                            <div className="absolute left-0 inset-y-0 flex items-center pl-3 pointer-events-none">
-                              <Building className="h-5 w-5 text-gray-400" />
-                            </div>
-                            <input
-                              {...field}
-                              id="institutionName"
-                              placeholder="Enter your full name"
-                              className={`w-full pl-10 pr-3 py-3 border rounded-md text-gray-700 transition-colors hover:border-purple-300 focus:outline-none focus:ring-1 focus:ring-green-200 ${
-                                error
-                                  ? "border-red-500"
-                                  : field.value
-                                  ? "border-green-300"
-                                  : "border-gray-300"
-                              }`}
-                              aria-invalid={!!error}
-                              aria-describedby="institutionName-feedback"
-                            />
-                          </div>
-                          {error ? (
-                            <p
-                              id="institutionName-feedback"
-                              className="text-red-500 text-sm mt-1 flex items-center"
-                            >
-                              {error.message}
-                            </p>
-                          ) : field.value ? (
-                            <p
-                              id="institutionName-feedback"
-                              className="text-green-600 text-sm mt-1 flex items-center"
-                            >
-                              Name is Valid
                             </p>
                           ) : null}
                         </>
@@ -424,7 +366,7 @@ const Register = () => {
                               error
                                 ? "border-red-500"
                                 : field.value
-                                ? "border-green-300"
+                                ? "border-green-200"
                                 : "border-gray-300"
                             }`}
                             placeholder="••••••••"
@@ -439,13 +381,10 @@ const Register = () => {
                             {showPassword ? (
                               <AiFillEyeInvisible
                                 size={20}
-                                className="text-[#1f4e43]"
+                                className="text-textPrimary"
                               />
                             ) : (
-                              <AiFillEye
-                                size={20}
-                                className="text-[#44917f]"
-                              />
+                              <AiFillEye size={20} className="text-textPrimary" />
                             )}
                           </button>
                         </div>
@@ -454,7 +393,6 @@ const Register = () => {
                             id="password-feedback"
                             className="text-red-500 text-sm mt-1 flex items-center"
                           >
-                           
                             {error.message}
                           </p>
                         )}
@@ -510,13 +448,10 @@ const Register = () => {
                             {showPassword ? (
                               <AiFillEyeInvisible
                                 size={20}
-                                className="text-[#1f4e43]"
+                                className="text-textPrimary"
                               />
                             ) : (
-                              <AiFillEye
-                                size={20}
-                                className="text-[#44917f]"
-                              />
+                              <AiFillEye size={20} className="text-textPrimary" />
                             )}
                           </button>
                         </div>
@@ -537,7 +472,7 @@ const Register = () => {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full py-3 px-4 bg-[#1f4e43] hover:bg-[#3e7266] text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full py-3 px-4 bg-bgButton hover:bg-hoverBgButton text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-textPrimary focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed"
                 disabled={loading || isSubmitting}
               >
                 {loading || isSubmitting ? (
@@ -578,7 +513,7 @@ const Register = () => {
                 Already have an account?{" "}
                 <Link
                   to="/login"
-                  className="text-[#1f4e43] hover:text-[#488576] font-medium"
+                  className="text-textPrimary hover:text-hoverTextPrimary font-medium"
                 >
                   Sign In
                 </Link>

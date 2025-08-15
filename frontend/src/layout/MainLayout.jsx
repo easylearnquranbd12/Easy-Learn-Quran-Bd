@@ -8,7 +8,7 @@ const MainLayout = () => {
     <div className="flex flex-col">
       <ScrollToTop />
       <Navbar />
-      <main className="flex-grow min-h-[75vh] bg-[#edf7f4] ">
+      <main className="flex-grow min-h-[75vh] bg-[#f0f5f3] ">
         <div className="px-3 mt-20 py-3">
           <Outlet />
         </div>

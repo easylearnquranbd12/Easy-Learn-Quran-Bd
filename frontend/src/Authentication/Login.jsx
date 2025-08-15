@@ -1,8 +1,6 @@
-
-"use client";
-
 import Lottie from "lottie-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { Helmet } from "react-helmet-async";
 import { Controller, useForm } from "react-hook-form";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
@@ -10,11 +8,10 @@ import { FiLock, FiMail } from "react-icons/fi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import error from "../../lottie-animation/error.json";
 import success from "../../lottie-animation/success.json";
+import imageLogo from "../assets/logo.svg";
+import auth from "../firebase/firebase.config";
 import useAuth from "../hooks/useAuth";
 import useAxiosPublic from "../hooks/useAxiosPublic";
-import auth from "../firebase/firebase.config";
-import { useAuthState } from "react-firebase-hooks/auth"
-import { useEffect } from "react";
 
 const Login = () => {
   const { handleSubmit, control } = useForm();
@@ -28,12 +25,11 @@ const Login = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
   const axiosPublic = useAxiosPublic();
-  const [user] = useAuthState(auth)
-
+  const [user] = useAuthState(auth);
 
   useEffect(() => {
     if (user?.email) {
-      navigate("/dashboard")
+      navigate("/dashboard");
     }
   }, []);
 
@@ -71,20 +67,21 @@ const Login = () => {
     }
   };
 
-
   return (
     <div>
       <Helmet>
         <title>Mathematics | Sign In</title>
       </Helmet>
       <div className="flex justify-center items-center min-h-[70vh]">
-        <div className="w-full max-w-xl bg-white shadow-2xl rounded-xl overflow-hidden border border-indigo-100">
+        <div className="w-full max-w-xl bg-white shadow-2xl rounded-xl overflow-hidden border border-gray-200">
           {/* Header */}
-          <div className="bg-[#1f4e43]  py-6 px-8 text-white">
-            <h2 className="text-2xl font-bold">Welcome Back</h2>
-            <p className="text-white mt-1">
-              Sign in to continue your journey
-            </p>
+          <div className="text-center mt-8">
+            <img
+              className="h-16 w-16 cursor-pointer mx-auto "
+              src={imageLogo}
+              alt="Logo"
+            />
+            <p className=" mt-1">Sign in to continue your journey</p>
           </div>
 
           {/* Form */}
@@ -118,12 +115,13 @@ const Login = () => {
                           <input
                             {...field}
                             id="email"
-                            className={`w-full pl-10 pr-3 py-3 border rounded-md text-gray-700 transition-colors hover:border-purple-300 focus:outline-none focus:ring-1 focus:ring-green-200 ${error
-                              ? "border-red-500"
-                              : field.value
+                            className={`w-full pl-10 pr-3 py-3 border rounded-md text-gray-700 transition-colors hover:border-purple-300 focus:outline-none focus:ring-1 focus:ring-green-200 ${
+                              error
+                                ? "border-red-500"
+                                : field.value
                                 ? "border-green-300"
                                 : "border-gray-300"
-                              }`}
+                            }`}
                             placeholder="example@gmail.com"
                             aria-invalid={!!error}
                             aria-describedby="email-feedback"
@@ -180,12 +178,13 @@ const Login = () => {
                           {...field}
                           id="password"
                           type={showPassword ? "text" : "password"}
-                          className={`w-full pl-10 pr-3 py-3 border rounded-md text-gray-700 transition-colors hover:border-purple-300 focus:outline-none focus:ring-1 focus:ring-green-200 ${error
-                            ? "border-red-500"
-                            : field.value
+                          className={`w-full pl-10 pr-3 py-3 border rounded-md text-gray-700 transition-colors hover:border-purple-300 focus:outline-none focus:ring-1 focus:ring-green-200 ${
+                            error
+                              ? "border-red-500"
+                              : field.value
                               ? "border-green-300"
                               : "border-gray-300"
-                            }`}
+                          }`}
                           placeholder="••••••••"
                           aria-invalid={!!error}
                           aria-describedby="password-feedback"
@@ -198,10 +197,10 @@ const Login = () => {
                           {showPassword ? (
                             <AiFillEyeInvisible
                               size={20}
-                              className="text-[#44917f]"
+                              className="text-textPrimary"
                             />
                           ) : (
-                            <AiFillEye size={20} className="text-[#1f4e43]" />
+                            <AiFillEye size={20} className="text-textPrimary" />
                           )}
                         </button>
                       </div>
@@ -219,7 +218,7 @@ const Login = () => {
                 <div className="my-2">
                   <Link
                     to="/forgot-password"
-                    className="text-sm text-[#1f4e43] hover:text-[#3e7266] font-medium"
+                    className="text-sm text-textPrimary hover:text-hoverTextPrimary font-medium"
                   >
                     Forgot Password?
                   </Link>
@@ -229,7 +228,7 @@ const Login = () => {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full py-3 px-4 bg-[#1f4e43] hover:bg-[#3e7266] text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-[#1f4e43] focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full py-3 px-4 bg-bgButton hover:bg-hoverBgButton text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-[#1f4e43] focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed"
                 disabled={loading}
               >
                 {loading ? (
@@ -270,7 +269,7 @@ const Login = () => {
                 Don't have an account?{" "}
                 <Link
                   to="/register"
-                  className="text-[#1f4e43] hover:text-[#3e7266] font-medium"
+                  className="text-textPrimary hover:text-hoverTextPrimary font-medium"
                 >
                   Create Account
                 </Link>
@@ -305,8 +304,9 @@ const Login = () => {
               </div>
 
               <h2
-                className={`text-xl font-bold ${modalType === "success" ? "text-indigo-700" : "text-red-600"
-                  }`}
+                className={`text-xl font-bold ${
+                  modalType === "success" ? "text-indigo-700" : "text-red-600"
+                }`}
               >
                 {modalType === "success" ? "Success!" : "Oops!"}
               </h2>
@@ -336,4 +336,3 @@ const Login = () => {
 };
 
 export default Login;
-
