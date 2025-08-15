@@ -20,8 +20,8 @@ const HometextCreateui = () => {
     refetchOnWindowFocus: true,
   });
 
-  if(isLoading){
-    return <CustomLoading/>
+  if (isLoading) {
+    return <CustomLoading />;
   }
   const activeBanner = banners[0]; // 👈 take the first active banner
 
@@ -30,18 +30,19 @@ const HometextCreateui = () => {
       <Helmet>
         <title>Nasmatics | Home</title>
       </Helmet>
-      <div className="flex items-center justify-center mt-10 max-w-7xl mx-auto ">
+      <div className="flex items-center justify-center mt-10 max-w-[1400px] mx-auto min-h-[60vh] ">
         <div className="w-full">
           <div className="flex items-center flex-col-reverse lg:flex-row gap-6">
             {/* Text Section */}
-            <div className="w-full md:px-2 text-center">
+            <div className="w-full text-center">
               <motion.h1
-                className="text-2xl md:text-4xl font-bold text-[#3B6B53] text-justify"
+                className="text-2xl md:text-4xl font-bold text-[#2e5a44] text-justify"
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
               >
-                {activeBanner?.title || "The best teachers, the best guidance."}
+                {activeBanner?.title ||
+                  "Challenge Your Mind, One Question at a Time!"}
               </motion.h1>
 
               <motion.p
@@ -51,17 +52,14 @@ const HometextCreateui = () => {
                 transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
               >
                 {activeBanner?.description ||
-                  `A world painted in the rhythm of numbers, nature governed by the
-                  laws of forces and energy, and the mysterious dance of atoms and
-                  molecules — our sole path to great knowledge. May your journey
-                  shine bright with the light of the Science Trinity.`}
+                  `Welcome to the ultimate quiz adventure! Explore a wide variety of topics—from science and technology to history, literature, and pop culture. Challenge your knowledge with thought-provoking questions, sharpen your skills, and unlock new achievements as you progress. Whether you’re a curious learner or a competitive quiz master, our interactive quizzes make learning fun, exciting, and rewarding. Track your scores, compete with friends, and discover how much you really know. Every question is a step towards becoming a true knowledge champion!`}
               </motion.p>
 
               <Link
                 to="/courses"
-                className="btn bg-[#3B6B53] text-white px-6 py-4 rounded-md text-base hover:bg-inherit hover:text-[#3B6B53] transition-colors duration-300"
+                className="btn bg-bgButton text-white px-6 py-4 rounded-md text-base hover:bg-inherit hover:text-hoverTextPrimary transition-colors duration-300"
               >
-                JOIN NASMATICS
+                JOIN QUIZ
               </Link>
             </div>
           </div>
