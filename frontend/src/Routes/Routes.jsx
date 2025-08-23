@@ -30,6 +30,7 @@ import HometextCreate from "../Pages/AdminDashboardPages/AdminHomePagesEdit/Home
 import ImageandText from "../Pages/AdminDashboardPages/AdminHomePagesEdit/ImageandText";
 import YouTubeVideoPlayer from "../Pages/AdminDashboardPages/AdminHomePagesEdit/YouTubeVideoPlayer";
 import AllUsers from "../Pages/AdminDashboardPages/AllUsers/AllUsers";
+import FirstLayer from "../Pages/B.A.ShapeFormats/FirstLayer/FirstLayer";
 import Blog from "../Pages/BlogPages/Blog";
 import BlogDetails from "../Pages/BlogPages/BlogDetails";
 import CourseDetails from "../Pages/CoursePages/CourseDetails";
@@ -68,8 +69,12 @@ export const routes = createBrowserRouter([
         path: "/about-us-more-information",
         element: <About />,
       },
-      
-     
+
+      {
+        path: "b-a-shape-formats/1st-layer",
+        element: <FirstLayer />,
+      },
+
       // Course Routes
       {
         path: "/courses",
@@ -95,7 +100,7 @@ export const routes = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-    
+
       // Blog
       {
         path: "/blog-us",
@@ -320,4 +325,4 @@ export const routes = createBrowserRouter([
       </PrivateRoute>
     ),
   },
-])
+]);
