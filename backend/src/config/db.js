@@ -1,8 +1,8 @@
 const { MongoClient, ServerApiVersion } = require("mongodb");
 require("dotenv").config();
 
-const uri = `mongodb+srv://Construction-Projects:dcw48n9B0WuIIFwp@construction-projects.z7ox4nb.mongodb.net/Learning-Quiz-Platfrom?retryWrites=true&w=majority&appName=Construction-Projects`;
-
+// const uri = `mongodb+srv://Construction-Projects:dcw48n9B0WuIIFwp@construction-projects.z7ox4nb.mongodb.net/Learning-Quiz-Platfrom?retryWrites=true&w=majority&appName=Construction-Projects`;
+const uri = `mongodb+srv://Network-Online-Service:3jMat0WHg0uF8lR7@network-online-service.bfjpnvo.mongodb.net/Learning-Quiz-Platfrom-Paid?retryWrites=true&w=majority`;
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -18,40 +18,40 @@ const connectDB = async () => {
 };
 
 const getUserCollection = () => {
-  return client.db("Network-Online-Service").collection("users");
+  return client.db("Learning-Quiz-Platfrom").collection("users");
 };
 const getCourseCollection = () => {
-  return client.db("Network-Online-Service").collection("courses");
+  return client.db("Learning-Quiz-Platfrom").collection("courses");
 };
 const getEnrollmentCollection = () => {
-  return client.db("Network-Online-Service").collection("enrollments");
+  return client.db("Learning-Quiz-Platfrom").collection("enrollments");
 };
 const getBlogsCollection = () => {
-  return client.db("Network-Online-Service").collection("blog");
+  return client.db("Learning-Quiz-Platfrom").collection("blog");
 };
 const getBannersCollection = () => {
-  return client.db("Network-Online-Service").collection("banner");
+  return client.db("Learning-Quiz-Platfrom").collection("banner");
 };
 const getInstructorsCollection = () => {
-  return client.db("Network-Online-Service").collection("instructors");
+  return client.db("Learning-Quiz-Platfrom").collection("instructors");
 };
 const getAddPaymentMethodCollection = () => {
-  return client.db("Network-Online-Service").collection("AddPaymentMethod");
+  return client.db("Learning-Quiz-Platfrom").collection("AddPaymentMethod");
 };
 const getNotesCollection = () => {
-  return client.db("Network-Online-Service").collection("Notes");
+  return client.db("Learning-Quiz-Platfrom").collection("Notes");
 }
 const getYouTubeCollection = () => {
-  return client.db("Network-Online-Service").collection("VideoCollection");
+  return client.db("Learning-Quiz-Platfrom").collection("VideoCollection");
 };
 const getImageAndTextCollection = () => {
-  return client.db("Network-Online-Service").collection("ImageAndText");
+  return client.db("Learning-Quiz-Platfrom").collection("ImageAndText");
 };
 const getAuthorTextCollection = () => {
-  return client.db("Network-Online-Service").collection("AuthorInfo");
+  return client.db("Learning-Quiz-Platfrom").collection("AuthorInfo");
 };
 const getSocialLinksCollection = () => {
-  return client.db("Network-Online-Service").collection("SocialLinks");
+  return client.db("Learning-Quiz-Platfrom").collection("SocialLinks");
 };
 module.exports = {
   connectDB,

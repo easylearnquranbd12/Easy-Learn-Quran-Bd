@@ -1,0 +1,452 @@
+[
+  {
+    "id": 1,
+    "idiom": "Break the ice",
+    "banglaMeaning": "অচলাবস্থা ভাঙা, আলাপ শুরু করা",
+    "banglaPronunciation": "ব্রেক দ্য আইস",
+    "exampleEnglish": "The teacher told a joke to break the ice at the start of the class.",
+    "exampleBangla": "শিক্ষক ক্লাসের শুরুতে অচলাবস্থা ভাঙতে একটি রসিকতা বললেন।",
+    "pronunciationBangla": "দ্য টিচার টোল্ড এ জোক টু ব্রেক দ্য আইস অ্যাট দ্য স্টার্ট অফ দ্য ক্লাস।"
+  },
+  {
+    "id": 2,
+    "idiom": "Hit the nail on the head",
+    "banglaMeaning": "সঠিকভাবে বলা বা করা",
+    "banglaPronunciation": "হিট দ্য নেইল অন দ্য হেড",
+    "exampleEnglish": "You hit the nail on the head with your analysis.",
+    "exampleBangla": "তোমার বিশ্লেষণ একদম সঠিক হয়েছে।",
+    "pronunciationBangla": "ইউ হিট দ্য নেইল অন দ্য হেড উইথ ইওর অ্যানালাইসিস।"
+  },
+  {
+    "id": 3,
+    "idiom": "Under the weather",
+    "banglaMeaning": "অসুস্থ বা খারাপ লাগা",
+    "banglaPronunciation": "আন্ডার দ্য ওয়েদার",
+    "exampleEnglish": "I’m feeling under the weather today, so I’ll stay home.",
+    "exampleBangla": "আজ আমার শরীর খারাপ লাগছে, তাই আমি বাড়িতে থাকব।",
+    "pronunciationBangla": "আই’ম ফিলিং আন্ডার দ্য ওয়েদার টুডে, সো আই’ল স্টে হোম。"
+  },
+  {
+    "id": 4,
+    "idiom": "Piece of cake",
+    "banglaMeaning": "খুব সহজ কাজ",
+    "banglaPronunciation": "পিস অফ কেক",
+    "exampleEnglish": "This exam was a piece of cake for her.",
+    "exampleBangla": "এই পরীক্ষাটি তার জন্য খুব সহজ ছিল।",
+    "pronunciationBangla": "দিস এক্সাম ওয়াজ এ পিস অফ কেক ফর হার।"
+  },
+  {
+    "id": 5,
+    "idiom": "Once in a blue moon",
+    "banglaMeaning": "খুবই বিরল ঘটনা",
+    "banglaPronunciation": "ওয়ান্স ইন আ ব্লু মুন",
+    "exampleEnglish": "We go out for dinner once in a blue moon.",
+    "exampleBangla": "আমরা খুব কম সময়েই ডিনারের জন্য বাইরে যাই।",
+    "pronunciationBangla": "উই গো আউট ফর ডিনার ওয়ান্স ইন আ ব্লু মুন।"
+  },
+  {
+    "id": 6,
+    "idiom": "Let the cat out of the bag",
+    "banglaMeaning": "গোপন কথা ফাঁস করা",
+    "banglaPronunciation": "লেট দ্য ক্যাট আউট অফ দ্য ব্যাগ",
+    "exampleEnglish": "He let the cat out of the bag about the surprise party.",
+    "exampleBangla": "সে চমকপ্রদ পার্টির কথা ফাঁস করে ফেলেছে।",
+    "pronunciationBangla": "হি লেট দ্য ক্যাট আউট অফ দ্য ব্যাগ অ্যাবাউট দ্য সারপ্রাইজ পার্টি।"
+  },
+  {
+    "id": 7,
+    "idiom": "Burn the midnight oil",
+    "banglaMeaning": "গভীর রাত পর্যন্ত কাজ করা",
+    "banglaPronunciation": "বার্ন দ্য মিডনাইট অয়েল",
+    "exampleEnglish": "She burned the midnight oil to finish the project.",
+    "exampleBangla": "সে প্রকল্প শেষ করতে গভীর রাত পর্যন্ত কাজ করেছে।",
+    "pronunciationBangla": "শি বার্নড দ্য মিডনাইট অয়েল টু ফিনিশ দ্য প্রোজেক্ট।"
+  },
+  {
+    "id": 8,
+    "idiom": "Hit the sack",
+    "banglaMeaning": "ঘুমাতে যাওয়া",
+    "banglaPronunciation": "হিট দ্য স্যাক",
+    "exampleEnglish": "I’m really tired, so I’ll hit the sack now.",
+    "exampleBangla": "আমি খুব ক্লান্ত, তাই এখন ঘুমাতে যাচ্ছি।",
+    "pronunciationBangla": "আই’ম রিয়েলি টায়ার্ড, সো আই’ল হিট দ্য স্যাক নাও।"
+  },
+  {
+    "id": 9,
+    "idiom": "Call it a day",
+    "banglaMeaning": "কাজ শেষ করা",
+    "banglaPronunciation": "কল ইট আ ডে",
+    "exampleEnglish": "Let's call it a day and go home.",
+    "exampleBangla": "চলো আজকের কাজ শেষ করে বাড়ি যাই।",
+    "pronunciationBangla": "লেট’স কল ইট আ ডে অ্যান্ড গো হোম।"
+  },
+  {
+    "id": 10,
+    "idiom": "Bite the bullet",
+    "banglaMeaning": "কঠিন সিদ্ধান্ত নেওয়া",
+    "banglaPronunciation": "বাইট দ্য বুলেট",
+    "exampleEnglish": "You'll have to bite the bullet and tell him the truth.",
+    "exampleBangla": "তোমাকে কঠিন সিদ্ধান্ত নিয়ে তাকে সত্য কথা বলতে হবে।",
+    "pronunciationBangla": "ইউ’ল হ্যাভ টু বাইট দ্য বুলেট অ্যান্ড টেল হিম দ্য ট্রুথ।"
+  },
+  {
+    "id": 11,
+    "idiom": "A blessing in disguise",
+    "banglaMeaning": "অনিষ্টের মধ্যে ভালো",
+    "banglaPronunciation": "আ ব্লেসিং ইন ডিসগাইজ",
+    "exampleEnglish": "Losing that job was a blessing in disguise.",
+    "exampleBangla": "চাকরিটি হারানো অনিষ্টের মধ্যে ভালো ছিল।",
+    "pronunciationBangla": "লুজিং দ্যাট জব ওয়াজ আ ব্লেসিং ইন ডিসগайз."
+  },
+  {
+    "id": 12,
+    "idiom": "On cloud nine",
+    "banglaMeaning": "খুব খুশি",
+    "banglaPronunciation": "অন ক্লাউড নাইন",
+    "exampleEnglish": "She was on cloud nine after hearing the news.",
+    "exampleBangla": "খবর শুনে সে খুব খুশি হয়েছিল।",
+    "pronunciationBangla": "শি ওয়াজ অন ক্লাউড নাইন আফটার হিয়ারিং দ্য নিউজ।"
+  },
+  {
+    "id": 13,
+    "idiom": "The ball is in your court",
+    "banglaMeaning": "সিদ্ধান্ত নেওয়ার দায়িত্ব তোমার",
+    "banglaPronunciation": "দ্য বল ইজ ইন ইয়োর কোর্ট",
+    "exampleEnglish": "I've done all I can, now the ball is in your court.",
+    "exampleBangla": "আমি আমার所能做的一切都做了, এখন সিদ্ধান্ত নেওয়ার দায়িত্ব তোমার।",
+    "pronunciationBangla": "আই’ভ ডান অল আই ক্যান, নাও দ্য বল ইজ ইন ইয়োর কোর্ট।"
+  },
+  {
+    "id": 14,
+    "idiom": "Kill two birds with one stone",
+    "banglaMeaning": "একটি কাজে দুটি ফল",
+    "banglaPronunciation": "কিল টু বার্ডস উইথ ওয়ান স্টোন",
+    "exampleEnglish": "By cycling to work, I kill two birds with one stone: I save money and get exercise.",
+    "exampleBangla": "সাইকেলে করে অফিসে যাওয়ার মাধ্যমে, আমি একটি কাজে দুটি ফল পাই: আমি টাকা সাশ্রয় করি এবং ব্যায়াম করি।",
+    "pronunciationBangla": "বাই সাইক্লিং টু ওয়ার্ক, আই কিল টু বার্ডস উইথ ওয়ান স্টোন: আই সেভ মানি অ্যান্ড গেট এক্সারসাইজ।"
+  },
+  {
+    "id": 15,
+    "idiom": "When pigs fly",
+    "banglaMeaning": "কখনোই না",
+    "banglaPronunciation": "হোয়েন পিগস ফ্লাই",
+    "exampleEnglish": "He'll clean his room when pigs fly.",
+    "exampleBangla": "সে তার রুম কখনোই পরিষ্কার করবে না।",
+    "pronunciationBangla": "হি’ল ক্লিন হিজ রুম হোয়েন পিগস ফ্লাই."
+  },
+  {
+    "id": 16,
+    "idiom": "Spill the beans",
+    "banglaMeaning": "গোপন কথা ফাঁস করা",
+    "banglaPronunciation": "স্পিল দ্য বিন্স",
+    "exampleEnglish": "Who spilled the beans about the party?",
+    "exampleBangla": "কে পার্টির কথা ফাঁস করেছে?",
+    "pronunciationBangla": "হু স্পিল্ড দ্য বিন্স অ্যাবাউট দ্য পার্টি?"
+  },
+  {
+    "id": 17,
+    "idiom": "Cut to the chase",
+    "banglaMeaning": "সরাসরি মূল কথায় আসা",
+    "banglaPronunciation": "কাট টু দ্য চেজ",
+    "exampleEnglish": "Stop talking and cut to the chase.",
+    "exampleBangla": "বকবক করা বন্ধ করে সরাসরি মূল কথায় আস।",
+    "pronunciationBangla": "স্টপ টকিং অ্যান্ড কাট টু দ্য চেজ."
+  },
+  {
+    "id": 18,
+    "idiom": "Back to square one",
+    "banglaMeaning": "আবার শুরু থেকে শুরু করা",
+    "banglaPronunciation": "ব্যাক টু স্কোয়ার ওয়ান",
+    "exampleEnglish": "The plan failed, so we're back to square one.",
+    "exampleBangla": "পরিকল্পনাটি失敗しました, তাই আমাদের আবার শুরু থেকে শুরু করতে হবে।",
+    "pronunciationBangla": "দ্য প্ল্যান ফেইলড, সো উই’আর ব্যাক টু স্কোয়ার ওয়ান."
+  },
+  {
+    "id": 19,
+    "idiom": "Jump the gun",
+    "banglaMeaning": "অসময়ে কিছু করা",
+    "banglaPronunciation": "জাম্প দ্য গান",
+    "exampleEnglish": "Don't jump the gun - wait for the official announcement.",
+    "exampleBangla": "অসময়ে কিছু করো না - সরকারি ঘোষণার জন্য অপেক্ষা কর।",
+    "pronunciationBangla": "ডোন’ট জাম্প দ্য গান - ওয়েট ফর দ্য অফিসিয়াল অ্যানাউন্সমেন্ট."
+  },
+  {
+    "id": 20,
+    "idiom": "Pull someone's leg",
+    "banglaMeaning": "কাউকে ঠাট্টা করা",
+    "banglaPronunciation": "পুল সামওয়ান’স লেগ",
+    "exampleEnglish": "I was just pulling your leg.",
+    "exampleBangla": "আমি শুধু তোমার সাথে ঠাট্টা করছিলাম।",
+    "pronunciationBangla": "আই ওয়াজ জাস্ট পুলিং ইয়োর লেগ."
+  },
+  {
+    "id": 21,
+    "idiom": "Barking up the wrong tree",
+    "banglaMeaning": "ভুল ব্যক্তিকে দোষারোপ করা",
+    "banglaPronunciation": "বার্কিং আপ দ্য রং ট্রি",
+    "exampleEnglish": "If you think I took your book, you're barking up the wrong tree.",
+    "exampleBangla": "তুমি যদি ভাবো যে আমি তোমার বই নিয়েছি, তাহলে তুমি ভুল ব্যক্তিকে দোষারোপ করছ।",
+    "pronunciationBangla": "ইফ ইউ থিংক আই টুক ইয়োর বুক, ইউ’আর বার্কিং আপ দ্য রং ট্রি."
+  },
+  {
+    "id": 22,
+    "idiom": "Break a leg",
+    "banglaMeaning": "শুভকামনা",
+    "banglaPronunciation": "ব্রেক আ লেগ",
+    "exampleEnglish": "Break a leg in your performance tonight!",
+    "exampleBangla": "আজ রাতের পারফরম্যান্সের জন্য শুভকামনা!",
+    "pronunciationBangla": "ব্রেক আ লেগ ইন ইয়োর পারফরম্যান্স টুনাইট!"
+  },
+  {
+    "id": 23,
+    "idiom": "Burn bridges",
+    "banglaMeaning": "সম্পর্ক নষ্ট করা",
+    "banglaPronunciation": "বার্ন ব্রিজেস",
+    "exampleEnglish": "Don’t burn bridges with old friends.",
+    "exampleBangla": "পুরনো বন্ধুদের সাথে সম্পর্ক নষ্ট করো না।",
+    "pronunciationBangla": "ডোন’ট বার্ন ব্রিজেস উইথ ওল্ড ফ্রেন্ডস."
+  },
+  {
+    "id": 24,
+    "idiom": "By the book",
+    "banglaMeaning": "নিয়ম মেনে",
+    "banglaPronunciation": "বাই দ্য বুক",
+    "exampleEnglish": "The police officer handled the case by the book.",
+    "exampleBangla": "পুলিশ অফিসার মামলাটি নিয়ম মেনে পরিচালনা করেছেন।",
+    "pronunciationBangla": "দ্য পুলিশ অফিসার হ্যান্ডেল্ড দ্য কেস বাই দ্য বুক."
+  },
+  {
+    "id": 25,
+    "idiom": "Call the shots",
+    "banglaMeaning": "সিদ্ধান্ত নেওয়া",
+    "banglaPronunciation": "কল দ্য শটস",
+    "exampleEnglish": "In this company, the manager calls the shots.",
+    "exampleBangla": "এই কোম্পানিতে ম্যানেজারই সিদ্ধান্ত নেন।",
+    "pronunciationBangla": "ইন দিস কোম্পানি, দ্য ম্যানেজার কলস দ্য শটস."
+  },
+  {
+    "id": 26,
+    "idiom": "Come clean",
+    "banglaMeaning": "সত্য স্বীকার করা",
+    "banglaPronunciation": "কাম ক্লিন",
+    "exampleEnglish": "It’s time to come clean about what happened.",
+    "exampleBangla": "কি হয়েছে, তা স্বীকার করার সময় এসেছে।",
+    "pronunciationBangla": "ইট’স টাইম টু কাম ক্লিন অ্যাবাউট হোয়াট হ্যাপেন্ড."
+  },
+  {
+    "id": 27,
+    "idiom": "Cross the line",
+    "banglaMeaning": "সীমা অতিক্রম করা",
+    "banglaPronunciation": "ক্রস দ্য লাইন",
+    "exampleEnglish": "He crossed the line when he insulted her.",
+    "exampleBangla": "সে তাকে অপমান করে সীমা অতিক্রম করেছে।",
+    "pronunciationBangla": "হি ক্রসড দ্য লাইন হোয়েন হি ইন্সাল্টেড হার."
+  },
+  {
+    "id": 28,
+    "idiom": "Cut corners",
+    "banglaMeaning": "খরচ বা সময় বাঁচাতে মান কমানো",
+    "banglaPronunciation": "কাট কর্নার্স",
+    "exampleEnglish": "The builders cut corners and the house collapsed.",
+    "exampleBangla": "নির্মাতারা খরচ বাঁচাতে মান কমিয়েছিল, আর বাড়িটি ভেঙে পড়েছে।",
+    "pronunciationBangla": "দ্য বিল্ডারস কাট কর্নার্স অ্যান্ড দ্য হাউস কোল্যাপ্সড."
+  },
+  {
+    "id": 29,
+    "idiom": "Devil’s advocate",
+    "banglaMeaning": "বিপক্ষের যুক্তি উপস্থাপনকারী",
+    "banglaPronunciation": "ডেভিল’স অ্যাডভোকেট",
+    "exampleEnglish": "I don’t agree, but I’ll play devil’s advocate.",
+    "exampleBangla": "আমি একমত নই, কিন্তু আমি বিপক্ষের যুক্তি দেব।",
+    "pronunciationBangla": "আই ডোন’ট অ্যাগ্রি, বাট আই’ল প্লে ডেভিল’স অ্যাডভোকেট."
+  },
+  {
+    "id": 30,
+    "idiom": "Down to earth",
+    "banglaMeaning": "বাস্তববাদী",
+    "banglaPronunciation": "ডাউন টু আর্থ",
+    "exampleEnglish": "She’s rich but very down to earth.",
+    "exampleBangla": "সে ধনী কিন্তু খুব বাস্তববাদী।",
+    "pronunciationBangla": "শি’স রিচ বাট ভেরি ডাউন টু আর্থ."
+  },
+  {
+    "id": 31,
+    "idiom": "Easy come, easy go",
+    "banglaMeaning": "সহজে আসা-সহজে যাওয়া",
+    "banglaPronunciation": "ইজি কাম, ইজি গো",
+    "exampleEnglish": "I lost the money, but easy come, easy go.",
+    "exampleBangla": "আমি টাকা হারিয়েছি, কিন্তু সহজে আসা সহজে যায়।",
+    "pronunciationBangla": "আই লস্ট দ্য মানি, বাট ইজি কাম, ইজি গো."
+  },
+  {
+    "id": 32,
+    "idiom": "Face the music",
+    "banglaMeaning": "দায়িত্ব বা ফলাফলের মুখোমুখি হওয়া",
+    "banglaPronunciation": "ফেস দ্য মিউজিক",
+    "exampleEnglish": "He cheated and had to face the music.",
+    "exampleBangla": "সে প্রতারণা করেছে এবং তাকে দায়িত্বের মুখোমুখি হতে হয়েছে।",
+    "pronunciationBangla": "হি চিটেড অ্যান্ড হ্যাড টু ফেস দ্য মিউজিক."
+  },
+  {
+    "id": 33,
+    "idiom": "Get cold feet",
+    "banglaMeaning": "হঠাৎ ভয় পেয়ে যাওয়া",
+    "banglaPronunciation": "গেট কোল্ড ফিট",
+    "exampleEnglish": "He got cold feet before the wedding.",
+    "exampleBangla": "বিয়ের আগে সে হঠাৎ ভয় পেয়ে গেল।",
+    "pronunciationBangla": "হি গট কোল্ড ফিট বিফোর দ্য ওয়েডিং."
+  },
+  {
+    "id": 34,
+    "idiom": "Give the benefit of the doubt",
+    "banglaMeaning": "সন্দেহের সুযোগ দেওয়া",
+    "banglaPronunciation": "গিভ দ্য বেনিফিট অফ দ্য ডাউট",
+    "exampleEnglish": "I’ll give you the benefit of the doubt this time.",
+    "exampleBangla": "এইবার আমি তোমাকে সন্দেহের সুযোগ দেব।",
+    "pronunciationBangla": "আই’ল গিভ ইউ দ্য বেনিফিট অফ দ্য ডাউট দিস টাইম."
+  },
+  {
+    "id": 35,
+    "idiom": "Go the extra mile",
+    "banglaMeaning": "অতিরিক্ত চেষ্টা করা",
+    "banglaPronunciation": "গো দ্য এক্সট্রা মাইল",
+    "exampleEnglish": "She always goes the extra mile for her clients.",
+    "exampleBangla": "সে সবসময় তার ক্লায়েন্টদের জন্য অতিরিক্ত চেষ্টা করে।",
+    "pronunciationBangla": "শি অলওয়েজ গোজ দ্য এক্সট্রা মাইল ফর হার ক্লায়েন্টস."
+  },
+  {
+    "id": 36,
+    "idiom": "Hit the road",
+    "banglaMeaning": "যাত্রা শুরু করা",
+    "banglaPronunciation": "হিট দ্য রোড",
+    "exampleEnglish": "Let’s hit the road before it gets dark.",
+    "exampleBangla": "অন্ধকার হওয়ার আগে চল যাত্রা শুরু করি।",
+    "pronunciationBangla": "লেট’স হিট দ্য রোড বিফোর ইট গেটস ডার্ক."
+  },
+  {
+    "id": 37,
+    "idiom": "In hot water",
+    "banglaMeaning": "সমস্যায় পড়া",
+    "banglaPronunciation": "ইন হট ওয়াটার",
+    "exampleEnglish": "He’s in hot water after missing the meeting.",
+    "exampleBangla": "মিটিং মিস করার পর সে সমস্যায় পড়েছে।",
+    "pronunciationBangla": "হি’স ইন হট ওয়াটার আফটার মিসিং দ্য মিটিং."
+  },
+  {
+    "id": 38,
+    "idiom": "In the same boat",
+    "banglaMeaning": "একই পরিস্থিতিতে থাকা",
+    "banglaPronunciation": "ইন দ্য সেইম বোট",
+    "exampleEnglish": "We’re all in the same boat after the budget cuts.",
+    "exampleBangla": "বাজেট কাটছাঁটের পর আমরা সবাই একই পরিস্থিতিতে আছি।",
+    "pronunciationBangla": "উই’আর অল ইন দ্য সেইম বোট আফটার দ্য বাজেট কাটস."
+  },
+  {
+    "id": 39,
+    "idiom": "It’s not rocket science",
+    "banglaMeaning": "এটা খুব জটিল নয়",
+    "banglaPronunciation": "ইট’স নট রকেট সায়েন্স",
+    "exampleEnglish": "Don't worry, it's not rocket science.",
+    "exampleBangla": "চিন্তা করো না, এটা খুব জটিল নয়।",
+    "pronunciationBangla": "ডোন’ট ওরি, ইট’স নট রকেট সায়েন্স."
+  },
+  {
+    "id": 40,
+    "idiom": "Keep an eye on",
+    "banglaMeaning": "নজর রাখা",
+    "banglaPronunciation": "কিপ অ্যান আই অন",
+    "exampleEnglish": "Can you keep an eye on my bag?",
+    "exampleBangla": "তুমি কি আমার ব্যাগের উপর নজর রাখতে পার?",
+    "pronunciationBangla": "ক্যান ইউ কিপ অ্যান আই অন মাই ব্যাগ?"
+  },
+  {
+    "id": 41,
+    "idiom": "Keep your fingers crossed",
+    "banglaMeaning": "শুভকামনা",
+    "banglaPronunciation": "কিপ ইয়োর ফিঙ্গার্স ক্রসড",
+    "exampleEnglish": "Keep your fingers crossed for my interview.",
+    "exampleBangla": "আমার ইন্টারভিউর জন্য শুভকামনা রেখো।",
+    "pronunciationBangla": "কিপ ইয়োর ফিঙ্গার্স ক্রসড ফর মাই ইন্টারভিউ."
+  },
+  {
+    "id": 42,
+    "idiom": "Leave no stone unturned",
+    "banglaMeaning": "কোনো চেষ্টা বাকি না রাখা",
+    "banglaPronunciation": "লিভ নো স্টোন আনটার্নড",
+    "exampleEnglish": "We will leave no stone unturned to find the truth.",
+    "exampleBangla": "সত্যি খুঁজে বের করতে আমরা কোনো চেষ্টা বাকি রাখব না।",
+    "pronunciationBangla": "উই উইল লিভ নো স্টোন আনটার্নড টু ফাইন্ড দ্য ট্রুথ."
+  },
+  {
+    "id": 43,
+    "idiom": "Let sleeping dogs lie",
+    "banglaMeaning": "বিপদ ডেকে না আনা",
+    "banglaPronunciation": "লেট স্লিপিং ডগস লাই",
+    "exampleEnglish": "It's better to let sleeping dogs lie.",
+    "exampleBangla": "বিপদ ডেকে না আনা ভাল।",
+    "pronunciationBangla": "ইট’স বেটার টو লেট স্লিপিং ডগস লাই."
+  },
+  {
+    "id": 44,
+    "idiom": "Make a long story short",
+    "banglaMeaning": "সংক্ষেপে বলতে গেলে",
+    "banglaPronunciation": "মেক আ লং স্টোরি শর্ট",
+    "exampleEnglish": "To make a long story short, we won the game.",
+    "exampleBangla": "সংক্ষেপে বলতে গেলে, আমরা খেলাটি জিতেছি।",
+    "pronunciationBangla": "টু মেক আ লং স্টোরি শর্ট, উই ওন দ্য গেম."
+  },
+  {
+    "id": 45,
+    "idiom": "Miss the boat",
+    "banglaMeaning": "সুযোগ হারানো",
+    "banglaPronunciation": "মিস দ্য বোট",
+    "exampleEnglish": "If you don't hurry, you'll miss the boat.",
+    "exampleBangla": "তুমি যদি তাড়াহুড়ো না কর, তাহলে সুযোগ হারাবে।",
+    "pronunciationBangla": "ইফ ইউ ডোন’ট হরি, ইউ’ল মিস দ্য বোট."
+  },
+  {
+    "id": 46,
+    "idiom": "No pain, no gain",
+    "banglaMeaning": "কষ্ট না করলে লাভ নেই",
+    "banglaPronunciation": "নো পেইন, নো গেইন",
+    "exampleEnglish": "Remember, no pain, no gain.",
+    "exampleBangla": "মনে রাখ, কষ্ট না করলে লাভ নেই।",
+    "pronunciationBangla": "রিমেম্বার, নো পেইন, নো গেইন."
+  },
+  {
+    "id": 47,
+    "idiom": "On thin ice",
+    "banglaMeaning": "ঝুঁকিপূর্ণ পরিস্থিতিতে",
+    "banglaPronunciation": "অন থিন আইস",
+    "exampleEnglish": "He’s on thin ice after arguing with the boss.",
+    "exampleBangla": "বসের সাথে তর্ক করার পর সে ঝুঁকিতে আছে।",
+    "pronunciationBangla": "হি’স অন থিন আইস আফটার আর্গুইং উইথ দ্য বস."
+  },
+  {
+    "id": 48,
+    "idiom": "Out of the blue",
+    "banglaMeaning": "হঠাৎ করে",
+    "banglaPronunciation": "আউট অফ দ্য ব্লু",
+    "exampleEnglish": "Out of the blue, she decided to visit us.",
+    "exampleBangla": "হঠাৎ করেই সে আমাদের দেখতে আসার সিদ্ধান্ত নিল।",
+    "pronunciationBangla": "আউট অফ দ্য ব্লু, শি ডিসাইডেড টু ভিজিট আস."
+  },
+  {
+    "id": 49,
+    "idiom": "Play it by ear",
+    "banglaMeaning": "পরিস্থিতি অনুযায়ী কাজ করা",
+    "banglaPronunciation": "প্লে ইট বাই ইয়ার",
+    "exampleEnglish": "We don’t have a plan—let’s play it by ear.",
+    "exampleBangla": "আমাদের কোনো পরিকল্পনা নেই—পরিস্থিতি অনুযায়ী চল।",
+    "pronunciationBangla": "উই ডোন’ট হ্যাভ আ প্ল্যান—লেট’স প্লে ইট বাই ইয়ার."
+  },
+  {
+    "id": 50,
+    "idiom": "Put all your eggs in one basket",
+    "banglaMeaning": "সবকিছু এক ঝুড়িতে রাখা",
+    "banglaPronunciation": "পুট অল ইয়োর এগস ইন ওয়ান ব্যাস্কেট",
+    "exampleEnglish": "Don’t put all your eggs in one basket when investing.",
+    "exampleBangla": "বিনিয়োগ করার সময় সবকিছু এক ঝুড়িতে রাখো না।",
+    "pronunciationBangla": "ডোন’ট পুট অল ইয়োর এগস ইন ওয়ান ব্যাস্কেট হোয়েন ইনভেস্টিং."
+  }
+]

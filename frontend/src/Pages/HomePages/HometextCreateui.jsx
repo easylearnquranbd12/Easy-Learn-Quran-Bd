@@ -30,7 +30,7 @@ const HometextCreateui = () => {
       <Helmet>
         <title>Nasmatics | Home</title>
       </Helmet>
-      <div className="flex items-center justify-center mt-10 max-w-[1400px] mx-auto min-h-[60vh] ">
+      <div className="flex items-center justify-center mt-10 max-w-[1400px] mx-auto min-h-[50vh] ">
         <div className="w-full">
           <div className="flex items-center flex-col-reverse lg:flex-row gap-6">
             {/* Text Section */}
@@ -57,7 +57,7 @@ const HometextCreateui = () => {
 
               <Link
                 to="/courses"
-                className="btn bg-bgButton text-white px-6 py-4 rounded-md text-base hover:bg-inherit hover:text-hoverTextPrimary transition-colors duration-300"
+                className="btn bg-bgButton text-white px-6 py-4 mb-12 rounded-md text-base hover:bg-inherit hover:text-hoverTextPrimary transition-colors duration-300"
               >
                 JOIN QUIZ
               </Link>
