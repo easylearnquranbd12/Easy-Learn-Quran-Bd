@@ -15,12 +15,12 @@ const getNavigationLinks = (user) => {
       title: "B.A. Shape Formats",
       subLinks: [
         { title: "1st Layer", link: "/b-a-shape-formats/1st-layer" },
-        { title: "2st Layer", link: "/b-a-shape-formats/2st-layer" },
-        { title: "3st Layer", link: "/b-a-shape-formats/3st-layer" },
-        { title: "4st Layer", link: "/b-a-shape-formats/4st-layer" },
-        { title: "5st Layer", link: "/b-a-shape-formats/5st-layer" },
-        { title: "6st Layer", link: "/b-a-shape-formats/6st-layer" },
-        { title: "7st Layer", link: "/b-a-shape-formats/7st-layer" },
+        { title: "2nd Layer", link: "/b-a-shape-formats/2nd-layer" },
+        { title: "3rd Layer", link: "/b-a-shape-formats/3rd-layer" },
+        { title: "4th Layer", link: "/b-a-shape-formats/4th-layer" },
+        { title: "5th Layer", link: "/b-a-shape-formats/5th-layer" },
+        { title: "6th Layer", link: "/b-a-shape-formats/6th-layer" },
+        { title: "7th Layer", link: "/b-a-shape-formats/7th-layer" },
       ],
     },
   ];

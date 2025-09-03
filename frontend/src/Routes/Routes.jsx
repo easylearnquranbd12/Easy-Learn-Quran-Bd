@@ -31,6 +31,9 @@ import ImageandText from "../Pages/AdminDashboardPages/AdminHomePagesEdit/Imagea
 import YouTubeVideoPlayer from "../Pages/AdminDashboardPages/AdminHomePagesEdit/YouTubeVideoPlayer";
 import AllUsers from "../Pages/AdminDashboardPages/AllUsers/AllUsers";
 import FirstLayer from "../Pages/B.A.ShapeFormats/FirstLayer/FirstLayer";
+import FourthLayer from "../Pages/B.A.ShapeFormats/FourthLayer/FourthLayer";
+import SecondLayer from "../Pages/B.A.ShapeFormats/SecondLayer/SecondLayer";
+import ThirdLayer from "../Pages/B.A.ShapeFormats/ThirdLayer/ThirdLayer";
 import Blog from "../Pages/BlogPages/Blog";
 import BlogDetails from "../Pages/BlogPages/BlogDetails";
 import CourseDetails from "../Pages/CoursePages/CourseDetails";
@@ -73,6 +76,18 @@ export const routes = createBrowserRouter([
       {
         path: "b-a-shape-formats/1st-layer",
         element: <FirstLayer />,
+      },
+      {
+        path: "b-a-shape-formats/2nd-layer",
+        element: <SecondLayer />,
+      },
+      {
+        path: "b-a-shape-formats/3rd-layer",
+        element: <ThirdLayer />,
+      },
+      {
+        path: "b-a-shape-formats/4th-layer",
+        element: <FourthLayer />,
       },
 
       // Course Routes

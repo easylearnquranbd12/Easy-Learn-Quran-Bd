@@ -1,5 +1,5 @@
 import HometextCreateui from "./HometextCreateui";
-import TestimonialsSection from "./TestimonialsSection";
+import Promotion from "./Promotion";
 import Trustedme from "./Trustedme";
 
 const Home = () => {
@@ -7,7 +7,7 @@ const Home = () => {
     <div>
       <HometextCreateui />
       <Trustedme />
-      <TestimonialsSection />
+      <Promotion />
     </div>
   );
 };

@@ -11,7 +11,7 @@ const TittleAnimation = ({ tittle, subtittle }) => {
   };
 
   return (
-    <div className="mb-2 md:mb-7 lg:mb-10 max-w-7xl mx-auto">
+    <div className="mb-2 md:mb-7 lg:mb-10 max-w-xl mx-auto">
       {/* Title */}
       <motion.h1
         className="text-2xl md:text-3xl font-bold text-center text-[#3B6B53]"
