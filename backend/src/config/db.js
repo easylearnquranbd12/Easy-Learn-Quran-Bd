@@ -20,29 +20,18 @@ const connectDB = async () => {
 const getUserCollection = () => {
   return client.db("Learning-Quiz-Platfrom").collection("users");
 };
-const getCourseCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("courses");
-};
-const getEnrollmentCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("enrollments");
-};
 const getBlogsCollection = () => {
   return client.db("Learning-Quiz-Platfrom").collection("blog");
 };
 const getBannersCollection = () => {
   return client.db("Learning-Quiz-Platfrom").collection("banner");
 };
-const getInstructorsCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("instructors");
-};
+
 const getAddPaymentMethodCollection = () => {
   return client.db("Learning-Quiz-Platfrom").collection("AddPaymentMethod");
 };
-const getNotesCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("Notes");
-}
-const getYouTubeCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("VideoCollection");
+const getPromotionCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("Promotions");
 };
 const getImageAndTextCollection = () => {
   return client.db("Learning-Quiz-Platfrom").collection("ImageAndText");
@@ -53,18 +42,15 @@ const getAuthorTextCollection = () => {
 const getSocialLinksCollection = () => {
   return client.db("Learning-Quiz-Platfrom").collection("SocialLinks");
 };
+
 module.exports = {
   connectDB,
   getUserCollection,
-  getCourseCollection,
-  getEnrollmentCollection,
   getBlogsCollection,
   getBannersCollection,
-  getInstructorsCollection,
   getAddPaymentMethodCollection,
-  getNotesCollection,
   getImageAndTextCollection,
-  getYouTubeCollection,
   getAuthorTextCollection,
-  getSocialLinksCollection
+  getSocialLinksCollection,
+  getPromotionCollection,
 };

@@ -6,6 +6,7 @@ const {
   updateUserProfile,
   getUserByEmail,
   deleteUser,
+  updateUserRole,
 } = require("../Controllers/userController");
 const router = express.Router();
 
@@ -15,4 +16,6 @@ router.get("/role/:email", getUserRole);
 router.delete("/delete/:id", deleteUser);
 router.patch("/update/:email", updateUserProfile);
 router.get("/:email", getUserByEmail);
+router.patch("/role/:id", updateUserRole);
+
 module.exports = router;

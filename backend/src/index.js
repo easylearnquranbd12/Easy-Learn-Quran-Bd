@@ -9,18 +9,12 @@ const { connectDB } = require("./config/db");
 const authRouter = require("./routes/authRoutes");
 const userRouter = require("./routes/userRoutes");
 const blogRouter = require("./routes/blogRoutes");
-const courseRouter = require("./routes/courseRoutes");
-const userDashboardRouter = require("./routes/userDashboardRoutes");
-const enrollMentRoute = require("./routes/enrollmentRoute");
-const instructorsRoute = require("./routes/instructorsRoute");
 const bannerRouter = require("./routes/bannerRoutes");
-const dashboardRouter = require("./routes/dashboardRoute");
 const paymentMethodRouter = require("./routes/paymentMethodRoutes");
-const notesRouter = require("./routes/userNotesRoutes");
 const imageandTextRouter = require("./routes/authorRoutes");
-const youtubeVideoRouter = require("./routes/youtubeVideoRoutes");
 const authorRoute = require("./routes/authorRoutes");
 const socialLinksRouter = require("./routes/socialLinksRoutes");
+const promotionRoutes = require("./routes/promotionRoutes");
 // Load environment variables from .env file
 dotenv.config();
 
@@ -55,20 +49,13 @@ connectDB().catch((err) => console.error("MongoDB connection error:", err));
 // Routes
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
-app.use("/api/user", userDashboardRouter);
-app.use("/courses", courseRouter);
 app.use("/blog", blogRouter);
-app.use("/api", enrollMentRoute);
 app.use("/banner", bannerRouter);
-app.use("/instructors", instructorsRoute);
-app.use("/api/dashboard", dashboardRouter);
 app.use("/paymentMethod", paymentMethodRouter);
-app.use("/api/user", notesRouter);
-app.use("/media", youtubeVideoRouter);
-app.use("/upload-media", youtubeVideoRouter);
 app.use("/imageandtext", imageandTextRouter);
 app.use("/authorInfo", authorRoute);
 app.use("/api/admin/social-links", socialLinksRouter);
+app.use("/api/promotions", promotionRoutes);
 // Root route
 app.get("/", (req, res) => {
   res.send("Learning Quiz Platfrom Server Running");

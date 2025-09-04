@@ -202,6 +202,53 @@ const getUserByEmail = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+// Update user role (Admin/Moderator/User)
+const updateUserRole = async (req, res) => {
+  const { id } = req.params; // user id
+  const { role } = req.body; // new role: "admin" | "moderator" | "user"
+
+  try {
+    // check if role is valid
+    const validRoles = ["admin", "moderator", "user"];
+    if (!validRoles.includes(role)) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid role provided" });
+    }
+
+    // check if user exists
+    const user = await userCollection.findOne({ _id: new ObjectId(id) });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    // update role
+    const result = await userCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { role, lastActive: Date.now() } }
+    );
+
+    if (result.modifiedCount > 0) {
+      res.json({
+        success: true,
+        message: `User role updated to ${role}`,
+      });
+    } else {
+      res.json({
+        success: false,
+        message: "Role update failed",
+      });
+    }
+  } catch (error) {
+    console.error("Error updating user role:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
 
 module.exports = {
   registerUser,
@@ -211,4 +258,5 @@ module.exports = {
   getUserByEmail,
   updateUserProfile,
   deleteUser,
+  updateUserRole
 };

@@ -3,14 +3,6 @@ import ChangePassword from "../Authentication/ChangePassword";
 import ForgotPassword from "../Authentication/ForgotPassword";
 import Login from "../Authentication/Login";
 import Register from "../Authentication/Register";
-import AddContentPage from "../components/Admin/ManageCourse/Pages/AddContentPage";
-import AddCoursePage from "../components/Admin/ManageCourse/Pages/AddCoursePage";
-import CourseDetailsPage from "../components/Admin/ManageCourse/Pages/CourseDetailsPage";
-import CourseListPage from "../components/Admin/ManageCourse/Pages/CourseListPage";
-import EditCoursePage from "../components/Admin/ManageCourse/Pages/EditCoursePage";
-import EnrollmentManagementPage from "../components/Admin/ManageCourse/Pages/enrollment-management-page";
-import ManageContentResourcesPage from "../components/Admin/ManageCourse/Pages/ManageContentResourcesPage";
-import SelectCourseForResourcesPage from "../components/Admin/ManageCourse/Pages/SelectCourseForResourcesPage";
 import ErrorPage from "../ErrorPage/ErrorPage";
 import AdminLayout from "../layout/AdminLayout";
 import MainLayout from "../layout/MainLayout";
@@ -29,6 +21,8 @@ import FooterFacebookLink from "../Pages/AdminDashboardPages/AdminHomePagesEdit/
 import HometextCreate from "../Pages/AdminDashboardPages/AdminHomePagesEdit/HometextCreate";
 import ImageandText from "../Pages/AdminDashboardPages/AdminHomePagesEdit/ImageandText";
 import YouTubeVideoPlayer from "../Pages/AdminDashboardPages/AdminHomePagesEdit/YouTubeVideoPlayer";
+import AdminPromotion from "../Pages/AdminDashboardPages/AdminPromotionPages/AdminPromotion/AdminPromotion";
+import AdminPromotionHistory from "../Pages/AdminDashboardPages/AdminPromotionPages/AdminPromotionHistory/AdminPromotionHistory";
 import AllUsers from "../Pages/AdminDashboardPages/AllUsers/AllUsers";
 import FirstLayer from "../Pages/B.A.ShapeFormats/FirstLayer/FirstLayer";
 import FourthLayer from "../Pages/B.A.ShapeFormats/FourthLayer/FourthLayer";
@@ -36,10 +30,7 @@ import SecondLayer from "../Pages/B.A.ShapeFormats/SecondLayer/SecondLayer";
 import ThirdLayer from "../Pages/B.A.ShapeFormats/ThirdLayer/ThirdLayer";
 import Blog from "../Pages/BlogPages/Blog";
 import BlogDetails from "../Pages/BlogPages/BlogDetails";
-import CourseDetails from "../Pages/CoursePages/CourseDetails";
-import Course from "../Pages/CoursePages/Courses";
 import EnrollCourse from "../Pages/CoursePages/EnrollCourse";
-import PaymentConfirmed from "../Pages/CoursePages/PaymentConfirmed";
 import DashboardRedirect from "../Pages/DashboardRedirect";
 import Contact from "../Pages/FooterPages/Contact";
 import PrivacyPolicy from "../Pages/FooterPages/PrivacyPolicy";
@@ -47,14 +38,8 @@ import RefundPolicy from "../Pages/FooterPages/RefundPolicy";
 import TermsAndConditions from "../Pages/FooterPages/TermsAndConditions";
 import Home from "../Pages/HomePages/Home";
 import Profile from "../Pages/ProfilePages/Profile";
-import Achievements from "../Pages/UserDashboard/Achievements";
-import ContinueLearning from "../Pages/UserDashboard/ContinueLearning";
-import CoursePlayer from "../Pages/UserDashboard/CoursePlayer";
-import Favorites from "../Pages/UserDashboard/Favorites";
-import MyCourses from "../Pages/UserDashboard/MyCourses";
-import UserCourse from "../Pages/UserDashboard/UserCourse";
-import UserDashboard from "../Pages/UserDashboard/UserDashboard";
 import AdminRoute from "./AdminRoute";
+import PaymentRoute from "./PaymentRoute";
 import PrivateRoute from "./PrivateRoute";
 import UserRoute from "./UserRouter";
 
@@ -75,43 +60,35 @@ export const routes = createBrowserRouter([
 
       {
         path: "b-a-shape-formats/1st-layer",
-        element: <FirstLayer />,
-      },
-      {
-        path: "b-a-shape-formats/2nd-layer",
-        element: <SecondLayer />,
-      },
-      {
-        path: "b-a-shape-formats/3rd-layer",
-        element: <ThirdLayer />,
-      },
-      {
-        path: "b-a-shape-formats/4th-layer",
-        element: <FourthLayer />,
-      },
-
-      // Course Routes
-      {
-        path: "/courses",
-        element: <Course />,
-      },
-      {
-        path: "/course-details/:courseId",
-        element: <CourseDetails />,
-      },
-      {
-        path: "/enroll-course/:courseId",
         element: (
           <PrivateRoute>
-            <EnrollCourse />
+            <PaymentRoute>
+              <FirstLayer />
+            </PaymentRoute>
           </PrivateRoute>
         ),
       },
       {
-        path: "/payment-confirmed/:courseId",
+        path: "b-a-shape-formats/2nd-layer",
         element: (
           <PrivateRoute>
-            <PaymentConfirmed />
+            <SecondLayer />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "b-a-shape-formats/3rd-layer",
+        element: (
+          <PrivateRoute>
+            <ThirdLayer />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "b-a-shape-formats/4th-layer",
+        element: (
+          <PrivateRoute>
+            <FourthLayer />
           </PrivateRoute>
         ),
       },
@@ -177,38 +154,20 @@ export const routes = createBrowserRouter([
         path: "manage-users/all-users",
         element: <AllUsers />,
       },
-      {
-        path: "courses/list",
-        element: <CourseListPage />,
-      },
-      {
-        path: "courses/add",
-        element: <AddCoursePage />,
-      },
+
       {
         path: "add-payment-method",
         element: <AddPaymentMethod />,
       },
       {
-        path: "courses/edit/:courseId",
-        element: <EditCoursePage />,
+        path: "create-a-new-promotion",
+        element: <AdminPromotion />,
       },
       {
-        path: "courses/details/:courseId",
-        element: <CourseDetailsPage />,
+        path: "promotion-history",
+        element: <AdminPromotionHistory />,
       },
-      {
-        path: "content/add",
-        element: <AddContentPage />,
-      },
-      {
-        path: "content/resources/:courseId",
-        element: <ManageContentResourcesPage />,
-      },
-      {
-        path: "content/resources",
-        element: <SelectCourseForResourcesPage />,
-      },
+     
       // Admin Blog Routes
       {
         path: "create-a-new-blog",
@@ -226,10 +185,7 @@ export const routes = createBrowserRouter([
         path: "admin-blog-history/edit/:id",
         element: <AdminEditBlog />,
       },
-      {
-        path: "enrollments",
-        element: <EnrollmentManagementPage />,
-      },
+     
       // Home Pages text banner and instructor Profile Update
       {
         path: "create-a-home-text",
@@ -284,28 +240,8 @@ export const routes = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <UserDashboard />,
+        element: <h1>User Dashboard</h1>,
       },
-      {
-        path: "my-courses",
-        element: <MyCourses />,
-      },
-      {
-        path: "favorites",
-        element: <Favorites />,
-      },
-      {
-        path: "achievements",
-        element: <Achievements />,
-      },
-      {
-        path: "course-outline",
-        element: <UserCourse />,
-      },
-      // {
-      //   path: "overviewPage",
-      //   element: <OverviewPage />,
-      // },
       {
         path: "my-profile",
         element: <Profile />,
@@ -325,19 +261,7 @@ export const routes = createBrowserRouter([
     ),
   },
   {
-    path: "/learn/:id",
-    element: (
-      <PrivateRoute>
-        <ContinueLearning />
-      </PrivateRoute>
-    ),
-  },
-  {
-    path: "/course-player/:courseId",
-    element: (
-      <PrivateRoute>
-        <CoursePlayer />
-      </PrivateRoute>
-    ),
+    path: "/payment-confirmed",
+    element: <EnrollCourse />,
   },
 ]);

@@ -44,6 +44,7 @@ const AllUsers = () => {
     fetchUsers();
   }, [page, limit]);
 
+  // 🔹 Handle Delete
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -69,6 +70,32 @@ const AllUsers = () => {
     });
   };
 
+  // 🔹 Handle Role Change
+  const handleRoleChange = (id, newRole) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: `Change role to ${newRole}?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, change it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure
+          .patch(`/users/role/${id}`, { role: newRole })
+          .then(() => {
+            Swal.fire("Updated!", `User role changed to ${newRole}`, "success");
+            fetchUsers();
+          })
+          .catch((error) => {
+            Swal.fire("Error!", "Failed to update role.", "error");
+            console.error(error);
+          });
+      }
+    });
+  };
+
   return (
     <div>
       <Helmet>
@@ -78,8 +105,8 @@ const AllUsers = () => {
         {/* History Table Section */}
         <div className="bg-white p-6 rounded-xl shadow-md border border-indigo-200">
           <h3 className="text-xl font-semibold mb-4 text-indigo-600">
-          All Users
-        </h3>
+            All Users
+          </h3>
 
           <div className="flex items-center gap-4 mb-6">
             <label className="text-sm font-medium text-gray-700">
@@ -118,9 +145,22 @@ const AllUsers = () => {
                     </td>
                     <td className="px-4 py-2 border">{user.name}</td>
                     <td className="px-4 py-2 border">{user.email}</td>
+
+                    {/* 🔹 Role Dropdown */}
                     <td className="px-4 py-2 border capitalize">
-                      {user.role || "user"}
+                      <select
+                        value={user.role || "user"}
+                        onChange={(e) =>
+                          handleRoleChange(user._id, e.target.value)
+                        }
+                        className="border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-200"
+                      >
+                        <option value="user">User</option>
+                        {/* <option value="moderator">Moderator</option> */}
+                        <option value="admin">Admin</option>
+                      </select>
                     </td>
+
                     <td className="px-4 py-2 border text-center space-x-2">
                       {user.role !== "admin" && (
                         <button
@@ -197,172 +237,3 @@ const AllUsers = () => {
 };
 
 export default AllUsers;
-
-// import { Trash2 } from "lucide-react";
-// import { useEffect, useState } from "react";
-// import Swal from "sweetalert2";
-// import useAxiosSecure from "../../../hooks/useAxiosSecure";
-
-// const getSmartPaginationButtons = (totalPages, currentPage) => {
-//   const buttons = [];
-
-//   if (totalPages <= 5) {
-//     for (let i = 1; i <= totalPages; i++) buttons.push(i);
-//     return buttons;
-//   }
-
-//   if (currentPage <= 3) {
-//     buttons.push(1, 2, 3, "...", totalPages);
-//   } else if (currentPage >= totalPages - 2) {
-//     buttons.push(1, "...", totalPages - 2, totalPages - 1, totalPages);
-//   } else {
-//     buttons.push(1, "...", currentPage, "...", totalPages);
-//   }
-
-//   return buttons;
-// };
-
-// const AllUsers = () => {
-//   const [users, setUsers] = useState([]);
-//   const [page, setPage] = useState(1);
-//   const [limit, setLimit] = useState(10);
-//   const [totalPages, setTotalPages] = useState(0);
-//   const axiosSecure = useAxiosSecure();
-
-//   const fetchUsers = () => {
-//     axiosSecure
-//       .get(`/users/all?page=${page}&limit=${limit}`)
-//       .then((res) => {
-//         setUsers(res.data.users);
-//         setTotalPages(res.data.pages);
-//       })
-//       .catch((err) => console.error("Failed to fetch users:", err));
-//   };
-
-//   useEffect(() => {
-//     fetchUsers();
-//   }, [page, limit]);
-
-//   const handleDelete = (id) => {
-//     Swal.fire({
-//       title: "Are you sure?",
-//       text: "You want to delete this user?",
-//       icon: "warning",
-//       showCancelButton: true,
-//       confirmButtonColor: "#d33",
-//       cancelButtonColor: "#3085d6",
-//       confirmButtonText: "Yes, delete it!",
-//     }).then((result) => {
-//       if (result.isConfirmed) {
-//         axiosSecure
-//           .delete(`/users/delete/${id}`)
-//           .then(() => {
-//             Swal.fire("Deleted!", "User has been deleted.", "success");
-//             fetchUsers();
-//           })
-//           .catch((error) => {
-//             Swal.fire("Error!", "Failed to delete user.", "error");
-//             console.error(error);
-//           });
-//       }
-//     });
-//   };
-
-//   return (
-//     <div className="p-3 md:p-5 w-full border border-indigo-500 rounded-md max-w-7xl mx-auto">
-//       <h2 className="text-2xl font-bold mb-4">All Users</h2>
-
-//       <div className="flex items-center gap-4 mb-4">
-//         <label>Show per page:</label>
-//         <select
-//           value={limit}
-//           onChange={(e) => {
-//             setPage(1);
-//             setLimit(parseInt(e.target.value));
-//           }}
-//           className="select select-bordered"
-//         >
-//           <option value="10">10</option>
-//           <option value="50">50</option>
-//           <option value="100">100</option>
-//         </select>
-//       </div>
-
-//       <div className="overflow-x-auto">
-//         <table className="table table-zebra w-full">
-//           <thead className="bg-indigo-700 text-white rounded-2xl mb-4">
-//             <tr>
-//               <th>#</th>
-//               <th>Name</th>
-//               <th>Email</th>
-//               <th>Role</th>
-//               <th>Action</th>
-//             </tr>
-//           </thead>
-//           <tbody>
-//             {users.map((user, index) => (
-//               <tr key={user._id}>
-//                 <th>{(page - 1) * limit + index + 1}</th>
-//                 <td className="text-sm font-semibold ">{user.name}</td>
-//                 <td className="text-sm font-semibold">{user.email}</td>
-//                 <td className="capitalize font-semibold">
-//                   {user.role || "user"}
-//                 </td>
-//                 <td>
-//                   {user.role !== "admin" && (
-//                     <button
-//                       onClick={() => handleDelete(user._id)}
-//                       className="text-red-500 hover:text-red-700"
-//                     >
-//                       <Trash2 size={20} />
-//                     </button>
-//                   )}
-//                 </td>
-//               </tr>
-//             ))}
-//           </tbody>
-//         </table>
-//       </div>
-
-//       <div className="mt-6 flex flex-wrap gap-3  justify-center items-center">
-//         <button
-//           className="btn btn-sm btn-outline"
-//           disabled={page === 1}
-//           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-//         >
-//           « Prev
-//         </button>
-
-//         {/* Dynamic Smart Buttons */}
-//         {getSmartPaginationButtons(totalPages, page).map((btn, idx) =>
-//           btn === "..." ? (
-//             <span key={idx} className="btn btn-sm btn-disabled">
-//               ...
-//             </span>
-//           ) : (
-//             <button
-//               key={idx}
-//               onClick={() => setPage(btn)}
-//               className={`btn btn-sm ${
-//                 btn === page ? "btn-primary" : "btn-outline"
-//               }`}
-//             >
-//               {btn}
-//             </button>
-//           )
-//         )}
-
-//         {/* Next Button */}
-//         <button
-//           className="btn btn-sm btn-outline"
-//           disabled={page === totalPages}
-//           onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-//         >
-//           Next »
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AllUsers;

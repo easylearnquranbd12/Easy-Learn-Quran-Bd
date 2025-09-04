@@ -1,16 +1,16 @@
 "use client";
 
 import {
-    BookOpen,
-    CheckCircle,
-    Clock,
-    CreditCard,
-    Download,
-    Home,
-    PlayCircle,
-    Share2,
-    Star,
-    Users,
+  BookOpen,
+  CheckCircle,
+  Clock,
+  CreditCard,
+  Download,
+  Home,
+  PlayCircle,
+  Share2,
+  Star,
+  Users,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -42,9 +42,9 @@ const PaymentConfirmed = () => {
     }
 
     // If no data, redirect to courses
-    if (!selectedCourse || !lastTransaction) {
-      navigate("/courses");
-    }
+    // if (!selectedCourse || !lastTransaction) {
+    //   navigate("/courses");
+    // }
   };
 
   // const startCountdown = () => {

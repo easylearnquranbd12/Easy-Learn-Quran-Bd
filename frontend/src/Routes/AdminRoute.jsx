@@ -5,7 +5,7 @@ import useRole from "../hooks/useRole";
 const AdminRoute = ({ children }) => {
   const { role, isLoading, error } = useRole();
 
-  if (isLoading) return <CustomLoading/>;
+  if (isLoading) return <CustomLoading />;
 
   if (role === "admin") return children;
 
@@ -13,5 +13,3 @@ const AdminRoute = ({ children }) => {
 };
 
 export default AdminRoute;
-
-

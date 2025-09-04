@@ -1,11 +1,12 @@
+import HomePageLeftSide from "../PromotionPages/HomePageLeftSide";
+import HomePageRightSide from "../PromotionPages/HomePageRightSide";
+
 const Promotion = () => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[200px_minmax(500px,_1fr)_200px] gap-6 max-w-[1400px] mx-auto py-12">
       {/* Left Section (ছোট width + height) */}
       <div className="bg-green-100 rounded-xl p-4 flex items-center justify-center min-h-[180px]">
-        <p className="text-center text-gray-700 font-medium text-sm">
-          🚀 Left Side Promotion
-        </p>
+        <HomePageLeftSide />
       </div>
 
       {/* Middle Section (বড় width + height) */}
@@ -20,9 +21,7 @@ const Promotion = () => {
 
       {/* Right Section (ছোট width + height) */}
       <div className="bg-green-100 rounded-xl p-4 flex items-center justify-center min-h-[180px]">
-        <p className="text-center text-gray-700 font-medium text-sm">
-          🎯 Right Side Promotion
-        </p>
+        <HomePageRightSide />
       </div>
     </div>
   );
