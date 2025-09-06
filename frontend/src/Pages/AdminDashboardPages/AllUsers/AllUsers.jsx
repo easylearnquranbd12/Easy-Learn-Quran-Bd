@@ -156,7 +156,7 @@ const AllUsers = () => {
                         className="border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-200"
                       >
                         <option value="user">User</option>
-                        {/* <option value="moderator">Moderator</option> */}
+                        <option value="moderator">Moderator</option>
                         <option value="admin">Admin</option>
                       </select>
                     </td>

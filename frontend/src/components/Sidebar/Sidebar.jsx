@@ -113,6 +113,128 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
       </li>
     );
   };
+  const moderatorMenuItems = [
+    {
+      path: "/moderator-dashboard",
+      icon: MdDashboard,
+      label: "Dashboard",
+      description: "Overview & Analytics",
+      color: "text-blue-600",
+    },
+    {
+      path: "/moderator-dashboard/enrollments",
+      icon: FaUserGraduate,
+      label: "Payment Management",
+      description: "Pending Rejects payments",
+      color: "text-cyan-600",
+    },
+    {
+      path: "/moderator-dashboard/add-payment-method",
+      icon: MdPayment,
+      label: "Add Payment Methods",
+      description: "Payment Processing",
+      color: "text-yellow-600",
+    },
+
+    {
+      path: "/moderator-dashboard/promotion",
+      icon: HiOutlineDocumentText,
+      label: "Promotion",
+      description: "Any Site Promotion",
+      color: "text-indigo-600",
+      subItems: [
+        {
+          path: "/moderator-dashboard/create-a-new-promotion",
+          icon: BiEdit,
+          label: "Create Promotion",
+          description: "Create New Promotion",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/moderator-dashboard/promotion-history",
+          icon: MdPayment,
+          label: "Promotion History",
+          description: "Promotion History",
+          color: "text-indigo-600",
+        },
+      ],
+    },
+
+    {
+      path: "/moderator-dashboard/blog",
+      icon: HiOutlineDocumentText,
+      label: "Blog",
+      description: "Post Of Blog",
+      color: "text-indigo-600",
+      subItems: [
+        {
+          path: "/moderator-dashboard/create-a-new-blog",
+          icon: BiEdit,
+          label: "Create Blog",
+          description: "Create New Blog",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/moderator-dashboard/admin-blog-history",
+          icon: MdPayment,
+          label: "Blog History",
+          description: "Blog History",
+          color: "text-indigo-600",
+        },
+      ],
+    },
+    {
+      path: "/moderator-dashboard/home-pages-control",
+      icon: FaHome,
+      label: "Home Pages Control",
+      description: "Home Pages Edit",
+      color: "text-indigo-600",
+      subItems: [
+        {
+          path: "/moderator-dashboard/create-a-home-text",
+          icon: BiEdit,
+          label: "Text & Banner",
+          description: "Text & Banner Create",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/moderator-dashboard/instructor-profile-update",
+          icon: MdPayment,
+          label: "instructor Profile",
+          description: "instructor Profile Update",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/moderator-dashboard/video-player-and-image",
+          icon: MdPayment,
+          label: "Add video Player ",
+          description: "Video Player Create",
+          color: "text-indigo-400",
+        },
+        {
+          path: "/moderator-dashboard/change-banner-image-and-text",
+          icon: MdPayment,
+          label: "Image & Text Update",
+          description: "Image & Text Update",
+          color: "text-indigo-400",
+        },
+        {
+          path: "/moderator-dashboard/section-text-address-description",
+          icon: MdPayment,
+          label: "Add Section Text",
+          description: "Section Text Create",
+          color: "text-indigo-400",
+        },
+        {
+          path: "/moderator-dashboard/footer-facebook-url-change",
+          icon: MdPayment,
+          label: "Footer Facebook URL",
+          description: "Footer Facebook URL Change",
+          color: "text-indigo-400",
+        },
+      ],
+    },
+  ];
 
   const adminMenuItems = [
     {
@@ -146,8 +268,7 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
       color: "text-yellow-600",
     },
 
-
- {
+    {
       path: "/admin-dashboard/promotion",
       icon: HiOutlineDocumentText,
       label: "Promotion",
@@ -170,7 +291,6 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
         },
       ],
     },
-
 
     {
       path: "/admin-dashboard/blog",
@@ -285,6 +405,8 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
                   to={
                     role === "admin"
                       ? "/admin-dashboard/my-profile"
+                      : role === "moderator"
+                      ? "/moderator-dashboard/my-profile"
                       : "/user-dashboard/my-profile"
                   }
                 >
@@ -302,7 +424,11 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
               </div>
               <div>
                 <h1 className="text-gray-900 font-bold text-lg leading-tight">
-                  {role === "admin" ? "Control Panel" : "Learning Panel"}
+                  {role === "admin"
+                    ? "Control Panel"
+                    : role === "moderator"
+                    ? "Moderator Panel"
+                    : "Learning Panel"}
                 </h1>
                 <p className="text-gray-600 text-xs font-medium">
                   {user.displayName}
@@ -330,6 +456,25 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
               </div>
               <ul className="space-y-2">
                 {adminMenuItems.map((item) => (
+                  <MenuItem
+                    key={item.path}
+                    item={item}
+                    onClick={handleMenuClick}
+                  />
+                ))}
+              </ul>
+            </div>
+          ) : role === "moderator" ? (
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <FaChartLine className="w-4 h-4 text-blue-600" />
+                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider">
+                  Moderator Panel
+                </h3>
+                <div className="flex-1 h-px bg-gradient-to-r from-gray-300 to-transparent"></div>
+              </div>
+              <ul className="space-y-2">
+                {moderatorMenuItems.map((item) => (
                   <MenuItem
                     key={item.path}
                     item={item}
@@ -397,13 +542,22 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
                       path:
                         role === "admin"
                           ? "/admin-dashboard/my-profile"
+                          : role === "moderator"
+                          ? "/moderator-dashboard/my-profile"
                           : "/user-dashboard/my-profile",
                       icon: CgProfile,
-                      label: role === "admin" ? "Admin Profile" : "My Profile",
+                      label:
+                        role === "admin"
+                          ? "Admin Profile"
+                          : role === "moderator"
+                          ? "Moderator Profile"
+                          : "My Profile",
                       description: "Personal Settings",
                       color:
                         role === "admin"
                           ? "text-yellow-600"
+                          : role === "moderator"
+                          ? "text-green-600"
                           : "text-purple-600",
                     }}
                     onClick={handleMenuClick}
@@ -413,6 +567,8 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
                       path:
                         role === "admin"
                           ? "/admin-dashboard/change-password"
+                          : role === "moderator"
+                          ? "/moderator-dashboard/change-password"
                           : "/user-dashboard/change-password",
                       icon: FaKey,
                       label: "Change Password",
@@ -420,6 +576,8 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
                       color:
                         role === "admin"
                           ? "text-yellow-600"
+                          : role === "moderator"
+                          ? "text-green-600"
                           : "text-purple-600",
                     }}
                     onClick={handleMenuClick}

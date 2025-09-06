@@ -16,6 +16,7 @@ import AdminBlogHistoryDetails from "../Pages/AdminDashboardPages/AdminBlogsPage
 import AdminEditBlog from "../Pages/AdminDashboardPages/AdminBlogsPages/AdminEditBlog";
 import InstructorProfile from "../Pages/AdminDashboardPages/AdminHomePagesEdit/InstructorProfile";
 // import Textandbanner from "../Pages/AdminDashboardPages/AdminHomePagesEdit/Textandbanner";
+import ModeratorLayout from "../layout/ModeratorLayout";
 import AdminTestimonialsSection from "../Pages/AdminDashboardPages/AdminHomePagesEdit/AdminTestimonialsSection";
 import FooterFacebookLink from "../Pages/AdminDashboardPages/AdminHomePagesEdit/FooterFacebookLink";
 import HometextCreate from "../Pages/AdminDashboardPages/AdminHomePagesEdit/HometextCreate";
@@ -39,7 +40,7 @@ import TermsAndConditions from "../Pages/FooterPages/TermsAndConditions";
 import Home from "../Pages/HomePages/Home";
 import Profile from "../Pages/ProfilePages/Profile";
 import AdminRoute from "./AdminRoute";
-import PaymentRoute from "./PaymentRoute";
+import ModeratorRoute from "./ModeratorRoute";
 import PrivateRoute from "./PrivateRoute";
 import UserRoute from "./UserRouter";
 
@@ -62,9 +63,9 @@ export const routes = createBrowserRouter([
         path: "b-a-shape-formats/1st-layer",
         element: (
           <PrivateRoute>
-            <PaymentRoute>
+            {/* <PaymentRoute> */}
               <FirstLayer />
-            </PaymentRoute>
+            {/* </PaymentRoute> */}
           </PrivateRoute>
         ),
       },
@@ -227,6 +228,103 @@ export const routes = createBrowserRouter([
       },
     ],
   },
+  // Moderator Dashboard
+  {
+    path: "moderator-dashboard",
+    element: (
+      <PrivateRoute>
+        <ModeratorRoute>
+          <ModeratorLayout />
+        </ModeratorRoute>
+      </PrivateRoute>
+    ),
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <h1>Moderator Dashboard</h1>
+      },
+      {
+        path: "manage-users/all-users",
+        element: <AllUsers />,
+      },
+
+      {
+        path: "add-payment-method",
+        element: <AddPaymentMethod />,
+      },
+      {
+        path: "create-a-new-promotion",
+        element: <AdminPromotion />,
+      },
+      {
+        path: "promotion-history",
+        element: <AdminPromotionHistory />,
+      },
+     
+      // Admin Blog Routes
+      {
+        path: "create-a-new-blog",
+        element: <AdminBlogCreate />,
+      },
+      {
+        path: "admin-blog-history",
+        element: <AdminBlogHistory />,
+      },
+      {
+        path: "admin-blog-history/:id",
+        element: <AdminBlogHistoryDetails />,
+      },
+      {
+        path: "admin-blog-history/edit/:id",
+        element: <AdminEditBlog />,
+      },
+     
+      // Home Pages text banner and instructor Profile Update
+      {
+        path: "create-a-home-text",
+        element: <HometextCreate />,
+      },
+      {
+        path: "video-player-and-image",
+        element: <YouTubeVideoPlayer />,
+      },
+      {
+        path: "change-banner-image-and-text",
+        element: <ImageandText />,
+      },
+      {
+        path: "section-text-address-description",
+        element: <AdminTestimonialsSection />,
+      },
+      {
+        path: "instructor-profile-update",
+        element: <InstructorProfile />,
+      },
+      {
+        path: "footer-facebook-url-change",
+        element: <FooterFacebookLink />,
+      },
+
+      {
+        path: "*",
+        element: <ErrorPage />,
+      },
+      // Admin Profile oo Password Change
+      {
+        path: "my-profile",
+        element: <Profile />,
+      },
+      {
+        path: "change-password",
+        element: <ChangePassword />,
+      },
+    ],
+  },
+
+
+
+  
   // User Dashboard
   {
     path: "user-dashboard",

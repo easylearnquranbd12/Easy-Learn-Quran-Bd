@@ -38,7 +38,7 @@ const getNavigationLinks = (user) => {
       ],
     },
     { title: "PDF Download", link: "/pdf-download" },
-    { title: "Others", link: "/others" },
+    { title: "Blog", link: "/blog-us" },
     {
       title: "Language",
       subLinks: [
