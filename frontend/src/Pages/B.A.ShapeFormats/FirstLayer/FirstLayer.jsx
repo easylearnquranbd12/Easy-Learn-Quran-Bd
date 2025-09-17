@@ -267,6 +267,7 @@
 
 import { useEffect, useState } from "react";
 import idiomsData from "../../../../idioms.json"; // ৫০টা ডেটা
+import GrammerSection from "./GrammerSection";
 
 const vocabulary = {
   Elegant: [
@@ -717,7 +718,7 @@ export default function FirstLayer() {
           </div>
         </div>
         {/* Grammer Section */}
-        <div className="card bg-white shadow-md rounded-2xl p-5 mt-10">
+        {/* <div className="card bg-white shadow-md rounded-2xl p-5 mt-10">
           <h3 className="text-xl font-semibold text-[#bb874a]">
             📖 Grammar Section
           </h3>
@@ -760,8 +761,8 @@ export default function FirstLayer() {
               </div>
             ))}
           </div>
-        </div>
-
+        {/* </div> */} 
+<GrammerSection/>
         {/* Elegant section */}
         <div className="card bg-white shadow-md rounded-2xl p-5 mt-10">
           <h3 className="text-xl font-semibold text-[#bb874a]">

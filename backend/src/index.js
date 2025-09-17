@@ -15,20 +15,13 @@ const imageandTextRouter = require("./routes/authorRoutes");
 const authorRoute = require("./routes/authorRoutes");
 const socialLinksRouter = require("./routes/socialLinksRoutes");
 const promotionRoutes = require("./routes/promotionRoutes");
-// Load environment variables from .env file
+const translateRoutes = require("./routes/translateRoutes");
 dotenv.config();
 
 // Create express app
 const app = express();
 const port = process.env.PORT || 9000;
 
-// middleware
-// app.use(
-//   cors({
-//     origin: true,       // allow any origin
-//     credentials: true,  // allow cookies/auth headers
-//   })
-// );
 
 app.use(
   cors({
@@ -56,6 +49,7 @@ app.use("/imageandtext", imageandTextRouter);
 app.use("/authorInfo", authorRoute);
 app.use("/api/admin/social-links", socialLinksRouter);
 app.use("/api/promotions", promotionRoutes);
+app.use("/api/translate", translateRoutes);
 // Root route
 app.get("/", (req, res) => {
   res.send("Learning Quiz Platfrom Server Running");
