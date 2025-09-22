@@ -147,6 +147,7 @@ const Navbar = () => {
               {item.subLinks ? (
                 <div className="flex items-center cursor-pointer">
                   <motion.span
+                    // data-translate={item.title} // 👈 Translation tag
                     whileHover={{ y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     className={`inline-block rounded-md text-xl font-semibold transition duration-200 cursor-pointer ${
@@ -166,6 +167,7 @@ const Navbar = () => {
               ) : (
                 <Link to={item.link}>
                   <motion.span
+                    // data-translate={item.title} // 👈 Translation tag
                     whileHover={{ y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     className={`inline-block rounded-md text-base md:text-lg font-semibold transition duration-200 ${
@@ -191,6 +193,7 @@ const Navbar = () => {
                   >
                     {item.subLinks.map((subItem) => (
                       <motion.div
+                      //  data-translate={subItem.title} // 👈 Translation tag
                         key={subItem.title}
                         variants={subMenuItemVariants}
                       >
@@ -202,7 +205,8 @@ const Navbar = () => {
                             {subItem.title}
                           </div>
                         ) : (
-                          <Link to={subItem.link}>
+                          <Link  to={subItem.link}>
+                            
                             <div className="block text-base font-medium px-4 py-2 hover:text-hoverTextPrimary hover:bg-gray-50">
                               {subItem.title}
                             </div>

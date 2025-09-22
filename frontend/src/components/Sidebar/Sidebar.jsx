@@ -253,6 +253,30 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
       color: "text-green-600",
     },
 
+     {
+      path: "/admin-dashboard/first-layer",
+      icon: HiOutlineDocumentText,
+      label: "First Layer",
+      description: "First Layer All Info",
+      color: "text-indigo-600",
+      subItems: [
+        {
+          path: "/admin-dashboard/create-sentence",
+          icon: BiEdit,
+          label: "Create Sentence",
+          description: "Create New Sentence",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/promotion-history",
+          icon: MdPayment,
+          label: "Promotion History",
+          description: "Promotion History",
+          color: "text-indigo-600",
+        },
+      ],
+    },
+
     {
       path: "/admin-dashboard/enrollments",
       icon: FaUserGraduate,

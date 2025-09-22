@@ -1,48 +1,473 @@
+// import { createBrowserRouter } from "react-router-dom";
+// import ChangePassword from "../Authentication/ChangePassword";
+// import ForgotPassword from "../Authentication/ForgotPassword";
+// import Login from "../Authentication/Login";
+// import Register from "../Authentication/Register";
+// import ErrorPage from "../ErrorPage/ErrorPage";
+// import AdminLayout from "../layout/AdminLayout";
+// import MainLayout from "../layout/MainLayout";
+// import UserLayout from "../layout/UserLayout";
+// import About from "../Pages/AboutPages/About";
+// import AddPaymentMethod from "../Pages/AddPaymentMethod/AddPaymentMethod";
+// import AdminDashboard from "../Pages/AdminDashboard/AdminDashboard";
+// import AdminBlogCreate from "../Pages/AdminDashboardPages/AdminBlogsPages/AdminBlogCreate";
+// import AdminBlogHistory from "../Pages/AdminDashboardPages/AdminBlogsPages/AdminBlogHistory";
+// import AdminBlogHistoryDetails from "../Pages/AdminDashboardPages/AdminBlogsPages/AdminBlogHistoryDetails";
+// import AdminEditBlog from "../Pages/AdminDashboardPages/AdminBlogsPages/AdminEditBlog";
+// import InstructorProfile from "../Pages/AdminDashboardPages/AdminHomePagesEdit/InstructorProfile";
+// // import Textandbanner from "../Pages/AdminDashboardPages/AdminHomePagesEdit/Textandbanner";
+// import ModeratorLayout from "../layout/ModeratorLayout";
+// import AdminTestimonialsSection from "../Pages/AdminDashboardPages/AdminHomePagesEdit/AdminTestimonialsSection";
+// import FooterFacebookLink from "../Pages/AdminDashboardPages/AdminHomePagesEdit/FooterFacebookLink";
+// import HometextCreate from "../Pages/AdminDashboardPages/AdminHomePagesEdit/HometextCreate";
+// import ImageandText from "../Pages/AdminDashboardPages/AdminHomePagesEdit/ImageandText";
+// import YouTubeVideoPlayer from "../Pages/AdminDashboardPages/AdminHomePagesEdit/YouTubeVideoPlayer";
+// import AdminPromotion from "../Pages/AdminDashboardPages/AdminPromotionPages/AdminPromotion/AdminPromotion";
+// import AdminPromotionHistory from "../Pages/AdminDashboardPages/AdminPromotionPages/AdminPromotionHistory/AdminPromotionHistory";
+// import AllUsers from "../Pages/AdminDashboardPages/AllUsers/AllUsers";
+// import FirstLayer from "../Pages/B.A.ShapeFormats/FirstLayer/FirstLayer";
+// import FourthLayer from "../Pages/B.A.ShapeFormats/FourthLayer/FourthLayer";
+// import SecondLayer from "../Pages/B.A.ShapeFormats/SecondLayer/SecondLayer";
+// import ThirdLayer from "../Pages/B.A.ShapeFormats/ThirdLayer/ThirdLayer";
+// import Blog from "../Pages/BlogPages/Blog";
+// import BlogDetails from "../Pages/BlogPages/BlogDetails";
+// import EnrollCourse from "../Pages/CoursePages/EnrollCourse";
+// import DashboardRedirect from "../Pages/DashboardRedirect";
+// import Contact from "../Pages/FooterPages/Contact";
+// import PrivacyPolicy from "../Pages/FooterPages/PrivacyPolicy";
+// import RefundPolicy from "../Pages/FooterPages/RefundPolicy";
+// import TermsAndConditions from "../Pages/FooterPages/TermsAndConditions";
+// import Home from "../Pages/HomePages/Home";
+// import Profile from "../Pages/ProfilePages/Profile";
+// import AdminRoute from "./AdminRoute";
+// import ModeratorRoute from "./ModeratorRoute";
+// import PrivateRoute from "./PrivateRoute";
+// import UserRoute from "./UserRouter";
+
+// export const routes = createBrowserRouter([
+//   {
+//     path: "/",
+//     element: <MainLayout />,
+//     errorElement: <ErrorPage />,
+//     children: [
+//       {
+//         path: "/",
+//         element: <Home />,
+//       },
+//       {
+//         path: "/about-us-more-information",
+//         element: <About />,
+//       },
+
+//       {
+//         path: "b-a-shape-formats/1st-layer",
+//         element: (
+//           <PrivateRoute>
+//             {/* <PaymentRoute> */}
+//               <FirstLayer />
+//             {/* </PaymentRoute> */}
+//           </PrivateRoute>
+//         ),
+//       },
+//       {
+//         path: "b-a-shape-formats/2nd-layer",
+//         element: (
+//           <PrivateRoute>
+//             <SecondLayer />
+//           </PrivateRoute>
+//         ),
+//       },
+//       {
+//         path: "b-a-shape-formats/3rd-layer",
+//         element: (
+//           <PrivateRoute>
+//             <ThirdLayer />
+//           </PrivateRoute>
+//         ),
+//       },
+//       {
+//         path: "b-a-shape-formats/4th-layer",
+//         element: (
+//           <PrivateRoute>
+//             <FourthLayer />
+//           </PrivateRoute>
+//         ),
+//       },
+
+//       // Blog
+//       {
+//         path: "/blog-us",
+//         element: <Blog />,
+//       },
+//       {
+//         path: "/blog-us/:id",
+//         element: <BlogDetails />,
+//       },
+//       // Authentication
+//       {
+//         path: "/register",
+//         element: <Register />,
+//       },
+//       {
+//         path: "/login",
+//         element: <Login />,
+//       },
+//       {
+//         path: "/forgot-password",
+//         element: <ForgotPassword />,
+//       },
+//       // footer
+//       {
+//         path: "/contact-us",
+//         element: <Contact />,
+//       },
+//       {
+//         path: "/privacy-policy",
+//         element: <PrivacyPolicy />,
+//       },
+//       {
+//         path: "/terms-and-conditions",
+//         element: <TermsAndConditions />,
+//       },
+//       {
+//         path: "/refund-policy",
+//         element: <RefundPolicy />,
+//       },
+//     ],
+//   },
+//   // Admin Dashboard
+//   {
+//     path: "admin-dashboard",
+//     element: (
+//       <PrivateRoute>
+//         <AdminRoute>
+//           <AdminLayout />
+//         </AdminRoute>
+//       </PrivateRoute>
+//     ),
+//     errorElement: <ErrorPage />,
+//     children: [
+//       {
+//         index: true,
+//         element: <AdminDashboard />,
+//       },
+//       {
+//         path: "manage-users/all-users",
+//         element: <AllUsers />,
+//       },
+
+//       {
+//         path: "add-payment-method",
+//         element: <AddPaymentMethod />,
+//       },
+//       {
+//         path: "create-a-new-promotion",
+//         element: <AdminPromotion />,
+//       },
+//       {
+//         path: "promotion-history",
+//         element: <AdminPromotionHistory />,
+//       },
+
+//       // Admin Blog Routes
+//       {
+//         path: "create-a-new-blog",
+//         element: <AdminBlogCreate />,
+//       },
+//       {
+//         path: "admin-blog-history",
+//         element: <AdminBlogHistory />,
+//       },
+//       {
+//         path: "admin-blog-history/:id",
+//         element: <AdminBlogHistoryDetails />,
+//       },
+//       {
+//         path: "admin-blog-history/edit/:id",
+//         element: <AdminEditBlog />,
+//       },
+
+//       // Home Pages text banner and instructor Profile Update
+//       {
+//         path: "create-a-home-text",
+//         element: <HometextCreate />,
+//       },
+//       {
+//         path: "video-player-and-image",
+//         element: <YouTubeVideoPlayer />,
+//       },
+//       {
+//         path: "change-banner-image-and-text",
+//         element: <ImageandText />,
+//       },
+//       {
+//         path: "section-text-address-description",
+//         element: <AdminTestimonialsSection />,
+//       },
+//       {
+//         path: "instructor-profile-update",
+//         element: <InstructorProfile />,
+//       },
+//       {
+//         path: "footer-facebook-url-change",
+//         element: <FooterFacebookLink />,
+//       },
+
+//       {
+//         path: "*",
+//         element: <ErrorPage />,
+//       },
+//       // Admin Profile oo Password Change
+//       {
+//         path: "my-profile",
+//         element: <Profile />,
+//       },
+//       {
+//         path: "change-password",
+//         element: <ChangePassword />,
+//       },
+//     ],
+//   },
+//   // Moderator Dashboard
+//   {
+//     path: "moderator-dashboard",
+//     element: (
+//       <PrivateRoute>
+//         <ModeratorRoute>
+//           <ModeratorLayout />
+//         </ModeratorRoute>
+//       </PrivateRoute>
+//     ),
+//     errorElement: <ErrorPage />,
+//     children: [
+//       {
+//         index: true,
+//         element: <h1>Moderator Dashboard</h1>
+//       },
+//       {
+//         path: "manage-users/all-users",
+//         element: <AllUsers />,
+//       },
+
+//       {
+//         path: "add-payment-method",
+//         element: <AddPaymentMethod />,
+//       },
+//       {
+//         path: "create-a-new-promotion",
+//         element: <AdminPromotion />,
+//       },
+//       {
+//         path: "promotion-history",
+//         element: <AdminPromotionHistory />,
+//       },
+
+//       // Admin Blog Routes
+//       {
+//         path: "create-a-new-blog",
+//         element: <AdminBlogCreate />,
+//       },
+//       {
+//         path: "admin-blog-history",
+//         element: <AdminBlogHistory />,
+//       },
+//       {
+//         path: "admin-blog-history/:id",
+//         element: <AdminBlogHistoryDetails />,
+//       },
+//       {
+//         path: "admin-blog-history/edit/:id",
+//         element: <AdminEditBlog />,
+//       },
+
+//       // Home Pages text banner and instructor Profile Update
+//       {
+//         path: "create-a-home-text",
+//         element: <HometextCreate />,
+//       },
+//       {
+//         path: "video-player-and-image",
+//         element: <YouTubeVideoPlayer />,
+//       },
+//       {
+//         path: "change-banner-image-and-text",
+//         element: <ImageandText />,
+//       },
+//       {
+//         path: "section-text-address-description",
+//         element: <AdminTestimonialsSection />,
+//       },
+//       {
+//         path: "instructor-profile-update",
+//         element: <InstructorProfile />,
+//       },
+//       {
+//         path: "footer-facebook-url-change",
+//         element: <FooterFacebookLink />,
+//       },
+
+//       {
+//         path: "*",
+//         element: <ErrorPage />,
+//       },
+//       // Admin Profile oo Password Change
+//       {
+//         path: "my-profile",
+//         element: <Profile />,
+//       },
+//       {
+//         path: "change-password",
+//         element: <ChangePassword />,
+//       },
+//     ],
+//   },
+
+//   // User Dashboard
+//   {
+//     path: "user-dashboard",
+//     element: (
+//       <PrivateRoute>
+//         <UserRoute>
+//           <UserLayout />
+//         </UserRoute>
+//       </PrivateRoute>
+//     ),
+//     children: [
+//       {
+//         index: true,
+//         element: <h1>User Dashboard</h1>,
+//       },
+//       {
+//         path: "my-profile",
+//         element: <Profile />,
+//       },
+//       {
+//         path: "change-password",
+//         element: <ChangePassword />,
+//       },
+//     ],
+//   },
+//   {
+//     path: "/dashboard",
+//     element: (
+//       <PrivateRoute>
+//         <DashboardRedirect />
+//       </PrivateRoute>
+//     ),
+//   },
+//   {
+//     path: "/payment-confirmed",
+//     element: <EnrollCourse />,
+//   },
+// ]);
+import { lazy, Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
-import ChangePassword from "../Authentication/ChangePassword";
-import ForgotPassword from "../Authentication/ForgotPassword";
-import Login from "../Authentication/Login";
-import Register from "../Authentication/Register";
 import ErrorPage from "../ErrorPage/ErrorPage";
 import AdminLayout from "../layout/AdminLayout";
 import MainLayout from "../layout/MainLayout";
-import UserLayout from "../layout/UserLayout";
-import About from "../Pages/AboutPages/About";
-import AddPaymentMethod from "../Pages/AddPaymentMethod/AddPaymentMethod";
-import AdminDashboard from "../Pages/AdminDashboard/AdminDashboard";
-import AdminBlogCreate from "../Pages/AdminDashboardPages/AdminBlogsPages/AdminBlogCreate";
-import AdminBlogHistory from "../Pages/AdminDashboardPages/AdminBlogsPages/AdminBlogHistory";
-import AdminBlogHistoryDetails from "../Pages/AdminDashboardPages/AdminBlogsPages/AdminBlogHistoryDetails";
-import AdminEditBlog from "../Pages/AdminDashboardPages/AdminBlogsPages/AdminEditBlog";
-import InstructorProfile from "../Pages/AdminDashboardPages/AdminHomePagesEdit/InstructorProfile";
-// import Textandbanner from "../Pages/AdminDashboardPages/AdminHomePagesEdit/Textandbanner";
 import ModeratorLayout from "../layout/ModeratorLayout";
-import AdminTestimonialsSection from "../Pages/AdminDashboardPages/AdminHomePagesEdit/AdminTestimonialsSection";
-import FooterFacebookLink from "../Pages/AdminDashboardPages/AdminHomePagesEdit/FooterFacebookLink";
-import HometextCreate from "../Pages/AdminDashboardPages/AdminHomePagesEdit/HometextCreate";
-import ImageandText from "../Pages/AdminDashboardPages/AdminHomePagesEdit/ImageandText";
-import YouTubeVideoPlayer from "../Pages/AdminDashboardPages/AdminHomePagesEdit/YouTubeVideoPlayer";
-import AdminPromotion from "../Pages/AdminDashboardPages/AdminPromotionPages/AdminPromotion/AdminPromotion";
-import AdminPromotionHistory from "../Pages/AdminDashboardPages/AdminPromotionPages/AdminPromotionHistory/AdminPromotionHistory";
-import AllUsers from "../Pages/AdminDashboardPages/AllUsers/AllUsers";
-import FirstLayer from "../Pages/B.A.ShapeFormats/FirstLayer/FirstLayer";
-import FourthLayer from "../Pages/B.A.ShapeFormats/FourthLayer/FourthLayer";
-import SecondLayer from "../Pages/B.A.ShapeFormats/SecondLayer/SecondLayer";
-import ThirdLayer from "../Pages/B.A.ShapeFormats/ThirdLayer/ThirdLayer";
-import Blog from "../Pages/BlogPages/Blog";
-import BlogDetails from "../Pages/BlogPages/BlogDetails";
+import UserLayout from "../layout/UserLayout";
+import AdminSentence from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Sentence/AdminSentence";
 import EnrollCourse from "../Pages/CoursePages/EnrollCourse";
 import DashboardRedirect from "../Pages/DashboardRedirect";
-import Contact from "../Pages/FooterPages/Contact";
-import PrivacyPolicy from "../Pages/FooterPages/PrivacyPolicy";
-import RefundPolicy from "../Pages/FooterPages/RefundPolicy";
-import TermsAndConditions from "../Pages/FooterPages/TermsAndConditions";
-import Home from "../Pages/HomePages/Home";
-import Profile from "../Pages/ProfilePages/Profile";
 import AdminRoute from "./AdminRoute";
 import ModeratorRoute from "./ModeratorRoute";
 import PrivateRoute from "./PrivateRoute";
 import UserRoute from "./UserRouter";
+
+// Lazy load components
+const ChangePassword = lazy(() => import("../Authentication/ChangePassword"));
+const ForgotPassword = lazy(() => import("../Authentication/ForgotPassword"));
+const Login = lazy(() => import("../Authentication/Login"));
+const Register = lazy(() => import("../Authentication/Register"));
+const About = lazy(() => import("../Pages/AboutPages/About"));
+const AddPaymentMethod = lazy(() =>
+  import("../Pages/AddPaymentMethod/AddPaymentMethod")
+);
+const AdminDashboard = lazy(() =>
+  import("../Pages/AdminDashboard/AdminDashboard")
+);
+const AdminBlogCreate = lazy(() =>
+  import("../Pages/AdminDashboardPages/AdminBlogsPages/AdminBlogCreate")
+);
+const AdminBlogHistory = lazy(() =>
+  import("../Pages/AdminDashboardPages/AdminBlogsPages/AdminBlogHistory")
+);
+const AdminBlogHistoryDetails = lazy(() =>
+  import("../Pages/AdminDashboardPages/AdminBlogsPages/AdminBlogHistoryDetails")
+);
+const AdminEditBlog = lazy(() =>
+  import("../Pages/AdminDashboardPages/AdminBlogsPages/AdminEditBlog")
+);
+const InstructorProfile = lazy(() =>
+  import("../Pages/AdminDashboardPages/AdminHomePagesEdit/InstructorProfile")
+);
+const AdminTestimonialsSection = lazy(() =>
+  import(
+    "../Pages/AdminDashboardPages/AdminHomePagesEdit/AdminTestimonialsSection"
+  )
+);
+const FooterFacebookLink = lazy(() =>
+  import("../Pages/AdminDashboardPages/AdminHomePagesEdit/FooterFacebookLink")
+);
+const HometextCreate = lazy(() =>
+  import("../Pages/AdminDashboardPages/AdminHomePagesEdit/HometextCreate")
+);
+const ImageandText = lazy(() =>
+  import("../Pages/AdminDashboardPages/AdminHomePagesEdit/ImageandText")
+);
+const YouTubeVideoPlayer = lazy(() =>
+  import("../Pages/AdminDashboardPages/AdminHomePagesEdit/YouTubeVideoPlayer")
+);
+const AdminPromotion = lazy(() =>
+  import(
+    "../Pages/AdminDashboardPages/AdminPromotionPages/AdminPromotion/AdminPromotion"
+  )
+);
+const AdminPromotionHistory = lazy(() =>
+  import(
+    "../Pages/AdminDashboardPages/AdminPromotionPages/AdminPromotionHistory/AdminPromotionHistory"
+  )
+);
+const AllUsers = lazy(() =>
+  import("../Pages/AdminDashboardPages/AllUsers/AllUsers")
+);
+const FirstLayer = lazy(() =>
+  import("../Pages/B.A.ShapeFormats/FirstLayer/FirstLayer")
+);
+const FourthLayer = lazy(() =>
+  import("../Pages/B.A.ShapeFormats/FourthLayer/FourthLayer")
+);
+const SecondLayer = lazy(() =>
+  import("../Pages/B.A.ShapeFormats/SecondLayer/SecondLayer")
+);
+const ThirdLayer = lazy(() =>
+  import("../Pages/B.A.ShapeFormats/ThirdLayer/ThirdLayer")
+);
+const Blog = lazy(() => import("../Pages/BlogPages/Blog"));
+const BlogDetails = lazy(() => import("../Pages/BlogPages/BlogDetails"));
+const Contact = lazy(() => import("../Pages/FooterPages/Contact"));
+const PrivacyPolicy = lazy(() => import("../Pages/FooterPages/PrivacyPolicy"));
+const RefundPolicy = lazy(() => import("../Pages/FooterPages/RefundPolicy"));
+const TermsAndConditions = lazy(() =>
+  import("../Pages/FooterPages/TermsAndConditions")
+);
+const Home = lazy(() => import("../Pages/HomePages/Home"));
+const Profile = lazy(() => import("../Pages/ProfilePages/Profile"));
+
+// Loading component for Suspense fallback
+const LoadingSpinner = () => (
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "50vh",
+    }}
+  >
+    <div>Loading...</div>
+  </div>
+);
 
 export const routes = createBrowserRouter([
   {
@@ -52,28 +477,37 @@ export const routes = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <Home />
+          </Suspense>
+        ),
       },
       {
         path: "/about-us-more-information",
-        element: <About />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <About />
+          </Suspense>
+        ),
       },
-
       {
         path: "b-a-shape-formats/1st-layer",
         element: (
-          <PrivateRoute>
-            {/* <PaymentRoute> */}
+          // <PrivateRoute>
+            <Suspense fallback={<LoadingSpinner />}>
               <FirstLayer />
-            {/* </PaymentRoute> */}
-          </PrivateRoute>
+            </Suspense>
+          // </PrivateRoute>
         ),
       },
       {
         path: "b-a-shape-formats/2nd-layer",
         element: (
           <PrivateRoute>
-            <SecondLayer />
+            <Suspense fallback={<LoadingSpinner />}>
+              <SecondLayer />
+            </Suspense>
           </PrivateRoute>
         ),
       },
@@ -81,7 +515,9 @@ export const routes = createBrowserRouter([
         path: "b-a-shape-formats/3rd-layer",
         element: (
           <PrivateRoute>
-            <ThirdLayer />
+            <Suspense fallback={<LoadingSpinner />}>
+              <ThirdLayer />
+            </Suspense>
           </PrivateRoute>
         ),
       },
@@ -89,49 +525,86 @@ export const routes = createBrowserRouter([
         path: "b-a-shape-formats/4th-layer",
         element: (
           <PrivateRoute>
-            <FourthLayer />
+            <Suspense fallback={<LoadingSpinner />}>
+              <FourthLayer />
+            </Suspense>
           </PrivateRoute>
         ),
       },
-
       // Blog
       {
         path: "/blog-us",
-        element: <Blog />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <Blog />
+          </Suspense>
+        ),
       },
       {
         path: "/blog-us/:id",
-        element: <BlogDetails />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <BlogDetails />
+          </Suspense>
+        ),
       },
       // Authentication
       {
         path: "/register",
-        element: <Register />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <Register />
+          </Suspense>
+        ),
       },
       {
         path: "/login",
-        element: <Login />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <Login />
+          </Suspense>
+        ),
       },
       {
         path: "/forgot-password",
-        element: <ForgotPassword />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <ForgotPassword />
+          </Suspense>
+        ),
       },
       // footer
       {
         path: "/contact-us",
-        element: <Contact />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <Contact />
+          </Suspense>
+        ),
       },
       {
         path: "/privacy-policy",
-        element: <PrivacyPolicy />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <PrivacyPolicy />
+          </Suspense>
+        ),
       },
       {
         path: "/terms-and-conditions",
-        element: <TermsAndConditions />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <TermsAndConditions />
+          </Suspense>
+        ),
       },
       {
         path: "/refund-policy",
-        element: <RefundPolicy />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <RefundPolicy />
+          </Suspense>
+        ),
       },
     ],
   },
@@ -149,82 +622,156 @@ export const routes = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <AdminDashboard />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminDashboard />
+          </Suspense>
+        ),
       },
       {
         path: "manage-users/all-users",
-        element: <AllUsers />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AllUsers />
+          </Suspense>
+        ),
       },
-
       {
         path: "add-payment-method",
-        element: <AddPaymentMethod />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AddPaymentMethod />
+          </Suspense>
+        ),
       },
       {
+        path: "create-sentence",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminSentence />
+          </Suspense>
+        ),
+      },
+
+
+      {
         path: "create-a-new-promotion",
-        element: <AdminPromotion />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminPromotion />
+          </Suspense>
+        ),
       },
       {
         path: "promotion-history",
-        element: <AdminPromotionHistory />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminPromotionHistory />
+          </Suspense>
+        ),
       },
-     
       // Admin Blog Routes
       {
         path: "create-a-new-blog",
-        element: <AdminBlogCreate />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminBlogCreate />
+          </Suspense>
+        ),
       },
       {
         path: "admin-blog-history",
-        element: <AdminBlogHistory />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminBlogHistory />
+          </Suspense>
+        ),
       },
       {
         path: "admin-blog-history/:id",
-        element: <AdminBlogHistoryDetails />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminBlogHistoryDetails />
+          </Suspense>
+        ),
       },
       {
         path: "admin-blog-history/edit/:id",
-        element: <AdminEditBlog />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminEditBlog />
+          </Suspense>
+        ),
       },
-     
       // Home Pages text banner and instructor Profile Update
       {
         path: "create-a-home-text",
-        element: <HometextCreate />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <HometextCreate />
+          </Suspense>
+        ),
       },
       {
         path: "video-player-and-image",
-        element: <YouTubeVideoPlayer />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <YouTubeVideoPlayer />
+          </Suspense>
+        ),
       },
       {
         path: "change-banner-image-and-text",
-        element: <ImageandText />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <ImageandText />
+          </Suspense>
+        ),
       },
       {
         path: "section-text-address-description",
-        element: <AdminTestimonialsSection />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminTestimonialsSection />
+          </Suspense>
+        ),
       },
       {
         path: "instructor-profile-update",
-        element: <InstructorProfile />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <InstructorProfile />
+          </Suspense>
+        ),
       },
       {
         path: "footer-facebook-url-change",
-        element: <FooterFacebookLink />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <FooterFacebookLink />
+          </Suspense>
+        ),
       },
-
       {
         path: "*",
         element: <ErrorPage />,
       },
-      // Admin Profile oo Password Change
+      // Admin Profile and Password Change
       {
         path: "my-profile",
-        element: <Profile />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <Profile />
+          </Suspense>
+        ),
       },
       {
         path: "change-password",
-        element: <ChangePassword />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <ChangePassword />
+          </Suspense>
+        ),
       },
     ],
   },
@@ -242,89 +789,145 @@ export const routes = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <h1>Moderator Dashboard</h1>
+        element: <h1>Moderator Dashboard</h1>,
       },
       {
         path: "manage-users/all-users",
-        element: <AllUsers />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AllUsers />
+          </Suspense>
+        ),
       },
-
       {
         path: "add-payment-method",
-        element: <AddPaymentMethod />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AddPaymentMethod />
+          </Suspense>
+        ),
       },
       {
         path: "create-a-new-promotion",
-        element: <AdminPromotion />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminPromotion />
+          </Suspense>
+        ),
       },
       {
         path: "promotion-history",
-        element: <AdminPromotionHistory />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminPromotionHistory />
+          </Suspense>
+        ),
       },
-     
       // Admin Blog Routes
       {
         path: "create-a-new-blog",
-        element: <AdminBlogCreate />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminBlogCreate />
+          </Suspense>
+        ),
       },
       {
         path: "admin-blog-history",
-        element: <AdminBlogHistory />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminBlogHistory />
+          </Suspense>
+        ),
       },
       {
         path: "admin-blog-history/:id",
-        element: <AdminBlogHistoryDetails />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminBlogHistoryDetails />
+          </Suspense>
+        ),
       },
       {
         path: "admin-blog-history/edit/:id",
-        element: <AdminEditBlog />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminEditBlog />
+          </Suspense>
+        ),
       },
-     
       // Home Pages text banner and instructor Profile Update
       {
         path: "create-a-home-text",
-        element: <HometextCreate />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <HometextCreate />
+          </Suspense>
+        ),
       },
       {
         path: "video-player-and-image",
-        element: <YouTubeVideoPlayer />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <YouTubeVideoPlayer />
+          </Suspense>
+        ),
       },
       {
         path: "change-banner-image-and-text",
-        element: <ImageandText />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <ImageandText />
+          </Suspense>
+        ),
       },
       {
         path: "section-text-address-description",
-        element: <AdminTestimonialsSection />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminTestimonialsSection />
+          </Suspense>
+        ),
       },
       {
         path: "instructor-profile-update",
-        element: <InstructorProfile />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <InstructorProfile />
+          </Suspense>
+        ),
       },
       {
         path: "footer-facebook-url-change",
-        element: <FooterFacebookLink />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <FooterFacebookLink />
+          </Suspense>
+        ),
       },
-
       {
         path: "*",
         element: <ErrorPage />,
       },
-      // Admin Profile oo Password Change
+      // Admin Profile and Password Change
       {
         path: "my-profile",
-        element: <Profile />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <Profile />
+          </Suspense>
+        ),
       },
       {
         path: "change-password",
-        element: <ChangePassword />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <ChangePassword />
+          </Suspense>
+        ),
       },
     ],
   },
-
-
-
-  
   // User Dashboard
   {
     path: "user-dashboard",
@@ -342,11 +945,19 @@ export const routes = createBrowserRouter([
       },
       {
         path: "my-profile",
-        element: <Profile />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <Profile />
+          </Suspense>
+        ),
       },
       {
         path: "change-password",
-        element: <ChangePassword />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <ChangePassword />
+          </Suspense>
+        ),
       },
     ],
   },

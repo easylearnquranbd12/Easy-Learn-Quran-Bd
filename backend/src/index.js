@@ -16,12 +16,14 @@ const authorRoute = require("./routes/authorRoutes");
 const socialLinksRouter = require("./routes/socialLinksRoutes");
 const promotionRoutes = require("./routes/promotionRoutes");
 const translateRoutes = require("./routes/translateRoutes");
+const mediaUploadRoutes = require("./routes/mediaUploadRoutes");
+const firstLayerRoutes = require("./routes/firstLayerRoutes");
+
 dotenv.config();
 
 // Create express app
 const app = express();
 const port = process.env.PORT || 9000;
-
 
 app.use(
   cors({
@@ -50,6 +52,9 @@ app.use("/authorInfo", authorRoute);
 app.use("/api/admin/social-links", socialLinksRouter);
 app.use("/api/promotions", promotionRoutes);
 app.use("/api/translate", translateRoutes);
+app.use("/delete-media", mediaUploadRoutes);
+app.use("/first-layer", firstLayerRoutes);
+
 // Root route
 app.get("/", (req, res) => {
   res.send("Learning Quiz Platfrom Server Running");
