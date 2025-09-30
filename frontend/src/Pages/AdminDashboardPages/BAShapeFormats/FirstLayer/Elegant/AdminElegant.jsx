@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 
-const AdminSentence = () => {
+const AdminElegant = () => {
   const [sentenceRows, setSentenceRows] = useState([
     {
       sentence: "",
@@ -359,4 +359,4 @@ const AdminSentence = () => {
   );
 };
 
-export default AdminSentence;
+export default AdminElegant;
