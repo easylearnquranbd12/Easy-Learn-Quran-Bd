@@ -27,6 +27,12 @@ const getBlogsCollection = () => {
 const getFirstLayerVocabularyCollection = () => {
   return client.db("Learning-Quiz-Platfrom").collection("VocabularyField");
 };
+const getFirstLayerVocabularyCollections = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("Vocabulary");
+};
+const getFirstLayerVocabularyExerciseCollections = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("createExercise");
+};
 const getFirstLayerSentenceCollection = () => {
   return client.db("Learning-Quiz-Platfrom").collection("sentence");
 };
@@ -65,4 +71,6 @@ module.exports = {
   getFirstLayerSentenceCollection,
   getFirstLayerElegantCollection,
   getFirstLayerVocabularyCollection,
+  getFirstLayerVocabularyCollections,
+  getFirstLayerVocabularyExerciseCollections,
 };

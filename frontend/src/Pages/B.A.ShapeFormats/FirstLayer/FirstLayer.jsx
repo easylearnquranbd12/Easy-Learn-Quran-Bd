@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import idiomsData from "../../../../idioms.json"; // ৫০টা ডেটা
-import Sentence from "./Sentence";
+import Vocabulary from "./Vocabulary";
 
 
 const FirstLayer = () => {
@@ -55,14 +55,14 @@ const FirstLayer = () => {
     <div className="py-10 space-y-10">
       <div className="max-w-[1400px] mx-auto ">
         {/* Title */}
-        <div className="flex justify-between items-center mb-6">
+        {/* <div className="flex justify-between items-center mb-6">
           <h2 className="text-3xl font-bold text-[#bb874a]">
             Vocabulary Practice
           </h2>
-        </div>
+        </div> */}
 
         {/* Vocabulary Table */}
-        <div className="overflow-x-auto rounded-xl shadow border border-gray-200">
+        {/* <div className="overflow-x-auto rounded-xl shadow border border-gray-200">
           <table className="table w-full">
             <thead className="bg-[#bb874a] text-white text-sm">
               <tr>
@@ -165,10 +165,10 @@ const FirstLayer = () => {
               )}
             </tbody>
           </table>
-        </div>
+        </div> */}
 
         {/* Exercise Section */}
-        <div className="card bg-white shadow-md rounded-2xl p-2 md:p-5 mt-10 space-y-3 ">
+        {/* <div className="card bg-white shadow-md rounded-2xl p-2 md:p-5 mt-10 space-y-3 ">
           <h3 className="text-xl font-semibold text-[#bb874a]">📖 Exercise</h3>
           <p>Learning Your Exercise</p>
 
@@ -281,7 +281,7 @@ const FirstLayer = () => {
             </table>
           </div>
 
-          {/* Center Button */}
+         
           <div className="flex justify-center mt-5">
             <button
               className="px-6 py-2 bg-[#bb874a] text-white rounded-lg shadow hover:bg-[#5e4528] transition"
@@ -290,97 +290,10 @@ const FirstLayer = () => {
               Submit Now
             </button>
           </div>
-        </div>
-        {/* Sentence Section  */}
-        {/* <div className="card bg-white shadow-md rounded-2xl p-2 md:p-5 mt-10 space-y-3 ">
-          <h3 className="text-xl font-semibold text-[#bb874a]">📖 Sentence</h3>
-          <p>Learning Your Sentence</p>
-
-          {isLoading && <p>Loading sentences...</p>}
-          {isError && <p className="text-red-500">Error loading sentences.</p>}
-
-          {!isError && !isLoading && (
-            <div className="overflow-x-auto rounded-xl shadow border border-gray-200">
-              <table className="table w-full">
-                <thead className="bg-black text-white text-sm">
-                  <tr>
-                    <th>#</th>
-                    <th>Sentence</th>
-                    <th>Defination</th>
-                    <th>How Many Types</th>
-                    <th>Stricture</th>
-                    <th>Example</th>
-                    <th>Remark</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sentenceRows.map((row, i) => (
-                    <tr
-                      key={i}
-                      className="hover:bg-gray-50 transition border-b text-sm"
-                    >
-                      <td className="font-semibold">{i + 1}</td>
-                      <td>
-                        <input
-                          readOnly
-                          className="input input-sm input-bordered w-96"
-                          value={row.sentence || ""}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          readOnly
-                          className="input input-sm input-bordered w-96"
-                          value={row.definition || ""}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          readOnly
-                          className="input input-sm input-bordered w-96"
-                          value={row.types || ""}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          readOnly
-                          className="input input-sm input-bordered w-96"
-                          value={row.structure || ""}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          readOnly
-                          className="input input-sm input-bordered w-96"
-                          value={row.example || ""}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          readOnly
-                          className="input input-sm input-bordered max-w-96"
-                          value={row.remark || ""}
-                        />
-                      </td>
-                    </tr>
-                  ))}
-                  {sentenceRows.length === 0 && (
-                    <tr>
-                      <td
-                        colSpan="7"
-                        className="text-center py-6 text-gray-500"
-                      >
-                        No sentences found.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          )}
         </div> */}
+       
 
-<Sentence/>
+<Vocabulary/>
 {/* Sentence Section */}
 {/* <div className="card bg-white shadow-md rounded-2xl p-2 md:p-5 mt-10 space-y-3 ">
   <h3 className="text-xl font-semibold text-[#bb874a]">📖 Sentence</h3>

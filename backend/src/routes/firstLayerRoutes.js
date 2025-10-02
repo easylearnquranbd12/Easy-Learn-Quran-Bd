@@ -11,18 +11,20 @@ const {
   deleteVocabulary,
   updateVocabularyField,
   getVocabularyField,
+  toggleVocabularyActive,
+  createExercise,
 } = require("../Controllers/firstLayerController");
 
 const router = express.Router();
 
 // Vacabulary
-router.get("/", getAllVocabulary);
-router.post("/", createVocabulary);
-router.delete("/:id", deleteVocabulary);
+router.get("/vocabulary", getAllVocabulary);
+router.post("/vocabulary", createVocabulary);
+router.delete("/vocabulary/:id", deleteVocabulary);
 // Vacabulary field
 router.put("/vocabularyField/:id", updateVocabularyField);
 router.get("/vocabularyField", getVocabularyField);
-
+router.post("/createExercise", createExercise);
 
 router.get("/", getSentences);
 router.post("/", createSentence);
