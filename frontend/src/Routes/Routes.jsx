@@ -5,8 +5,10 @@ import AdminLayout from "../layout/AdminLayout";
 import MainLayout from "../layout/MainLayout";
 import ModeratorLayout from "../layout/ModeratorLayout";
 import UserLayout from "../layout/UserLayout";
-import AdminElegant from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Elegant/AdminElegant";
-import AdminSentence from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Sentence/AdminSentence";
+import AdminArticle from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Article/AdminArticle";
+import AdminPreposition from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Preposition/AdminPreposition";
+import AdminTense from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Tense/AdminTense";
+import AdminVerb from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Verb/AdminVerb";
 import EnrollCourse from "../Pages/CoursePages/EnrollCourse";
 import DashboardRedirect from "../Pages/DashboardRedirect";
 import AdminRoute from "./AdminRoute";
@@ -16,6 +18,16 @@ import UserRoute from "./UserRouter";
 
 // Lazy load components
 const ChangePassword = lazy(() => import("../Authentication/ChangePassword"));
+const AdminSentence = lazy(() =>
+  import(
+    "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Sentence/AdminSentence"
+  )
+);
+const AdminElegant = lazy(() =>
+  import(
+    "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Elegant/AdminElegant"
+  )
+);
 const ForgotPassword = lazy(() => import("../Authentication/ForgotPassword"));
 const Login = lazy(() => import("../Authentication/Login"));
 const Register = lazy(() => import("../Authentication/Register"));
@@ -81,7 +93,9 @@ const SecondLayer = lazy(() =>
   import("../Pages/B.A.ShapeFormats/SecondLayer/SecondLayer")
 );
 const AdminVocabulary = lazy(() =>
-  import("../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Vocabulary/AdminVocabulary")
+  import(
+    "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Vocabulary/AdminVocabulary"
+  )
 );
 const ThirdLayer = lazy(() =>
   import("../Pages/B.A.ShapeFormats/ThirdLayer/ThirdLayer")
@@ -137,9 +151,9 @@ export const routes = createBrowserRouter([
         path: "b-a-shape-formats/1st-layer",
         element: (
           // <PrivateRoute>
-            <Suspense fallback={<LoadingSpinner />}>
-              <FirstLayer />
-            </Suspense>
+          <Suspense fallback={<LoadingSpinner />}>
+            <FirstLayer />
+          </Suspense>
           // </PrivateRoute>
         ),
       },
@@ -310,7 +324,38 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
-
+      {
+        path: "create-verb",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminVerb />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-article",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminArticle />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-tense",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminTense />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-preposition",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminPreposition />
+          </Suspense>
+        ),
+      },
 
       {
         path: "create-a-new-promotion",
@@ -465,7 +510,7 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
-      
+
       {
         path: "create-a-new-promotion",
         element: (

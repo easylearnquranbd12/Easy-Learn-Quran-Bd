@@ -253,7 +253,7 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
       color: "text-green-600",
     },
 
-     {
+    {
       path: "/admin-dashboard/first-layer",
       icon: HiOutlineDocumentText,
       label: "First Layer",
@@ -261,12 +261,28 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
       color: "text-indigo-600",
       subItems: [
         {
+          path: "/admin-dashboard/create-elegant",
+          icon: MdPayment,
+          label: "Create Elegant",
+          description: "Create & History",
+          color: "text-indigo-600",
+        },
+        {
           path: "/admin-dashboard/create-vocabulary",
           icon: BiEdit,
           label: "Create Vocabulary",
           description: "Create & History",
           color: "text-indigo-600",
         },
+      ],
+    },
+    {
+      path: "/admin-dashboard/second-layer",
+      icon: HiOutlineDocumentText,
+      label: "Second Layer",
+      description: "Second Layer All Info",
+      color: "text-indigo-600",
+      subItems: [
         {
           path: "/admin-dashboard/create-sentence",
           icon: BiEdit,
@@ -275,9 +291,30 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
           color: "text-indigo-600",
         },
         {
-          path: "/admin-dashboard/create-elegant",
-          icon: MdPayment,
-          label: "Create Elegant",
+          path: "/admin-dashboard/create-verb",
+          icon: BiEdit,
+          label: "Create Verb",
+          description: "Create & History",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/create-article",
+          icon: BiEdit,
+          label: "Create Article",
+          description: "Create & History",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/create-tense",
+          icon: BiEdit,
+          label: "Create Tense",
+          description: "Create & History",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/create-preposition",
+          icon: BiEdit,
+          label: "Create Preposition",
           description: "Create & History",
           color: "text-indigo-600",
         },

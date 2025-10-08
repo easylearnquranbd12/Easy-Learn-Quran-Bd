@@ -1,18 +1,17 @@
 const express = require("express");
 const {
-  getSentences,
-  createSentence,
-  deleteSentence,
-  getElegant,
-  createElegant,
-  deleteElegant,
   createVocabulary,
   getAllVocabulary,
   deleteVocabulary,
   updateVocabularyField,
   getVocabularyField,
-  toggleVocabularyActive,
   createExercise,
+  getAllElegant,
+  createElegant,
+  deleteElegant,
+  updateElegantField,
+  getElegantField,
+  createExerciseElegant,
 } = require("../Controllers/firstLayerController");
 
 const router = express.Router();
@@ -26,11 +25,13 @@ router.put("/vocabularyField/:id", updateVocabularyField);
 router.get("/vocabularyField", getVocabularyField);
 router.post("/createExercise", createExercise);
 
-router.get("/", getSentences);
-router.post("/", createSentence);
-router.delete("/:id", deleteSentence);
-router.get("/elegant", getElegant);
+// elegant
+router.get("/elegant", getAllElegant);
 router.post("/elegant", createElegant);
 router.delete("/elegant/:id", deleteElegant);
+// elegant field
+router.put("/elegantField/:id", updateElegantField);
+router.get("/elegantField", getElegantField);
+router.post("/createExerciseElegant", createExerciseElegant);
 
 module.exports = router;

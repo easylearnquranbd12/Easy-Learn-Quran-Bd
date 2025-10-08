@@ -7,9 +7,9 @@ import Swal from "sweetalert2";
 import TittleAnimation from "../../../../../components/TittleAnimation/TittleAnimation";
 import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
 import RichTextField from "../../../../../shared/TextEditor/RichTextField";
-import ElegantModal from "./ElegantModal";
+import VerbModal from "./VerbModal";
 
-const AdminElegant = () => {
+const AdminVerb = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [fieldName, setFieldName] = useState("");
   const [selectedVocabId, setSelectedVocabId] = useState(null);
@@ -31,14 +31,14 @@ const AdminElegant = () => {
 
   // Fetch all vocabulary Fields
   const {
-    data: elegantFields = [],
+    data: sentenceFields = [],
     isLoading,
     isError,
     refetch,
   } = useQuery({
-    queryKey: ["elegantFields"],
+    queryKey: ["sentenceFields"],
     queryFn: async () => {
-      const res = await axiosPublic.get("/first-layer/elegantField");
+      const res = await axiosPublic.get("/second-layer/verbField");
       console.log(res.data.data);
       return res.data.data;
     },
@@ -47,7 +47,7 @@ const AdminElegant = () => {
   // Create Vocabulary
   const { mutateAsync: createVocabulary } = useMutation({
     mutationFn: async (newData) => {
-      const res = await axiosPublic.post("/first-layer/elegant", newData);
+      const res = await axiosPublic.post("/second-layer/verb", newData);
       return res.data;
     },
     onSuccess: () => {
@@ -72,7 +72,7 @@ const AdminElegant = () => {
   } = useQuery({
     queryKey: ["vocabulary"],
     queryFn: async () => {
-      const res = await axiosPublic.get("/first-layer/elegant");
+      const res = await axiosPublic.get("/second-layer/verb");
       return res.data.data || [];
     },
   });
@@ -80,15 +80,15 @@ const AdminElegant = () => {
   // delete vocabulary
   const { mutateAsync: deleteVocabulary } = useMutation({
     mutationFn: async (id) => {
-      const res = await axiosPublic.delete(`/first-layer/elegant/${id}`);
+      const res = await axiosPublic.delete(`/second-layer/verb/${id}`);
       return res.data;
     },
     onSuccess: () => {
-      Swal.fire("Deleted!", "elegant has been deleted.", "success");
+      Swal.fire("Deleted!", "Sentence has been deleted.", "success");
       refetchVocabulary(); // Refetch the list after deletion
     },
     onError: (error) => {
-      Swal.fire("Error!", "Failed to delete elegant.", "error");
+      Swal.fire("Error!", "Failed to delete Sentence.", "error");
       console.error(error);
     },
   });
@@ -97,7 +97,7 @@ const AdminElegant = () => {
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "You want to delete this elegant?",
+      text: "You want to delete this Sentence?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -148,7 +148,7 @@ const AdminElegant = () => {
   // Toggle mutation using item.isActive
   const toggleIsActiveMutation = useMutation({
     mutationFn: async (currentState) => {
-      const res = await axiosPublic.put(`/first-layer/elegantField/toggle`, {
+      const res = await axiosPublic.put(`/second-layer/verbField/toggle`, {
         fieldName: "isActive", // ✅ এটা দিতে হবে
         currentValue: currentState,
       });
@@ -160,7 +160,7 @@ const AdminElegant = () => {
         title: "Success",
         text: `Vocabulary is now ${data.updatedValue}`,
       });
-      queryClient.invalidateQueries({ queryKey: ["elegantFields"] });
+      queryClient.invalidateQueries({ queryKey: ["sentenceFields"] });
     },
     onError: (error) => {
       Swal.fire(
@@ -187,7 +187,7 @@ const AdminElegant = () => {
             {/* Mobile View - Vertical Layout */}
             {/* <div className="block md:hidden space-y-4">
                 <div>
-                {elegantFields.map((item) => (
+                {sentenceFields.map((item) => (
                   <div key={item._id} className="flex items-center gap-2 my-2">
                     <span className="font-semibold">
                       Create {item.title || "Vocabulary"} Exercise
@@ -204,7 +204,7 @@ const AdminElegant = () => {
                 ))}
               </div>
               <form onSubmit={handleSubmit(onSubmit)}>
-                {elegantFields?.map((item) => (
+                {sentenceFields?.map((item) => (
                   <div key={item._id} className="space-y-4 p-2">
                   
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200 w-96">
@@ -390,17 +390,17 @@ const AdminElegant = () => {
             {/* Desktop View - Table Layout */}
             <div>
               <div className="mb-4 text-center">
-                {elegantFields && elegantFields.length > 0 && (
+                {sentenceFields && sentenceFields.length > 0 && (
                   <>
                     {/* Title */}
                     <div className="flex items-start justify-center gap-2 mb-2">
-                      {elegantFields[0].title || "Title"}
+                      {sentenceFields[0].title || "Title"}
                       <Edit
                         onClick={() =>
                           handleEditClick(
                             "title",
-                            elegantFields[0].title,
-                            elegantFields[0].title
+                            sentenceFields[0].title,
+                            sentenceFields[0].title
                           )
                         }
                         className="w-5 h-5 text-green-600 cursor-pointer"
@@ -410,14 +410,14 @@ const AdminElegant = () => {
                     {/* description */}
                     <div className="flex items-start justify-center gap-2">
                       <span className="text-base">
-                        {elegantFields[0].description || "description"}
+                        {sentenceFields[0].description || "description"}
                       </span>
                       <Edit
                         onClick={() =>
                           handleEditClick(
                             "description",
-                            elegantFields[0].description,
-                            elegantFields[0].description
+                            sentenceFields[0].description,
+                            sentenceFields[0].description
                           )
                         }
                         className="min-w-5 min-h-5 w-5 h-5 text-green-600 cursor-pointer"
@@ -427,7 +427,7 @@ const AdminElegant = () => {
                 )}
               </div>
               <div>
-                {elegantFields.map((item) => (
+                {sentenceFields.map((item) => (
                   <div key={item._id} className="flex items-center gap-2 my-2">
                     <span className="font-semibold">
                       Create {item.title || "Vocabulary"} Exercise
@@ -446,7 +446,7 @@ const AdminElegant = () => {
               {/* Scrollable Container with proper height */}
               <div className="max-h-[calc(100vh-250px)] overflow-auto rounded-xl shadow border border-gray-200">
                 <form onSubmit={handleSubmit(onSubmit)}>
-                  {elegantFields?.map((item) => (
+                  {sentenceFields?.map((item) => (
                     <table key={item._id} className="table w-full">
                       <thead className="bg-black text-white text-sm sticky top-0 z-10">
                         <tr>
@@ -651,7 +651,7 @@ const AdminElegant = () => {
             </div>
           ) : (
             <table className="table w-full">
-              {elegantFields?.map((item, index) => (
+              {sentenceFields?.map((item, index) => (
                 <thead
                   key={item._id}
                   className="bg-[#bb874a] text-white text-sm"
@@ -747,7 +747,7 @@ const AdminElegant = () => {
                 ) : (
                   <tr>
                     <td colSpan="9" className="text-center py-6 text-gray-500">
-                      No elegant found.
+                      No Sentence found.
                     </td>
                   </tr>
                 )}
@@ -769,7 +769,7 @@ const AdminElegant = () => {
 
       {/* Modal */}
       {modalOpen && (
-        <ElegantModal
+        <VerbModal
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
           fieldName={fieldName}
@@ -781,4 +781,4 @@ const AdminElegant = () => {
   );
 };
 
-export default AdminElegant;
+export default AdminVerb;

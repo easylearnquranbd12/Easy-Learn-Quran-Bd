@@ -18,6 +18,7 @@ const promotionRoutes = require("./routes/promotionRoutes");
 const translateRoutes = require("./routes/translateRoutes");
 const mediaUploadRoutes = require("./routes/mediaUploadRoutes");
 const firstLayerRoutes = require("./routes/firstLayerRoutes");
+const secondLayerRoutes = require("./routes/secondLayerRoutes");
 
 dotenv.config();
 
@@ -54,6 +55,7 @@ app.use("/api/promotions", promotionRoutes);
 app.use("/api/translate", translateRoutes);
 app.use("/delete-media", mediaUploadRoutes);
 app.use("/first-layer", firstLayerRoutes);
+app.use("/second-layer", secondLayerRoutes);
 
 // Root route
 app.get("/", (req, res) => {

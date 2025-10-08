@@ -24,6 +24,7 @@ const getBlogsCollection = () => {
   return client.db("Learning-Quiz-Platfrom").collection("blog");
 };
 // First Layer
+// vocabulary
 const getFirstLayerVocabularyCollection = () => {
   return client.db("Learning-Quiz-Platfrom").collection("VocabularyField");
 };
@@ -33,11 +34,76 @@ const getFirstLayerVocabularyCollections = () => {
 const getFirstLayerVocabularyExerciseCollections = () => {
   return client.db("Learning-Quiz-Platfrom").collection("createExercise");
 };
-const getFirstLayerSentenceCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("sentence");
+
+// elegant
+const getFirstLayerElegantFieldsCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("ElegantField");
 };
 const getFirstLayerElegantCollection = () => {
   return client.db("Learning-Quiz-Platfrom").collection("Elegant");
+};
+const getFirstLayerElegantExerciseCollection = () => {
+  return client
+    .db("Learning-Quiz-Platfrom")
+    .collection("createExerciseElegant");
+};
+
+// second layer
+// sentence
+const getSecondLayerSentenceFieldsCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("SentenceField");
+};
+const getSecondLayerSentenceCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("Sentence");
+};
+const getSecondLayerSentenceExerciseCollection = () => {
+  return client
+    .db("Learning-Quiz-Platfrom")
+    .collection("createExerciseSentence");
+};
+// Verb
+const getSecondLayerVerbFieldsCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("VerbField");
+};
+const getSecondLayerVerbCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("Verb");
+};
+const getSecondLayerVerbExerciseCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("createExerciseVerb");
+};
+// Article
+const getSecondLayerArticleFieldsCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("ArticleField");
+};
+const getSecondLayerArticleCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("Article");
+};
+const getSecondLayerArticleExerciseCollection = () => {
+  return client
+    .db("Learning-Quiz-Platfrom")
+    .collection("createExerciseArticle");
+};
+// Tense
+const getSecondLayerTenseFieldsCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("TenseField");
+};
+const getSecondLayerTenseCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("Tense");
+};
+const getSecondLayerTenseExerciseCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("createExerciseTense");
+};
+// Preposition
+const getSecondLayerPrepositionFieldsCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("PrepositionField");
+};
+const getSecondLayerPrepositionCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("Preposition");
+};
+const getSecondLayerPrepositionExerciseCollection = () => {
+  return client
+    .db("Learning-Quiz-Platfrom")
+    .collection("createExercisePreposition");
 };
 
 const getAddPaymentMethodCollection = () => {
@@ -68,9 +134,25 @@ module.exports = {
   getAuthorTextCollection,
   getSocialLinksCollection,
   getPromotionCollection,
-  getFirstLayerSentenceCollection,
-  getFirstLayerElegantCollection,
+  getSecondLayerSentenceCollection,
   getFirstLayerVocabularyCollection,
   getFirstLayerVocabularyCollections,
   getFirstLayerVocabularyExerciseCollections,
+  getSecondLayerSentenceFieldsCollection,
+  getSecondLayerSentenceExerciseCollection,
+  getFirstLayerElegantFieldsCollection,
+  getFirstLayerElegantCollection,
+  getFirstLayerElegantExerciseCollection,
+  getSecondLayerVerbFieldsCollection,
+  getSecondLayerVerbCollection,
+  getSecondLayerVerbExerciseCollection,
+  getSecondLayerArticleFieldsCollection,
+  getSecondLayerArticleCollection,
+  getSecondLayerArticleExerciseCollection,
+  getSecondLayerTenseFieldsCollection,
+  getSecondLayerTenseCollection,
+  getSecondLayerTenseExerciseCollection,
+  getSecondLayerPrepositionFieldsCollection,
+  getSecondLayerPrepositionCollection,
+  getSecondLayerPrepositionExerciseCollection,
 };

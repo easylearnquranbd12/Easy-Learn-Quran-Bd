@@ -1,19 +1,21 @@
 const { ObjectId } = require("mongodb");
 const {
-  getFirstLayerSentenceCollection,
-  getFirstLayerElegantCollection,
   getFirstLayerVocabularyCollection,
   getFirstLayerVocabularyCollections,
   getFirstLayerVocabularyExerciseCollections,
+  getFirstLayerElegantFieldsCollection,
+  getFirstLayerElegantCollection,
+  getFirstLayerElegantExerciseCollection,
 } = require("../config/db");
 
-// ✅ This already returns the collection
-const sentenceCollection = getFirstLayerSentenceCollection();
-const elegantCollection = getFirstLayerElegantCollection();
 const vocabularyCollection = getFirstLayerVocabularyCollection();
 const vocabulary = getFirstLayerVocabularyCollections();
 const exercise = getFirstLayerVocabularyExerciseCollections();
 
+// elegant
+const elegantFieldsCollection = getFirstLayerElegantFieldsCollection();
+const elegantCollection = getFirstLayerElegantCollection();
+const elegantExerciseCollection = getFirstLayerElegantExerciseCollection();
 // Vocabulary
 // ✅ Create Vocabulary
 const createVocabulary = async (req, res) => {
@@ -80,14 +82,18 @@ const updateVocabularyField = async (req, res) => {
       updateData[fieldName] = doc.isActive === "ON" ? "OFF" : "ON";
     } else {
       if (!value) {
-        return res
-          .status(400)
-          .json({ success: false, message: "value is required for this field" });
+        return res.status(400).json({
+          success: false,
+          message: "value is required for this field",
+        });
       }
       updateData[fieldName] = value;
     }
 
-    const result = await vocabularyCollection.updateOne({}, { $set: updateData });
+    const result = await vocabularyCollection.updateOne(
+      {},
+      { $set: updateData }
+    );
 
     if (result.matchedCount === 0) {
       return res
@@ -116,7 +122,7 @@ const getVocabularyField = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-// Temporari Excursise data 
+// Temporari Excursise data
 // Exercise Controller
 const createExercise = async (req, res) => {
   try {
@@ -148,103 +154,143 @@ const createExercise = async (req, res) => {
   }
 };
 
-
-// Create new sentence(s)
-const createSentence = async (req, res) => {
+// Elegant
+// ✅ Create Elegant
+const createElegant = async (req, res) => {
   try {
-    const elegant = Array.isArray(req.body) ? req.body : [req.body]; // always array
-    const result = await sentenceCollection.insertMany(sentences);
+    const data = req.body;
+    const result = await elegantCollection.insertOne(data);
 
-    res.status(201).json({
-      message: "Sentences added successfully",
-      insertedCount: result.insertedCount,
-    });
+    res.status(201).json({ success: true, id: result.insertedId });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error adding sentences", error: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// Get all sentences
-const getSentences = async (req, res) => {
+// ✅ Get All Elegant
+const getAllElegant = async (req, res) => {
   try {
-    const sentences = await sentenceCollection
-      .find()
-      .sort({ _id: -1 })
-      .toArray();
-    res.json(sentences);
+    const result = await elegantCollection.find().toArray();
+    res.json({ success: true, data: result });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error fetching sentences", error: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// Delete sentence
-const deleteSentence = async (req, res) => {
+// ✅ Delete Elegant
+const deleteElegant = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await sentenceCollection.deleteOne({
+    const result = await elegantCollection.deleteOne({
       _id: new ObjectId(id),
     });
 
     if (result.deletedCount === 0) {
-      return res.status(404).json({ message: "Sentence not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Elegant not found" });
     }
 
-    res.json({ message: "Sentence deleted successfully" });
+    res.json({ success: true, message: "Deleted successfully" });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error deleting sentence", error: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// Create new Elegant(s)
-const createElegant = async (req, res) => {
+// ✅ Update Elegant Field (like synonyms, antonyms, exampleEnglish, exampleBangla, isActive)
+const updateElegantField = async (req, res) => {
   try {
-    const elegant = Array.isArray(req.body) ? req.body : [req.body]; // always array
-    const result = await elegantCollection.insertMany(elegant);
+    const { fieldName, value } = req.body;
 
-    res.status(201).json({
-      message: "elegant added successfully",
-      insertedCount: result.insertedCount,
+    if (!fieldName) {
+      return res
+        .status(400)
+        .json({ success: false, message: "fieldName is required" });
+    }
+
+    let updateData = {};
+
+    if (fieldName === "isActive") {
+      // যদি isActive update হয়, toggle কর
+      const doc = await elegantFieldsCollection.findOne({});
+      if (!doc) {
+        return res
+          .status(404)
+          .json({ success: false, message: "No elegant found" });
+      }
+
+      updateData[fieldName] = doc.isActive === "ON" ? "OFF" : "ON";
+    } else {
+      if (!value) {
+        return res.status(400).json({
+          success: false,
+          message: "value is required for this field",
+        });
+      }
+      updateData[fieldName] = value;
+    }
+
+    const result = await elegantFieldsCollection.updateOne(
+      {},
+      { $set: updateData }
+    );
+
+    if (result.matchedCount === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No elegant found to update" });
+    }
+
+    res.json({
+      success: true,
+      message:
+        fieldName === "isActive"
+          ? `isActive toggled successfully`
+          : `${fieldName} updated successfully`,
+      updatedValue: updateData[fieldName],
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error adding elegant", error: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
-
-// Get all elegant
-const getElegant = async (req, res) => {
+// ✅ Get Elegant Fields
+const getElegantField = async (req, res) => {
   try {
-    const elegant = await elegantCollection.find().sort({ _id: -1 }).toArray();
-    res.json(elegant);
+    const result = await elegantFieldsCollection.find().toArray();
+    res.json({ success: true, data: result });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error fetching elegant", error: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
-
-// Delete elegant
-const deleteElegant = async (req, res) => {
+// Temporary Exercise data
+// Exercise Controller
+const createExerciseElegant = async (req, res) => {
   try {
-    const { id } = req.params;
-    const result = await elegantCollection.deleteOne({ _id: new ObjectId(id) });
+    const data = {
+      ...req.body,
+      createdAt: new Date(), // Save timestamp
+    };
 
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ message: "elegant not found" });
-    }
+    // Insert exercise
+    const result = await elegantExerciseCollection.insertOne(data);
 
-    res.json({ message: "elegant deleted successfully" });
+    // Create TTL index (will auto delete after 30 days)
+    await elegantExerciseCollection.createIndex(
+      { createdAt: 1 },
+      { expireAfterSeconds: 10 * 24 * 60 * 60 } // 30 days
+    );
+
+    res.status(201).json({
+      success: true,
+      id: result.insertedId,
+      message: "Exercise created. It will auto-delete after 30 days.",
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error deleting elegant", error: error.message });
+    console.error("Error creating exercise:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
@@ -255,10 +301,10 @@ module.exports = {
   updateVocabularyField,
   getVocabularyField,
   createExercise,
-  createSentence,
-  getSentences,
-  deleteSentence,
   createElegant,
-  getElegant,
+  getAllElegant,
   deleteElegant,
+  updateElegantField,
+  getElegantField,
+  createExerciseElegant,
 };

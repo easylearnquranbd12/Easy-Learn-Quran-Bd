@@ -1,0 +1,31 @@
+/* Wrapper style */
+.editor-wrapper {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 50;
+}
+
+/* Toolbar fixed at top with background */
+.custom-quill .ql-toolbar {
+  position: sticky;
+  top: 0;
+  background: #f9fafb; /* এখানে চাইলে gradient বা অন্য রঙ দিতে পারো */
+  z-index: 10;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 6px 8px;
+  border-radius: 5px 5px 0 0;
+  z-index: 50;
+}
+
+/* Editor resizable like textarea */
+.custom-quill .ql-container {
+  min-height: 220px; /* textarea মত ছোট */
+  height: 200px; /* default */
+  max-height: 500px; /* বড় হলে scroll হবে */
+  resize: vertical; /* drag করে বড়/ছোট করা যাবে */
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 0 0 5px 5px;
+  z-index: 50;
+}

@@ -1,160 +1,131 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { AlertCircle, RefreshCw } from "lucide-react";
-import { useState } from "react";
+
+
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import CustomLoading from "../../../components/Loading/CustomLoading";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
-const Vocabulary = () => {
+const Preposition = () => {
   const axiosPublic = useAxiosPublic();
-  const [showAll, setShowAll] = useState(false);
+  const [activeSection, setActiveSection] = useState("mainWord");
   const { register, handleSubmit, reset, setValue } = useForm();
-   const queryClient = useQueryClient();
-  // Fetch all vocabulary Fields
-  const {
-    data: vocabularyFields,
-    isLoading,
-    isError,
-    refetch,
-  } = useQuery({
-    queryKey: ["vocabularyFields"],
-    queryFn: async () => {
-      const res = await axiosPublic.get("/first-layer/vocabularyField");
-      return res.data.data;
-    },
-  });
+  const queryClient = useQueryClient();
 
-  // Fetch vocabulary
-  const {
-    data: vocabulary = [],
-    isLoading: vocabularyLoading,
-    isError: vocabularyError,
-    refetch: refetchVocabulary,
-    error,
-  } = useQuery({
-    queryKey: ["vocabulary"],
+  const refs = {
+    mainWord: useRef(null),
+    banglaPronunciation: useRef(null),
+    banglaMeaning: useRef(null),
+    synonyms: useRef(null),
+    antonyms: useRef(null),
+    exampleEnglish: useRef(null),
+    exampleBangla: useRef(null),
+  };
+
+  // Fetch preposition fields
+  const { data: prepositionFields = [], isLoading: fieldLoading } = useQuery({
+    queryKey: ["prepositionFields"],
     queryFn: async () => {
-      const res = await axiosPublic.get("/first-layer/vocabulary");
+      const res = await axiosPublic.get("/second-layer/prepositionField");
       return res.data.data || [];
     },
   });
 
-  
-  // Create Vocabulary
-  const { mutateAsync: createVocabularyExercise } = useMutation({
-    mutationFn: async (newData) => {
-      const res = await axiosPublic.post("/first-layer/createExercise", newData);
-      return res.data;
-    },
-    onSuccess: () => {
-      Swal.fire("✅ Success", "Exercise created successfully!", "success");
-      reset();
-      queryClient.invalidateQueries({ queryKey: ["vocabulary"] });
-    },
-    onError: (error) => {
-      Swal.fire(
-        "❌ Error",
-        error.message || "Failed to create vocabulary",
-        "error"
-      );
+  // Fetch preposition data
+  const { data: preposition = [], isLoading: prepositionLoading } = useQuery({
+    queryKey: ["preposition"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/second-layer/preposition");
+      return res.data.data || [];
     },
   });
- 
-  // Toggle show all rows
-  const visibleVocabulary = showAll ? vocabulary : vocabulary.slice(0, 10);
 
-const onSubmit = async (data) => {
-  // প্রতিটি row এর ফিল্ড লিস্ট
-  const row1Fields = [
-    data.mainWord,
-    data.banglaPronunciation,
-    data.banglaMeaning,
-    data.synonyms,
-    data.antonyms,
-    data.exampleEnglish,
-    data.exampleBangla,
+  if (fieldLoading || prepositionLoading) return <CustomLoading />;
+
+  const prepositionField = prepositionFields[0] || {};
+  const data = preposition[0] || {};
+
+  if (!data.mainWord)
+    return <p className="text-center mt-10">No preposition data found.</p>;
+
+  // Dynamic tab generation
+  const tabs = [
+    { id: "mainWord", label: prepositionField.mainWord },
+    { id: "banglaPronunciation", label: prepositionField.banglaPronunciation },
+    { id: "banglaMeaning", label: prepositionField.banglaMeaning },
+    { id: "synonyms", label: prepositionField.synonyms },
+    { id: "antonyms", label: prepositionField.antonyms },
+    { id: "exampleEnglish", label: prepositionField.exampleEnglish },
+    { id: "exampleBangla", label: prepositionField.exampleBangla },
   ];
 
-  const row2Fields = [
-    data.mainWord2,
-    data.banglaPronunciation2,
-    data.banglaMeaning2,
-    data.synonyms2,
-    data.antonyms2,
-    data.exampleEnglish2,
-    data.exampleBangla2,
-  ];
+  const handleSectionScroll = (section) => {
+    setActiveSection(section);
+    refs[section].current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
 
-  const row3Fields = [
-    data.mainWord3,
-    data.banglaPronunciation3,
-    data.banglaMeaning3,
-    data.synonyms3,
-    data.antonyms3,
-    data.exampleEnglish3,
-    data.exampleBangla3,
-  ];
+  const onSubmit = async (data) => {
+    // প্রতিটি row এর ফিল্ড লিস্ট
+    const row1Fields = [
+      data.mainWord,
+      data.banglaPronunciation,
+      data.banglaMeaning,
+      data.synonyms,
+      data.antonyms,
+      data.exampleEnglish,
+      data.exampleBangla,
+    ];
 
+    const row2Fields = [
+      data.mainWord2,
+      data.banglaPronunciation2,
+      data.banglaMeaning2,
+      data.synonyms2,
+      data.antonyms2,
+      data.exampleEnglish2,
+      data.exampleBangla2,
+    ];
 
-  const row1Completed = row1Fields.filter(
-    (f) => f && f.trim() !== ""
-  ).length;
+    const row3Fields = [
+      data.mainWord3,
+      data.banglaPronunciation3,
+      data.banglaMeaning3,
+      data.synonyms3,
+      data.antonyms3,
+      data.exampleEnglish3,
+      data.exampleBangla3,
+    ];
 
-  const row2Completed = row2Fields.filter(
-    (f) => f && f.trim() !== ""
-  ).length;
+    const row1Completed = row1Fields.filter((f) => f && f.trim() !== "").length;
 
-  const row3Completed = row3Fields.filter(
-    (f) => f && f.trim() !== ""
-  ).length;
+    const row2Completed = row2Fields.filter((f) => f && f.trim() !== "").length;
 
-  
-  if (
-    row1Completed < 3 &&
-    row2Completed < 3 &&
-    row3Completed < 3
-  ) {
-    Swal.fire("At least one row must have a minimum of 3 completed fields!", "", "warning");
-    return;
-  }
+    const row3Completed = row3Fields.filter((f) => f && f.trim() !== "").length;
 
-  createVocabularyExercise(data)
+    if (row1Completed < 3 && row2Completed < 3 && row3Completed < 3) {
+      Swal.fire(
+        "At least one row must have a minimum of 3 completed fields!",
+        "",
+        "warning"
+      );
+      return;
+    }
 
-  reset();
-};
+    console.log(data);
 
+    reset();
+  };
 
-
-  if (isLoading || vocabularyLoading) return <CustomLoading />;
-
-  if (isError || vocabularyError)
-    return (
-      <div className="min-h-[70vh] flex items-center justify-center p-4">
-        <div className="bg-green-200 border border-red-700/50 p-6 rounded-xl text-center max-w-md w-full">
-          <AlertCircle size={40} className="text-red-600 mx-auto mb-4" />
-          <h2 className="text-xl text-red-500 mb-2">
-            Unable to Load Vocabulary
-          </h2>
-          <p className="text-black mb-6">
-            {error?.message || "Error occurred"}
-          </p>
-          <button
-            onClick={refetchVocabulary}
-            className="flex items-center gap-2 mx-auto px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
-          >
-            <RefreshCw size={16} />
-            Try Again
-          </button>
-        </div>
-      </div>
-    );
-
+  console.log(prepositionField);
   return (
     <div className="max-w-[1400px] mx-auto">
-      <div className="bg-white shadow-md rounded-2xl p-2 md:p-5 mt-10 space-y-3">
+      <div className="py-8 ">
         <div className="flex flex-col items-center mb-3 space-y-2">
-          {vocabularyFields?.map((item) => (
+          {prepositionFields?.map((item) => (
             <div key={item._id} className="text-center max-w-[1400px]">
               <h2 className="text-3xl font-bold text-[#bb874a]">
                 {item?.title || "Title Missing"}
@@ -166,111 +137,54 @@ const onSubmit = async (data) => {
           ))}
         </div>
 
-        {/* Vocabulary Table */}
-        <div className="overflow-x-auto rounded-xl shadow border border-gray-200">
-          <table className="table w-full">
-            {vocabularyFields?.map((item, index) => (
-              <thead key={item._id} className="bg-[#bb874a] text-white text-sm">
-                <tr>
-                  <th className="min-w-10">Serial</th>
-                  <th className="min-w-96">{item?.mainWord}</th>
-                  <th className="min-w-96">{item?.banglaPronunciation}</th>
-                  <th className="min-w-96">{item?.banglaMeaning}</th>
-                  <th className="min-w-96">{item?.synonyms}</th>
-                  <th className="min-w-96">{item?.antonyms}</th>
-                  <th className="min-w-96">{item?.exampleEnglish}</th>
-                  <th className="min-w-96">{item?.exampleBangla}</th>
-                </tr>
-              </thead>
-            ))}
-            <tbody>
-              {visibleVocabulary.length > 0 ? (
-                visibleVocabulary.map((row, i) => (
-                  <tr
-                    key={i}
-                    className="hover:bg-gray-50 transition border-b text-sm"
+        {/* Tabs */}
+        <div className="bg-white rounded-lg shadow-lg mb-8 sticky top-20 z-9999 w-full ">
+          <div className="flex flex-wrap p-4  border-b max-w-[1400px] mx-auto px-2">
+            {tabs.map(
+              (tab) =>
+                tab.label && (
+                  <button
+                    key={tab.id}
+                    onClick={() => handleSectionScroll(tab.id)}
+                    className={`px-6 py-2 m-1 rounded-lg font-semibold transition-all duration-300 ${
+                      activeSection === tab.id
+                        ? "bg-orange-600 text-white shadow-md"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
                   >
-                    <td className="font-semibold min-w-10">{i + 1}</td>
-                    <td>
-                      <textarea
-                        readOnly
-                        className="input input-sm w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300"
-                        defaultValue={row.mainWord}
-                      />
-                    </td>
-                    <td>
-                      <textarea
-                        readOnly
-                        className="input input-sm w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300"
-                        defaultValue={row.banglaPronunciation}
-                      />
-                    </td>
-                    <td>
-                      <textarea
-                        readOnly
-                        className="input input-sm w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300"
-                        defaultValue={row.banglaMeaning}
-                      />
-                    </td>
-                    <td>
-                      <textarea
-                        readOnly
-                        className="input input-sm w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300"
-                        defaultValue={row.synonyms}
-                      />
-                    </td>
-                    <td>
-                      <textarea
-                        readOnly
-                        className="input input-sm w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300"
-                        defaultValue={row.antonyms}
-                      />
-                    </td>
-                    <td>
-                      <textarea
-                        readOnly
-                        className="input input-sm w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300"
-                        defaultValue={row.exampleEnglish}
-                      />
-                    </td>
-                    <td>
-                      <textarea
-                        readOnly
-                        className="input input-sm w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300"
-                        defaultValue={row.exampleBangla}
-                      />
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="9" className="text-center py-6 text-gray-500">
-                    No vocabulary found.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                    {tab.label}
+                  </button>
+                )
+            )}
+          </div>
         </div>
 
-        {vocabulary.length > 10 && (
-          <div className="flex justify-center mt-4">
-            <button
-              onClick={() => setShowAll(!showAll)}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-            >
-              {showAll ? "See Less" : "See More"}
-            </button>
-          </div>
-        )}
+        {/* Dynamic Sections */}
+        <div className="space-y-12 max-w-[1400px] mx-auto ">
+          {tabs.map(
+            (tab) =>
+              tab.label && (
+                <section key={tab.id} ref={refs[tab.id]} className="p-2 md:p-6">
+                  <h2 className="text-2xl font-bold mb-4 text-gray-800">
+                    {tab.label}
+                  </h2>
+                  <div
+                    className="prose max-w-none text-gray-700  p-4 "
+                    dangerouslySetInnerHTML={{
+                      __html: data?.[tab.id] || "<p>No content available.</p>",
+                    }}
+                  />
+                </section>
+              )
+          )}
+        </div>
       </div>
-      {/* Vocabulary Fields Exercise */}
       <div>
         <form onSubmit={handleSubmit(onSubmit)}>
-          {vocabularyFields?.map(
+          {prepositionFields?.map(
             (item) =>
               item.isActive === "ON" && (
-                <div>
+                <div key={item._id} className="max-w-[1400px] mx-auto px-4">
                   <div className="card bg-white shadow-md rounded-2xl p-2 md:p-5 mt-10 space-y-3 ">
                     <h3 className="text-xl font-semibold text-[#bb874a]">
                       📖Learning Your Exercise
@@ -459,10 +373,7 @@ const onSubmit = async (data) => {
                     </div>
 
                     <div className="flex justify-center mt-5">
-                      <button
-                        className="px-6 py-2 bg-[#bb874a] text-white rounded-lg shadow hover:bg-[#5e4528] transition"
-                       
-                      >
+                      <button className="px-6 py-2 bg-[#bb874a] text-white rounded-lg shadow hover:bg-[#5e4528] transition">
                         Submit Now
                       </button>
                     </div>
@@ -476,4 +387,4 @@ const onSubmit = async (data) => {
   );
 };
 
-export default Vocabulary;
+export default Preposition;
