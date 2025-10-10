@@ -7,9 +7,9 @@ import Swal from "sweetalert2";
 import TittleAnimation from "../../../../../components/TittleAnimation/TittleAnimation";
 import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
 import RichTextField from "../../../../../shared/TextEditor/RichTextField";
-import ArticleModal from "./ArticleModal";
+import TantusterModal from "./TantusterModal";
 
-const AdminArticle = () => {
+const AdminTantuster = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [fieldName, setFieldName] = useState("");
   const [selectedVocabId, setSelectedVocabId] = useState(null);
@@ -31,14 +31,14 @@ const AdminArticle = () => {
 
   // Fetch all vocabulary Fields
   const {
-    data: sentenceFields = [],
+    data: elegantFields = [],
     isLoading,
     isError,
     refetch,
   } = useQuery({
-    queryKey: ["sentenceFields"],
+    queryKey: ["elegantFields"],
     queryFn: async () => {
-      const res = await axiosPublic.get("/second-layer/articleField");
+      const res = await axiosPublic.get("/first-layer/tantusterField");
       console.log(res.data.data);
       return res.data.data;
     },
@@ -47,7 +47,7 @@ const AdminArticle = () => {
   // Create Vocabulary
   const { mutateAsync: createVocabulary } = useMutation({
     mutationFn: async (newData) => {
-      const res = await axiosPublic.post("/second-layer/article", newData);
+      const res = await axiosPublic.post("/first-layer/tantuster", newData);
       return res.data;
     },
     onSuccess: () => {
@@ -72,7 +72,7 @@ const AdminArticle = () => {
   } = useQuery({
     queryKey: ["vocabulary"],
     queryFn: async () => {
-      const res = await axiosPublic.get("/second-layer/article");
+      const res = await axiosPublic.get("/first-layer/tantuster");
       return res.data.data || [];
     },
   });
@@ -80,15 +80,15 @@ const AdminArticle = () => {
   // delete vocabulary
   const { mutateAsync: deleteVocabulary } = useMutation({
     mutationFn: async (id) => {
-      const res = await axiosPublic.delete(`/second-layer/article/${id}`);
+      const res = await axiosPublic.delete(`/first-layer/tantuster/${id}`);
       return res.data;
     },
     onSuccess: () => {
-      Swal.fire("Deleted!", "Sentence has been deleted.", "success");
+      Swal.fire("Deleted!", "elegant has been deleted.", "success");
       refetchVocabulary(); // Refetch the list after deletion
     },
     onError: (error) => {
-      Swal.fire("Error!", "Failed to delete Sentence.", "error");
+      Swal.fire("Error!", "Failed to delete elegant.", "error");
       console.error(error);
     },
   });
@@ -97,7 +97,7 @@ const AdminArticle = () => {
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "You want to delete this Sentence?",
+      text: "You want to delete this elegant?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -148,7 +148,7 @@ const AdminArticle = () => {
   // Toggle mutation using item.isActive
   const toggleIsActiveMutation = useMutation({
     mutationFn: async (currentState) => {
-      const res = await axiosPublic.put(`/second-layer/articleField/toggle`, {
+      const res = await axiosPublic.put(`/first-layer/tantusterField/toggle`, {
         fieldName: "isActive", // ✅ এটা দিতে হবে
         currentValue: currentState,
       });
@@ -160,7 +160,7 @@ const AdminArticle = () => {
         title: "Success",
         text: `Vocabulary is now ${data.updatedValue}`,
       });
-      queryClient.invalidateQueries({ queryKey: ["sentenceFields"] });
+      queryClient.invalidateQueries({ queryKey: ["elegantFields"] });
     },
     onError: (error) => {
       Swal.fire(
@@ -187,7 +187,7 @@ const AdminArticle = () => {
             {/* Mobile View - Vertical Layout */}
             {/* <div className="block md:hidden space-y-4">
                 <div>
-                {sentenceFields.map((item) => (
+                {elegantFields.map((item) => (
                   <div key={item._id} className="flex items-center gap-2 my-2">
                     <span className="font-semibold">
                       Create {item.title || "Vocabulary"} Exercise
@@ -204,7 +204,7 @@ const AdminArticle = () => {
                 ))}
               </div>
               <form onSubmit={handleSubmit(onSubmit)}>
-                {sentenceFields?.map((item) => (
+                {elegantFields?.map((item) => (
                   <div key={item._id} className="space-y-4 p-2">
                   
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200 w-96">
@@ -390,17 +390,17 @@ const AdminArticle = () => {
             {/* Desktop View - Table Layout */}
             <div>
               <div className="mb-4 text-center">
-                {sentenceFields && sentenceFields.length > 0 && (
+                {elegantFields && elegantFields.length > 0 && (
                   <>
                     {/* Title */}
                     <div className="flex items-start justify-center gap-2 mb-2">
-                      {sentenceFields[0].title || "Title"}
+                      {elegantFields[0].title || "Title"}
                       <Edit
                         onClick={() =>
                           handleEditClick(
                             "title",
-                            sentenceFields[0].title,
-                            sentenceFields[0].title
+                            elegantFields[0].title,
+                            elegantFields[0].title
                           )
                         }
                         className="w-5 h-5 text-green-600 cursor-pointer"
@@ -410,14 +410,14 @@ const AdminArticle = () => {
                     {/* description */}
                     <div className="flex items-start justify-center gap-2">
                       <span className="text-base">
-                        {sentenceFields[0].description || "description"}
+                        {elegantFields[0].description || "description"}
                       </span>
                       <Edit
                         onClick={() =>
                           handleEditClick(
                             "description",
-                            sentenceFields[0].description,
-                            sentenceFields[0].description
+                            elegantFields[0].description,
+                            elegantFields[0].description
                           )
                         }
                         className="min-w-5 min-h-5 w-5 h-5 text-green-600 cursor-pointer"
@@ -427,7 +427,7 @@ const AdminArticle = () => {
                 )}
               </div>
               <div>
-                {sentenceFields.map((item) => (
+                {elegantFields.map((item) => (
                   <div key={item._id} className="flex items-center gap-2 my-2">
                     <span className="font-semibold">
                       Create {item.title || "Vocabulary"} Exercise
@@ -446,7 +446,7 @@ const AdminArticle = () => {
               {/* Scrollable Container with proper height */}
               <div className="max-h-[calc(100vh-250px)] overflow-auto rounded-xl shadow border border-gray-200">
                 <form onSubmit={handleSubmit(onSubmit)}>
-                  {sentenceFields?.map((item) => (
+                  {elegantFields?.map((item) => (
                     <table key={item._id} className="table w-full">
                       <thead className="bg-black text-white text-sm sticky top-0 z-10">
                         <tr>
@@ -651,7 +651,7 @@ const AdminArticle = () => {
             </div>
           ) : (
             <table className="table w-full">
-              {sentenceFields?.map((item, index) => (
+              {elegantFields?.map((item, index) => (
                 <thead
                   key={item._id}
                   className="bg-[#bb874a] text-white text-sm"
@@ -747,7 +747,7 @@ const AdminArticle = () => {
                 ) : (
                   <tr>
                     <td colSpan="9" className="text-center py-6 text-gray-500">
-                      No Sentence found.
+                      No elegant found.
                     </td>
                   </tr>
                 )}
@@ -769,7 +769,7 @@ const AdminArticle = () => {
 
       {/* Modal */}
       {modalOpen && (
-        <ArticleModal
+        <TantusterModal
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
           fieldName={fieldName}
@@ -781,4 +781,4 @@ const AdminArticle = () => {
   );
 };
 
-export default AdminArticle;
+export default AdminTantuster;

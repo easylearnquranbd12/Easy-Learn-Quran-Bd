@@ -261,6 +261,13 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
       color: "text-indigo-600",
       subItems: [
         {
+          path: "/admin-dashboard/create-vocabulary",
+          icon: BiEdit,
+          label: "Create Vocabulary",
+          description: "Create & History",
+          color: "text-indigo-600",
+        },
+        {
           path: "/admin-dashboard/create-elegant",
           icon: MdPayment,
           label: "Create Elegant",
@@ -268,9 +275,24 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
           color: "text-indigo-600",
         },
         {
-          path: "/admin-dashboard/create-vocabulary",
+          path: "/admin-dashboard/create-idiom",
           icon: BiEdit,
-          label: "Create Vocabulary",
+          label: "Create Idiom",
+          description: "Create & History",
+          color: "text-indigo-600",
+        },
+        
+        {
+          path: "/admin-dashboard/create-tantuster",
+          icon: BiEdit,
+          label: "Create Tantuster",
+          description: "Create & History",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/create-unique",
+          icon: BiEdit,
+          label: "Create unique",
           description: "Create & History",
           color: "text-indigo-600",
         },
@@ -315,6 +337,52 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
           path: "/admin-dashboard/create-preposition",
           icon: BiEdit,
           label: "Create Preposition",
+          description: "Create & History",
+          color: "text-indigo-600",
+        },
+      ],
+    },
+    {
+      path: "/admin-dashboard/third-layer",
+      icon: HiOutlineDocumentText,
+      label: "Third Layer",
+      description: "Third Layer All Info",
+      color: "text-indigo-600",
+      subItems: [
+        {
+          path: "/admin-dashboard/create-songs",
+          icon: BiEdit,
+          label: "Create  Song",
+          description: "Create & History",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/create-porems",
+          icon: BiEdit,
+          label: "Create Porem",
+          description: "Create & History",
+          color: "text-indigo-600",
+        },
+      ],
+    },
+    {
+      path: "/admin-dashboard/fourth-layer",
+      icon: HiOutlineDocumentText,
+      label: "Fourth Layer",
+      description: "Fourth Layer All Info",
+      color: "text-indigo-600",
+      subItems: [
+        {
+          path: "/admin-dashboard/create-song",
+          icon: BiEdit,
+          label: "Create  Song",
+          description: "Create & History",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/create-porem",
+          icon: BiEdit,
+          label: "Create Porem",
           description: "Create & History",
           color: "text-indigo-600",
         },

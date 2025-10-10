@@ -34,6 +34,16 @@ const getFirstLayerVocabularyCollections = () => {
 const getFirstLayerVocabularyExerciseCollections = () => {
   return client.db("Learning-Quiz-Platfrom").collection("createExercise");
 };
+// idiom
+const getFirstLayerIdiomCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("IdiomField");
+};
+const getFirstLayerIdiomCollections = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("Idiom");
+};
+const getFirstLayerIdiomExerciseCollections = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("createExerciseIdiom");
+};
 
 // elegant
 const getFirstLayerElegantFieldsCollection = () => {
@@ -46,6 +56,30 @@ const getFirstLayerElegantExerciseCollection = () => {
   return client
     .db("Learning-Quiz-Platfrom")
     .collection("createExerciseElegant");
+};
+// Tantuster
+const getFirstLayerTantusterFieldsCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("TantusterField");
+};
+const getFirstLayerTantusterCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("Tantuster");
+};
+const getFirstLayerTantusterExerciseCollection = () => {
+  return client
+    .db("Learning-Quiz-Platfrom")
+    .collection("createExerciseTantuster");
+};
+//new Tantuster
+const getFirstLayerNewTantusterFieldsCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("NewTantusterField");
+};
+const getFirstLayerNewTantusterCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("NewTantuster");
+};
+const getFirstLayerNewTantusterExerciseCollection = () => {
+  return client
+    .db("Learning-Quiz-Platfrom")
+    .collection("createExerciseNewTantuster");
 };
 
 // second layer
@@ -105,6 +139,32 @@ const getSecondLayerPrepositionExerciseCollection = () => {
     .db("Learning-Quiz-Platfrom")
     .collection("createExercisePreposition");
 };
+// third layer
+// Good Life Style
+// const getThirdLayerGoodLifeStyleFieldsCollection = () => {
+//   return client.db("Learning-Quiz-Platfrom").collection("GoodLifeStyleField");
+// };
+// const getThirdLayerGoodLifeStyleCollection = () => {
+//   return client.db("Learning-Quiz-Platfrom").collection("GoodLifeStyle");
+// };
+// const getThirdLayerGoodLifeStyleExerciseCollection = () => {
+//   return client
+//     .db("Learning-Quiz-Platfrom")
+//     .collection("createExerciseGoodLifeStyle");
+// };
+// Four layer
+// Good Song
+const getFourthLayerGoodSongFieldsCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("GoodSongField");
+};
+const getFourthLayerGoodSongCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("GoodSong");
+};
+const getFourthLayerGoodSongExerciseCollection = () => {
+  return client
+    .db("Learning-Quiz-Platfrom")
+    .collection("createExerciseGoodSong");
+};
 
 const getAddPaymentMethodCollection = () => {
   return client.db("Learning-Quiz-Platfrom").collection("AddPaymentMethod");
@@ -155,4 +215,16 @@ module.exports = {
   getSecondLayerPrepositionFieldsCollection,
   getSecondLayerPrepositionCollection,
   getSecondLayerPrepositionExerciseCollection,
+  getFourthLayerGoodSongFieldsCollection,
+  getFourthLayerGoodSongCollection,
+  getFourthLayerGoodSongExerciseCollection,
+  getFirstLayerTantusterFieldsCollection,
+  getFirstLayerTantusterCollection,
+  getFirstLayerTantusterExerciseCollection,
+  getFirstLayerNewTantusterFieldsCollection,
+  getFirstLayerNewTantusterCollection,
+  getFirstLayerNewTantusterExerciseCollection,
+  getFirstLayerIdiomCollection,
+  getFirstLayerIdiomCollections,
+  getFirstLayerIdiomExerciseCollections,
 };

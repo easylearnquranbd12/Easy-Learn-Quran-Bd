@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import CustomLoading from "../../../components/Loading/CustomLoading";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
-const Vocabulary = () => {
+const Idiom = () => {
   const axiosPublic = useAxiosPublic();
   const [showAll, setShowAll] = useState(false);
   const { register, handleSubmit, reset, setValue } = useForm();
@@ -20,7 +20,7 @@ const Vocabulary = () => {
   } = useQuery({
     queryKey: ["vocabularyFields"],
     queryFn: async () => {
-      const res = await axiosPublic.get("/first-layer/vocabularyField");
+      const res = await axiosPublic.get("/first-layer/idiomField");
       return res.data.data;
     },
   });
@@ -35,7 +35,7 @@ const Vocabulary = () => {
   } = useQuery({
     queryKey: ["vocabulary"],
     queryFn: async () => {
-      const res = await axiosPublic.get("/first-layer/vocabulary");
+      const res = await axiosPublic.get("/first-layer/idiom");
       return res.data.data || [];
     },
   });
@@ -44,7 +44,7 @@ const Vocabulary = () => {
   // Create Vocabulary
   const { mutateAsync: createVocabularyExercise } = useMutation({
     mutationFn: async (newData) => {
-      const res = await axiosPublic.post("/first-layer/createExercise", newData);
+      const res = await axiosPublic.post("/first-layer/createExerciseIdiom", newData);
       return res.data;
     },
     onSuccess: () => {
@@ -476,4 +476,4 @@ const onSubmit = async (data) => {
   );
 };
 
-export default Vocabulary;
+export default Idiom;

@@ -9,6 +9,12 @@ import AdminArticle from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLaye
 import AdminPreposition from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Preposition/AdminPreposition";
 import AdminTense from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Tense/AdminTense";
 import AdminVerb from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Verb/AdminVerb";
+
+import AdminPorem from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Porem/AdminPorem";
+
+import AdminIdiom from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Idiom/AdminIdiom";
+import AdminTantuster from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Tantuster/AdminTantuster";
+import AdminSong from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Song/AdminSong";
 import EnrollCourse from "../Pages/CoursePages/EnrollCourse";
 import DashboardRedirect from "../Pages/DashboardRedirect";
 import AdminRoute from "./AdminRoute";
@@ -309,6 +315,14 @@ export const routes = createBrowserRouter([
         ),
       },
       {
+        path: "create-idiom",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminIdiom />
+          </Suspense>
+        ),
+      },
+      {
         path: "create-sentence",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
@@ -324,6 +338,22 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
+      {
+        path: "create-tantuster",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminTantuster />
+          </Suspense>
+        ),
+      },
+      // {
+      //   path: "create-unique",
+      //   element: (
+      //     <Suspense fallback={<LoadingSpinner />}>
+      //       <AdminNew />
+      //     </Suspense>
+      //   ),
+      // },
       {
         path: "create-verb",
         element: (
@@ -353,6 +383,22 @@ export const routes = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <AdminPreposition />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-song",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminSong />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-porem",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminPorem />
           </Suspense>
         ),
       },
