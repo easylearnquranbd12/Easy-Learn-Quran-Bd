@@ -20,6 +20,7 @@ const mediaUploadRoutes = require("./routes/mediaUploadRoutes");
 const firstLayerRoutes = require("./routes/firstLayerRoutes");
 const secondLayerRoutes = require("./routes/secondLayerRoutes");
 const fourthLayerRoutes = require("./routes/fourthLayerRoutes");
+const thirdLayerRoutes = require("./routes/thirdLayerRoutes");
 
 dotenv.config();
 
@@ -57,6 +58,7 @@ app.use("/api/translate", translateRoutes);
 app.use("/delete-media", mediaUploadRoutes);
 app.use("/first-layer", firstLayerRoutes);
 app.use("/second-layer", secondLayerRoutes);
+app.use("/third-layer", thirdLayerRoutes);
 app.use("/fourth-layer", fourthLayerRoutes);
 
 // Root route

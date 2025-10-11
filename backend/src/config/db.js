@@ -152,6 +152,77 @@ const getSecondLayerPrepositionExerciseCollection = () => {
 //     .db("Learning-Quiz-Platfrom")
 //     .collection("createExerciseGoodLifeStyle");
 // };
+// // Before Professional
+// const getThirdLayerBeforeProfessionalFieldsCollection = () => {
+//   return client
+//     .db("Learning-Quiz-Platfrom")
+//     .collection("BeforeProfessionalField");
+// };
+// const getThirdLayerBeforeProfessionalCollection = () => {
+//   return client.db("Learning-Quiz-Platfrom").collection("BeforeProfessional");
+// };
+// const getThirdLayerBeforeProfessionalExerciseCollection = () => {
+//   return client
+//     .db("Learning-Quiz-Platfrom")
+//     .collection("createExerciseBeforeProfessional");
+// };
+
+// third layer
+
+// ✅ Good Life Style
+const getThirdLayerGoodLifeStyleFieldsCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("GoodLifeStyleField");
+};
+const getThirdLayerGoodLifeStyleCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("GoodLifeStyle");
+};
+const getThirdLayerGoodLifeStyleExerciseCollection = () => {
+  return client
+    .db("Learning-Quiz-Platfrom")
+    .collection("createExerciseGoodLifeStyle");
+};
+
+// ✅ Before Professional
+const getThirdLayerBeforeProfessionalFieldsCollection = () => {
+  return client
+    .db("Learning-Quiz-Platfrom")
+    .collection("BeforeProfessionalField");
+};
+const getThirdLayerBeforeProfessionalCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("BeforeProfessional");
+};
+const getThirdLayerBeforeProfessionalExerciseCollection = () => {
+  return client
+    .db("Learning-Quiz-Platfrom")
+    .collection("createExerciseBeforeProfessional");
+};
+
+// ✅ Corporate Email
+const getThirdLayerCorporateEmailFieldsCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("CorporateEmailField");
+};
+const getThirdLayerCorporateEmailCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("CorporateEmail");
+};
+const getThirdLayerCorporateEmailExerciseCollection = () => {
+  return client
+    .db("Learning-Quiz-Platfrom")
+    .collection("createExerciseCorporateEmail");
+};
+
+// ✅ Develop Your Skills
+const getThirdLayerDevelopSkillsFieldsCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("DevelopSkillsField");
+};
+const getThirdLayerDevelopSkillsCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("DevelopSkills");
+};
+const getThirdLayerDevelopSkillsExerciseCollection = () => {
+  return client
+    .db("Learning-Quiz-Platfrom")
+    .collection("createExerciseDevelopSkills");
+};
+
 // Four layer
 // Good Song
 const getFourthLayerGoodSongFieldsCollection = () => {
@@ -194,37 +265,64 @@ module.exports = {
   getAuthorTextCollection,
   getSocialLinksCollection,
   getPromotionCollection,
-  getSecondLayerSentenceCollection,
+
   getFirstLayerVocabularyCollection,
   getFirstLayerVocabularyCollections,
   getFirstLayerVocabularyExerciseCollections,
+
+  getSecondLayerSentenceCollection,
   getSecondLayerSentenceFieldsCollection,
   getSecondLayerSentenceExerciseCollection,
+
   getFirstLayerElegantFieldsCollection,
   getFirstLayerElegantCollection,
   getFirstLayerElegantExerciseCollection,
+
   getSecondLayerVerbFieldsCollection,
   getSecondLayerVerbCollection,
   getSecondLayerVerbExerciseCollection,
+
   getSecondLayerArticleFieldsCollection,
   getSecondLayerArticleCollection,
   getSecondLayerArticleExerciseCollection,
+
   getSecondLayerTenseFieldsCollection,
   getSecondLayerTenseCollection,
   getSecondLayerTenseExerciseCollection,
+
   getSecondLayerPrepositionFieldsCollection,
   getSecondLayerPrepositionCollection,
   getSecondLayerPrepositionExerciseCollection,
+
   getFourthLayerGoodSongFieldsCollection,
   getFourthLayerGoodSongCollection,
   getFourthLayerGoodSongExerciseCollection,
+
   getFirstLayerTantusterFieldsCollection,
   getFirstLayerTantusterCollection,
   getFirstLayerTantusterExerciseCollection,
+
   getFirstLayerNewTantusterFieldsCollection,
   getFirstLayerNewTantusterCollection,
   getFirstLayerNewTantusterExerciseCollection,
+
   getFirstLayerIdiomCollection,
   getFirstLayerIdiomCollections,
   getFirstLayerIdiomExerciseCollections,
+
+  getThirdLayerGoodLifeStyleFieldsCollection,
+  getThirdLayerGoodLifeStyleCollection,
+  getThirdLayerGoodLifeStyleExerciseCollection,
+
+  getThirdLayerBeforeProfessionalFieldsCollection,
+  getThirdLayerBeforeProfessionalCollection,
+  getThirdLayerBeforeProfessionalExerciseCollection,
+
+  getThirdLayerCorporateEmailFieldsCollection,
+  getThirdLayerCorporateEmailCollection,
+  getThirdLayerCorporateEmailExerciseCollection,
+
+  getThirdLayerDevelopSkillsFieldsCollection,
+  getThirdLayerDevelopSkillsCollection,
+  getThirdLayerDevelopSkillsExerciseCollection,
 };

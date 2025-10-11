@@ -1,5 +1,9 @@
 import { Helmet } from "react-helmet-async";
 import TittleAnimation from "../../../components/TittleAnimation/TittleAnimation";
+import BeforeProfesional from "./BeforeProfesional";
+import CorporateEmail from "./CorporateEmail";
+import DevelopYourSkills from "./DevelopYourSkills";
+import GoodLifeStyle from "./GoodLifeStyle";
 
 const ThirdLayer = () => {
   return (
@@ -13,6 +17,10 @@ const ThirdLayer = () => {
           tittle="Third Layer"
           subtittle="This is the third layer"
         />
+        <GoodLifeStyle />
+        <BeforeProfesional />
+        <CorporateEmail />
+        <DevelopYourSkills />
       </div>
     </div>
   );

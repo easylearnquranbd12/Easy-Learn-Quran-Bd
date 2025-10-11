@@ -15,6 +15,10 @@ import AdminPorem from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/
 import AdminIdiom from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Idiom/AdminIdiom";
 import AdminTantuster from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Tantuster/AdminTantuster";
 import AdminSong from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Song/AdminSong";
+import AdminBeforeProfessional from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/BeforeProfessional/AdminBeforeProfessional";
+import AdminCorporateEmail from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/CorporateEmail/AdminCorporateEmail";
+import AdminDevelopYourSkills from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/DevelopYourSkills/AdminDevelopYourSkills";
+import AdminGoodLifeStyle from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/GoodLifeStyle/AdminGoodLifeStyle";
 import EnrollCourse from "../Pages/CoursePages/EnrollCourse";
 import DashboardRedirect from "../Pages/DashboardRedirect";
 import AdminRoute from "./AdminRoute";
@@ -327,6 +331,38 @@ export const routes = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <AdminSentence />
+          </Suspense>
+        ),
+      },
+      {
+        path: "good-life-style",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminGoodLifeStyle />
+          </Suspense>
+        ),
+      },
+      {
+        path: "professional-life-style",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminBeforeProfessional />
+          </Suspense>
+        ),
+      },
+      {
+        path: "corporate-email",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminCorporateEmail />
+          </Suspense>
+        ),
+      },
+      {
+        path: "develop-your-skills",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminDevelopYourSkills />
           </Suspense>
         ),
       },
