@@ -281,7 +281,7 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
           description: "Create & History",
           color: "text-indigo-600",
         },
-        
+
         {
           path: "/admin-dashboard/create-tantuster",
           icon: BiEdit,
@@ -397,6 +397,43 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
           path: "/admin-dashboard/create-porem",
           icon: BiEdit,
           label: "Create Porem",
+          description: "Create & History",
+          color: "text-indigo-600",
+        },
+      ],
+    },
+    {
+      path: "/admin-dashboard/five-layer",
+      icon: HiOutlineDocumentText,
+      label: "Five Layer",
+      description: "Five Layer All Info",
+      color: "text-indigo-600",
+      subItems: [
+        {
+          path: "/admin-dashboard/create-old-generation",
+          icon: BiEdit,
+          label: "Create  Old Generation",
+          description: "Create & History",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/create-story-writting",
+          icon: BiEdit,
+          label: "Create Story",
+          description: "Create & History",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/create-letter-writting",
+          icon: BiEdit,
+          label: "Create Letter",
+          description: "Create & History",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/create-mcq",
+          icon: BiEdit,
+          label: "Create Mcq",
           description: "Create & History",
           color: "text-indigo-600",
         },

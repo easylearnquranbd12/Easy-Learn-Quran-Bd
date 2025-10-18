@@ -237,6 +237,46 @@ const getFourthLayerGoodSongExerciseCollection = () => {
     .collection("createExerciseGoodSong");
 };
 
+// Five layer
+// ✅ Old Generation (Five Layer)
+const getFiveLayerOldGenerationFieldsCollection = () =>
+  client.db("Learning-Quiz-Platfrom").collection("OldGenerationField");
+
+const getFiveLayerOldGenerationCollection = () =>
+  client.db("Learning-Quiz-Platfrom").collection("OldGeneration");
+
+const getFiveLayerOldGenerationExerciseCollection = () =>
+  client.db("Learning-Quiz-Platfrom").collection("OldGenerationExercise");
+
+// ✅ Story Writing (Five Layer)
+const getFiveLayerStoryWritingFieldsCollection = () =>
+  client.db("Learning-Quiz-Platfrom").collection("StoryWritingField");
+
+const getFiveLayerStoryWritingCollection = () =>
+  client.db("Learning-Quiz-Platfrom").collection("StoryWriting");
+
+const getFiveLayerStoryWritingExerciseCollection = () =>
+  client.db("Learning-Quiz-Platfrom").collection("StoryWritingExercise");
+
+// ✅ Letter Writing (Five Layer)
+const getFiveLayerLetterWritingFieldsCollection = () =>
+  client.db("Learning-Quiz-Platfrom").collection("LetterWritingField");
+
+const getFiveLayerLetterWritingCollection = () =>
+  client.db("Learning-Quiz-Platfrom").collection("LetterWriting");
+
+const getFiveLayerLetterWritingExerciseCollection = () =>
+  client.db("Learning-Quiz-Platfrom").collection("LetterWritingExercise");
+// ✅ MCq Writing (Five Layer)
+const getFiveLayerMcqFieldsCollection = () =>
+  client.db("Learning-Quiz-Platfrom").collection("McqField");
+
+const getFiveLayerMcqCollection = () =>
+  client.db("Learning-Quiz-Platfrom").collection("Mcq");
+
+// const getFiveLayerMcqExerciseCollection = () =>
+//   client.db("Learning-Quiz-Platfrom").collection("McqExercise");
+
 const getAddPaymentMethodCollection = () => {
   return client.db("Learning-Quiz-Platfrom").collection("AddPaymentMethod");
 };
@@ -325,4 +365,20 @@ module.exports = {
   getThirdLayerDevelopSkillsFieldsCollection,
   getThirdLayerDevelopSkillsCollection,
   getThirdLayerDevelopSkillsExerciseCollection,
+
+  getFiveLayerOldGenerationCollection,
+  getFiveLayerOldGenerationFieldsCollection,
+  getFiveLayerOldGenerationExerciseCollection,
+
+  getFiveLayerLetterWritingCollection,
+  getFiveLayerLetterWritingFieldsCollection,
+  getFiveLayerLetterWritingExerciseCollection,
+
+
+  getFiveLayerMcqCollection,
+  getFiveLayerMcqFieldsCollection,
+
+  getFiveLayerStoryWritingCollection,
+  getFiveLayerStoryWritingFieldsCollection,
+  getFiveLayerStoryWritingExerciseCollection,
 };

@@ -1,0 +1,631 @@
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
+
+const Quiz = () => {
+  const axiosPublic = useAxiosPublic();
+
+  // ✅ Step 1: State গুলো
+  const [answers, setAnswers] = useState({});
+  const [submitted, setSubmitted] = useState(false);
+  const [result, setResult] = useState({ correct: 0, wrong: 0 });
+  
+  // 🆕 নতুন স্টেট: এটি নির্ধারণ করবে ইউজার রিভিউ মোডে আছে নাকি রেজাল্ট স্ক্রিনে
+  const [isReviewing, setIsReviewing] = useState(false);
+  
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+
+  // ✅ Step 2: TanStack Query (অপরিবর্তিত)
+  const {
+    data: questions = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["quizQuestions"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/five-layer/mcq");
+      return res.data;
+    },
+    onError: (err) => {
+      toast.error("Failed to load quiz questions!");
+      console.error("Fetch Error:", err);
+    },
+  });
+
+  // 🆕 Step 3: স্কোরিং গ্রেড ফাংশন
+  const getScoreGrade = (correctCount, totalQuestions) => {
+    if (totalQuestions === 0) return { text: "N/A", color: "text-gray-500" };
+    
+    const percentage = (correctCount / totalQuestions) * 100;
+    
+    if (percentage >= 80) {
+      return { text: "Good", color: "text-green-600" };
+    } else if (percentage >= 50) {
+      return { text: "Normal", color: "text-yellow-600" };
+    } else {
+      return { text: "Very Poor", color: "text-red-600" };
+    }
+  };
+
+
+  // ✅ Step 4: হ্যান্ডেলার
+  const handleAnswerChange = (questionId, selectedAnswer) => {
+    if (submitted) return; // সাবমিট হয়ে গেলে আর উত্তর পরিবর্তন করা যাবে না
+
+    setAnswers((prev) => ({
+      ...prev,
+      [questionId]: selectedAnswer,
+    }));
+  };
+
+  const handleNextQuestion = () => {
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex((prev) => prev + 1);
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let correctCount = 0;
+
+    questions.forEach((q) => {
+      if (answers[q._id] === q.correctAnswer) {
+        correctCount++;
+      }
+    });
+
+    const wrongCount = questions.length - correctCount;
+    setResult({ correct: correctCount, wrong: wrongCount });
+    setSubmitted(true);
+    // সাবমিটের পর রিভিউ মোড ডিজেবল থাকবে, রেজাল্ট স্ক্রিন দেখাবে
+    setIsReviewing(false); 
+  };
+
+  // 🆕 রিভিউ শুরু করার জন্য বাটন হ্যান্ডেলার
+  const handleStartReview = () => {
+    setIsReviewing(true);
+    setCurrentQuestionIndex(0); // প্রথম প্রশ্নে চলে যাবে
+  };
+
+  const handleReset = () => {
+    setAnswers({});
+    setSubmitted(false);
+    setResult({ correct: 0, wrong: 0 });
+    setIsReviewing(false); // রিসেটের পর রিভিউ মোড অফ
+    setCurrentQuestionIndex(0);
+  };
+  
+  // ✅ Step 5: সহায়ক ভ্যারিয়েবল
+  const currentQuestion = questions[currentQuestionIndex];
+  const isAnswerSelected = currentQuestion && answers[currentQuestion._id];
+  const isLastQuestion = currentQuestionIndex === questions.length - 1;
+  const { text: gradeText, color: gradeColor } = getScoreGrade(result.correct, questions.length);
+
+  // 🆕 Step 6: অপশন কালার নির্ধারণের ফাংশন (পরিবর্তন নেই, শুধু submitted এর বদলে isReviewing দিয়ে নিয়ন্ত্রণ হবে)
+  const getOptionClasses = (option) => {
+    const isCorrect = option === currentQuestion.correctAnswer;
+    const isUserSelected = answers[currentQuestion._id] === option;
+    const isUserAnswerCorrect = answers[currentQuestion._id] === currentQuestion.correctAnswer;
+
+    // যদি কুইজ সাবমিট না হয় (উত্তর দেওয়ার মোড)
+    if (!submitted) {
+      return isUserSelected 
+        ? "bg-indigo-100 border-indigo-500" 
+        : "border-gray-300 hover:bg-gray-100"; 
+    }
+
+    // যদি রিভিউ মোডে থাকে
+    if (isReviewing) {
+      if (isCorrect) {
+        // সবুজ: সঠিক উত্তর (সবসময় দেখানো হবে)
+        return "bg-green-200 border-green-600 font-bold";
+      }
+      if (isUserSelected && !isUserAnswerCorrect) {
+        // লাল: ব্যবহারকারী ভুল উত্তর সিলেক্ট করেছে
+        return "bg-red-200 border-red-600 font-bold";
+      }
+      // অন্য উত্তরগুলো স্বাভাবিক থাকবে
+      return "border-gray-300"; 
+    }
+    
+    // যখন submitted true কিন্তু isReviewing false (অর্থাৎ রেজাল্ট স্ক্রিন)
+    return "border-gray-300"; 
+  };
+
+
+  // ✅ Step 7: লোডিং/এরর স্ক্রিন (অপরিবর্তিত)
+  if (isError) {
+    return (
+      <div className="max-w-4xl mx-auto p-6 text-red-600 text-center font-semibold">
+        Error: {error.message || "Failed to load questions."}
+      </div>
+    );
+  }
+
+  if (isLoading || questions.length === 0) {
+    // ... (Loading UI অপরিবর্তিত)
+    return (
+      <div className="max-w-4xl mx-auto p-6 text-center">
+        <h2 className="text-xl font-semibold text-indigo-500 animate-pulse">
+          Loading Quiz Questions... ⏳
+        </h2>
+        <div className="mt-4 flex justify-center space-x-2">
+          <div className="w-4 h-4 bg-indigo-500 rounded-full animate-bounce"></div>
+          <div className="w-4 h-4 bg-indigo-500 rounded-full animate-bounce delay-150"></div>
+          <div className="w-4 h-4 bg-indigo-500 rounded-full animate-bounce delay-300"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!questions || questions.length === 0) {
+    return (
+      <div className="max-w-4xl mx-auto p-6 text-gray-600 text-center font-semibold">
+        No quiz questions available.
+      </div>
+    );
+  }
+
+  // ----------------------------------------------------
+  // ✅ Step 8: মূল কুইজ UI রেন্ডার করা
+  // ----------------------------------------------------
+
+  return (
+    <div className="max-w-[1400px] mx-auto bg-white shadow-lg rounded-2xl p-6 my-10">
+      <h2 className="text-2xl font-bold text-center text-indigo-600 mb-6">
+        📘 MCQ Quiz
+      </h2>
+      
+      {/* 🆕 রেজাল্ট স্ক্রিন: শুধুমাত্র সাবমিট হওয়ার পর দেখাবে, যদি রিভিউ মোডে না থাকে */}
+      {submitted && !isReviewing && (
+        <div className="text-center p-8 mb-6 border-b border-gray-200 bg-gray-50 rounded-xl shadow-inner">
+            <h3 className="text-3xl font-extrabold text-indigo-700 mb-4">
+                🎯 Quiz Complete!
+            </h3>
+            
+            <p className="text-xl font-bold mb-2">
+                Your Grade: <span className={`text-3xl ${gradeColor}`}>{gradeText}</span>
+            </p>
+            
+            <p className="text-lg text-green-600 inline-block mx-4 font-semibold">
+                ✅ Correct: {result.correct}
+            </p>
+            <p className="text-lg text-red-500 inline-block mx-4 font-semibold">
+                ❌ Wrong: {result.wrong}
+            </p>
+            <p className="text-lg text-gray-500 inline-block mx-4 font-semibold">
+                Total: {questions.length}
+            </p>
+
+            <div className="flex justify-center space-x-4 mt-6">
+                {/* 🆕 রিভিউ বাটন */}
+                <button
+                    onClick={handleStartReview}
+                    type="button"
+                    className="px-6 py-3 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition shadow-md"
+                >
+                    👀 Review Answers
+                </button>
+                {/* 🆕 রিসেট বাটন */}
+                <button
+                    onClick={handleReset}
+                    type="button"
+                    className="px-6 py-3 bg-gray-600 text-white rounded-lg font-semibold hover:bg-gray-700 transition shadow-md"
+                >
+                    🔁 Try Again
+                </button>
+            </div>
+        </div>
+      )}
+
+
+      {/* কুইজ ফর্ম/রিভিউ মোড: সাবমিট না হওয়া পর্যন্ত অথবা রিভিউ মোডে থাকা পর্যন্ত দেখাবে */}
+      {(!submitted || isReviewing) && (
+        <form onSubmit={submitted ? (e) => e.preventDefault() : handleSubmit} className="space-y-8">
+          
+          {/* প্রশ্ন প্রদর্শন */}
+          <div
+            key={currentQuestion._id}
+            className={`border p-5 rounded-xl ${isReviewing ? 'border-gray-300' : 'bg-gray-50'}`}
+          >
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">
+              {currentQuestionIndex + 1}. {currentQuestion.question}
+            </h3>
+
+            <div className="space-y-2">
+              {[
+                currentQuestion.answer1,
+                currentQuestion.answer2,
+                currentQuestion.answer3,
+                currentQuestion.answer4,
+              ]
+                .filter(Boolean)
+                .map((option, i) => (
+                  <label
+                    key={i}
+                    className={`block p-3 rounded-md border transition-colors ${getOptionClasses(option)} ${isReviewing ? 'cursor-default' : 'cursor-pointer'}`} 
+                  >
+                    <input
+                      type="radio"
+                      name={currentQuestion._id}
+                      value={option}
+                      checked={answers[currentQuestion._id] === option}
+                      onChange={() => !isReviewing && handleAnswerChange(currentQuestion._id, option)}
+                      className="mr-2"
+                      disabled={isReviewing || submitted} // রিভিউ মোডে এবং সাবমিটেড অবস্থায় ডিজেবল থাকবে
+                    />
+                    {option}
+                  </label>
+                ))}
+            </div>
+
+            <p className="text-sm text-gray-500 mt-3">
+              Question {currentQuestionIndex + 1} of {questions.length}
+            </p>
+          </div>
+
+          {/* নেভিগেশন বাটন */}
+          <div className="flex justify-between mt-6">
+            <button
+              type="button"
+              disabled={currentQuestionIndex === 0}
+              onClick={() => setCurrentQuestionIndex((prev) => Math.max(prev - 1, 0))}
+              className={`px-6 py-3 rounded-lg font-semibold transition ${
+                currentQuestionIndex === 0
+                  ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                  : "bg-gray-600 text-white hover:bg-gray-700"
+              }`}
+            >
+              Previous
+            </button>
+
+            {/* Submit Button: শুধুমাত্র যখন submitted নয় তখনই দেখাবে */}
+            {!submitted && isLastQuestion && (
+              <button
+                type="submit"
+                disabled={!isAnswerSelected}
+                className={`px-6 py-3 rounded-lg font-semibold transition ${
+                  isAnswerSelected
+                    ? "bg-green-600 text-white hover:bg-green-700"
+                    : "bg-gray-300 text-gray-600 cursor-not-allowed"
+                }`}
+              >
+                Submit Quiz
+              </button>
+            )}
+            
+            {/* Next বাটন */}
+            {currentQuestionIndex < questions.length - 1 && (
+              <button
+                type="button"
+                onClick={handleNextQuestion}
+                // যদি কুইজ সাবমিট না হয়, তবে উত্তর সিলেক্ট না করলে Next বাটন ডিজেবল থাকবে। রিভিউ মোডে সবসময় এনাবেল থাকবে।
+                disabled={!isReviewing && !isAnswerSelected}
+                className={`px-6 py-3 rounded-lg font-semibold transition ${
+                  (!isReviewing && !isAnswerSelected)
+                    ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                    : "bg-indigo-600 text-white hover:bg-indigo-700"
+                }`}
+              >
+                Next
+              </button>
+            )}
+            
+            {/* 🆕 Review Finish/Try Again বাটন: শুধুমাত্র রিভিউ মোডে শেষ প্রশ্নে দেখা যেতে পারে */}
+            {isReviewing && isLastQuestion && (
+                <div className="flex space-x-3">
+                    <button
+                        onClick={() => setIsReviewing(false)} // রেজাল্ট স্ক্রিনে ফিরে যান
+                        type="button"
+                        className="px-6 py-3 bg-gray-500 text-white rounded-lg font-semibold hover:bg-gray-600 transition"
+                    >
+                        Go to Results
+                    </button>
+                    <button
+                        onClick={handleReset}
+                        type="button"
+                        className="px-6 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition"
+                    >
+                        🔁 Try Again
+                    </button>
+                </div>
+            )}
+          </div>
+        </form>
+      )}
+    </div>
+  );
+};
+
+export default Quiz;
+
+
+
+// import { useQuery } from "@tanstack/react-query";
+// import { useState } from "react";
+// import { toast } from "react-toastify";
+// import useAxiosPublic from "../../../hooks/useAxiosPublic";
+
+// const Quiz = () => {
+//   const axiosPublic = useAxiosPublic();
+
+//   // ✅ Step 1: State গুলো
+//   const [answers, setAnswers] = useState({});
+//   const [submitted, setSubmitted] = useState(false);
+//   const [result, setResult] = useState({ correct: 0, wrong: 0 });
+//   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+
+//   // ✅ Step 2: TanStack Query (অপরিবর্তিত)
+//   const {
+//     data: questions = [],
+//     isLoading,
+//     isError,
+//     error,
+//     // Note: React Query'র refresh functionality automatically handles data reload on focus.
+//   } = useQuery({
+//     queryKey: ["quizQuestions"],
+//     queryFn: async () => {
+//       const res = await axiosPublic.get("/five-layer/mcq");
+//       return res.data;
+//     },
+//     onError: (err) => {
+//       toast.error("Failed to load quiz questions!");
+//       console.error("Fetch Error:", err);
+//     },
+//   });
+
+//   // ✅ Step 3: হ্যান্ডেলার (অপরিবর্তিত)
+//   const handleAnswerChange = (questionId, selectedAnswer) => {
+//     // সাবমিট হয়ে গেলে আর উত্তর পরিবর্তন করা যাবে না
+//     if (submitted) return; 
+
+//     setAnswers((prev) => ({
+//       ...prev,
+//       [questionId]: selectedAnswer,
+//     }));
+//   };
+
+//   const handleNextQuestion = () => {
+//     if (currentQuestionIndex < questions.length - 1) {
+//       setCurrentQuestionIndex((prev) => prev + 1);
+//     }
+//   };
+
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+//     let correctCount = 0;
+
+//     questions.forEach((q) => {
+//       if (answers[q._id] === q.correctAnswer) {
+//         correctCount++;
+//       }
+//     });
+
+//     const wrongCount = questions.length - correctCount;
+//     setResult({ correct: correctCount, wrong: wrongCount });
+//     // সাবমিট হওয়ার পর রেজাল্ট ডিসপ্লে না করে প্রথম প্রশ্নে চলে যাবো
+//     setSubmitted(true);
+//     setCurrentQuestionIndex(0); // সাবমিট করার পর প্রথম প্রশ্নে চলে যাবে
+//   };
+
+//   const handleReset = () => {
+//     setAnswers({});
+//     setSubmitted(false);
+//     setResult({ correct: 0, wrong: 0 });
+//     setCurrentQuestionIndex(0);
+//   };
+  
+//   // ✅ Step 4: সহায়ক ভ্যারিয়েবল
+//   const currentQuestion = questions[currentQuestionIndex];
+//   const isAnswerSelected = currentQuestion && answers[currentQuestion._id];
+//   const isLastQuestion = currentQuestionIndex === questions.length - 1;
+
+//   // 🆕 Step 5: অপশন কালার নির্ধারণের ফাংশন
+//   const getOptionClasses = (option) => {
+//     const isCorrect = option === currentQuestion.correctAnswer;
+//     const isUserSelected = answers[currentQuestion._id] === option;
+//     const isUserAnswerCorrect = answers[currentQuestion._id] === currentQuestion.correctAnswer;
+
+//     // যদি কুইজ সাবমিট না হয় (উত্তর দেওয়ার মোড)
+//     if (!submitted) {
+//       return isUserSelected 
+//         ? "bg-indigo-100 border-indigo-500" // ব্যবহারকারী যেটা সিলেক্ট করেছে
+//         : "border-gray-300 hover:bg-gray-100"; 
+//     }
+
+//     // যদি কুইজ সাবমিট হয় (রিভিউ মোড)
+//     if (submitted) {
+//       if (isCorrect) {
+//         // সবুজ: সঠিক উত্তর (সবসময় দেখানো হবে)
+//         return "bg-green-200 border-green-600 font-bold";
+//       }
+//       if (isUserSelected && !isUserAnswerCorrect) {
+//         // লাল: ব্যবহারকারী ভুল উত্তর সিলেক্ট করেছে
+//         return "bg-red-200 border-red-600 font-bold";
+//       }
+//       if (isUserSelected && isUserAnswerCorrect) {
+//          // নীল: ব্যবহারকারী সঠিক উত্তর সিলেক্ট করেছে (এটি সবুজ দ্বারা ওভাররাইড হতে পারে, কিন্তু এটি একটি সেফগার্ড)
+//          return "bg-green-200 border-green-600 font-bold"; 
+//       }
+//       // অন্য উত্তরগুলো স্বাভাবিক থাকবে
+//       return "border-gray-300"; 
+//     }
+//   };
+
+
+//   // ✅ Step 6: লোডিং/এরর স্ক্রিন (অপরিবর্তিত)
+//   if (isError) {
+//     return (
+//       <div className="max-w-4xl mx-auto p-6 text-red-600 text-center font-semibold">
+//         Error: {error.message || "Failed to load questions."}
+//       </div>
+//     );
+//   }
+
+//   if (isLoading || questions.length === 0) {
+//     return (
+//       <div className="max-w-4xl mx-auto p-6 text-center">
+//         <h2 className="text-xl font-semibold text-indigo-500 animate-pulse">
+//           Loading Quiz Questions... ⏳
+//         </h2>
+//         <div className="mt-4 flex justify-center space-x-2">
+//           <div className="w-4 h-4 bg-indigo-500 rounded-full animate-bounce"></div>
+//           <div className="w-4 h-4 bg-indigo-500 rounded-full animate-bounce delay-150"></div>
+//           <div className="w-4 h-4 bg-indigo-500 rounded-full animate-bounce delay-300"></div>
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   if (!questions || questions.length === 0) {
+//     return (
+//       <div className="max-w-4xl mx-auto p-6 text-gray-600 text-center font-semibold">
+//         No quiz questions available.
+//       </div>
+//     );
+//   }
+
+//   // ----------------------------------------------------
+//   // ✅ Step 7: মূল কুইজ UI রেন্ডার করা
+//   // ----------------------------------------------------
+
+//   return (
+//     <div className="max-w-[1400px] mx-auto bg-white shadow-lg rounded-2xl p-6 my-10">
+//       <h2 className="text-2xl font-bold text-center text-indigo-600 mb-6">
+//         📘 MCQ Quiz
+//       </h2>
+      
+//       {/* 🆕 রেজাল্ট ওভারভিউ (শুধুমাত্র সাবমিট হওয়ার পর দেখাবে) */}
+//       {submitted && (
+//         <div className="text-center p-4 mb-6 border-b border-gray-200">
+//             <h3 className="text-xl font-bold text-gray-800 mb-2">
+//                 🎯 Quiz Result
+//             </h3>
+//             <p className="text-lg text-green-600 inline-block mx-4 font-semibold">
+//                 ✅ Correct: {result.correct}
+//             </p>
+//             <p className="text-lg text-red-500 inline-block mx-4 font-semibold">
+//                 ❌ Wrong: {result.wrong}
+//             </p>
+//         </div>
+//       )}
+
+
+//       {/* কুইজ ফর্ম/রিভিউ মোড */}
+//       <form onSubmit={submitted ? (e) => e.preventDefault() : handleSubmit} className="space-y-8">
+        
+//         {/* প্রশ্ন প্রদর্শন */}
+//         <div
+//           key={currentQuestion._id}
+//           className={`border p-5 rounded-xl ${submitted ? 'border-gray-300' : 'bg-gray-50'}`}
+//         >
+//           <h3 className="text-lg font-semibold text-gray-800 mb-4">
+//             {currentQuestionIndex + 1}. {currentQuestion.question}
+//           </h3>
+
+//           <div className="space-y-2">
+//             {[
+//               currentQuestion.answer1,
+//               currentQuestion.answer2,
+//               currentQuestion.answer3,
+//               currentQuestion.answer4,
+//             ]
+//               .filter(Boolean)
+//               .map((option, i) => (
+//                 <label
+//                   key={i}
+//                   // 🆕 ক্লাস লজিক: submitted এর উপর ভিত্তি করে ক্লাস দেখাবে
+//                   className={`block p-3 rounded-md border transition-colors ${getOptionClasses(option)} ${submitted ? 'cursor-default' : 'cursor-pointer'}`} 
+//                 >
+//                   <input
+//                     type="radio"
+//                     name={currentQuestion._id}
+//                     value={option}
+//                     checked={answers[currentQuestion._id] === option}
+//                     // 🆕 উত্তর পরিবর্তন শুধু তখনই করা যাবে যখন submitted না
+//                     onChange={() => !submitted && handleAnswerChange(currentQuestion._id, option)}
+//                     className="mr-2"
+//                     // 🆕 সাবমিট হয়ে গেলে ইনপুটগুলো ডিজেবল থাকবে
+//                     disabled={submitted} 
+//                   />
+//                   {option}
+//                 </label>
+//               ))}
+//           </div>
+
+//           <p className="text-sm text-gray-500 mt-3">
+//             Question {currentQuestionIndex + 1} of {questions.length}
+//           </p>
+//         </div>
+
+//         {/* নেভিগেশন বাটন */}
+//         <div className="flex justify-between mt-6">
+//           <button
+//             type="button"
+//             disabled={currentQuestionIndex === 0}
+//             onClick={() => setCurrentQuestionIndex((prev) => Math.max(prev - 1, 0))}
+//             className={`px-6 py-3 rounded-lg font-semibold transition ${
+//               currentQuestionIndex === 0
+//                 ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+//                 : "bg-gray-600 text-white hover:bg-gray-700"
+//             }`}
+//           >
+//             Previous
+//           </button>
+
+//           {/* 🆕 Submit Button শুধুমাত্র যখন submitted নয় তখনই দেখাবে */}
+//           {!submitted && isLastQuestion && (
+//             <button
+//               type="submit"
+//               disabled={!isAnswerSelected}
+//               className={`px-6 py-3 rounded-lg font-semibold transition ${
+//                 isAnswerSelected
+//                   ? "bg-green-600 text-white hover:bg-green-700"
+//                   : "bg-gray-300 text-gray-600 cursor-not-allowed"
+//               }`}
+//             >
+//               Submit Quiz
+//             </button>
+//           )}
+          
+//           {/* Next বাটন, যা submitted হলেও কাজ করবে যদি এটি শেষ প্রশ্ন না হয় */}
+//           {currentQuestionIndex < questions.length - 1 && (
+//             <button
+//               type="button"
+//               onClick={handleNextQuestion}
+//               // 🆕 যদি কুইজ সাবমিট না হয়, তবে উত্তর সিলেক্ট না করলে Next বাটন ডিজেবল থাকবে।
+//               disabled={!submitted && !isAnswerSelected}
+//               className={`px-6 py-3 rounded-lg font-semibold transition ${
+//                 (!submitted && !isAnswerSelected)
+//                   ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+//                   : "bg-indigo-600 text-white hover:bg-indigo-700"
+//               }`}
+//             >
+//               Next
+//             </button>
+//           )}
+
+//           {/* 🆕 Try Again বাটন শুধুমাত্র রিভিউ মোডে শেষ প্রশ্নে দেখা যেতে পারে */}
+//           {submitted && isLastQuestion && (
+//             <button
+//               onClick={handleReset}
+//               type="button"
+//               className="px-6 py-3 bg-gray-600 text-white rounded-lg font-semibold hover:bg-gray-700 transition"
+//             >
+//               Try Again
+//             </button>
+//           )}
+//         </div>
+//       </form>
+
+//       {/* পুরাতন Result View সরিয়ে দেওয়া হলো, কারণ আমরা এটিকে কুইজ ফর্মে উপরে দেখাচ্ছি। 
+//         শুধুমাত্র Try Again বাটনটি শেষ প্রশ্নে দেখানো হচ্ছে।
+//       */}
+      
+//     </div>
+//   );
+// };
+
+// export default Quiz;

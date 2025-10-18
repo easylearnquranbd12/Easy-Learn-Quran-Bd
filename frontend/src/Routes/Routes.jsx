@@ -14,11 +14,16 @@ import AdminPorem from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/
 
 import AdminIdiom from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Idiom/AdminIdiom";
 import AdminTantuster from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Tantuster/AdminTantuster";
+import AdminLetterWritting from "../Pages/AdminDashboardPages/BAShapeFormats/FiveLayer/LetterWritting/AdminLetterWritting";
+import Adminmcq from "../Pages/AdminDashboardPages/BAShapeFormats/FiveLayer/MCQ/Adminmcq";
+import AdminOldGenaration from "../Pages/AdminDashboardPages/BAShapeFormats/FiveLayer/OldGenaration/AdminOldGenaration";
+import AdminStoryWritting from "../Pages/AdminDashboardPages/BAShapeFormats/FiveLayer/StoryWritting/AdminStoryWritting";
 import AdminSong from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Song/AdminSong";
 import AdminBeforeProfessional from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/BeforeProfessional/AdminBeforeProfessional";
 import AdminCorporateEmail from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/CorporateEmail/AdminCorporateEmail";
 import AdminDevelopYourSkills from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/DevelopYourSkills/AdminDevelopYourSkills";
 import AdminGoodLifeStyle from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/GoodLifeStyle/AdminGoodLifeStyle";
+import FiveLayer from "../Pages/B.A.ShapeFormats/FiveLayer/FiveLayer";
 import EnrollCourse from "../Pages/CoursePages/EnrollCourse";
 import DashboardRedirect from "../Pages/DashboardRedirect";
 import AdminRoute from "./AdminRoute";
@@ -193,6 +198,16 @@ export const routes = createBrowserRouter([
           <PrivateRoute>
             <Suspense fallback={<LoadingSpinner />}>
               <FourthLayer />
+            </Suspense>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "b-a-shape-formats/5th-layer",
+        element: (
+          <PrivateRoute>
+            <Suspense fallback={<LoadingSpinner />}>
+              <FiveLayer />
             </Suspense>
           </PrivateRoute>
         ),
@@ -382,14 +397,7 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
-      // {
-      //   path: "create-unique",
-      //   element: (
-      //     <Suspense fallback={<LoadingSpinner />}>
-      //       <AdminNew />
-      //     </Suspense>
-      //   ),
-      // },
+
       {
         path: "create-verb",
         element: (
@@ -438,7 +446,39 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
-
+      // Five Layer
+      {
+        path: "create-old-generation",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminOldGenaration />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-story-writting",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminStoryWritting />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-letter-writting",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminLetterWritting />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-mcq",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <Adminmcq />
+          </Suspense>
+        ),
+      },
       {
         path: "create-a-new-promotion",
         element: (
