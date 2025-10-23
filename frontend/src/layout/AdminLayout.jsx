@@ -87,24 +87,22 @@ const AdminLayout = () => {
           </footer>
         </div> */}
         {/* Main Content Area */}
-{/* Main Content Area */}
-<div className="flex-1 flex flex-col pt-5 lg:ml-64 transition-all duration-300 ease-in-out bg-[#edf7f4] min-h-screen">
-  {/* Page Content */}
-  <div className="max-w-7xl mx-auto mt-12 flex-grow">
-    <div className="p-2 md:p-4">
-      <Outlet />
-    </div>
-  </div>
+        {/* Main Content Area */}
+        <div className="flex-1 flex flex-col pt-5 lg:ml-64 transition-all duration-300 ease-in-out bg-[#edf7f4] min-h-screen">
+          {/* Page Content */}
+          <div className="w-full px-3 sm:px-5 mt-12 flex-grow">
+            <div className="p-2 md:p-4">
+              <Outlet />
+            </div>
+          </div>
 
-  {/* Footer */}
-  <footer className="bg-indigo-100 py-4 px-6 border-t border-indigo-700 text-center text-gray-800 text-sm">
-    <p>
-      © {new Date().getFullYear()} Admin Dashboard - Built with CARE ❤️
-    </p>
-  </footer>
-</div>
-
-
+          {/* Footer */}
+          <footer className="bg-indigo-100 w-full py-4 px-6 border-t border-indigo-700 text-center text-gray-800 text-sm">
+            <p>
+              © {new Date().getFullYear()} Admin Dashboard - Built with CARE ❤️
+            </p>
+          </footer>
+        </div>
       </div>
     </div>
   );

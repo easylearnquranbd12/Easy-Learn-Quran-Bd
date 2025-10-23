@@ -24,8 +24,8 @@ const Tantuster = () => {
   };
 
   // Fetch sentence fields
-  const { data: elegantFields = [], isLoading: fieldLoading } = useQuery({
-    queryKey: ["elegantFields"],
+  const { data: tantusterFields = [], isLoading: fieldLoading } = useQuery({
+    queryKey: ["tantusterFields"],
     queryFn: async () => {
       const res = await axiosPublic.get("/first-layer/tantusterField");
       console.log(res.data.data);
@@ -33,9 +33,9 @@ const Tantuster = () => {
     },
   });
 
-  // Fetch elegant data
-  const { data: elegant = [], isLoading: elegantLoading } = useQuery({
-    queryKey: ["elegant"],
+  // Fetch tantuster data
+  const { data: tantuster = [], isLoading: tantusterLoading } = useQuery({
+    queryKey: ["tantuster"],
     queryFn: async () => {
       const res = await axiosPublic.get("/first-layer/tantuster");
       console.log(res.data.data);
@@ -43,23 +43,23 @@ const Tantuster = () => {
     },
   });
 
-  if (fieldLoading || elegantLoading) return <CustomLoading />;
+  if (fieldLoading || tantusterLoading) return <CustomLoading />;
 
-  const elegantField = elegantFields[0] || {};
-  const data = elegant[0] || {};
+  const tantusterField = tantusterFields[0] || {};
+  const data = tantuster[0] || {};
 
   if (!data)
-    return <p className="text-center mt-10">No elegant data found.</p>;
+    return <p className="text-center mt-10">No tantuster data found.</p>;
 
   // Dynamic tab generation
   const tabs = [
-    { id: "mainWord", label: elegantField.mainWord },
-    { id: "banglaPronunciation", label: elegantField.banglaPronunciation },
-    { id: "banglaMeaning", label: elegantField.banglaMeaning },
-    { id: "synonyms", label: elegantField.synonyms },
-    { id: "antonyms", label: elegantField.antonyms },
-    { id: "exampleEnglish", label: elegantField.exampleEnglish },
-    { id: "exampleBangla", label: elegantField.exampleBangla },
+    { id: "mainWord", label: tantusterField.mainWord },
+    { id: "banglaPronunciation", label: tantusterField.banglaPronunciation },
+    { id: "banglaMeaning", label: tantusterField.banglaMeaning },
+    { id: "synonyms", label: tantusterField.synonyms },
+    { id: "antonyms", label: tantusterField.antonyms },
+    { id: "exampleEnglish", label: tantusterField.exampleEnglish },
+    { id: "exampleBangla", label: tantusterField.exampleBangla },
   ];
 
   const handleSectionScroll = (section) => {
@@ -122,12 +122,12 @@ const Tantuster = () => {
     reset();
   };
 
-  console.log(elegantField);
+  console.log(tantusterField);
   return (
     <div className="max-w-[1400px] mx-auto">
       <div className="py-8 ">
         <div className="flex flex-col items-center mb-3 space-y-2">
-          {elegantFields?.map((item) => (
+          {tantusterFields?.map((item) => (
             <div key={item._id} className="text-center max-w-[1400px]">
               <h2 className="text-3xl font-bold text-[#bb874a]">
                 {item?.title || "Title Missing"}
@@ -183,7 +183,7 @@ const Tantuster = () => {
       </div>
       <div>
         <form onSubmit={handleSubmit(onSubmit)}>
-          {elegantFields?.map(
+          {tantusterFields?.map(
             (item) =>
               item.isActive === "ON" && (
                 <div key={item._id} className="max-w-[1400px] mx-auto px-4">

@@ -274,6 +274,9 @@ const getFiveLayerMcqFieldsCollection = () =>
 const getFiveLayerMcqCollection = () =>
   client.db("Learning-Quiz-Platfrom").collection("Mcq");
 
+const getLayerManagementFieldsCollection = () =>
+  client.db("Learning-Quiz-Platfrom").collection("LevelManagementField");
+
 // const getFiveLayerMcqExerciseCollection = () =>
 //   client.db("Learning-Quiz-Platfrom").collection("McqExercise");
 
@@ -305,6 +308,9 @@ module.exports = {
   getAuthorTextCollection,
   getSocialLinksCollection,
   getPromotionCollection,
+  // Layers Management Colllections
+  getLayerManagementFieldsCollection,
+
 
   getFirstLayerVocabularyCollection,
   getFirstLayerVocabularyCollections,
@@ -373,7 +379,6 @@ module.exports = {
   getFiveLayerLetterWritingCollection,
   getFiveLayerLetterWritingFieldsCollection,
   getFiveLayerLetterWritingExerciseCollection,
-
 
   getFiveLayerMcqCollection,
   getFiveLayerMcqFieldsCollection,

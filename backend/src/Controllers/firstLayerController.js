@@ -734,6 +734,11 @@ const createExerciseNewTantuster = async (req, res) => {
   }
 };
 
+
+
+
+
+
 module.exports = {
   createVocabulary,
   getAllVocabulary,

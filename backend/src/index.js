@@ -22,6 +22,7 @@ const secondLayerRoutes = require("./routes/secondLayerRoutes");
 const fourthLayerRoutes = require("./routes/fourthLayerRoutes");
 const thirdLayerRoutes = require("./routes/thirdLayerRoutes");
 const fiveLayerRoutes = require("./routes/fiveLayerRoutes");
+const layerManagementRoutes = require("./routes/layerManagementRoutes");
 
 dotenv.config();
 
@@ -62,6 +63,7 @@ app.use("/second-layer", secondLayerRoutes);
 app.use("/third-layer", thirdLayerRoutes);
 app.use("/fourth-layer", fourthLayerRoutes);
 app.use("/five-layer", fiveLayerRoutes);
+app.use("/layer-management", layerManagementRoutes);
 
 // Root route
 app.get("/", (req, res) => {

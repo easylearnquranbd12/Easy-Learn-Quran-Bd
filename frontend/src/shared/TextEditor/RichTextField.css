@@ -1,31 +1,74 @@
-/* Wrapper style */
+/* 
 .editor-wrapper {
+  width: 100%;
   border: 1px solid #d1d5db;
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   z-index: 50;
 }
 
-/* Toolbar fixed at top with background */
 .custom-quill .ql-toolbar {
   position: sticky;
   top: 0;
-  background: #f9fafb; /* এখানে চাইলে gradient বা অন্য রঙ দিতে পারো */
-  z-index: 10;
+  background: #f9fafb;
   border-bottom: 1px solid #e5e7eb;
-  padding: 6px 8px;
-  border-radius: 5px 5px 0 0;
+  padding: 8px 12px;
+  border-radius: 8px 8px 0 0;
+  z-index: 10;
+}
+
+
+.custom-quill .ql-container {
+  min-height: 220px;
+  height: auto;
+  max-height: 500px;
+  overflow-y: auto;
+  resize: vertical; 
+  border-radius: 0 0 8px 8px;
+  background: #ffffff;
+} */
+/* Make editor truly full width */
+.editor-wrapper {
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: 1 !important;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   z-index: 50;
 }
 
-/* Editor resizable like textarea */
+/* Quill toolbar */
+.custom-quill .ql-toolbar {
+  position: sticky;
+  top: 0;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 8px 12px;
+  border-radius: 8px 8px 0 0;
+  z-index: 10;
+}
+
+/* Quill editor area */
 .custom-quill .ql-container {
-  min-height: 220px; /* textarea মত ছোট */
-  height: 200px; /* default */
-  max-height: 500px; /* বড় হলে scroll হবে */
-  resize: vertical; /* drag করে বড়/ছোট করা যাবে */
+  min-height: 220px;
+  height: auto;
+  max-height: 500px;
   overflow-y: auto;
+  resize: vertical;
+  border-radius: 0 0 8px 8px;
   background: #ffffff;
-  border-radius: 0 0 5px 5px;
-  z-index: 50;
+}
+
+/* Ensure parent containers don't limit width */
+.editor-parent,
+.editor-container,
+.card,
+.form-section {
+  width: 100% !important;
+  max-width: 100% !important;
 }

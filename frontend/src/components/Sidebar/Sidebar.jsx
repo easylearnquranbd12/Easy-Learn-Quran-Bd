@@ -290,7 +290,7 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
           color: "text-indigo-600",
         },
         {
-          path: "/admin-dashboard/create-unique",
+          path: "/admin-dashboard/new-tantuster",
           icon: BiEdit,
           label: "Create unique",
           description: "Create & History",
@@ -440,6 +440,13 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
       ],
     },
 
+    {
+      path: "/admin-dashboard/layer-manage",
+      icon: FaUserGraduate,
+      label: "Layer Management",
+      description: "Manage all layers",
+      color: "text-cyan-600",
+    },
     {
       path: "/admin-dashboard/enrollments",
       icon: FaUserGraduate,

@@ -70,12 +70,12 @@ router.get("/tantusterField", getTantusterField);
 router.post("/createExerciseTantuster", createExerciseTantuster);
 
 // new tantuster
-router.get("/newTantuster", getAllNewTantuster);
-router.post("/newTantuster", createNewTantuster);
-router.delete("/newTantuster/:id", deleteNewTantuster);
+router.get("/newtantuster", getAllNewTantuster);
+router.post("/newtantuster", createNewTantuster);
+router.delete("/newtantuster/:id", deleteNewTantuster);
 // new tantuster field
-router.put("/newTantusterField/:id", updateNewTantusterField);
-router.get("/newTantusterField", getNewTantusterField);
+router.put("/newtantusterField/:id", updateNewTantusterField);
+router.get("/newtantusterField", getNewTantusterField);
 router.post("/createExerciseNewTantuster", createExerciseNewTantuster);
 
 module.exports = router;

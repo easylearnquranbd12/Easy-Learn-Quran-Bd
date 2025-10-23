@@ -11,38 +11,39 @@ const Idiom = () => {
   const [showAll, setShowAll] = useState(false);
   const { register, handleSubmit, reset, setValue } = useForm();
    const queryClient = useQueryClient();
-  // Fetch all vocabulary Fields
+  // Fetch all idiom Fields
   const {
-    data: vocabularyFields,
+    data: idiomFields = [],
     isLoading,
     isError,
     refetch,
   } = useQuery({
-    queryKey: ["vocabularyFields"],
+    queryKey: ["idiomFields"],
     queryFn: async () => {
       const res = await axiosPublic.get("/first-layer/idiomField");
-      return res.data.data;
-    },
-  });
-
-  // Fetch vocabulary
-  const {
-    data: vocabulary = [],
-    isLoading: vocabularyLoading,
-    isError: vocabularyError,
-    refetch: refetchVocabulary,
-    error,
-  } = useQuery({
-    queryKey: ["vocabulary"],
-    queryFn: async () => {
-      const res = await axiosPublic.get("/first-layer/idiom");
       return res.data.data || [];
     },
   });
 
+  // Fetch idiom
+  const {
+    data: idiom ,
+    isLoading: idiomLoading,
+    isError: idiomError,
+    refetch: refetchidiom,
+    error,
+  } = useQuery({
+    queryKey: ["idiom"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/first-layer/idiom");
+      return res.data.data ;
+    },
+  });
+console.log(idiom)
+console.log(idiomFields)
   
-  // Create Vocabulary
-  const { mutateAsync: createVocabularyExercise } = useMutation({
+  // Create idiom
+  const { mutateAsync: createidiomExercise } = useMutation({
     mutationFn: async (newData) => {
       const res = await axiosPublic.post("/first-layer/createExerciseIdiom", newData);
       return res.data;
@@ -50,19 +51,19 @@ const Idiom = () => {
     onSuccess: () => {
       Swal.fire("✅ Success", "Exercise created successfully!", "success");
       reset();
-      queryClient.invalidateQueries({ queryKey: ["vocabulary"] });
+      queryClient.invalidateQueries({ queryKey: ["idiom"] });
     },
     onError: (error) => {
       Swal.fire(
         "❌ Error",
-        error.message || "Failed to create vocabulary",
+        error.message || "Failed to create idiom",
         "error"
       );
     },
   });
  
   // Toggle show all rows
-  const visibleVocabulary = showAll ? vocabulary : vocabulary.slice(0, 10);
+ const visibleidiom = showAll ? (idiom || []) : (idiom || []).slice(0, 10);
 
 const onSubmit = async (data) => {
   // প্রতিটি row এর ফিল্ড লিস্ট
@@ -119,28 +120,28 @@ const onSubmit = async (data) => {
     return;
   }
 
-  createVocabularyExercise(data)
+  createidiomExercise(data)
 
   reset();
 };
 
 
 
-  if (isLoading || vocabularyLoading) return <CustomLoading />;
+  if (isLoading || idiomLoading) return <CustomLoading />;
 
-  if (isError || vocabularyError)
+  if (isError || idiomError)
     return (
       <div className="min-h-[70vh] flex items-center justify-center p-4">
         <div className="bg-green-200 border border-red-700/50 p-6 rounded-xl text-center max-w-md w-full">
           <AlertCircle size={40} className="text-red-600 mx-auto mb-4" />
           <h2 className="text-xl text-red-500 mb-2">
-            Unable to Load Vocabulary
+            Unable to Load idiom
           </h2>
           <p className="text-black mb-6">
             {error?.message || "Error occurred"}
           </p>
           <button
-            onClick={refetchVocabulary}
+            onClick={refetchidiom}
             className="flex items-center gap-2 mx-auto px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
           >
             <RefreshCw size={16} />
@@ -154,7 +155,7 @@ const onSubmit = async (data) => {
     <div className="max-w-[1400px] mx-auto">
       <div className="bg-white shadow-md rounded-2xl p-2 md:p-5 mt-10 space-y-3">
         <div className="flex flex-col items-center mb-3 space-y-2">
-          {vocabularyFields?.map((item) => (
+          {idiomFields?.map((item) => (
             <div key={item._id} className="text-center max-w-[1400px]">
               <h2 className="text-3xl font-bold text-[#bb874a]">
                 {item?.title || "Title Missing"}
@@ -166,10 +167,10 @@ const onSubmit = async (data) => {
           ))}
         </div>
 
-        {/* Vocabulary Table */}
+        {/* idiom Table */}
         <div className="overflow-x-auto rounded-xl shadow border border-gray-200">
           <table className="table w-full">
-            {vocabularyFields?.map((item, index) => (
+            {idiomFields?.map((item, index) => (
               <thead key={item._id} className="bg-[#bb874a] text-white text-sm">
                 <tr>
                   <th className="min-w-10">Serial</th>
@@ -184,8 +185,8 @@ const onSubmit = async (data) => {
               </thead>
             ))}
             <tbody>
-              {visibleVocabulary.length > 0 ? (
-                visibleVocabulary.map((row, i) => (
+              {visibleidiom.length > 0 ? (
+                visibleidiom.map((row, i) => (
                   <tr
                     key={i}
                     className="hover:bg-gray-50 transition border-b text-sm"
@@ -245,7 +246,7 @@ const onSubmit = async (data) => {
               ) : (
                 <tr>
                   <td colSpan="9" className="text-center py-6 text-gray-500">
-                    No vocabulary found.
+                    No idiom found.
                   </td>
                 </tr>
               )}
@@ -253,7 +254,7 @@ const onSubmit = async (data) => {
           </table>
         </div>
 
-        {vocabulary.length > 10 && (
+        {idiom?.length > 10 && (
           <div className="flex justify-center mt-4">
             <button
               onClick={() => setShowAll(!showAll)}
@@ -264,10 +265,10 @@ const onSubmit = async (data) => {
           </div>
         )}
       </div>
-      {/* Vocabulary Fields Exercise */}
+      {/* idiom Fields Exercise */}
       <div>
         <form onSubmit={handleSubmit(onSubmit)}>
-          {vocabularyFields?.map(
+          {idiomFields?.map(
             (item) =>
               item.isActive === "ON" && (
                 <div key={item._id}>

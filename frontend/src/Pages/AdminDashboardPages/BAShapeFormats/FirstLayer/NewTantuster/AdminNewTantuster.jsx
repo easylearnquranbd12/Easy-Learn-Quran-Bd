@@ -1,0 +1,572 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Edit, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { Helmet } from "react-helmet-async";
+import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+import TittleAnimation from "../../../../../components/TittleAnimation/TittleAnimation";
+import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
+import RichTextField from "../../../../../shared/TextEditor/RichTextField";
+import AdminNewTantusterModal from "./AdminNewTantusterModal";
+
+const AdminNewTantuster = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [fieldName, setFieldName] = useState("");
+  const [selectedVocabId, setSelectedVocabId] = useState(null);
+  const [currentValue, setCurrentValue] = useState("");
+
+  const axiosPublic = useAxiosPublic();
+  const queryClient = useQueryClient();
+  const { register, handleSubmit, reset, setValue, control } = useForm({
+    defaultValues: {
+      mainWord: "",
+      banglaPronunciation: "",
+      banglaMeaning: "",
+      synonyms: "",
+      antonyms: "",
+      exampleEnglish: "",
+      exampleBangla: "",
+    },
+  });
+
+  // Fetch all newtantusters Fields
+  const {
+    data: newtantusterFields = [],
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
+    queryKey: ["newtantusterFields"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/first-layer/newtantusterField");
+      console.log(res.data.data);
+      return res.data.data;
+    },
+  });
+
+  // Create newtantusters
+  const { mutateAsync: createnewtantusters } = useMutation({
+    mutationFn: async (newData) => {
+      const res = await axiosPublic.post("/first-layer/newtantuster", newData);
+      return res.data;
+    },
+    onSuccess: () => {
+      Swal.fire("✅ Success", "newtantusters created successfully!", "success");
+      reset();
+      queryClient.invalidateQueries({ queryKey: ["newtantusters"] });
+    },
+    onError: (error) => {
+      Swal.fire(
+        "❌ Error",
+        error.message || "Failed to create newtantusters",
+        "error"
+      );
+    },
+  });
+  // Fetch all newtantusters
+  const {
+    data: newtantusters = [],
+    isLoading: newtantustersLoading,
+    refetch: refetchnewtantusters,
+    isError: newtantustersError,
+  } = useQuery({
+    queryKey: ["newtantusters"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/first-layer/newtantuster");
+      return res.data.data || [];
+    },
+  });
+
+  // delete newtantusters
+  const { mutateAsync: deletenewtantusters } = useMutation({
+    mutationFn: async (id) => {
+      const res = await axiosPublic.delete(`/first-layer/newtantuster/${id}`);
+      return res.data;
+    },
+    onSuccess: () => {
+      Swal.fire("Deleted!", "newtantuster has been deleted.", "success");
+      refetchnewtantusters(); // Refetch the list after deletion
+    },
+    onError: (error) => {
+      Swal.fire("Error!", "Failed to delete newtantuster.", "error");
+      console.error(error);
+    },
+  });
+
+  // Delete handler
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to delete this elegant?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deletenewtantusters(id);
+      }
+    });
+  };
+  const [showAll, setShowAll] = useState(false);
+  // Toggle show all rows
+  const visiblenewtantusters = showAll ? newtantusters : newtantusters.slice(0, 10);
+  // form submit
+  const onSubmit = async (data) => {
+    createnewtantusters(data);
+  };
+
+  // modal open
+  const handleEditClick = (field, value, id) => {
+    setFieldName(field);
+    setCurrentValue(value);
+    setSelectedVocabId(id);
+    setModalOpen(true);
+  };
+
+  // Toggle handler using item.isActive
+  const handleToggle = (currentState) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: `You want to turn ${
+        currentState === "ON" ? "OFF" : "ON"
+      } this newtantusters?`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        toggleIsActiveMutation.mutate(currentState);
+      }
+    });
+  };
+
+  // Toggle mutation using item.isActive
+  const toggleIsActiveMutation = useMutation({
+    mutationFn: async (currentState) => {
+      const res = await axiosPublic.put(`/first-layer/newTantusterField/toggle`, {
+        fieldName: "isActive", // ✅ এটা দিতে হবে
+        currentValue: currentState,
+      });
+      return res.data;
+    },
+    onSuccess: (data) => {
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: `newtantusters is now ${data.updatedValue}`,
+      });
+      queryClient.invalidateQueries({ queryKey: ["newtantusterFields"] });
+    },
+    onError: (error) => {
+      Swal.fire(
+        "Error",
+        error.response?.data?.message || error.message,
+        "error"
+      );
+    },
+  });
+  return (
+   <div className="w-full max-w-[1400px] mx-auto ">
+      <Helmet>
+        <title>Quiz | newtantusters</title>
+      </Helmet>
+      <TittleAnimation
+        tittle="Create newtantusters"
+        subtittle="Create With admin or Moderator"
+      />
+
+      <div className="mt-10">
+     <div className="bg-white rounded-lg shadow-md p-5 mt-10 w-full md:w-11/12 lg:w-10/12 mx-auto">
+          <div className="w-full">
+            <div className=" space-y-4">
+              <div className="mb-4 text-center">
+                {newtantusterFields && newtantusterFields.length > 0 && (
+                  <>
+                    {/* Title */}
+                    <div className="flex items-start justify-center gap-2 mb-2">
+                      {newtantusterFields[0].title || "Title"}
+                      <Edit
+                        onClick={() =>
+                          handleEditClick(
+                            "title",
+                            newtantusterFields[0].title,
+                            newtantusterFields[0].title
+                          )
+                        }
+                        className="w-5 h-5 text-green-600 cursor-pointer"
+                      />
+                    </div>
+
+                    {/* description */}
+                    <div className="flex items-start justify-center gap-2">
+                      <span className="text-base">
+                        {newtantusterFields[0].description || "description"}
+                      </span>
+                      <Edit
+                        onClick={() =>
+                          handleEditClick(
+                            "description",
+                            newtantusterFields[0].description,
+                            newtantusterFields[0].description
+                          )
+                        }
+                        className="min-w-5 min-h-5 w-5 h-5 text-green-600 cursor-pointer"
+                      />
+                    </div>
+                  </>
+                )}
+              </div>
+              <div>
+                {newtantusterFields.map((item) => (
+                  <div key={item._id} className="flex items-center gap-2 my-2">
+                    <span className="font-semibold">
+                      Create {item.title || "newtantusters"} Exercise
+                    </span>
+                    <input
+                      type="checkbox"
+                      className={`toggle ${
+                        item.isActive === "ON" ? "toggle-success" : ""
+                      }`}
+                      checked={item.isActive === "ON"}
+                      onChange={() => handleToggle(item.isActive)}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <form onSubmit={handleSubmit(onSubmit)}>
+                {newtantusterFields?.map((item) => (
+                  <div key={item._id} className="space-y-4 p-2">
+                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-200 ">
+                      <div className="flex items-center justify-start gap-2 mb-2">
+                        <label className="text-sm font-semibold text-gray-700">
+                          {item.mainWord || "Main-Word"}
+                        </label>
+                        <Edit
+                          onClick={() =>
+                            handleEditClick(
+                              "mainWord",
+                              item.mainWord,
+                              item.mainWord
+                            )
+                          }
+                          className="w-4 h-4 min-h-4 min-w-4 text-green-600 cursor-pointer"
+                        />
+                      </div>
+
+                         <RichTextField
+                              name="mainWord"
+                              control={control}
+                              placeholder={`Enter Your ${item.mainWord}`}
+                            />
+                    
+                    </div>
+
+                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                      <div className="flex items-center justify-between mb-2">
+                        <label className="text-sm font-semibold text-gray-700">
+                          {item.banglaPronunciation || "Bangla-Pronunciation"}
+                        </label>
+                        <Edit
+                          onClick={() =>
+                            handleEditClick(
+                              "banglaPronunciation",
+                              item.banglaPronunciation,
+                              item.banglaPronunciation
+                            )
+                          }
+                          className="w-4 h-4 text-green-600 cursor-pointer"
+                        />
+                      </div>
+                      <textarea
+                        {...register("banglaPronunciation")}
+                        className="textarea textarea-bordered w-full min-h-[80px]"
+                        placeholder={`Enter Your ${item.banglaPronunciation}`}
+                      />
+                    </div>
+
+                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                      <div className="flex items-center justify-between mb-2">
+                        <label className="text-sm font-semibold text-gray-700">
+                          {item.banglaMeaning || "Bangla-Meaning"}
+                        </label>
+                        <Edit
+                          onClick={() =>
+                            handleEditClick(
+                              "bangla-Meaning",
+                              item.banglaMeaning,
+                              item.banglaMeaning
+                            )
+                          }
+                          className="w-4 h-4 text-green-600 cursor-pointer"
+                        />
+                      </div>
+                      <textarea
+                        {...register("banglaMeaning")}
+                        className="textarea textarea-bordered w-full min-h-[80px]"
+                        placeholder={`Enter Your ${item.banglaMeaning}`}
+                      />
+                    </div>
+
+                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                      <div className="flex items-center justify-between mb-2">
+                        <label className="text-sm font-semibold text-gray-700">
+                          {item.synonyms || "Synonyms"}
+                        </label>
+                        <Edit
+                          onClick={() =>
+                            handleEditClick(
+                              "Synonyms",
+                              item.synonyms,
+                              item.synonyms
+                            )
+                          }
+                          className="w-4 h-4 text-green-600 cursor-pointer"
+                        />
+                      </div>
+                      <textarea
+                        {...register("synonyms")}
+                        className="textarea textarea-bordered w-full min-h-[80px]"
+                        placeholder={`Enter Your ${item.synonyms}`}
+                      />
+                    </div>
+
+                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                      <div className="flex items-center justify-between mb-2">
+                        <label className="text-sm font-semibold text-gray-700">
+                          {item.antonyms || "Antonyms"}
+                        </label>
+                        <Edit
+                          onClick={() =>
+                            handleEditClick(
+                              "Antonyms",
+                              item.antonyms,
+                              item.antonyms
+                            )
+                          }
+                          className="w-4 h-4 text-green-600 cursor-pointer"
+                        />
+                      </div>
+                      <textarea
+                        {...register("antonyms")}
+                        className="textarea textarea-bordered w-full min-h-[80px]"
+                        placeholder={`Enter Your ${item.antonyms}`}
+                      />
+                    </div>
+
+                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                      <div className="flex items-center justify-between mb-2">
+                        <label className="text-sm font-semibold text-gray-700">
+                          {item.exampleEnglish || "Example (English)"}
+                        </label>
+                        <Edit
+                          onClick={() =>
+                            handleEditClick(
+                              "Example (English)",
+                              item.exampleEnglish,
+                              item.exampleEnglish
+                            )
+                          }
+                          className="w-4 h-4 text-green-600 cursor-pointer"
+                        />
+                      </div>
+                      <textarea
+                        {...register("exampleEnglish")}
+                        className="textarea textarea-bordered w-full min-h-[80px]"
+                        placeholder={`Enter Your ${item.exampleEnglish}`}
+                      />
+                    </div>
+
+                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                      <div className="flex items-center justify-between mb-2">
+                        <label className="text-sm font-semibold text-gray-700">
+                          {item.exampleBangla || "Example (Bangla)"}
+                        </label>
+                        <Edit
+                          onClick={() =>
+                            handleEditClick(
+                              "Example (Bangla)",
+                              item.exampleBangla,
+                              item.exampleBangla
+                            )
+                          }
+                          className="w-4 h-4 text-green-600 cursor-pointer"
+                        />
+                      </div>
+                      <textarea
+                        {...register("exampleBangla")}
+                        className="textarea textarea-bordered w-full min-h-[80px]"
+                        placeholder={`Enter Your ${item.exampleBangla}`}
+                      />
+                    </div>
+                  </div>
+                ))}
+
+                <div className="flex justify-center mt-6 p-2">
+                  <button
+                    type="submit"
+                    className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow-md w-full"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* History */}
+      <div className="bg-white rounded-lg shadow-md p-5 mt-10 w-[420px] md:w-11/12 lg:w-10/12 mx-auto">
+        <h1 className="mb-5">
+          Total newtantusters Items:{" "}
+          <span className="text-3xl font-bold ">{newtantusters.length}</span>
+        </h1>
+
+        <div className="overflow-x-auto rounded-xl shadow border border-gray-200">
+          {newtantustersLoading ? (
+            <div className="p-6 text-center text-gray-500">
+              Loading newtantusters...
+            </div>
+          ) : newtantustersError ? (
+            <div className="p-6 text-center text-red-500">
+              Error loading newtantusters.
+            </div>
+          ) : (
+            <table className="table w-full">
+              {newtantusterFields?.map((item, index) => (
+                <thead
+                  key={item._id}
+                  className="bg-[#bb874a] text-white text-sm"
+                >
+                  <tr>
+                    <th className="min-w-10">Serial</th>
+                    <th className="min-w-96">{item?.mainWord}</th>
+                    <th className="min-w-96">{item?.banglaPronunciation}</th>
+                    <th className="min-w-96">{item?.banglaMeaning}</th>
+                    <th className="min-w-96">{item?.synonyms}</th>
+                    <th className="min-w-96">{item?.antonyms}</th>
+                    <th className="min-w-96">{item?.exampleEnglish}</th>
+                    <th className="min-w-96">{item?.exampleBangla}</th>
+                    <th className="min-w-16">Action</th>
+                  </tr>
+                </thead>
+              ))}
+              <tbody>
+                {visiblenewtantusters.length > 0 ? (
+                  visiblenewtantusters.map((row, i) => (
+                    <tr
+                      key={i}
+                      className="hover:bg-gray-50 transition border-b text-sm"
+                    >
+                      <td className="font-semibold min-w-10">{i + 1}</td>
+                      <td>
+                        <div
+                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          dangerouslySetInnerHTML={{
+                            __html: row.mainWord,
+                          }}
+                        />
+                      </td>
+                      <td>
+                        <div
+                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          dangerouslySetInnerHTML={{
+                            __html: row.banglaPronunciation,
+                          }}
+                        />
+                      </td>
+                      <td>
+                        <div
+                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          dangerouslySetInnerHTML={{
+                            __html: row.banglaMeaning,
+                          }}
+                        />
+                      </td>
+                      <td>
+                        <div
+                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          dangerouslySetInnerHTML={{
+                            __html: row.synonyms,
+                          }}
+                        />
+                      </td>
+                      <td>
+                        <div
+                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          dangerouslySetInnerHTML={{
+                            __html: row.antonyms,
+                          }}
+                        />
+                      </td>
+                      <td>
+                        <div
+                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          dangerouslySetInnerHTML={{
+                            __html: row.exampleEnglish,
+                          }}
+                        />
+                      </td>
+                      <td>
+                        <div
+                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          dangerouslySetInnerHTML={{
+                            __html: row.exampleBangla,
+                          }}
+                        />
+                      </td>
+
+                      <td className="min-w-16">
+                        <button
+                          onClick={() => handleDelete(row._id)}
+                          className="px-2 py-1 text-red-600 rounded-md hover:bg-red-100 flex items-center gap-1"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="9" className="text-center py-6 text-gray-500">
+                      No elegant found.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          )}
+        </div>
+        {newtantusters.length > 10 && (
+          <div className="flex justify-center mt-4">
+            <button
+              onClick={() => setShowAll(!showAll)}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              {showAll ? "See Less" : "See More"}
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Modal */}
+      {modalOpen && (
+        <AdminNewTantusterModal
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+          fieldName={fieldName}
+          currentValue={currentValue}
+          vocabId={selectedVocabId}
+        />
+      )}
+    </div>
+  );
+};
+
+export default AdminNewTantuster;
