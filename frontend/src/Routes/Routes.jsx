@@ -12,6 +12,8 @@ import AdminVerb from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/V
 
 import AdminPorem from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Porem/AdminPorem";
 
+import AdminPdfUpload from "../Pages/AdminDashboardPages/AdminPdfManagement/AdminPdfUpload";
+import UserUploadPdfManage from "../Pages/AdminDashboardPages/AdminPdfManagement/UserUploadPdfManage";
 import AdminIdiom from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Idiom/AdminIdiom";
 import AdminNewTantuster from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/NewTantuster/AdminNewTantuster";
 import AdminTantuster from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Tantuster/AdminTantuster";
@@ -29,6 +31,8 @@ import BlankFormat from "../Pages/ContributePages/BlankFormat/BlankFormat";
 import UploadPDF from "../Pages/ContributePages/UploadPDF/UploadPDF";
 import EnrollCourse from "../Pages/CoursePages/EnrollCourse";
 import DashboardRedirect from "../Pages/DashboardRedirect";
+import PDFDownload from "../Pages/PDFDownloadPages/PDFDownload";
+import UserUploadPdf from "../Pages/UserUploadPdf/UserUploadPdf";
 import AdminRoute from "./AdminRoute";
 import LayerRoutes from "./LayerRoutes";
 import ModeratorRoute from "./ModeratorRoute";
@@ -279,6 +283,16 @@ export const routes = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <ForgotPassword />
+          </Suspense>
+        ),
+      },
+
+      // download pdf
+      {
+        path: "/pdf-download",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <PDFDownload />
           </Suspense>
         ),
       },
@@ -541,6 +555,23 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
+      {
+        path: "upload-pdf",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminPdfUpload />
+          </Suspense>
+        ),
+      },
+      {
+        path: "manage-pdf",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <UserUploadPdfManage />
+          </Suspense>
+        ),
+      },
+
       // Admin Blog Routes
       {
         path: "create-a-new-blog",
@@ -820,6 +851,14 @@ export const routes = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <Profile />
+          </Suspense>
+        ),
+      },
+      {
+        path: "upload-pdf",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <UserUploadPdf />
           </Suspense>
         ),
       },

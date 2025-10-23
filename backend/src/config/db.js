@@ -276,9 +276,11 @@ const getFiveLayerMcqCollection = () =>
 
 const getLayerManagementFieldsCollection = () =>
   client.db("Learning-Quiz-Platfrom").collection("LevelManagementField");
-
-// const getFiveLayerMcqExerciseCollection = () =>
-//   client.db("Learning-Quiz-Platfrom").collection("McqExercise");
+// pdf Upload admin panel
+const getAdminPdfUploadCollection = () =>
+  client.db("Learning-Quiz-Platfrom").collection("PdfUploads");
+const getUserPdfUploadCollection = () =>
+  client.db("Learning-Quiz-Platfrom").collection("UserPdfUploads");
 
 const getAddPaymentMethodCollection = () => {
   return client.db("Learning-Quiz-Platfrom").collection("AddPaymentMethod");
@@ -310,7 +312,9 @@ module.exports = {
   getPromotionCollection,
   // Layers Management Colllections
   getLayerManagementFieldsCollection,
-
+  // PDF Upload Admin Panel
+  getAdminPdfUploadCollection,
+  getUserPdfUploadCollection,
 
   getFirstLayerVocabularyCollection,
   getFirstLayerVocabularyCollections,

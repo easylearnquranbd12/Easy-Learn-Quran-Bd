@@ -1,5 +1,11 @@
 "use client";
 
+import {
+  CircleFadingArrowUp,
+  CloudUpload,
+  FileText,
+  Kanban,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { BiEdit } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
@@ -448,6 +454,29 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
       color: "text-cyan-600",
     },
     {
+      path: "/admin-dashboard/pdf-management",
+      icon: FileText,
+      label: "PDF Management",
+      description: "Manage PDF documents",
+      color: "text-indigo-600",
+      subItems: [
+        {
+          path: "/admin-dashboard/upload-pdf",
+          icon: CircleFadingArrowUp,
+          label: "Upload PDF",
+          description: "Upload new PDF documents",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/manage-pdf",
+          icon: Kanban,
+          label: "Manage PDF",
+          description: "Manage existing PDF documents",
+          color: "text-indigo-600",
+        },
+      ],
+    },
+    {
       path: "/admin-dashboard/enrollments",
       icon: FaUserGraduate,
       label: "Payment Management",
@@ -568,6 +597,13 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
       icon: MdDashboard,
       label: "Dashboard",
       description: "Your Overview",
+      color: "text-blue-600",
+    },
+    {
+      path: "/user-dashboard/upload-pdf",
+      icon: CloudUpload,
+      label: "Pdf Upload",
+      description: "Pdf Management",
       color: "text-blue-600",
     },
   ];
