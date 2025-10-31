@@ -152,14 +152,14 @@ const onSubmit = async (data) => {
 
   return (
     <div className="max-w-[1400px] mx-auto">
-      <div className="bg-white shadow-md rounded-2xl p-2 md:p-5 mt-10 space-y-3">
+      <div className="bg-white shadow-md border rounded-lg p-2 md:p-5 mt-10 space-y-3">
         <div className="flex flex-col items-center mb-3 space-y-2">
           {vocabularyFields?.map((item) => (
             <div key={item._id} className="text-center max-w-[1400px]">
-              <h2 className="text-3xl font-bold text-[#bb874a]">
+              <h2 className="text-3xl font-bold text-teal-700">
                 {item?.title || "Title Missing"}
               </h2>
-              <p className="text-center py-5 text-gray-700">
+              <p className=" py-5 text-gray-700 text-justify">
                 {item?.description || "Description Missing"}
               </p>
             </div>
@@ -170,7 +170,7 @@ const onSubmit = async (data) => {
         <div className="overflow-x-auto rounded-xl shadow border border-gray-200">
           <table className="table w-full">
             {vocabularyFields?.map((item, index) => (
-              <thead key={item._id} className="bg-[#bb874a] text-white text-sm">
+              <thead key={item._id} className="bg-teal-600 text-white text-sm">
                 <tr>
                   <th className="min-w-10">Serial</th>
                   <th className="min-w-96">{item?.mainWord}</th>
@@ -257,7 +257,7 @@ const onSubmit = async (data) => {
           <div className="flex justify-center mt-4">
             <button
               onClick={() => setShowAll(!showAll)}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700"
             >
               {showAll ? "See Less" : "See More"}
             </button>
@@ -272,12 +272,12 @@ const onSubmit = async (data) => {
               item.isActive === "ON" && (
                 <div key={item._id}>
                   <div className="card bg-white shadow-md rounded-2xl p-2 md:p-5 mt-10 space-y-3 ">
-                    <h3 className="text-xl font-semibold text-[#bb874a]">
+                    <h3 className="text-xl font-semibold text-teal-700">
                       📖Learning Your Exercise
                     </h3>
                     <div className="overflow-x-auto rounded-xl shadow border border-gray-200">
                       <table className="table w-full">
-                        <thead className="bg-black text-white text-sm">
+                        <thead className="bg-teal-600 text-white text-sm">
                           <tr>
                             <th className="min-w-10">Serial</th>
                             <th className="min-w-96">{item?.mainWord}</th>
@@ -460,7 +460,7 @@ const onSubmit = async (data) => {
 
                     <div className="flex justify-center mt-5">
                       <button
-                        className="px-6 py-2 bg-[#bb874a] text-white rounded-lg shadow hover:bg-[#5e4528] transition"
+                        className="px-6 py-2 bg-teal-600 text-white rounded-lg shadow hover:bg-teal-700 transition"
                        
                       >
                         Submit Now

@@ -1,24 +1,26 @@
-
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-
 const formatFieldLabel = (fieldName) => {
   let words = fieldName
-    .replace(/([a-z])([A-Z])/g, "$1 $2") // camelCase → separate words
-    .replace(/-/g, " ")                   // kebab-case → replace hyphen with space
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/-/g, " ")
     .split(" ");
 
-  words = words.map(
-    (word) => word.charAt(0).toUpperCase() + word.slice(1)
-  );
+  words = words.map((word) => word.charAt(0).toUpperCase() + word.slice(1));
 
   return words.join(" ");
 };
 
-const IdiomModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
+const AdminVocabularyModal = ({
+  isOpen,
+  onClose,
+  fieldName,
+  currentValue,
+  vocabId,
+}) => {
   const [value, setValue] = useState(currentValue || "");
   const queryClient = useQueryClient();
 
@@ -33,7 +35,7 @@ const IdiomModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `http://localhost:5000/first-layer/IdiomField/${vocabId}`,
+        `http://localhost:5000/first-layer/VocabularyField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -41,6 +43,7 @@ const IdiomModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
         }
       );
       const data = await res.json();
+
       if (!res.ok) {
         throw new Error(data.message || "Failed to update");
       }
@@ -51,9 +54,9 @@ const IdiomModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
         icon: "success",
         title: "Updated!",
         text: `${formatFieldLabel(fieldName)} updated successfully.`,
-        confirmButtonColor: "#16a34a", 
+        confirmButtonColor: "#16a34a",
       });
-      queryClient.invalidateQueries(["vocabulary"]); 
+      queryClient.invalidateQueries(["vocabulary"]);
       onClose();
     },
     onError: (error) => {
@@ -61,7 +64,7 @@ const IdiomModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
         icon: "error",
         title: "Oops...",
         text: error.message,
-        confirmButtonColor: "#dc2626", 
+        confirmButtonColor: "#dc2626",
       });
     },
   });
@@ -79,7 +82,8 @@ const IdiomModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
         </button>
 
         <h2 className="text-lg font-semibold mb-4">
-          Edit Field: <span className="text-green-600">{formatFieldLabel(fieldName)}</span>
+          Edit Field:{" "}
+          <span className="text-green-600">{formatFieldLabel(fieldName)}</span>
         </h2>
 
         <textarea
@@ -108,4 +112,4 @@ const IdiomModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
   );
 };
 
-export default IdiomModal;
+export default AdminVocabularyModal;

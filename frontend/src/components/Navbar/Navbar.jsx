@@ -226,8 +226,8 @@ const Navbar = () => {
                     whileTap={{ scale: 0.95 }}
                     className={`inline-block rounded-md text-xl font-semibold transition duration-200 cursor-pointer ${
                       isActive(item.link)
-                        ? "text-activeTextPrimary"
-                        : "text-black hover:text-hoverTextPrimary px-2 py-1.5"
+                        ? "text-teal-700"
+                        : "text-black hover:text-teal-700 px-2 py-1.5"
                     }`}
                   >
                     {item.title}
@@ -246,8 +246,8 @@ const Navbar = () => {
                     whileTap={{ scale: 0.95 }}
                     className={`inline-block rounded-md text-base md:text-lg font-semibold transition duration-200 ${
                       isActive(item.link)
-                        ? "text-activeTextPrimary"
-                        : "text-black hover:text-hoverTextPrimary px-4 py-1.5"
+                        ? "text-teal-700"
+                        : "text-black hover:text-teal-700 px-4 py-1.5"
                     }`}
                   >
                     {item.title}
@@ -274,13 +274,13 @@ const Navbar = () => {
                         {subItem.action ? (
                           <div
                             onClick={subItem.action}
-                            className="block text-base font-medium px-4 py-2 cursor-pointer hover:text-hoverTextPrimary hover:bg-gray-50"
+                            className="block text-base font-medium px-4 py-2 cursor-pointer hover:text-teal-700 hover:bg-gray-50"
                           >
                             {subItem.title}
                           </div>
                         ) : (
                           <Link to={subItem.link}>
-                            <div className="block text-base font-medium px-4 py-2 hover:text-hoverTextPrimary hover:bg-gray-50">
+                            <div className="block text-base font-medium px-4 py-2 hover:text-teal-700 hover:bg-gray-50">
                               {subItem.title}
                             </div>
                           </Link>
@@ -309,8 +309,8 @@ const Navbar = () => {
                 whileTap={{ scale: 0.95 }}
                 className={`inline-block px-4 py-1.5 rounded-md ${
                   location.pathname === "/login"
-                    ? "bg-bgButton text-white"
-                    : "text-white bg-bgButton hover:bg-hoverBgButton"
+                    ? "bg-teal-700 text-white"
+                    : "text-white bg-teal-700 hover:bg-teal-900"
                 }`}
               >
                 Login
@@ -323,7 +323,7 @@ const Navbar = () => {
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="bg-[#d6a772] rounded-md px-3 py-2 hover:bg-[#bb874a] cursor-pointer md:hidden"
+          className="bg-teal-600 rounded-md px-3 py-2 hover:bg-teal-900 cursor-pointer md:hidden"
         >
           <FaBars
             onClick={() => setIsOpen(true)}
@@ -390,8 +390,8 @@ const Navbar = () => {
                           <span
                             className={`font-semibold transition duration-200 px-2 py-1.5 ${
                               isActive(item.link)
-                                ? "text-activeTextPrimary"
-                                : "text-black hover:text-hoverTextPrimary"
+                                ? "text-teal-700"
+                                : "text-black hover:text-teal-700"
                             }`}
                           >
                             {item.title}
@@ -408,8 +408,8 @@ const Navbar = () => {
                           onClick={() => setIsOpen(false)}
                           className={`inline-block font-semibold transition duration-200 rounded-md px-2 py-1.5 ${
                             isActive(item.link)
-                              ? "text-activeTextPrimary"
-                              : "text-black hover:text-hoverTextPrimary"
+                              ? "text-teal-700"
+                              : "text-black hover:text-teal-700"
                           }`}
                         >
                           {item.title}
@@ -436,7 +436,7 @@ const Navbar = () => {
                                     subItem.action();
                                     setIsOpen(false);
                                   }}
-                                  className="block text-base border-t font-medium px-4 py-2 cursor-pointer hover:text-hoverTextPrimary hover:bg-gray-100"
+                                  className="block text-base border-t font-medium px-4 py-2 cursor-pointer hover:text-teal-700 hover:bg-gray-100"
                                 >
                                   {subItem.title}
                                 </motion.div>
@@ -449,7 +449,7 @@ const Navbar = () => {
                                   <Link
                                     to={subItem.link}
                                     onClick={() => setIsOpen(false)}
-                                    className="block text-base border-t font-medium px-4 py-2 hover:text-hoverTextPrimary hover:bg-gray-100"
+                                    className="block text-base border-t font-medium px-4 py-2 hover:text-teal-700 hover:bg-gray-100"
                                   >
                                     {subItem.title}
                                   </Link>
@@ -481,7 +481,7 @@ const Navbar = () => {
                   <Link
                     to="/login"
                     onClick={() => setIsOpen(false)}
-                    className="block w-full text-center py-2 bg-bgButton hover:bg-hoverBgButton text-white rounded-md font-semibold"
+                    className="block w-full text-center py-2 bg-teal-700 hover:bg-teal-900 text-white rounded-md font-semibold"
                   >
                     Login
                   </Link>
@@ -688,8 +688,8 @@ export default Navbar;
 //                     whileTap={{ scale: 0.95 }}
 //                     className={`inline-block rounded-md text-xl font-semibold transition duration-200 cursor-pointer ${
 //                       isActive(item.link)
-//                         ? "text-activeTextPrimary"
-//                         : "text-black hover:text-hoverTextPrimary px-2 py-1.5"
+//                         ? "text-teal-700"
+//                         : "text-black hover:text-teal-700 px-2 py-1.5"
 //                     }`}
 //                   >
 //                     {item.title}
@@ -707,8 +707,8 @@ export default Navbar;
 //                     whileTap={{ scale: 0.95 }}
 //                     className={`inline-block rounded-md text-base md:text-lg font-semibold transition duration-200 ${
 //                       isActive(item.link)
-//                         ? "text-activeTextPrimary"
-//                         : "text-black hover:text-hoverTextPrimary px-4 py-1.5"
+//                         ? "text-teal-700"
+//                         : "text-black hover:text-teal-700 px-4 py-1.5"
 //                     }`}
 //                   >
 //                     {item.title}
@@ -737,8 +737,8 @@ export default Navbar;
 //                             transition={{ duration: 0.1 }}
 //                             className={`block text-base font-medium transition duration-200 rounded-md mx-2 px-4 py-2 ${
 //                               location.pathname === subItem.link
-//                                 ? "text-activeTextPrimary "
-//                                 : "text-black hover:text-hoverTextPrimary hover:bg-gray-50"
+//                                 ? "text-teal-700 "
+//                                 : "text-black hover:text-teal-700 hover:bg-gray-50"
 //                             }`}
 //                           >
 //                             {subItem.title}
@@ -768,8 +768,8 @@ export default Navbar;
 //                 whileTap={{ scale: 0.95 }}
 //                 className={`inline-block px-4 py-1.5 rounded-md ${
 //                   location.pathname === "/login"
-//                     ? "bg-bgButton text-white"
-//                     : "text-white bg-bgButton hover:bg-hoverBgButton"
+//                     ? "bg-teal-700 text-white"
+//                     : "text-white bg-teal-700 hover:bg-teal-900"
 //                 }`}
 //               >
 //                 Login
@@ -852,8 +852,8 @@ export default Navbar;
 //                           <span
 //                             className={`font-semibold transition duration-200 px-2 py-1.5 ${
 //                               isActive(item.link)
-//                                 ? "text-activeTextPrimary"
-//                                 : "text-black hover:text-hoverTextPrimary "
+//                                 ? "text-teal-700"
+//                                 : "text-black hover:text-teal-700 "
 //                             }`}
 //                           >
 //                             {item.title}
@@ -870,8 +870,8 @@ export default Navbar;
 //                           onClick={handleMobileMenuClick}
 //                           className={`inline-block font-semibold transition duration-200 rounded-md px-2 py-1.5 ${
 //                             isActive(item.link)
-//                               ? "text-activeTextPrimary"
-//                               : "text-black hover:text-hoverTextPrimary "
+//                               ? "text-teal-700"
+//                               : "text-black hover:text-teal-700 "
 //                           }`}
 //                         >
 //                           {item.title}
@@ -899,8 +899,8 @@ export default Navbar;
 //                                   onClick={handleMobileMenuClick}
 //                                   className={`block text-base border-t font-medium transition duration-200 rounded-md px-4 py-2 ${
 //                                     location.pathname === subItem.link
-//                                       ? "text-activeTextPrimary"
-//                                       : "text-black hover:text-hoverTextPrimary hover:bg-gray-100"
+//                                       ? "text-teal-700"
+//                                       : "text-black hover:text-teal-700 hover:bg-gray-100"
 //                                   }`}
 //                                 >
 //                                   {subItem.title}
@@ -933,7 +933,7 @@ export default Navbar;
 //                   <Link
 //                     to="/login"
 //                     onClick={handleMobileMenuClick}
-//                     className="block w-full text-center py-2 bg-bgButton hover:bg-hoverBgButton text-white rounded-md font-semibold"
+//                     className="block w-full text-center py-2 bg-teal-700 hover:bg-teal-900 text-white rounded-md font-semibold"
 //                   >
 //                     Login
 //                   </Link>
@@ -1102,8 +1102,8 @@ export default Navbar;
 //                     whileTap={{ scale: 0.95 }}
 //                     className={`inline-block rounded-md text-xl font-semibold transition duration-200 cursor-pointer ${
 //                       isActive(item.link)
-//                         ? "text-activeTextPrimary"
-//                         : "text-black hover:text-hoverTextPrimary px-2 py-1.5"
+//                         ? "text-teal-700"
+//                         : "text-black hover:text-teal-700 px-2 py-1.5"
 //                     }`}
 //                   >
 //                     {item.title}
@@ -1122,8 +1122,8 @@ export default Navbar;
 //                     whileTap={{ scale: 0.95 }}
 //                     className={`inline-block rounded-md text-base md:text-lg font-semibold transition duration-200 ${
 //                       isActive(item.link)
-//                         ? "text-activeTextPrimary"
-//                         : "text-black hover:text-hoverTextPrimary px-4 py-1.5"
+//                         ? "text-teal-700"
+//                         : "text-black hover:text-teal-700 px-4 py-1.5"
 //                     }`}
 //                   >
 //                     {item.title}
@@ -1150,14 +1150,14 @@ export default Navbar;
 //                         {subItem.action ? (
 //                           <div
 //                             onClick={subItem.action}
-//                             className="block text-base font-medium px-4 py-2 cursor-pointer hover:text-hoverTextPrimary hover:bg-gray-50"
+//                             className="block text-base font-medium px-4 py-2 cursor-pointer hover:text-teal-700 hover:bg-gray-50"
 //                           >
 //                             {subItem.title}
 //                           </div>
 //                         ) : (
 //                           <Link  to={subItem.link}>
 
-//                             <div className="block text-base font-medium px-4 py-2 hover:text-hoverTextPrimary hover:bg-gray-50">
+//                             <div className="block text-base font-medium px-4 py-2 hover:text-teal-700 hover:bg-gray-50">
 //                               {subItem.title}
 //                             </div>
 //                           </Link>
@@ -1186,8 +1186,8 @@ export default Navbar;
 //                 whileTap={{ scale: 0.95 }}
 //                 className={`inline-block px-4 py-1.5 rounded-md ${
 //                   location.pathname === "/login"
-//                     ? "bg-bgButton text-white"
-//                     : "text-white bg-bgButton hover:bg-hoverBgButton"
+//                     ? "bg-teal-700 text-white"
+//                     : "text-white bg-teal-700 hover:bg-teal-900"
 //                 }`}
 //               >
 //                 Login
@@ -1267,8 +1267,8 @@ export default Navbar;
 //                           <span
 //                             className={`font-semibold transition duration-200 px-2 py-1.5 ${
 //                               isActive(item.link)
-//                                 ? "text-activeTextPrimary"
-//                                 : "text-black hover:text-hoverTextPrimary"
+//                                 ? "text-teal-700"
+//                                 : "text-black hover:text-teal-700"
 //                             }`}
 //                           >
 //                             {item.title}
@@ -1285,8 +1285,8 @@ export default Navbar;
 //                           onClick={() => setIsOpen(false)}
 //                           className={`inline-block font-semibold transition duration-200 rounded-md px-2 py-1.5 ${
 //                             isActive(item.link)
-//                               ? "text-activeTextPrimary"
-//                               : "text-black hover:text-hoverTextPrimary"
+//                               ? "text-teal-700"
+//                               : "text-black hover:text-teal-700"
 //                           }`}
 //                         >
 //                           {item.title}
@@ -1313,7 +1313,7 @@ export default Navbar;
 //                                     subItem.action();
 //                                     setIsOpen(false);
 //                                   }}
-//                                   className="block text-base border-t font-medium px-4 py-2 cursor-pointer hover:text-hoverTextPrimary hover:bg-gray-100"
+//                                   className="block text-base border-t font-medium px-4 py-2 cursor-pointer hover:text-teal-700 hover:bg-gray-100"
 //                                 >
 //                                   {subItem.title}
 //                                 </motion.div>
@@ -1326,7 +1326,7 @@ export default Navbar;
 //                                   <Link
 //                                     to={subItem.link}
 //                                     onClick={() => setIsOpen(false)}
-//                                     className="block text-base border-t font-medium px-4 py-2 hover:text-hoverTextPrimary hover:bg-gray-100"
+//                                     className="block text-base border-t font-medium px-4 py-2 hover:text-teal-700 hover:bg-gray-100"
 //                                   >
 //                                     {subItem.title}
 //                                   </Link>
@@ -1358,7 +1358,7 @@ export default Navbar;
 //                   <Link
 //                     to="/login"
 //                     onClick={() => setIsOpen(false)}
-//                     className="block w-full text-center py-2 bg-bgButton hover:bg-hoverBgButton text-white rounded-md font-semibold"
+//                     className="block w-full text-center py-2 bg-teal-700 hover:bg-teal-900 text-white rounded-md font-semibold"
 //                   >
 //                     Login
 //                   </Link>
@@ -1565,8 +1565,8 @@ export default Navbar;
 // //                     whileTap={{ scale: 0.95 }}
 // //                     className={`inline-block rounded-md text-xl font-semibold transition duration-200 cursor-pointer ${
 // //                       isActive(item.link)
-// //                         ? "text-activeTextPrimary"
-// //                         : "text-black hover:text-hoverTextPrimary px-2 py-1.5"
+// //                         ? "text-teal-700"
+// //                         : "text-black hover:text-teal-700 px-2 py-1.5"
 // //                     }`}
 // //                   >
 // //                     {item.title}
@@ -1584,8 +1584,8 @@ export default Navbar;
 // //                     whileTap={{ scale: 0.95 }}
 // //                     className={`inline-block rounded-md text-base md:text-lg font-semibold transition duration-200 ${
 // //                       isActive(item.link)
-// //                         ? "text-activeTextPrimary"
-// //                         : "text-black hover:text-hoverTextPrimary px-4 py-1.5"
+// //                         ? "text-teal-700"
+// //                         : "text-black hover:text-teal-700 px-4 py-1.5"
 // //                     }`}
 // //                   >
 // //                     {item.title}
@@ -1614,8 +1614,8 @@ export default Navbar;
 // //                             transition={{ duration: 0.1 }}
 // //                             className={`block text-base font-medium transition duration-200 rounded-md mx-2 px-4 py-2 ${
 // //                               location.pathname === subItem.link
-// //                                 ? "text-activeTextPrimary "
-// //                                 : "text-black hover:text-hoverTextPrimary hover:bg-gray-50"
+// //                                 ? "text-teal-700 "
+// //                                 : "text-black hover:text-teal-700 hover:bg-gray-50"
 // //                             }`}
 // //                           >
 // //                             {subItem.title}
@@ -1645,8 +1645,8 @@ export default Navbar;
 // //                 whileTap={{ scale: 0.95 }}
 // //                 className={`inline-block px-4 py-1.5 rounded-md ${
 // //                   location.pathname === "/login"
-// //                     ? "bg-bgButton text-white"
-// //                     : "text-white bg-bgButton hover:bg-hoverBgButton"
+// //                     ? "bg-teal-700 text-white"
+// //                     : "text-white bg-teal-700 hover:bg-teal-900"
 // //                 }`}
 // //               >
 // //                 Login
@@ -1729,8 +1729,8 @@ export default Navbar;
 // //                           <span
 // //                             className={`font-semibold transition duration-200 px-2 py-1.5 ${
 // //                               isActive(item.link)
-// //                                 ? "text-activeTextPrimary"
-// //                                 : "text-black hover:text-hoverTextPrimary "
+// //                                 ? "text-teal-700"
+// //                                 : "text-black hover:text-teal-700 "
 // //                             }`}
 // //                           >
 // //                             {item.title}
@@ -1747,8 +1747,8 @@ export default Navbar;
 // //                           onClick={handleMobileMenuClick}
 // //                           className={`inline-block font-semibold transition duration-200 rounded-md px-2 py-1.5 ${
 // //                             isActive(item.link)
-// //                               ? "text-activeTextPrimary"
-// //                               : "text-black hover:text-hoverTextPrimary "
+// //                               ? "text-teal-700"
+// //                               : "text-black hover:text-teal-700 "
 // //                           }`}
 // //                         >
 // //                           {item.title}
@@ -1776,8 +1776,8 @@ export default Navbar;
 // //                                   onClick={handleMobileMenuClick}
 // //                                   className={`block text-base border-t font-medium transition duration-200 rounded-md px-4 py-2 ${
 // //                                     location.pathname === subItem.link
-// //                                       ? "text-activeTextPrimary"
-// //                                       : "text-black hover:text-hoverTextPrimary hover:bg-gray-100"
+// //                                       ? "text-teal-700"
+// //                                       : "text-black hover:text-teal-700 hover:bg-gray-100"
 // //                                   }`}
 // //                                 >
 // //                                   {subItem.title}
@@ -1810,7 +1810,7 @@ export default Navbar;
 // //                   <Link
 // //                     to="/login"
 // //                     onClick={handleMobileMenuClick}
-// //                     className="block w-full text-center py-2 bg-bgButton hover:bg-hoverBgButton text-white rounded-md font-semibold"
+// //                     className="block w-full text-center py-2 bg-teal-700 hover:bg-teal-900 text-white rounded-md font-semibold"
 // //                   >
 // //                     Login
 // //                   </Link>

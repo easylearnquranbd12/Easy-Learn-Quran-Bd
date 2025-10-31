@@ -40,7 +40,6 @@ const AdminNewTantusterModal = ({ isOpen, onClose, fieldName, currentValue, voca
         }
       );
       const data = await res.json();
-      console.log(data)
       if (!res.ok) {
         throw new Error(data.message || "Failed to update");
       }

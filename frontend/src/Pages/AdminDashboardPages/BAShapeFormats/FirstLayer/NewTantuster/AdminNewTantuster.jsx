@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import AdminLoading from "../../../../../components/Loading/AdminLoading";
 import TittleAnimation from "../../../../../components/TittleAnimation/TittleAnimation";
 import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
 import RichTextField from "../../../../../shared/TextEditor/RichTextField";
@@ -39,7 +40,7 @@ const AdminNewTantuster = () => {
     queryKey: ["newtantusterFields"],
     queryFn: async () => {
       const res = await axiosPublic.get("/first-layer/newtantusterField");
-      console.log(res.data.data);
+
       return res.data.data;
     },
   });
@@ -89,7 +90,6 @@ const AdminNewTantuster = () => {
     },
     onError: (error) => {
       Swal.fire("Error!", "Failed to delete newtantuster.", "error");
-      console.error(error);
     },
   });
 
@@ -111,7 +111,9 @@ const AdminNewTantuster = () => {
   };
   const [showAll, setShowAll] = useState(false);
   // Toggle show all rows
-  const visiblenewtantusters = showAll ? newtantusters : newtantusters.slice(0, 10);
+  const visiblenewtantusters = showAll
+    ? newtantusters
+    : newtantusters.slice(0, 10);
   // form submit
   const onSubmit = async (data) => {
     createnewtantusters(data);
@@ -148,10 +150,13 @@ const AdminNewTantuster = () => {
   // Toggle mutation using item.isActive
   const toggleIsActiveMutation = useMutation({
     mutationFn: async (currentState) => {
-      const res = await axiosPublic.put(`/first-layer/newTantusterField/toggle`, {
-        fieldName: "isActive", // ✅ এটা দিতে হবে
-        currentValue: currentState,
-      });
+      const res = await axiosPublic.put(
+        `/first-layer/newTantusterField/toggle`,
+        {
+          fieldName: "isActive", // ✅ এটা দিতে হবে
+          currentValue: currentState,
+        }
+      );
       return res.data;
     },
     onSuccess: (data) => {
@@ -170,8 +175,12 @@ const AdminNewTantuster = () => {
       );
     },
   });
+
+  if (isLoading || newtantustersLoading) {
+    return <AdminLoading />;
+  }
   return (
-   <div className="w-full max-w-[1400px] mx-auto ">
+    <div className="w-full max-w-[1400px] mx-auto px-2">
       <Helmet>
         <title>Quiz | newtantusters</title>
       </Helmet>
@@ -181,7 +190,7 @@ const AdminNewTantuster = () => {
       />
 
       <div className="mt-10">
-     <div className="bg-white rounded-lg shadow-md p-5 mt-10 w-full md:w-11/12 lg:w-10/12 mx-auto">
+        <div className="bg-white rounded-lg shadow-md p-5 mt-10 w-full ">
           <div className="w-full">
             <div className=" space-y-4">
               <div className="mb-4 text-center">
@@ -243,7 +252,7 @@ const AdminNewTantuster = () => {
                 {newtantusterFields?.map((item) => (
                   <div key={item._id} className="space-y-4 p-2">
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200 ">
-                      <div className="flex items-center justify-start gap-2 mb-2">
+                      <div className="flex items-center justify-start gap-5 mb-2">
                         <label className="text-sm font-semibold text-gray-700">
                           {item.mainWord || "Main-Word"}
                         </label>
@@ -255,20 +264,20 @@ const AdminNewTantuster = () => {
                               item.mainWord
                             )
                           }
-                          className="w-4 h-4 min-h-4 min-w-4 text-green-600 cursor-pointer"
+                          className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-
-                         <RichTextField
-                              name="mainWord"
-                              control={control}
-                              placeholder={`Enter Your ${item.mainWord}`}
-                            />
-                    
+                      <div>
+                        <RichTextField
+                          name="mainWord"
+                          control={control}
+                          placeholder={`Enter Your ${item.mainWord}`}
+                        />
+                      </div>
                     </div>
 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                      <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center justify-start gap-5 mb-2">
                         <label className="text-sm font-semibold text-gray-700">
                           {item.banglaPronunciation || "Bangla-Pronunciation"}
                         </label>
@@ -283,22 +292,24 @@ const AdminNewTantuster = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <textarea
-                        {...register("banglaPronunciation")}
-                        className="textarea textarea-bordered w-full min-h-[80px]"
-                        placeholder={`Enter Your ${item.banglaPronunciation}`}
-                      />
+                      <div>
+                        <RichTextField
+                          name="banglaPronunciation"
+                          control={control}
+                          placeholder={`Enter Your ${item.banglaPronunciation}`}
+                        />
+                      </div>
                     </div>
 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                      <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center justify-start gap-5 mb-2">
                         <label className="text-sm font-semibold text-gray-700">
                           {item.banglaMeaning || "Bangla-Meaning"}
                         </label>
                         <Edit
                           onClick={() =>
                             handleEditClick(
-                              "bangla-Meaning",
+                              "banglaMeaning",
                               item.banglaMeaning,
                               item.banglaMeaning
                             )
@@ -306,22 +317,24 @@ const AdminNewTantuster = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <textarea
-                        {...register("banglaMeaning")}
-                        className="textarea textarea-bordered w-full min-h-[80px]"
-                        placeholder={`Enter Your ${item.banglaMeaning}`}
-                      />
+                      <div>
+                        <RichTextField
+                          name="banglaMeaning"
+                          control={control}
+                          placeholder={`Enter Your ${item.banglaMeaning}`}
+                        />
+                      </div>
                     </div>
 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                      <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center justify-start gap-5 mb-2">
                         <label className="text-sm font-semibold text-gray-700">
                           {item.synonyms || "Synonyms"}
                         </label>
                         <Edit
                           onClick={() =>
                             handleEditClick(
-                              "Synonyms",
+                              "synonyms",
                               item.synonyms,
                               item.synonyms
                             )
@@ -329,22 +342,24 @@ const AdminNewTantuster = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <textarea
-                        {...register("synonyms")}
-                        className="textarea textarea-bordered w-full min-h-[80px]"
-                        placeholder={`Enter Your ${item.synonyms}`}
-                      />
+                      <div>
+                        <RichTextField
+                          name="synonyms"
+                          control={control}
+                          placeholder={`Enter Your ${item.synonyms}`}
+                        />
+                      </div>
                     </div>
 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                      <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center justify-start gap-5 mb-2">
                         <label className="text-sm font-semibold text-gray-700">
                           {item.antonyms || "Antonyms"}
                         </label>
                         <Edit
                           onClick={() =>
                             handleEditClick(
-                              "Antonyms",
+                              "antonyms",
                               item.antonyms,
                               item.antonyms
                             )
@@ -352,22 +367,24 @@ const AdminNewTantuster = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <textarea
-                        {...register("antonyms")}
-                        className="textarea textarea-bordered w-full min-h-[80px]"
-                        placeholder={`Enter Your ${item.antonyms}`}
-                      />
+                      <div>
+                        <RichTextField
+                          name="antonyms"
+                          control={control}
+                          placeholder={`Enter Your ${item.antonyms}`}
+                        />
+                      </div>
                     </div>
 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                      <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center justify-start gap-5 mb-2">
                         <label className="text-sm font-semibold text-gray-700">
                           {item.exampleEnglish || "Example (English)"}
                         </label>
                         <Edit
                           onClick={() =>
                             handleEditClick(
-                              "Example (English)",
+                              "exampleEnglish",
                               item.exampleEnglish,
                               item.exampleEnglish
                             )
@@ -375,22 +392,24 @@ const AdminNewTantuster = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <textarea
-                        {...register("exampleEnglish")}
-                        className="textarea textarea-bordered w-full min-h-[80px]"
-                        placeholder={`Enter Your ${item.exampleEnglish}`}
-                      />
+                      <div>
+                        <RichTextField
+                          name="exampleEnglish"
+                          control={control}
+                          placeholder={`Enter Your ${item.exampleEnglish}`}
+                        />
+                      </div>
                     </div>
 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                      <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center justify-start gap-5 mb-2">
                         <label className="text-sm font-semibold text-gray-700">
                           {item.exampleBangla || "Example (Bangla)"}
                         </label>
                         <Edit
                           onClick={() =>
                             handleEditClick(
-                              "Example (Bangla)",
+                              "exampleBangla",
                               item.exampleBangla,
                               item.exampleBangla
                             )
@@ -398,11 +417,13 @@ const AdminNewTantuster = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <textarea
-                        {...register("exampleBangla")}
-                        className="textarea textarea-bordered w-full min-h-[80px]"
-                        placeholder={`Enter Your ${item.exampleBangla}`}
-                      />
+                      <div>
+                        <RichTextField
+                          name="exampleBangla"
+                          control={control}
+                          placeholder={`Enter Your ${item.exampleBangla}`}
+                        />
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -410,7 +431,7 @@ const AdminNewTantuster = () => {
                 <div className="flex justify-center mt-6 p-2">
                   <button
                     type="submit"
-                    className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow-md w-full"
+                    className="px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-lg shadow-md w-full"
                   >
                     Submit
                   </button>
@@ -422,7 +443,7 @@ const AdminNewTantuster = () => {
       </div>
 
       {/* History */}
-      <div className="bg-white rounded-lg shadow-md p-5 mt-10 w-[420px] md:w-11/12 lg:w-10/12 mx-auto">
+      <div className="bg-white rounded-lg shadow-md p-5 mt-10 w-[450px] md:w-full">
         <h1 className="mb-5">
           Total newtantusters Items:{" "}
           <span className="text-3xl font-bold ">{newtantusters.length}</span>
@@ -442,7 +463,7 @@ const AdminNewTantuster = () => {
               {newtantusterFields?.map((item, index) => (
                 <thead
                   key={item._id}
-                  className="bg-[#bb874a] text-white text-sm"
+                  className="bg-teal-600 text-white text-sm"
                 >
                   <tr>
                     <th className="min-w-10">Serial</th>

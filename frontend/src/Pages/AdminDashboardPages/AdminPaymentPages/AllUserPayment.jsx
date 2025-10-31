@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import useAuth from "../../../hooks/useAuth";
+import useRole from "../../../hooks/useRole";
 
 const fetchPayments = async () => {
   const res = await axios.get("http://localhost:5000/payment/admin");
@@ -27,7 +29,8 @@ const AllUserPayment = () => {
   const [statusFilter, setStatusFilter] = useState("All");
   const [methodFilter, setMethodFilter] = useState("All");
   const [selectedPayment, setSelectedPayment] = useState(null);
-
+  const { user } = useAuth();
+  const { role } = useRole();
   const {
     data: payments = [],
     isLoading,
@@ -125,7 +128,7 @@ const AllUserPayment = () => {
   });
 
   return (
-    <div className="p-6  min-h-screen max-w-7xl mx-auto">
+    <div className="p-2 md:p-6  min-h-screen max-w-7xl mx-auto">
       {/* Summary cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
         <div className="bg-white p-4 rounded-xl shadow flex items-center gap-3">
@@ -260,8 +263,9 @@ const AllUserPayment = () => {
               {/* Details */}
               <div className="mt-3 grid sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm text-gray-700">
                 <p>
-                  <strong>Plan:</strong> {p.courseName || "N/A"}
+                  <strong>Payment Method:</strong> {p.paymentMethod}
                 </p>
+
                 <p>
                   <strong>Amount:</strong>{" "}
                   <span className="bg-green-100 text-green-600 px-2 rounded-md">
@@ -271,11 +275,15 @@ const AllUserPayment = () => {
                 <p>
                   <strong>Payment:</strong> {p.paymentMethod}
                 </p>
+
+                <p>
+                  <strong>Number:</strong> {p.userPaymentMethod || "N/A"}
+                </p>
                 <p>
                   <strong>Payment Number:</strong> {p.adminNumber || "N/A"}
                 </p>
                 <p>
-                  <strong>Number:</strong> {p.userPaymentMethod || "N/A"}
+                  <strong>Expired Date:</strong> {p.expireAt || "N/A"}
                 </p>
                 <p>
                   <strong>Purchase:</strong>{" "}
@@ -331,8 +339,7 @@ const AllUserPayment = () => {
               {/* Student Info */}
               <div>
                 <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
-                  <GraduationCap className="text-blue-600" /> Student
-                  Information
+                  <GraduationCap className="text-blue-600" /> User Information
                 </h3>
                 <div className="bg-gray-50 p-3 rounded-xl space-y-2">
                   <p>
@@ -343,7 +350,7 @@ const AllUserPayment = () => {
                     {selectedPayment.userEmail}
                   </p>
                   <p>
-                    <strong>ID:</strong> {selectedPayment.studentId || "N/A"}
+                    <strong>ID:</strong> {selectedPayment._id || "N/A"}
                   </p>
                 </div>
               </div>
@@ -351,21 +358,14 @@ const AllUserPayment = () => {
               {/* Course Info */}
               <div>
                 <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
-                  <BookOpen className="text-green-600" /> Course Information
+                  <BookOpen className="text-green-600" /> Plan Information
                 </h3>
                 <div className="bg-gray-50 p-3 rounded-xl space-y-2">
-                  <p>
-                    <strong>Course:</strong> {selectedPayment.courseName}
-                  </p>
-                  <p>
-                    <strong>Slug:</strong> {selectedPayment.courseSlug || "N/A"}
-                  </p>
                   <p>
                     <strong>Price:</strong> ৳{selectedPayment.amount}
                   </p>
                   <p>
-                    <strong>Course ID:</strong>{" "}
-                    {selectedPayment.courseId || "N/A"}
+                    <strong>Plan ID:</strong> {selectedPayment._id || "N/A"}
                   </p>
                 </div>
               </div>
@@ -387,6 +387,7 @@ const AllUserPayment = () => {
                   <strong>Transaction ID:</strong>{" "}
                   {selectedPayment.transactionId}
                 </p>
+
                 <p className="flex items-center gap-1">
                   <Calendar className="w-4 h-4 text-gray-600" />
                   {new Date(selectedPayment.createdAt).toLocaleString()}

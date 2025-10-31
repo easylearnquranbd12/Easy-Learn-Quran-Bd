@@ -122,17 +122,17 @@ const Tantuster = () => {
     reset();
   };
 
-  console.log(tantusterField);
+
   return (
-    <div className="max-w-[1400px] mx-auto">
+    <div className="max-w-[1400px] mx-auto px-2">
       <div className="py-8 ">
         <div className="flex flex-col items-center mb-3 space-y-2">
           {tantusterFields?.map((item) => (
             <div key={item._id} className="text-center max-w-[1400px]">
-              <h2 className="text-3xl font-bold text-[#bb874a]">
+              <h2 className="text-3xl font-bold text-teal-600">
                 {item?.title || "Title Missing"}
               </h2>
-              <p className="text-center py-5 text-gray-700">
+              <p className="text-justify py-5 text-gray-700">
                 {item?.description || "Description Missing"}
               </p>
             </div>
@@ -150,7 +150,7 @@ const Tantuster = () => {
                     onClick={() => handleSectionScroll(tab.id)}
                     className={`px-6 py-2 m-1 rounded-lg font-semibold transition-all duration-300 ${
                       activeSection === tab.id
-                        ? "bg-orange-600 text-white shadow-md"
+                        ? "bg-teal-800 text-white shadow-md"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                     }`}
                   >
@@ -186,14 +186,14 @@ const Tantuster = () => {
           {tantusterFields?.map(
             (item) =>
               item.isActive === "ON" && (
-                <div key={item._id} className="max-w-[1400px] mx-auto px-4">
+                <div key={item._id} className="max-w-[1400px] mx-auto ">
                   <div className="card bg-white shadow-md rounded-2xl p-2 md:p-5 mt-10 space-y-3 ">
-                    <h3 className="text-xl font-semibold text-[#bb874a]">
-                      📖Learning Your Exercise
+                    <h3 className="text-xl font-semibold text-teal-600">
+                      📖 Learning Your Exercise
                     </h3>
                     <div className="overflow-x-auto rounded-xl shadow border border-gray-200">
                       <table className="table w-full">
-                        <thead className="bg-black text-white text-sm">
+                        <thead className="bg-teal-600 text-white text-sm">
                           <tr>
                             <th className="min-w-10">Serial</th>
                             <th className="min-w-96">{item?.mainWord}</th>
@@ -375,7 +375,7 @@ const Tantuster = () => {
                     </div>
 
                     <div className="flex justify-center mt-5">
-                      <button className="px-6 py-2 bg-[#bb874a] text-white rounded-lg shadow hover:bg-[#5e4528] transition">
+                      <button className="px-6 py-2 bg-teal-600 text-white rounded-lg shadow hover:bg-teal-700 transition">
                         Submit Now
                       </button>
                     </div>

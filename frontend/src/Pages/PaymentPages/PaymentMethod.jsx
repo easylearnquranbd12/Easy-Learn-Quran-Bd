@@ -4,7 +4,6 @@ import { Users } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import TittleAnimation from "../../components/TittleAnimation/TittleAnimation";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 
@@ -140,17 +139,12 @@ const PaymentMethod = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#f0f5f3]">
-      <TittleAnimation
-        tittle="Complete Your Purchase"
-        subtittle="Learning Quiz Platform Advanced Quiz Access"
-      />
-
-      <div className="max-w-5xl mx-auto md:px-4 py-8">
+    <>
+      <div className="max-w-5xl mx-auto px-2 md:px-4 py-8">
         <div className="space-y-8">
           <div className="bg-[#f0f1f1] backdrop-blur-sm rounded-xl p-4 md:p-6 border border-gray-300 shadow-lg hover:shadow-2xl transition-shadow duration-300">
-            <h2 className="text-xl font-bold text-blue-600 mb-6 flex items-center gap-3">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+            <h2 className="text-xl font-bold text-teal-600 mb-6 flex items-center gap-3">
+              <div className="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center">
                 <Users size={18} className="text-white" />
               </div>
               Member Ship Information
@@ -232,7 +226,7 @@ const PaymentMethod = () => {
                     <button
                       type="button"
                       onClick={handleCopyAmount}
-                      className="ml-4 px-3 py-1.5 bg-bgButton hover:bg-hoverBgButton text-white text-sm font-semibold rounded-md transition-all"
+                      className="ml-4 px-3 py-1.5 bg-bgButton hover:bg-teal-900 text-white text-sm font-semibold rounded-md transition-all"
                     >
                       {copiedAmount ? "Copied!" : "Copy "}
                     </button>
@@ -253,7 +247,7 @@ const PaymentMethod = () => {
                     <button
                       type="button"
                       onClick={handleCopy}
-                      className="ml-4 px-3 py-1.5 bg-bgButton hover:bg-hoverBgButton text-white text-sm font-semibold rounded-md transition-all"
+                      className="ml-4 px-3 py-1.5 bg-bgButton hover:bg-teal-900 text-white text-sm font-semibold rounded-md transition-all"
                     >
                       {copied ? "Copied!" : "Copy"}
                     </button>
@@ -324,18 +318,18 @@ const PaymentMethod = () => {
                   {...register("agreeToTerms", {
                     required: "You must agree to the terms",
                   })}
-                  className="mt-1 w-4 h-4 text-blue-600 border-gray-600 rounded focus:ring-blue-500"
+                  className="mt-1 w-4 h-4 text-teal-600 border-gray-600 rounded focus:ring-teal-500"
                 />
                 <label htmlFor="agreeToTerms" className="text-sm text-black">
                   I agree to the{" "}
                   <Link
                     to="/terms-and-conditions"
-                    className="text-primary underline"
+                    className="text-teal-600 underline"
                   >
                     Terms of Service
                   </Link>{" "}
                   and{" "}
-                  <Link to="/privacy-policy" className="text-primary underline">
+                  <Link to="/privacy-policy" className="text-teal-600 underline">
                     Privacy Policy
                   </Link>
                 </label>
@@ -350,7 +344,7 @@ const PaymentMethod = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-4 rounded-xl font-bold text-lg text-white shadow-xl hover:bg-hoverBgButton bg-bgButton transition-all duration-300"
+                className="w-full py-4 rounded-xl font-bold text-lg text-white shadow-xl hover:bg-teal-900 bg-teal-600 transition-all duration-300"
               >
                 {loading ? "Processing..." : "Confirm Payment"}
               </button>
@@ -362,7 +356,7 @@ const PaymentMethod = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

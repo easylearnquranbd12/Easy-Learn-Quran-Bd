@@ -1,86 +1,83 @@
+/* eslint-disable no-unused-vars */
+import { motion } from "framer-motion";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const PaymentHome = () => {
   const [loading, setLoading] = useState(false);
-  const [paymentDone, setPaymentDone] = useState(false);
-
-  const handlePayment = () => {
-    setLoading(true);
-    setPaymentDone(false);
-
-    // simulate API call delay
-    setTimeout(() => {
-      setLoading(false);
-      setPaymentDone(true);
-    }, 2000);
-  };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-50 to-blue-100 p-6">
-      <div className="bg-white shadow-xl rounded-2xl p-8 max-w-md text-center transition-transform hover:scale-[1.02]">
-        <h1 className="text-3xl font-bold text-indigo-600 mb-4">
-          💳 Payment Home
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Complete your secure payment easily and safely.
-        </p>
+    <div className="flex flex-col items-center justify-center p-2 md:p-6 mt-12 md:mt-24">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 30 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="bg-white shadow-2xl rounded-xl p-8 max-w-2xl text-center border border-gray-300"
+      >
+        <motion.h1
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+          className="text-3xl font-bold text-teal-600 mb-3"
+        >
+          💳 Confirm Your Payment
+        </motion.h1>
 
-        {/* Payment status message */}
-        {paymentDone && (
-          <div className="text-green-600 font-semibold mb-4 animate-fadeIn">
-            ✅ Payment Successful!
-          </div>
-        )}
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="text-gray-600 mb-5"
+        >
+          Complete your secure payment quickly and safely.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+          className="bg-teal-50 border border-teal-200 rounded-2xl p-5 mb-6 shadow-sm"
+        >
+          <h2 className="text-lg font-semibold text-teal-700 mb-2">
+            🗓 Plan Overview
+          </h2>
+          <p className="text-gray-700 text-sm leading-relaxed">
+            Unlock full access to our{" "}
+            <span className="font-medium text-teal-600">Premium Plan</span> for{" "}
+            <span className="font-bold text-teal-700">30 days</span> from the
+            date of activation. Enjoy all exclusive features, priority support,
+            and seamless experience. After 30 days, you can easily renew your
+            plan anytime to continue uninterrupted access.
+          </p>
+        </motion.div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            to="/payment-confirmed"
-            onClick={handlePayment}
-            className={`w-full sm:w-auto flex items-center justify-center gap-2 font-semibold px-6 py-3 rounded-lg shadow-md transition-all 
-              ${
-                loading
-                  ? "bg-indigo-400 cursor-not-allowed text-white"
-                  : "bg-indigo-600 hover:bg-indigo-700 text-white"
-              }`}
-          >
-            {loading ? (
-              <>
-                <svg
-                  className="w-5 h-5 animate-spin text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8z"
-                  ></path>
-                </svg>
-                Processing...
-              </>
-            ) : (
-              "Proceed to Payment"
-            )}
+          {/* ✅ Link Wrapped Motion Button */}
+          <Link to="/payment-confirmed" onClick={() => setLoading(true)}>
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              disabled={loading}
+              className={`w-full sm:w-auto flex items-center justify-center gap-2 font-semibold px-6 py-3 rounded-lg shadow-md transition-all duration-300 
+      ${
+        loading
+          ? "bg-teal-400 cursor-not-allowed text-white"
+          : "bg-teal-600 hover:bg-teal-700 text-white"
+      }`}
+            >
+              {loading ? "Processing..." : "Proceed to Payment"}
+            </motion.button>
           </Link>
 
-          <Link
-            to="/"
-            className="w-full sm:w-auto border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50 font-semibold px-6 py-3 rounded-lg transition-all"
-          >
-            Go to Home
-          </Link>
+          <motion.div whileTap={{ scale: 0.95 }}>
+            <Link
+              to="/"
+              className="w-full sm:w-auto border-2 border-teal-600 text-teal-600 hover:bg-teal-600 hover:text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 inline-block"
+            >
+              Go to Home
+            </Link>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

@@ -18,7 +18,7 @@ import {
 } from "react-icons/fa";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { HiLogout, HiOutlineDocumentText, HiX } from "react-icons/hi";
-import { MdDashboard, MdPayment, MdSchool } from "react-icons/md";
+import { MdAppBlocking, MdDashboard, MdOutlinePayments, MdPayment, MdPayments, MdSchool } from "react-icons/md";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useRole from "../../hooks/useRole";
@@ -492,14 +492,14 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
     },
     {
       path: "/admin-dashboard/all-payments",
-      icon: HiOutlineDocumentText,
+      icon: MdPayments,
       label: " Payments Info",
       description: "Add or Post Info",
       color: "text-indigo-600",
       subItems: [
         {
           path: "/admin-dashboard/all-user-payments",
-          icon: BiEdit,
+          icon: MdOutlinePayments,
           label: "All User Payments",
           description: "View all user payments",
           color: "text-indigo-600",
@@ -540,7 +540,7 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
 
     {
       path: "/admin-dashboard/blog",
-      icon: HiOutlineDocumentText,
+      icon: MdAppBlocking,
       label: "Blog",
       description: "Post Of Blog",
       color: "text-indigo-600",
