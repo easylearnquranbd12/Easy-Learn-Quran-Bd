@@ -1,4 +1,7 @@
-const { getAddPaymentMethodCollection, getUserPaymentCollection } = require("../config/db");
+const {
+  getAddPaymentMethodCollection,
+  getUserPaymentCollection,
+} = require("../config/db");
 const { ObjectId } = require("mongodb");
 
 // ➕ Add Payment Method
@@ -66,8 +69,6 @@ const deletePaymentMethod = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-
-
 
 // ========================== 🧾 USER PAYMENT SECTION ==========================
 
@@ -187,11 +188,6 @@ const deletePaymentMethod = async (req, res) => {
 // // Run auto expire every 1 day
 // setInterval(autoExpirePayments, 24 * 60 * 60 * 1000);
 
-
-
-
-
-
 // 🟢 Add User Payment (pending by default)
 const addUserPayment = async (req, res) => {
   try {
@@ -201,6 +197,8 @@ const addUserPayment = async (req, res) => {
       paymentMethod,
       userPaymentMethod,
       transactionId,
+      amount,
+      adminNumber,
     } = req.body;
 
     // Validation
@@ -209,7 +207,9 @@ const addUserPayment = async (req, res) => {
       !userEmail ||
       !paymentMethod ||
       !userPaymentMethod ||
-      !transactionId
+      !transactionId ||
+      !amount ||
+      !adminNumber
     ) {
       return res.status(400).json({ message: "All fields are required" });
     }
@@ -223,6 +223,8 @@ const addUserPayment = async (req, res) => {
       paymentMethod,
       userPaymentMethod,
       transactionId,
+      amount,
+      adminNumber,
       status: "pending",
       createdAt: new Date(),
       approvedAt: null,
@@ -277,10 +279,10 @@ const updatePaymentStatus = async (req, res) => {
       const expireAt = new Date();
       expireAt.setDate(approvedAt.getDate() + 30);
 
-      updateFields = { 
-        ...updateFields, 
-        approvedAt, 
-        expireAt 
+      updateFields = {
+        ...updateFields,
+        approvedAt,
+        expireAt,
       };
     }
 
@@ -350,6 +352,5 @@ module.exports = {
   getAllUserPayments,
   updatePaymentStatus,
   removeExpiredPayments,
-  deleteUserPayment
-  
+  deleteUserPayment,
 };

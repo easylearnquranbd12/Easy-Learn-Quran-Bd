@@ -28,7 +28,9 @@ const PaymentMethod = () => {
       userName: "",
       transactionId: "",
       paymentMethod: "",
+      amount: "",
       userPaymentMethod: "",
+      adminNumber: "",
       agreeToTerms: false,
     },
   });
@@ -99,6 +101,8 @@ const PaymentMethod = () => {
         userName: data.userName,
         userEmail: user?.email,
         paymentMethod: selectedPaymentInfo?.label,
+        adminNumber: selectedPaymentInfo?.adminNumber,
+        amount: selectedPaymentInfo?.amount,
         userPaymentMethod: data.userPaymentMethod,
         transactionId: data.transactionId,
       };

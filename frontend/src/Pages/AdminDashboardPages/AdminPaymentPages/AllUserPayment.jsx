@@ -1,22 +1,23 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import {
-    BookOpen,
-    Calendar,
-    CheckCircle,
-    CreditCard,
-    Eye,
-    GraduationCap,
-    Mail,
-    Trash2,
-    Users,
-    XCircle,
+  BookOpen,
+  Calendar,
+  CheckCircle,
+  CreditCard,
+  Eye,
+  GraduationCap,
+  Mail,
+  Trash2,
+  Users,
+  XCircle,
 } from "lucide-react";
 import { useState } from "react";
 import Swal from "sweetalert2";
 
 const fetchPayments = async () => {
   const res = await axios.get("http://localhost:5000/payment/admin");
+  console.log(res.data);
   return res.data;
 };
 
@@ -116,7 +117,12 @@ const AllUserPayment = () => {
   const cancelled = payments.filter((p) => p.status === "rejected").length;
   const totalRevenue = payments
     .filter((p) => p.status === "accepted")
-    .reduce((sum, p) => sum + (p.amount || 0), 0);
+    .reduce((sum, p) => sum + (Number(p.amount) || 0), 0);
+
+  const formattedRevenue = totalRevenue.toLocaleString("en-BD", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 
   return (
     <div className="p-6  min-h-screen max-w-7xl mx-auto">
@@ -161,7 +167,7 @@ const AllUserPayment = () => {
           <div>
             <p className="text-gray-600 text-sm">Total Revenue</p>
             <h3 className="text-xl font-bold text-purple-600">
-              ৳{totalRevenue.toLocaleString()}
+              ৳{formattedRevenue}
             </h3>
           </div>
         </div>
@@ -186,20 +192,6 @@ const AllUserPayment = () => {
           <option>Accepted</option>
           <option>Rejected</option>
         </select>
-        <select
-          className="select select-bordered bg-white"
-          value={methodFilter}
-          onChange={(e) => setMethodFilter(e.target.value)}
-        >
-          <option>All</option>
-          <option>bKash</option>
-          <option>Rocket</option>
-          <option>Nagad</option>
-          <option>Bank</option>
-        </select>
-        <button className="btn bg-green-600 hover:bg-green-700 text-white">
-          ⬇ Export CSV
-        </button>
       </div>
 
       {/* Payment cards */}
@@ -216,7 +208,11 @@ const AllUserPayment = () => {
                 {/* Left info */}
                 <div>
                   <h3 className="font-semibold text-gray-800 flex items-center gap-2">
-                    <span className="text-blue-500">👤</span> {p.userName}
+                    <span className="text-blue-500">
+                      {" "}
+                      <Users className="text-blue-600 w-8 h-8" />
+                    </span>{" "}
+                    {p.userName}
                     <span
                       className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
                         p.status === "accepted"
@@ -264,19 +260,25 @@ const AllUserPayment = () => {
               {/* Details */}
               <div className="mt-3 grid sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm text-gray-700">
                 <p>
-                  <strong>Course:</strong> {p.courseName || "N/A"}
+                  <strong>Plan:</strong> {p.courseName || "N/A"}
                 </p>
                 <p>
-                  <strong>Amount:</strong> ৳{p.amount || 0}
+                  <strong>Amount:</strong>{" "}
+                  <span className="bg-green-100 text-green-600 px-2 rounded-md">
+                    ৳{p.amount || 0}
+                  </span>
                 </p>
                 <p>
                   <strong>Payment:</strong> {p.paymentMethod}
                 </p>
                 <p>
+                  <strong>Payment Number:</strong> {p.adminNumber || "N/A"}
+                </p>
+                <p>
                   <strong>Number:</strong> {p.userPaymentMethod || "N/A"}
                 </p>
                 <p>
-                  <strong>Enrolled:</strong>{" "}
+                  <strong>Purchase:</strong>{" "}
                   {new Date(p.createdAt).toLocaleString()}
                 </p>
                 <p>
@@ -289,7 +291,7 @@ const AllUserPayment = () => {
       )}
 
       {/* Modal */}
-     {selectedPayment && (
+      {selectedPayment && (
         <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50 overflow-auto p-4">
           <div className="bg-white w-full max-w-3xl rounded-2xl shadow-lg relative p-6">
             <button
@@ -329,7 +331,8 @@ const AllUserPayment = () => {
               {/* Student Info */}
               <div>
                 <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
-                  <GraduationCap className="text-blue-600" /> Student Information
+                  <GraduationCap className="text-blue-600" /> Student
+                  Information
                 </h3>
                 <div className="bg-gray-50 p-3 rounded-xl space-y-2">
                   <p>
@@ -355,8 +358,7 @@ const AllUserPayment = () => {
                     <strong>Course:</strong> {selectedPayment.courseName}
                   </p>
                   <p>
-                    <strong>Slug:</strong>{" "}
-                    {selectedPayment.courseSlug || "N/A"}
+                    <strong>Slug:</strong> {selectedPayment.courseSlug || "N/A"}
                   </p>
                   <p>
                     <strong>Price:</strong> ৳{selectedPayment.amount}
