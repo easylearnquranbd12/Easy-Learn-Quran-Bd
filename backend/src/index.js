@@ -24,6 +24,7 @@ const thirdLayerRoutes = require("./routes/thirdLayerRoutes");
 const fiveLayerRoutes = require("./routes/fiveLayerRoutes");
 const layerManagementRoutes = require("./routes/layerManagementRoutes");
 const pdfRoutes = require("./routes/pdfRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 
 dotenv.config();
 
@@ -52,7 +53,7 @@ app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/blog", blogRouter);
 app.use("/banner", bannerRouter);
-app.use("/paymentMethod", paymentMethodRouter);
+app.use("/payment", paymentMethodRouter);
 app.use("/imageandtext", imageandTextRouter);
 app.use("/authorInfo", authorRoute);
 app.use("/api/admin/social-links", socialLinksRouter);
@@ -66,7 +67,7 @@ app.use("/fourth-layer", fourthLayerRoutes);
 app.use("/five-layer", fiveLayerRoutes);
 app.use("/layer-management", layerManagementRoutes);
 app.use("/pdf", pdfRoutes);
-
+app.use("/api/dashboard", dashboardRoutes);
 // Root route
 app.get("/", (req, res) => {
   res.send("Learning Quiz Platfrom Server Running");

@@ -383,6 +383,13 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
           description: "Create & History",
           color: "text-indigo-600",
         },
+        {
+          path: "/admin-dashboard/develop-your-skills",
+          icon: BiEdit,
+          label: " Idea Share and Suggestion",
+          description: "Create & History",
+          color: "text-indigo-600",
+        },
       ],
     },
     {
@@ -392,6 +399,13 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
       description: "Fourth Layer All Info",
       color: "text-indigo-600",
       subItems: [
+        {
+          path: "/admin-dashboard/create-song",
+          icon: BiEdit,
+          label: "Create  Traveling",
+          description: "Create & History",
+          color: "text-indigo-600",
+        },
         {
           path: "/admin-dashboard/create-song",
           icon: BiEdit,
@@ -477,18 +491,27 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
       ],
     },
     {
-      path: "/admin-dashboard/enrollments",
-      icon: FaUserGraduate,
-      label: "Payment Management",
-      description: "Pending Rejects payments",
-      color: "text-cyan-600",
-    },
-    {
-      path: "/admin-dashboard/add-payment-method",
-      icon: MdPayment,
-      label: "Add Payment Methods",
-      description: "Payment Processing",
-      color: "text-yellow-600",
+      path: "/admin-dashboard/all-payments",
+      icon: HiOutlineDocumentText,
+      label: " Payments Info",
+      description: "Add or Post Info",
+      color: "text-indigo-600",
+      subItems: [
+        {
+          path: "/admin-dashboard/all-user-payments",
+          icon: BiEdit,
+          label: "All User Payments",
+          description: "View all user payments",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/add-payment-method",
+          icon: MdPayment,
+          label: "Add Payment Methods",
+          description: "Payment Processing",
+          color: "text-yellow-600",
+        },
+      ],
     },
 
     {

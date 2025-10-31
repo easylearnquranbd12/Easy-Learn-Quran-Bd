@@ -12,6 +12,7 @@ import AdminVerb from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/V
 
 import AdminPorem from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Porem/AdminPorem";
 
+import AllUserPayment from "../Pages/AdminDashboardPages/AdminPaymentPages/AllUserPayment";
 import AdminPdfUpload from "../Pages/AdminDashboardPages/AdminPdfManagement/AdminPdfUpload";
 import UserUploadPdfManage from "../Pages/AdminDashboardPages/AdminPdfManagement/UserUploadPdfManage";
 import AdminIdiom from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Idiom/AdminIdiom";
@@ -29,13 +30,16 @@ import AdminDevelopYourSkills from "../Pages/AdminDashboardPages/BAShapeFormats/
 import AdminGoodLifeStyle from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/GoodLifeStyle/AdminGoodLifeStyle";
 import BlankFormat from "../Pages/ContributePages/BlankFormat/BlankFormat";
 import UploadPDF from "../Pages/ContributePages/UploadPDF/UploadPDF";
-import EnrollCourse from "../Pages/CoursePages/EnrollCourse";
 import DashboardRedirect from "../Pages/DashboardRedirect";
+import PaymentHome from "../Pages/PaymentPages/PaymentHome";
+import PaymentMethod from "../Pages/PaymentPages/PaymentMethod";
+import SuccessPayment from "../Pages/PaymentPages/SuccessPayment";
 import PDFDownload from "../Pages/PDFDownloadPages/PDFDownload";
 import UserUploadPdf from "../Pages/UserUploadPdf/UserUploadPdf";
 import AdminRoute from "./AdminRoute";
 import LayerRoutes from "./LayerRoutes";
 import ModeratorRoute from "./ModeratorRoute";
+import PaymentRoute from "./PaymentRoute";
 import PrivateRoute from "./PrivateRoute";
 import UserRoute from "./UserRouter";
 
@@ -223,7 +227,17 @@ export const routes = createBrowserRouter([
 
       {
         path: "b-a-shape-formats/*",
-        element: <LayerRoutes />,
+        element: (
+          <PrivateRoute>
+            <PaymentRoute>
+            <LayerRoutes />
+            </PaymentRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/ba-shape-format-payment-confirmed",
+        element: <PaymentHome />,
       },
 
       // Contribute Pages
@@ -571,6 +585,15 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
+      // payment confirmed
+      {
+        path: "all-user-payments",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AllUserPayment />
+          </Suspense>
+        ),
+      },
 
       // Admin Blog Routes
       {
@@ -882,7 +905,19 @@ export const routes = createBrowserRouter([
   },
   {
     path: "/payment-confirmed",
-    element: <EnrollCourse />,
+    element: (
+      <PrivateRoute>
+        <PaymentMethod />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/payment-success",
+    element: (
+      <PrivateRoute>
+        <SuccessPayment />
+      </PrivateRoute>
+    ),
   },
 ]);
 // import { lazy, Suspense } from "react";

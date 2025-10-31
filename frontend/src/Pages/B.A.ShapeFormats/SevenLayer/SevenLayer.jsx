@@ -1,8 +1,17 @@
+import OldGeneration from "../FiveLayer/OldGeneration"
+import LetterWriting from "../FourthLayer/LetterWriting"
+import NewSong from "../FourthLayer/NewSong"
+import StoryWriting from "../FourthLayer/StoryWriting"
+import WritingExercises from "../FourthLayer/WritingExercises"
 
 const SevenLayer = () => {
   return (
     <div>
-      <h1>Sevenb laue</h1>
+    <NewSong/>
+      <OldGeneration />
+      <StoryWriting />
+      <LetterWriting />
+      <WritingExercises />
     </div>
   )
 }

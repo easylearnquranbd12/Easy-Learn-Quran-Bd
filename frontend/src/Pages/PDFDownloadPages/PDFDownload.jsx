@@ -50,7 +50,7 @@ const PDFDownload = () => {
         <title>Download PDFs</title>
       </Helmet>
 
-      <div className="w-full max-w-lg mt-10 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
+      <div className="w-full max-w-[1400px] mx-auto mt-10 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
         <h1 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
           <FileText className="w-6 h-6 text-red-600" />
           Download PDFs
@@ -78,7 +78,7 @@ const PDFDownload = () => {
                 </div>
                 <button
                   onClick={() => handleDownload(pdf)}
-                  className="flex items-center gap-1 text-white bg-red-600 hover:bg-red-700 px-3 py-1 rounded-md transition"
+                  className="flex items-center gap-1 text-white bg-bgButton hover:bg-hoverBgButton px-3 py-1 rounded-md transition"
                 >
                   <Download className="w-4 h-4" /> Download
                 </button>

@@ -285,6 +285,9 @@ const getUserPdfUploadCollection = () =>
 const getAddPaymentMethodCollection = () => {
   return client.db("Learning-Quiz-Platfrom").collection("AddPaymentMethod");
 };
+const getUserPaymentCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("UserPayment");
+};
 const getPromotionCollection = () => {
   return client.db("Learning-Quiz-Platfrom").collection("Promotions");
 };
@@ -305,7 +308,11 @@ module.exports = {
   getUserCollection,
   getBlogsCollection,
   getBannersCollection,
+
+  getUserPaymentCollection,
   getAddPaymentMethodCollection,
+
+  
   getImageAndTextCollection,
   getAuthorTextCollection,
   getSocialLinksCollection,
