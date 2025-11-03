@@ -402,8 +402,8 @@ const Adminmcq = () => {
 
           {/* ✅ Songs List */}
           <div className="w-full bg-white shadow-lg rounded-xl border p-4 sm:p-6">
-            <h2 className="text-lg sm:text-xl font-semibold mb-4 text-indigo-700">
-              List
+            <h2 className="text-lg sm:text-xl font-semibold mb-4 text-teal-700">
+             MCQ List
             </h2>
 
             <div className="overflow-x-auto w-[420px] md:w-full">

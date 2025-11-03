@@ -87,7 +87,7 @@ const StoryWritting = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-4">
+    <div className="min-h-screen bg-gray-100 py-10 ">
       {/* Download PDF */}
       <div className="flex justify-center mb-6">
         <button
@@ -106,7 +106,7 @@ const StoryWritting = () => {
         {allPages.map((page, index) => (
           <div
             key={index}
-            className="bg-white shadow-lg border border-gray-300 rounded-lg w-[110mm] md:w-[320mm] h-[197mm] md:h-[300mm] p-[2mm] md:p-[25mm] overflow-hidden print:shadow-none print:border-none relative"
+            className="bg-white shadow-lg border border-gray-300 rounded-lg w-[125mm] md:w-[320mm] h-[397mm] md:h-[300mm] p-[12mm] md:p-[25mm] overflow-hidden print:shadow-none print:border-none relative"
           >
             {/* Header */}
             {page.type === "field" && (
