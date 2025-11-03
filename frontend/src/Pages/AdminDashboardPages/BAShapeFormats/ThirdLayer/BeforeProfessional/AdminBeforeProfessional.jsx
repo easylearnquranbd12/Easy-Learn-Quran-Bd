@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Controller, useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import AdminLoading from "../../../../../components/Loading/AdminLoading";
 import TittleAnimation from "../../../../../components/TittleAnimation/TittleAnimation";
 import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
 import RichTextField from "../../../../../shared/TextEditor/RichTextField";
@@ -32,19 +33,19 @@ const AdminBeforeProfessional = () => {
   });
 
   // ✅ Fetch vocabulary fields
-  const { data: songFields = [] } = useQuery({
-    queryKey: ["songFields"],
+  const { data: beforeProfessionalFields = [], isLoading } = useQuery({
+    queryKey: ["beforeProfessionalFields"],
     queryFn: async () => {
       const res = await axiosPublic.get("/third-layer/beforeProfessionalField");
       return res.data?.data || [];
     },
   });
-  // ✅ Create Song
+  // ✅ Create beforeProfessional
   const createMutation = useMutation({
     mutationFn: (newData) =>
       axiosPublic.post("/third-layer/beforeProfessional", newData),
     onSuccess: () => {
-      queryClient.invalidateQueries(["songs"]);
+      queryClient.invalidateQueries(["beforeProfessional"]);
       Swal.fire(
         "✅ Success!",
         "Good Life Style added successfully.",
@@ -52,30 +53,43 @@ const AdminBeforeProfessional = () => {
       );
       resetForm();
     },
-    onError: () => Swal.fire("❌ Error!", "Failed to add song.", "error"),
+    onError: () =>
+      Swal.fire("❌ Error!", "Failed to add beforeProfessional.", "error"),
   });
-  // ✅ Get all song fetch Data
-  const { data: goodSongs = [], isLoading } = useQuery({
-    queryKey: ["goodSongs"],
+  // ✅ Get all beforeProfessional fetch Data
+  const {
+    data: beforeProfessionals = [],
+    isLoading: beforeProfessionalsLoading,
+  } = useQuery({
+    queryKey: ["beforeProfessionals"],
     queryFn: async () => {
       const res = await axiosPublic.get("/third-layer/beforeProfessional");
       return res.data || [];
     },
   });
 
-  // ✅ Delete Song
+  // ✅ Delete beforeProfessional
   const deleteMutation = useMutation({
     mutationFn: (id) =>
       axiosPublic.delete(`/third-layer/beforeProfessional/${id}`),
     onSuccess: (res) => {
       if (res.data?.deletedCount > 0) {
-        Swal.fire("Deleted!", "Song deleted successfully.", "success");
+        Swal.fire(
+          "Deleted!",
+          "beforeProfessional deleted successfully.",
+          "success"
+        );
       } else {
-        Swal.fire("Info", "Song not found or already deleted.", "info");
+        Swal.fire(
+          "Info",
+          "beforeProfessional not found or already deleted.",
+          "info"
+        );
       }
-      queryClient.invalidateQueries(["songs"]);
+      queryClient.invalidateQueries(["beforeProfessional"]);
     },
-    onError: () => Swal.fire("Error!", "Failed to delete song.", "error"),
+    onError: () =>
+      Swal.fire("Error!", "Failed to delete beforeProfessional.", "error"),
   });
 
   // ✅ Reset Form
@@ -89,7 +103,7 @@ const AdminBeforeProfessional = () => {
   // ✅ Submit Handler
   const onSubmit = async (data) => {
     // if (!imageUrl) {
-    //   Swal.fire("Error!", "Please upload a song image.", "error");
+    //   Swal.fire("Error!", "Please upload a beforeProfessional image.", "error");
     //   return;
     // }
 
@@ -134,9 +148,9 @@ const AdminBeforeProfessional = () => {
       Swal.fire({
         icon: "success",
         title: "Updated!",
-        text: `Song field is now ${data.updatedValue}`,
+        text: `beforeProfessional field is now ${data.updatedValue}`,
       });
-      queryClient.invalidateQueries(["songFields"]);
+      queryClient.invalidateQueries(["beforeProfessionalFields"]);
     },
     onError: (error) =>
       Swal.fire(
@@ -173,63 +187,66 @@ const AdminBeforeProfessional = () => {
       words.join(" ") + (text.split(/\s+/).length > wordLimit ? "..." : "")
     );
   };
-
+  if (isLoading || beforeProfessionalsLoading) {
+    return <AdminLoading />;
+  }
   return (
-    <div className=" px-2">
+    <div>
       <Helmet>
-        <title>Admin | Create Good Life Style Management</title>
+        <title>quiz | Create Good Life Style Management</title>
       </Helmet>
 
       <TittleAnimation
         tittle="Create Good Life Style"
-        subtittle="Manage Songs & Vocabulary Fields"
+        subtittle="Manage beforeProfessional & Vocabulary Fields"
       />
 
-      <div className="mt-10 lg:min-w-[1000px]">
-        <div className=" w-full bg-white shadow-md rounded-2xl p-3 md:p-5">
+      <div className="mt-10 max-w-7xl mx-auto ">
+        <div className=" w-full bg-white shadow-md rounded-lg p-3 md:p-5">
           {/* ✅ Vocabulary Fields Section */}
           <div className="text-center mb-6">
-            {songFields && songFields.length > 0 && (
-              <>
-                <div className="flex items-start justify-center gap-2 mb-2">
-                  {songFields[0].title || "Title"}
-                  <Edit
-                    onClick={() =>
-                      handleEditClick(
-                        "title",
-                        songFields[0].title,
-                        songFields[0]._id
-                      )
-                    }
-                    className="w-5 h-5 text-green-600 cursor-pointer"
-                  />
-                </div>
+            {beforeProfessionalFields &&
+              beforeProfessionalFields.length > 0 && (
+                <>
+                  <div className="flex items-start justify-center gap-2 mb-2">
+                    {beforeProfessionalFields[0].title || "Title"}
+                    <Edit
+                      onClick={() =>
+                        handleEditClick(
+                          "title",
+                          beforeProfessionalFields[0].title,
+                          beforeProfessionalFields[0]._id
+                        )
+                      }
+                      className="w-5 h-5 text-green-600 cursor-pointer"
+                    />
+                  </div>
 
-                <div className="flex items-start justify-center gap-2">
-                  <span className="text-base">
-                    {songFields[0].description || "Description"}
-                  </span>
-                  <Edit
-                    onClick={() =>
-                      handleEditClick(
-                        "description",
-                        songFields[0].description,
-                        songFields[0]._id
-                      )
-                    }
-                    className="w-5 h-5 text-green-600 cursor-pointer"
-                  />
-                </div>
-              </>
-            )}
+                  <div className="flex items-start justify-center gap-2">
+                    <span className="text-base text-justify">
+                      {beforeProfessionalFields[0].description || "Description"}
+                    </span>
+                    <Edit
+                      onClick={() =>
+                        handleEditClick(
+                          "description",
+                          beforeProfessionalFields[0].description,
+                          beforeProfessionalFields[0]._id
+                        )
+                      }
+                      className="w-5 h-5 text-green-600 cursor-pointer"
+                    />
+                  </div>
+                </>
+              )}
 
-            {songFields.map((item) => (
+            {beforeProfessionalFields.map((item) => (
               <div
                 key={item._id}
                 className="flex items-center gap-2 justify-center mt-3"
               >
                 <span className="font-semibold">
-                  Excurise {item.title || "Song Field"}
+                  Excurise {item.title || "beforeProfessional Field"}
                 </span>
                 <input
                   type="checkbox"
@@ -243,10 +260,10 @@ const AdminBeforeProfessional = () => {
             ))}
           </div>
 
-          {/* ✅ Create Song Form */}
+          {/* ✅ Create beforeProfessional Form */}
           <div className="w-full  bg-white shadow-2xl rounded-xl border p-4 sm:p-6 mb-10">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-              {/* Song Name */}
+              {/* beforeProfessional Name */}
               <div className="form-control w-full py-6">
                 <label className="label">
                   <span className="label-text text-base font-medium text-gray-700">
@@ -259,8 +276,8 @@ const AdminBeforeProfessional = () => {
                   render={({ field }) => (
                     <input
                       {...field}
-                      placeholder="Enter song name..."
-                      className="w-full px-4 py-3 border rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-300"
+                      placeholder="Enter beforeProfessional name..."
+                      className="w-full px-4 py-3 border rounded-md text-gray-700 focus:outline-none focus:ring-1 focus:ring-teal-300"
                     />
                   )}
                 />
@@ -270,28 +287,28 @@ const AdminBeforeProfessional = () => {
                   name="description"
                   control={control}
                   placeholder="Enter Your Description..."
-                  className="w-full min-h-[300px]" // ensure editor is full width
+                  className="w-full " // ensure editor is full width
                 />
               </div>
               <button
                 type="submit"
-                className="w-full py-3 px-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-medium rounded-lg shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-orange-600 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full py-3 px-4 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-medium rounded-lg shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-orange-600 disabled:opacity-70 disabled:cursor-not-allowed"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Adding..." : "Add Song"}
+                {isSubmitting ? "Adding..." : "Add Before Professional"}
               </button>
             </form>
           </div>
 
-          {/* ✅ Songs List */}
+          {/* ✅ beforeProfessional List */}
           <div className="w-full bg-white shadow-lg rounded-xl border p-4 sm:p-6">
-            <h2 className="text-lg sm:text-xl font-semibold mb-4 text-indigo-700">
+            <h2 className="text-lg sm:text-xl font-semibold mb-4 text-teal-700">
               List
             </h2>
 
             <div className="overflow-x-auto">
               <table className="table-auto w-full text-sm sm:text-base">
-                <thead className="bg-black text-white">
+                <thead className="bg-teal-600  text-white">
                   <tr>
                     <th className="px-4 py-2">Name</th>
                     <th className="px-4 py-2">Description</th>
@@ -305,14 +322,14 @@ const AdminBeforeProfessional = () => {
                         Loading...
                       </td>
                     </tr>
-                  ) : goodSongs.length === 0 ? (
+                  ) : beforeProfessionals.length === 0 ? (
                     <tr>
                       <td colSpan={3} className="text-center py-4">
-                        No songs found.
+                        No before Professional found.
                       </td>
                     </tr>
                   ) : (
-                    goodSongs.map((item) => (
+                    beforeProfessionals.map((item) => (
                       <tr key={item._id} className="hover:bg-gray-50 border-b">
                         <td className="px-4 py-2 text-center">{item.name}</td>
                         <td

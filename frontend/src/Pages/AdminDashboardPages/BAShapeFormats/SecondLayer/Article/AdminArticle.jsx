@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import AdminLoading from "../../../../../components/Loading/AdminLoading";
 import TittleAnimation from "../../../../../components/TittleAnimation/TittleAnimation";
 import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
 import RichTextField from "../../../../../shared/TextEditor/RichTextField";
@@ -29,66 +30,66 @@ const AdminArticle = () => {
     },
   });
 
-  // Fetch all vocabulary Fields
+  // Fetch all article Fields
   const {
-    data: sentenceFields = [],
+    data: articleFields = [],
     isLoading,
     isError,
     refetch,
   } = useQuery({
-    queryKey: ["sentenceFields"],
+    queryKey: ["articleFields"],
     queryFn: async () => {
       const res = await axiosPublic.get("/second-layer/articleField");
-      console.log(res.data.data);
+
       return res.data.data;
     },
   });
 
-  // Create Vocabulary
-  const { mutateAsync: createVocabulary } = useMutation({
+  // Create article
+  const { mutateAsync: createarticle } = useMutation({
     mutationFn: async (newData) => {
       const res = await axiosPublic.post("/second-layer/article", newData);
       return res.data;
     },
     onSuccess: () => {
-      Swal.fire("✅ Success", "Vocabulary created successfully!", "success");
+      Swal.fire("✅ Success", "article created successfully!", "success");
       reset();
-      queryClient.invalidateQueries({ queryKey: ["vocabulary"] });
+      queryClient.invalidateQueries({ queryKey: ["article"] });
     },
     onError: (error) => {
       Swal.fire(
         "❌ Error",
-        error.message || "Failed to create vocabulary",
+        error.message || "Failed to create article",
         "error"
       );
     },
   });
-  // Fetch all vocabulary
+  // Fetch all article
   const {
-    data: vocabulary = [],
-    isLoading: vocabularyLoading,
-    refetch: refetchVocabulary,
-    isError: vocabularyError,
+    data: article = [],
+    isLoading: articleLoading,
+    refetch: refetcharticle,
+    isError: articleError,
   } = useQuery({
-    queryKey: ["vocabulary"],
+    queryKey: ["article"],
     queryFn: async () => {
       const res = await axiosPublic.get("/second-layer/article");
       return res.data.data || [];
     },
   });
 
-  // delete vocabulary
-  const { mutateAsync: deleteVocabulary } = useMutation({
+  // delete article
+  const { mutateAsync: deletearticle } = useMutation({
     mutationFn: async (id) => {
       const res = await axiosPublic.delete(`/second-layer/article/${id}`);
       return res.data;
     },
     onSuccess: () => {
-      Swal.fire("Deleted!", "Sentence has been deleted.", "success");
-      refetchVocabulary(); // Refetch the list after deletion
+      Swal.fire("Deleted!", "article has been deleted.", "success");
+      refetcharticle(); // Refetch the list after deletion
     },
     onError: (error) => {
-      Swal.fire("Error!", "Failed to delete Sentence.", "error");
+      Swal.fire("Error!", "Failed to delete article.", "error");
       console.error(error);
     },
   });
@@ -97,7 +98,7 @@ const AdminArticle = () => {
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "You want to delete this Sentence?",
+      text: "You want to delete this article?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -105,16 +106,16 @@ const AdminArticle = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteVocabulary(id);
+        deletearticle(id);
       }
     });
   };
   const [showAll, setShowAll] = useState(false);
   // Toggle show all rows
-  const visibleVocabulary = showAll ? vocabulary : vocabulary.slice(0, 10);
+  const visiblearticle = showAll ? article : article.slice(0, 10);
   // form submit
   const onSubmit = async (data) => {
-    createVocabulary(data);
+    createarticle(data);
   };
 
   // modal open
@@ -131,7 +132,7 @@ const AdminArticle = () => {
       title: "Are you sure?",
       text: `You want to turn ${
         currentState === "ON" ? "OFF" : "ON"
-      } this vocabulary?`,
+      } this article?`,
       icon: "question",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -158,9 +159,9 @@ const AdminArticle = () => {
       Swal.fire({
         icon: "success",
         title: "Success",
-        text: `Vocabulary is now ${data.updatedValue}`,
+        text: `article is now ${data.updatedValue}`,
       });
-      queryClient.invalidateQueries({ queryKey: ["sentenceFields"] });
+      queryClient.invalidateQueries({ queryKey: ["articleFields"] });
     },
     onError: (error) => {
       Swal.fire(
@@ -170,13 +171,16 @@ const AdminArticle = () => {
       );
     },
   });
+  if (isLoading || articleLoading) {
+    return <AdminLoading />;
+  }
   return (
     <div className="max-w-[1400px] mx-auto px-2">
       <Helmet>
-        <title>Quiz | Vocabulary</title>
+        <title>Quiz | article</title>
       </Helmet>
       <TittleAnimation
-        tittle="Create Vocabulary"
+        tittle="Create article"
         subtittle="Create With admin or Moderator"
       />
 
@@ -185,16 +189,53 @@ const AdminArticle = () => {
           {/* Mobile & Desktop Responsive Container */}
           <div className="w-full">
             {/* Mobile View - Vertical Layout */}
-            {/* <div className="block md:hidden space-y-4">
-                <div>
-                {sentenceFields.map((item) => (
+            <div className=" space-y-4">
+              <div className="mb-4 text-center">
+                {articleFields && articleFields.length > 0 && (
+                  <>
+                    {/* Title */}
+                    <div className="flex items-start justify-center gap-2 mb-2">
+                      {articleFields[0].title || "Title"}
+                      <Edit
+                        onClick={() =>
+                          handleEditClick(
+                            "title",
+                            articleFields[0].title,
+                            articleFields[0].title
+                          )
+                        }
+                        className="w-5 h-5 text-green-600 cursor-pointer"
+                      />
+                    </div>
+
+                    {/* description */}
+                    <div className="flex items-start justify-center gap-2">
+                      <span className="text-base">
+                        {articleFields[0].description || "description"}
+                      </span>
+                      <Edit
+                        onClick={() =>
+                          handleEditClick(
+                            "description",
+                            articleFields[0].description,
+                            articleFields[0].description
+                          )
+                        }
+                        className="min-w-5 min-h-5 w-5 h-5 text-green-600 cursor-pointer"
+                      />
+                    </div>
+                  </>
+                )}
+              </div>
+              <div>
+                {articleFields.map((item) => (
                   <div key={item._id} className="flex items-center gap-2 my-2">
                     <span className="font-semibold">
-                      Create {item.title || "Vocabulary"} Exercise
+                      Create {item.title || "article"} Exercise
                     </span>
                     <input
                       type="checkbox"
-                      className={`toggle  ${
+                      className={`toggle ${
                         item.isActive === "ON" ? "toggle-success" : ""
                       }`}
                       checked={item.isActive === "ON"}
@@ -204,11 +245,10 @@ const AdminArticle = () => {
                 ))}
               </div>
               <form onSubmit={handleSubmit(onSubmit)}>
-                {sentenceFields?.map((item) => (
+                {articleFields?.map((item) => (
                   <div key={item._id} className="space-y-4 p-2">
-                  
-                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-200 w-96">
-                      <div className="flex items-center justify-between mb-2">
+                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                      <div className="flex items-center justify-start gap-5 mb-2">
                         <label className="text-sm font-semibold text-gray-700">
                           {item.mainWord || "Main-Word"}
                         </label>
@@ -223,16 +263,17 @@ const AdminArticle = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <textarea
-                        {...register("mainWord")}
-                        className="textarea textarea-bordered w-full min-h-[80px]"
-                        placeholder={`Enter Your ${item.mainWord}`}
-                      />
+                      <td className="align-top">
+                        <RichTextField
+                          name="mainWord"
+                          control={control}
+                          placeholder={`Enter Your ${item.mainWord}`}
+                        />
+                      </td>
                     </div>
 
-                 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                      <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center justify-start gap-5 mb-2">
                         <label className="text-sm font-semibold text-gray-700">
                           {item.banglaPronunciation || "Bangla-Pronunciation"}
                         </label>
@@ -247,23 +288,24 @@ const AdminArticle = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <textarea
-                        {...register("banglaPronunciation")}
-                        className="textarea textarea-bordered w-full min-h-[80px]"
-                        placeholder={`Enter Your ${item.banglaPronunciation}`}
-                      />
+                      <td className="align-top">
+                        <RichTextField
+                          name="banglaPronunciation"
+                          control={control}
+                          placeholder={`Enter Your ${item.banglaPronunciation}`}
+                        />
+                      </td>
                     </div>
 
-                   
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                      <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center justify-start gap-5 mb-2">
                         <label className="text-sm font-semibold text-gray-700">
                           {item.banglaMeaning || "Bangla-Meaning"}
                         </label>
                         <Edit
                           onClick={() =>
                             handleEditClick(
-                              "bangla-Meaning",
+                              "banglaMeaning",
                               item.banglaMeaning,
                               item.banglaMeaning
                             )
@@ -271,23 +313,24 @@ const AdminArticle = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <textarea
-                        {...register("banglaMeaning")}
-                        className="textarea textarea-bordered w-full min-h-[80px]"
-                        placeholder={`Enter Your ${item.banglaMeaning}`}
-                      />
+                      <td className="align-top">
+                        <RichTextField
+                          name="banglaMeaning"
+                          control={control}
+                          placeholder={`Enter Your ${item.banglaMeaning}`}
+                        />
+                      </td>
                     </div>
 
-                  
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                      <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center justify-start gap-5 mb-2">
                         <label className="text-sm font-semibold text-gray-700">
                           {item.synonyms || "Synonyms"}
                         </label>
                         <Edit
                           onClick={() =>
                             handleEditClick(
-                              "Synonyms",
+                              "synonyms",
                               item.synonyms,
                               item.synonyms
                             )
@@ -295,23 +338,24 @@ const AdminArticle = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <textarea
-                        {...register("synonyms")}
-                        className="textarea textarea-bordered w-full min-h-[80px]"
-                        placeholder={`Enter Your ${item.synonyms}`}
-                      />
+                      <td className="align-top">
+                        <RichTextField
+                          name="synonyms"
+                          control={control}
+                          placeholder={`Enter Your ${item.synonyms}`}
+                        />
+                      </td>
                     </div>
 
-                 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                      <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center justify-start gap-5 mb-2">
                         <label className="text-sm font-semibold text-gray-700">
                           {item.antonyms || "Antonyms"}
                         </label>
                         <Edit
                           onClick={() =>
                             handleEditClick(
-                              "Antonyms",
+                              "antonyms",
                               item.antonyms,
                               item.antonyms
                             )
@@ -319,23 +363,24 @@ const AdminArticle = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <textarea
-                        {...register("antonyms")}
-                        className="textarea textarea-bordered w-full min-h-[80px]"
-                        placeholder={`Enter Your ${item.antonyms}`}
-                      />
+                      <td className="align-top">
+                        <RichTextField
+                          name="antonyms"
+                          control={control}
+                          placeholder={`Enter Your ${item.antonyms}`}
+                        />
+                      </td>
                     </div>
 
-                 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                      <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center justify-start gap-5 mb-2">
                         <label className="text-sm font-semibold text-gray-700">
                           {item.exampleEnglish || "Example (English)"}
                         </label>
                         <Edit
                           onClick={() =>
                             handleEditClick(
-                              "Example (English)",
+                              "exampleEnglish",
                               item.exampleEnglish,
                               item.exampleEnglish
                             )
@@ -343,23 +388,24 @@ const AdminArticle = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <textarea
-                        {...register("exampleEnglish")}
-                        className="textarea textarea-bordered w-full min-h-[80px]"
-                        placeholder={`Enter Your ${item.exampleEnglish}`}
-                      />
+                      <td className="align-top">
+                        <RichTextField
+                          name="exampleEnglish"
+                          control={control}
+                          placeholder={`Enter Your ${item.exampleEnglish}`}
+                        />
+                      </td>
                     </div>
 
-                 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                      <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center justify-start gap-5 mb-2">
                         <label className="text-sm font-semibold text-gray-700">
                           {item.exampleBangla || "Example (Bangla)"}
                         </label>
                         <Edit
                           onClick={() =>
                             handleEditClick(
-                              "Example (Bangla)",
+                              "exampleBangla",
                               item.exampleBangla,
                               item.exampleBangla
                             )
@@ -367,11 +413,13 @@ const AdminArticle = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <textarea
-                        {...register("exampleBangla")}
-                        className="textarea textarea-bordered w-full min-h-[80px]"
-                        placeholder={`Enter Your ${item.exampleBangla}`}
-                      />
+                      <td className="align-top">
+                        <RichTextField
+                          name="exampleBangla"
+                          control={control}
+                          placeholder={`Enter Your ${item.exampleBangla}`}
+                        />
+                      </td>
                     </div>
                   </div>
                 ))}
@@ -379,282 +427,39 @@ const AdminArticle = () => {
                 <div className="flex justify-center mt-6 p-2">
                   <button
                     type="submit"
-                    className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow-md w-full"
+                    className="px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-lg shadow-md w-full"
                   >
                     Submit
                   </button>
                 </div>
               </form>
-            </div> */}
-
-            {/* Desktop View - Table Layout */}
-            <div>
-              <div className="mb-4 text-center">
-                {sentenceFields && sentenceFields.length > 0 && (
-                  <>
-                    {/* Title */}
-                    <div className="flex items-start justify-center gap-2 mb-2">
-                      {sentenceFields[0].title || "Title"}
-                      <Edit
-                        onClick={() =>
-                          handleEditClick(
-                            "title",
-                            sentenceFields[0].title,
-                            sentenceFields[0].title
-                          )
-                        }
-                        className="w-5 h-5 text-green-600 cursor-pointer"
-                      />
-                    </div>
-
-                    {/* description */}
-                    <div className="flex items-start justify-center gap-2">
-                      <span className="text-base">
-                        {sentenceFields[0].description || "description"}
-                      </span>
-                      <Edit
-                        onClick={() =>
-                          handleEditClick(
-                            "description",
-                            sentenceFields[0].description,
-                            sentenceFields[0].description
-                          )
-                        }
-                        className="min-w-5 min-h-5 w-5 h-5 text-green-600 cursor-pointer"
-                      />
-                    </div>
-                  </>
-                )}
-              </div>
-              <div>
-                {sentenceFields.map((item) => (
-                  <div key={item._id} className="flex items-center gap-2 my-2">
-                    <span className="font-semibold">
-                      Create {item.title || "Vocabulary"} Exercise
-                    </span>
-                    <input
-                      type="checkbox"
-                      className={`toggle ${
-                        item.isActive === "ON" ? "toggle-success" : ""
-                      }`}
-                      checked={item.isActive === "ON"}
-                      onChange={() => handleToggle(item.isActive)}
-                    />
-                  </div>
-                ))}
-              </div>
-              {/* Scrollable Container with proper height */}
-              <div className="max-h-[calc(100vh-250px)] overflow-auto rounded-xl shadow border border-gray-200">
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  {sentenceFields?.map((item) => (
-                    <table key={item._id} className="table w-full">
-                      <thead className="bg-black text-white text-sm sticky top-0 z-10">
-                        <tr>
-                          <th className="min-w-96">
-                            <div className="flex items-center justify-center gap-2">
-                              {item.mainWord || "Main-Word"}
-                              <Edit
-                                onClick={() =>
-                                  handleEditClick(
-                                    "mainWord",
-                                    item.mainWord,
-                                    item.mainWord
-                                  )
-                                }
-                                className="w-5 h-5 text-green-600 cursor-pointer"
-                              />
-                            </div>
-                          </th>
-                          <th className="min-w-96">
-                            <div className="flex items-center justify-center gap-2">
-                              {item.banglaPronunciation ||
-                                "Bangla-Pronunciation"}
-                              <Edit
-                                onClick={() =>
-                                  handleEditClick(
-                                    "banglaPronunciation",
-                                    item.banglaPronunciation,
-                                    item.banglaPronunciation
-                                  )
-                                }
-                                className="w-5 h-5 text-green-600 cursor-pointer"
-                              />
-                            </div>
-                          </th>
-                          <th className="min-w-96">
-                            <div className="flex items-center justify-center gap-2">
-                              {item.banglaMeaning || "Bangla-Meaning"}
-                              <Edit
-                                onClick={() =>
-                                  handleEditClick(
-                                    "banglaMeaning",
-                                    item.banglaMeaning,
-                                    item.banglaMeaning
-                                  )
-                                }
-                                className="w-5 h-5 text-green-600 cursor-pointer"
-                              />
-                            </div>
-                          </th>
-                          <th className="min-w-96">
-                            <div className="flex items-center justify-center gap-2">
-                              {item.synonyms || "Synonyms"}
-                              <Edit
-                                onClick={() =>
-                                  handleEditClick(
-                                    "synonyms",
-                                    item.synonyms,
-                                    item.synonyms
-                                  )
-                                }
-                                className="w-5 h-5 text-green-600 cursor-pointer"
-                              />
-                            </div>
-                          </th>
-                          <th className="min-w-96">
-                            <div className="flex items-center justify-center gap-2">
-                              {item.antonyms || "Antonyms"}
-                              <Edit
-                                onClick={() =>
-                                  handleEditClick(
-                                    "antonyms",
-                                    item.antonyms,
-                                    item.antonyms
-                                  )
-                                }
-                                className="w-5 h-5 text-green-600 cursor-pointer"
-                              />
-                            </div>
-                          </th>
-                          <th className="min-w-96">
-                            <div className="flex items-center justify-center gap-2">
-                              {item.exampleEnglish || "Example (English)"}
-                              <Edit
-                                onClick={() =>
-                                  handleEditClick(
-                                    "exampleEnglish",
-                                    item.exampleEnglish,
-                                    item.exampleEnglish
-                                  )
-                                }
-                                className="w-5 h-5 text-green-600 cursor-pointer"
-                              />
-                            </div>
-                          </th>
-                          <th className="min-w-96">
-                            <div className="flex items-center justify-center gap-2">
-                              {item.exampleBangla || " Example (Bangla)"}
-                              <Edit
-                                onClick={() =>
-                                  handleEditClick(
-                                    "exampleBangla",
-                                    item.exampleBangla,
-                                    item.exampleBangla
-                                  )
-                                }
-                                className="w-5 h-5 text-green-600 cursor-pointer"
-                              />
-                            </div>
-                          </th>
-                        </tr>
-                      </thead>
-
-                      <tbody>
-                        <tr>
-                          <td className="align-top">
-                            <RichTextField
-                              name="mainWord"
-                              control={control}
-                              placeholder={`Enter Your ${item.mainWord}`}
-                            />
-                          </td>
-                          <td className="align-top">
-                            <RichTextField
-                              name="banglaPronunciation"
-                              control={control}
-                              placeholder={`Enter Your ${item.banglaPronunciation}`}
-                            />
-                          </td>
-                          <td className="align-top">
-                            <RichTextField
-                              name="banglaMeaning"
-                              control={control}
-                              placeholder={`Enter Your ${item.banglaMeaning}`}
-                            />
-                          </td>
-                          <td className="align-top">
-                            <RichTextField
-                              name="synonyms"
-                              control={control}
-                              placeholder={`Enter Your ${item.synonyms}`}
-                            />
-                          </td>
-                          <td className="align-top">
-                            <RichTextField
-                              name="antonyms"
-                              control={control}
-                              placeholder={`Enter Your ${item.antonyms}`}
-                            />
-                          </td>
-                          <td className="align-top">
-                            <RichTextField
-                              name="exampleEnglish"
-                              control={control}
-                              placeholder={`Enter Your ${(item.name =
-                                "exampleEnglish")}`}
-                            />
-                          </td>
-                          <td className="align-top">
-                            <RichTextField
-                              name="exampleBangla"
-                              control={control}
-                              placeholder={`Enter Your ${item.exampleBangla}`}
-                            />
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  ))}
-                </form>
-              </div>
-
-              {/* Submit Button - Outside the scrollable area */}
-              <div className="flex justify-center mt-6 bg-white py-4 rounded-b-2xl border-t border-gray-200">
-                <button
-                  type="submit"
-                  onClick={handleSubmit(onSubmit)}
-                  className="px-8 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow-md text-lg font-semibold"
-                >
-                  Submit Vocabulary
-                </button>
-              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* History */}
-      <div className="bg-white rounded-lg shadow-md p-5 mt-10">
+      <div className="bg-white rounded-lg shadow-md p-5 mt-10 w-[450px] md:w-full">
         <h1 className="mb-5">
-          Total Vocabulary Items:{" "}
-          <span className="text-3xl font-bold ">{vocabulary.length}</span>
+          Total article Items:{" "}
+          <span className="text-3xl font-bold ">{article.length}</span>
         </h1>
 
         <div className="overflow-x-auto rounded-xl shadow border border-gray-200">
-          {vocabularyLoading ? (
+          {articleLoading ? (
             <div className="p-6 text-center text-gray-500">
-              Loading vocabulary...
+              Loading article...
             </div>
-          ) : vocabularyError ? (
+          ) : articleError ? (
             <div className="p-6 text-center text-red-500">
-              Error loading vocabulary.
+              Error loading article.
             </div>
           ) : (
             <table className="table w-full">
-              {sentenceFields?.map((item, index) => (
+              {articleFields?.map((item, index) => (
                 <thead
                   key={item._id}
-                  className="bg-[#bb874a] text-white text-sm"
+                  className="bg-teal-600 text-white text-sm"
                 >
                   <tr>
                     <th className="min-w-10">Serial</th>
@@ -670,8 +475,8 @@ const AdminArticle = () => {
                 </thead>
               ))}
               <tbody>
-                {visibleVocabulary.length > 0 ? (
-                  visibleVocabulary.map((row, i) => (
+                {visiblearticle.length > 0 ? (
+                  visiblearticle.map((row, i) => (
                     <tr
                       key={i}
                       className="hover:bg-gray-50 transition border-b text-sm"
@@ -747,7 +552,7 @@ const AdminArticle = () => {
                 ) : (
                   <tr>
                     <td colSpan="9" className="text-center py-6 text-gray-500">
-                      No Sentence found.
+                      No article found.
                     </td>
                   </tr>
                 )}
@@ -755,7 +560,7 @@ const AdminArticle = () => {
             </table>
           )}
         </div>
-        {vocabulary.length > 10 && (
+        {article.length > 10 && (
           <div className="flex justify-center mt-4">
             <button
               onClick={() => setShowAll(!showAll)}

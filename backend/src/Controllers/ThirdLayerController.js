@@ -1,349 +1,3 @@
-// const { ObjectId } = require("mongodb");
-// const {
-//   getThirdLayerGoodLifeStyleFieldsCollection,
-//   getThirdLayerGoodLifeStyleCollection,
-//   getThirdLayerGoodLifeStyleExerciseCollection,
-//   getThirdLayerBeforeProfessionalFieldsCollection,
-//   getThirdLayerBeforeProfessionalCollection,
-//   getThirdLayerBeforeProfessionalExerciseCollection,
-// } = require("../config/db");
-
-// // Good Life Style
-// const goodLifeStyleFieldsCollection =
-//   getThirdLayerGoodLifeStyleFieldsCollection();
-// const goodLifeStyleCollection = getThirdLayerGoodLifeStyleCollection();
-// const goodLifeStyleExerciseCollection =
-//   getThirdLayerGoodLifeStyleExerciseCollection();
-
-// // Before Professional
-// const beforeProfessionalFieldsCollection =
-//   getThirdLayerBeforeProfessionalFieldsCollection();
-// const beforeProfessionalCollection =
-//   getThirdLayerBeforeProfessionalCollection();
-// const beforeProfessionalExerciseCollection =
-//   getThirdLayerBeforeProfessionalExerciseCollection();
-
-// // ✅ Update Good Life Style Field
-// const updateGoodLifeStyleField = async (req, res) => {
-//   try {
-//     const { fieldName, value } = req.body;
-
-//     if (!fieldName) {
-//       return res
-//         .status(400)
-//         .json({ success: false, message: "fieldName is required" });
-//     }
-
-//     let updateData = {};
-
-//     if (fieldName === "isActive") {
-//       // যদি isActive update হয়, toggle কর
-//       const doc = await goodLifeStyleFieldsCollection.findOne({});
-//       if (!doc) {
-//         return res
-//           .status(404)
-//           .json({ success: false, message: "No good life style found" });
-//       }
-
-//       updateData[fieldName] = doc.isActive === "ON" ? "OFF" : "ON";
-//     } else {
-//       if (!value) {
-//         return res.status(400).json({
-//           success: false,
-//           message: "value is required for this field",
-//         });
-//       }
-//       updateData[fieldName] = value;
-//     }
-
-//     const result = await goodLifeStyleFieldsCollection.updateOne(
-//       {},
-//       { $set: updateData }
-//     );
-
-//     if (result.matchedCount === 0) {
-//       return res
-//         .status(404)
-//         .json({ success: false, message: "No elegant found to update" });
-//     }
-
-//     res.json({
-//       success: true,
-//       message:
-//         fieldName === "isActive"
-//           ? `isActive toggled successfully`
-//           : `${fieldName} updated successfully`,
-//       updatedValue: updateData[fieldName],
-//     });
-//   } catch (error) {
-//     res.status(500).json({ success: false, message: error.message });
-//   }
-// };
-// // ✅ Get Good Life Style Fields
-// const getGoodLifeStyleField = async (req, res) => {
-//   try {
-//     const result = await goodLifeStyleFieldsCollection.find().toArray();
-//     res.json({ success: true, data: result });
-//   } catch (error) {
-//     res.status(500).json({ success: false, message: error.message });
-//   }
-// };
-// // Temporary Exercise data
-// // Exercise Controller
-// const createExerciseGoodLifeStyle = async (req, res) => {
-//   try {
-//     const data = {
-//       ...req.body,
-//       createdAt: new Date(), // Save timestamp
-//     };
-
-//     // Insert exercise
-//     const result = await goodLifeStyleExerciseCollection.insertOne(data);
-
-//     // Create TTL index (will auto delete after 30 days)
-//     await goodLifeStyleExerciseCollection.createIndex(
-//       { createdAt: 1 },
-//       { expireAfterSeconds: 10 * 24 * 60 * 60 } // 30 days
-//     );
-
-//     res.status(201).json({
-//       success: true,
-//       id: result.insertedId,
-//       message: "Exercise created. It will auto-delete after 30 days.",
-//     });
-//   } catch (error) {
-//     console.error("Error creating exercise:", error);
-//     res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };
-
-// // Create new author info
-// const createGoodLifeStyle = async (req, res) => {
-//   try {
-//     const goodLifeStyleData = req.body;
-
-//     // ✅ Create date added
-//     goodLifeStyleData.createdAt = new Date().toISOString();
-
-//     // ✅ Insert good life style data without limit
-//     const result = await goodLifeStyleCollection.insertOne(goodLifeStyleData);
-
-//     res.status(201).json({
-//       success: true,
-//       message: "Good Life Style created successfully",
-//       data: result,
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: "Failed to create song",
-//       error: error.message,
-//     });
-//   }
-// };
-
-// // Delete author info
-// const deleteGoodLifeStyle = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-
-//     const result = await goodLifeStyleCollection.deleteOne({
-//       _id: new ObjectId(id),
-//     });
-
-//     res.status(200).json(result);
-//   } catch (error) {
-//     res
-//       .status(500)
-//       .json({ message: "Failed to delete author info", error: error.message });
-//   }
-// };
-
-// // Get All Good Life Styles
-// const getAllGoodLifeStyles = async (req, res) => {
-//   try {
-//     const goodLifeStyles = await goodLifeStyleCollection.find().toArray();
-//     res.status(200).json(goodLifeStyles);
-//   } catch (error) {
-//     res.status(500).json({
-//       message: "Failed to fetch good life styles",
-//       error: error.message,
-//     });
-//   }
-// };
-
-// // ✅ Update Good Life Style Field
-// const updateBeforeProfesinalField = async (req, res) => {
-//   try {
-//     const { fieldName, value } = req.body;
-
-//     if (!fieldName) {
-//       return res
-//         .status(400)
-//         .json({ success: false, message: "fieldName is required" });
-//     }
-
-//     let updateData = {};
-
-//     if (fieldName === "isActive") {
-//       // যদি isActive update হয়, toggle কর
-//       const doc = await beforeProfessionalFieldsCollection.findOne({});
-//       if (!doc) {
-//         return res
-//           .status(404)
-//           .json({ success: false, message: "No good life style found" });
-//       }
-
-//       updateData[fieldName] = doc.isActive === "ON" ? "OFF" : "ON";
-//     } else {
-//       if (!value) {
-//         return res.status(400).json({
-//           success: false,
-//           message: "value is required for this field",
-//         });
-//       }
-//       updateData[fieldName] = value;
-//     }
-
-//     const result = await beforeProfessionalFieldsCollection.updateOne(
-//       {},
-//       { $set: updateData }
-//     );
-
-//     if (result.matchedCount === 0) {
-//       return res
-//         .status(404)
-//         .json({ success: false, message: "No elegant found to update" });
-//     }
-
-//     res.json({
-//       success: true,
-//       message:
-//         fieldName === "isActive"
-//           ? `isActive toggled successfully`
-//           : `${fieldName} updated successfully`,
-//       updatedValue: updateData[fieldName],
-//     });
-//   } catch (error) {
-//     res.status(500).json({ success: false, message: error.message });
-//   }
-// };
-
-// // ✅ Get Good Life Style Fields
-// const allbeforeProfessionalField = async (req, res) => {
-//   try {
-//     const result = await beforeProfessionalFieldsCollection.find().toArray();
-//     res.json({ success: true, data: result });
-//   } catch (error) {
-//     res.status(500).json({ success: false, message: error.message });
-//   }
-// };
-// // Temporary Exercise data
-// // Exercise Controller
-// const createExerciseBeforeProfessional = async (req, res) => {
-//   try {
-//     const data = {
-//       ...req.body,
-//       createdAt: new Date(), // Save timestamp
-//     };
-
-//     // Insert exercise
-//     const result = await beforeProfessionalExerciseCollection.insertOne(data);
-
-//     // Create TTL index (will auto delete after 30 days)
-//     await beforeProfessionalExerciseCollection.createIndex(
-//       { createdAt: 1 },
-//       { expireAfterSeconds: 10 * 24 * 60 * 60 } // 30 days
-//     );
-
-//     res.status(201).json({
-//       success: true,
-//       id: result.insertedId,
-//       message: "Exercise created. It will auto-delete after 30 days.",
-//     });
-//   } catch (error) {
-//     console.error("Error creating exercise:", error);
-//     res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };
-
-// // Create new author info
-// const createBeforeProfessional = async (req, res) => {
-//   try {
-//     const goodLifeStyleData = req.body;
-
-//     // ✅ Create date added
-//     goodLifeStyleData.createdAt = new Date().toISOString();
-
-//     // ✅ Insert good life style data without limit
-//     const result = await beforeProfessionalCollection.insertOne(
-//       goodLifeStyleData
-//     );
-
-//     res.status(201).json({
-//       success: true,
-//       message: "Good Life Style created successfully",
-//       data: result,
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: "Failed to create song",
-//       error: error.message,
-//     });
-//   }
-// };
-
-// // Delete author info
-// const deleteBeforeProfessional = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-
-//     const result = await beforeProfessionalCollection.deleteOne({
-//       _id: new ObjectId(id),
-//     });
-
-//     res.status(200).json(result);
-//   } catch (error) {
-//     res
-//       .status(500)
-//       .json({ message: "Failed to delete author info", error: error.message });
-//   }
-// };
-
-// // Get All Good Life Styles
-// const getAllBeforeProfessional = async (req, res) => {
-//   try {
-//     const goodLifeStyles = await beforeProfessionalCollection.find().toArray();
-//     res.status(200).json(goodLifeStyles);
-//   } catch (error) {
-//     res.status(500).json({
-//       message: "Failed to fetch good life styles",
-//       error: error.message,
-//     });
-//   }
-// };
-
-// module.exports = {
-//   updateGoodLifeStyleField,
-//   getGoodLifeStyleField,
-//   createExerciseGoodLifeStyle,
-//   createGoodLifeStyle,
-//   deleteGoodLifeStyle,
-//   getAllGoodLifeStyles,
-//   updateBeforeProfesinalField,
-//   getAllBeforeProfessional,
-//   createBeforeProfessional,
-//   createExerciseBeforeProfessional,
-//   deleteBeforeProfessional,
-//   allbeforeProfessionalField
-// };
 const { ObjectId } = require("mongodb");
 const {
   // Before Professional
@@ -365,14 +19,20 @@ const {
   getThirdLayerGoodLifeStyleFieldsCollection,
   getThirdLayerGoodLifeStyleCollection,
   getThirdLayerGoodLifeStyleExerciseCollection,
+  getThirdLayerIdeaSharesFieldsCollection,
+  getThirdLayerIdeaSharesCollection,
+  getThirdLayerIdeaSharesExerciseCollection,
 } = require("../config/db");
 
 // -----------------------------------------------------------------------------
 // Before Professional
 // -----------------------------------------------------------------------------
-const beforeProfessionalFieldsCollection = getThirdLayerBeforeProfessionalFieldsCollection();
-const beforeProfessionalCollection = getThirdLayerBeforeProfessionalCollection();
-const beforeProfessionalExerciseCollection = getThirdLayerBeforeProfessionalExerciseCollection();
+const beforeProfessionalFieldsCollection =
+  getThirdLayerBeforeProfessionalFieldsCollection();
+const beforeProfessionalCollection =
+  getThirdLayerBeforeProfessionalCollection();
+const beforeProfessionalExerciseCollection =
+  getThirdLayerBeforeProfessionalExerciseCollection();
 
 // ✅ Update Before Professional Field
 const updateBeforeProfessionalField = async (req, res) => {
@@ -380,7 +40,9 @@ const updateBeforeProfessionalField = async (req, res) => {
     const { fieldName, value } = req.body;
 
     if (!fieldName) {
-      return res.status(400).json({ success: false, message: "fieldName is required" });
+      return res
+        .status(400)
+        .json({ success: false, message: "fieldName is required" });
     }
 
     let updateData = {};
@@ -388,19 +50,37 @@ const updateBeforeProfessionalField = async (req, res) => {
     if (fieldName === "isActive") {
       const doc = await beforeProfessionalFieldsCollection.findOne({});
       if (!doc) {
-        return res.status(404).json({ success: false, message: "No before professional field found" });
+        return res
+          .status(404)
+          .json({
+            success: false,
+            message: "No before professional field found",
+          });
       }
       updateData[fieldName] = doc.isActive === "ON" ? "OFF" : "ON";
     } else {
       if (!value) {
-        return res.status(400).json({ success: false, message: "value is required for this field" });
+        return res
+          .status(400)
+          .json({
+            success: false,
+            message: "value is required for this field",
+          });
       }
       updateData[fieldName] = value;
     }
 
-    const result = await beforeProfessionalFieldsCollection.updateOne({}, { $set: updateData });
+    const result = await beforeProfessionalFieldsCollection.updateOne(
+      {},
+      { $set: updateData }
+    );
     if (result.matchedCount === 0) {
-      return res.status(404).json({ success: false, message: "No before professional field found to update" });
+      return res
+        .status(404)
+        .json({
+          success: false,
+          message: "No before professional field found to update",
+        });
     }
 
     res.json({
@@ -451,7 +131,13 @@ const createBeforeProfessional = async (req, res) => {
   try {
     const data = { ...req.body, createdAt: new Date().toISOString() };
     const result = await beforeProfessionalCollection.insertOne(data);
-    res.status(201).json({ success: true, message: "Before Professional created successfully", data: result });
+    res
+      .status(201)
+      .json({
+        success: true,
+        message: "Before Professional created successfully",
+        data: result,
+      });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -461,7 +147,9 @@ const createBeforeProfessional = async (req, res) => {
 const deleteBeforeProfessional = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await beforeProfessionalCollection.deleteOne({ _id: new ObjectId(id) });
+    const result = await beforeProfessionalCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -481,31 +169,54 @@ const getAllBeforeProfessional = async (req, res) => {
 // -----------------------------------------------------------------------------
 // Corporate Email
 // -----------------------------------------------------------------------------
-const corporateEmailFieldsCollection = getThirdLayerCorporateEmailFieldsCollection();
+const corporateEmailFieldsCollection =
+  getThirdLayerCorporateEmailFieldsCollection();
 const corporateEmailCollection = getThirdLayerCorporateEmailCollection();
-const corporateEmailExerciseCollection = getThirdLayerCorporateEmailExerciseCollection();
+const corporateEmailExerciseCollection =
+  getThirdLayerCorporateEmailExerciseCollection();
 
 // ✅ Update Corporate Email Field
 const updateCorporateEmailField = async (req, res) => {
   try {
     const { fieldName, value } = req.body;
-    if (!fieldName) return res.status(400).json({ success: false, message: "fieldName is required" });
+    if (!fieldName)
+      return res
+        .status(400)
+        .json({ success: false, message: "fieldName is required" });
 
     let updateData = {};
     if (fieldName === "isActive") {
       const doc = await corporateEmailFieldsCollection.findOne({});
-      if (!doc) return res.status(404).json({ success: false, message: "No corporate email field found" });
+      if (!doc)
+        return res
+          .status(404)
+          .json({ success: false, message: "No corporate email field found" });
       updateData[fieldName] = doc.isActive === "ON" ? "OFF" : "ON";
     } else {
-      if (!value) return res.status(400).json({ success: false, message: "value is required" });
+      if (!value)
+        return res
+          .status(400)
+          .json({ success: false, message: "value is required" });
       updateData[fieldName] = value;
     }
 
-    const result = await corporateEmailFieldsCollection.updateOne({}, { $set: updateData });
+    const result = await corporateEmailFieldsCollection.updateOne(
+      {},
+      { $set: updateData }
+    );
     if (result.matchedCount === 0)
-      return res.status(404).json({ success: false, message: "No corporate email field found to update" });
+      return res
+        .status(404)
+        .json({
+          success: false,
+          message: "No corporate email field found to update",
+        });
 
-    res.json({ success: true, message: `${fieldName} updated successfully`, updatedValue: updateData[fieldName] });
+    res.json({
+      success: true,
+      message: `${fieldName} updated successfully`,
+      updatedValue: updateData[fieldName],
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -526,8 +237,17 @@ const createExerciseCorporateEmail = async (req, res) => {
   try {
     const data = { ...req.body, createdAt: new Date() };
     const result = await corporateEmailExerciseCollection.insertOne(data);
-    await corporateEmailExerciseCollection.createIndex({ createdAt: 1 }, { expireAfterSeconds: 30 * 24 * 60 * 60 });
-    res.status(201).json({ success: true, id: result.insertedId, message: "Exercise created. Auto-delete after 30 days." });
+    await corporateEmailExerciseCollection.createIndex(
+      { createdAt: 1 },
+      { expireAfterSeconds: 30 * 24 * 60 * 60 }
+    );
+    res
+      .status(201)
+      .json({
+        success: true,
+        id: result.insertedId,
+        message: "Exercise created. Auto-delete after 30 days.",
+      });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -538,7 +258,13 @@ const createCorporateEmail = async (req, res) => {
   try {
     const data = { ...req.body, createdAt: new Date().toISOString() };
     const result = await corporateEmailCollection.insertOne(data);
-    res.status(201).json({ success: true, message: "Corporate Email created successfully", data: result });
+    res
+      .status(201)
+      .json({
+        success: true,
+        message: "Corporate Email created successfully",
+        data: result,
+      });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -548,7 +274,9 @@ const createCorporateEmail = async (req, res) => {
 const deleteCorporateEmail = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await corporateEmailCollection.deleteOne({ _id: new ObjectId(id) });
+    const result = await corporateEmailCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -568,28 +296,46 @@ const getAllCorporateEmail = async (req, res) => {
 // -----------------------------------------------------------------------------
 // Develop Your Skills
 // -----------------------------------------------------------------------------
-const developSkillsFieldsCollection = getThirdLayerDevelopSkillsFieldsCollection();
+const developSkillsFieldsCollection =
+  getThirdLayerDevelopSkillsFieldsCollection();
 const developSkillsCollection = getThirdLayerDevelopSkillsCollection();
-const developSkillsExerciseCollection = getThirdLayerDevelopSkillsExerciseCollection();
+const developSkillsExerciseCollection =
+  getThirdLayerDevelopSkillsExerciseCollection();
 
 // ✅ Update Develop Skills Field
 const updateDevelopSkillsField = async (req, res) => {
   try {
     const { fieldName, value } = req.body;
-    if (!fieldName) return res.status(400).json({ success: false, message: "fieldName is required" });
+    if (!fieldName)
+      return res
+        .status(400)
+        .json({ success: false, message: "fieldName is required" });
 
     let updateData = {};
     if (fieldName === "isActive") {
       const doc = await developSkillsFieldsCollection.findOne({});
-      if (!doc) return res.status(404).json({ success: false, message: "No develop skills field found" });
+      if (!doc)
+        return res
+          .status(404)
+          .json({ success: false, message: "No develop skills field found" });
       updateData[fieldName] = doc.isActive === "ON" ? "OFF" : "ON";
     } else {
-      if (!value) return res.status(400).json({ success: false, message: "value is required" });
+      if (!value)
+        return res
+          .status(400)
+          .json({ success: false, message: "value is required" });
       updateData[fieldName] = value;
     }
 
-    const result = await developSkillsFieldsCollection.updateOne({}, { $set: updateData });
-    res.json({ success: true, message: `${fieldName} updated successfully`, updatedValue: updateData[fieldName] });
+    const result = await developSkillsFieldsCollection.updateOne(
+      {},
+      { $set: updateData }
+    );
+    res.json({
+      success: true,
+      message: `${fieldName} updated successfully`,
+      updatedValue: updateData[fieldName],
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -610,8 +356,17 @@ const createExerciseDevelopSkills = async (req, res) => {
   try {
     const data = { ...req.body, createdAt: new Date() };
     const result = await developSkillsExerciseCollection.insertOne(data);
-    await developSkillsExerciseCollection.createIndex({ createdAt: 1 }, { expireAfterSeconds: 30 * 24 * 60 * 60 });
-    res.status(201).json({ success: true, id: result.insertedId, message: "Exercise created. Auto-delete after 30 days." });
+    await developSkillsExerciseCollection.createIndex(
+      { createdAt: 1 },
+      { expireAfterSeconds: 30 * 24 * 60 * 60 }
+    );
+    res
+      .status(201)
+      .json({
+        success: true,
+        id: result.insertedId,
+        message: "Exercise created. Auto-delete after 30 days.",
+      });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -622,7 +377,13 @@ const createDevelopSkills = async (req, res) => {
   try {
     const data = { ...req.body, createdAt: new Date().toISOString() };
     const result = await developSkillsCollection.insertOne(data);
-    res.status(201).json({ success: true, message: "Develop Skills created successfully", data: result });
+    res
+      .status(201)
+      .json({
+        success: true,
+        message: "Develop Skills created successfully",
+        data: result,
+      });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -632,7 +393,9 @@ const createDevelopSkills = async (req, res) => {
 const deleteDevelopSkills = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await developSkillsCollection.deleteOne({ _id: new ObjectId(id) });
+    const result = await developSkillsCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -652,28 +415,46 @@ const getAllDevelopSkills = async (req, res) => {
 // -----------------------------------------------------------------------------
 // Good Life Style
 // -----------------------------------------------------------------------------
-const goodLifeStyleFieldsCollection = getThirdLayerGoodLifeStyleFieldsCollection();
+const goodLifeStyleFieldsCollection =
+  getThirdLayerGoodLifeStyleFieldsCollection();
 const goodLifeStyleCollection = getThirdLayerGoodLifeStyleCollection();
-const goodLifeStyleExerciseCollection = getThirdLayerGoodLifeStyleExerciseCollection();
+const goodLifeStyleExerciseCollection =
+  getThirdLayerGoodLifeStyleExerciseCollection();
 
 // ✅ Update Good Life Style Field
 const updateGoodLifeStyleField = async (req, res) => {
   try {
     const { fieldName, value } = req.body;
-    if (!fieldName) return res.status(400).json({ success: false, message: "fieldName is required" });
+    if (!fieldName)
+      return res
+        .status(400)
+        .json({ success: false, message: "fieldName is required" });
 
     let updateData = {};
     if (fieldName === "isActive") {
       const doc = await goodLifeStyleFieldsCollection.findOne({});
-      if (!doc) return res.status(404).json({ success: false, message: "No good life style field found" });
+      if (!doc)
+        return res
+          .status(404)
+          .json({ success: false, message: "No good life style field found" });
       updateData[fieldName] = doc.isActive === "ON" ? "OFF" : "ON";
     } else {
-      if (!value) return res.status(400).json({ success: false, message: "value is required" });
+      if (!value)
+        return res
+          .status(400)
+          .json({ success: false, message: "value is required" });
       updateData[fieldName] = value;
     }
 
-    const result = await goodLifeStyleFieldsCollection.updateOne({}, { $set: updateData });
-    res.json({ success: true, message: `${fieldName} updated successfully`, updatedValue: updateData[fieldName] });
+    const result = await goodLifeStyleFieldsCollection.updateOne(
+      {},
+      { $set: updateData }
+    );
+    res.json({
+      success: true,
+      message: `${fieldName} updated successfully`,
+      updatedValue: updateData[fieldName],
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -694,8 +475,17 @@ const createExerciseGoodLifeStyle = async (req, res) => {
   try {
     const data = { ...req.body, createdAt: new Date() };
     const result = await goodLifeStyleExerciseCollection.insertOne(data);
-    await goodLifeStyleExerciseCollection.createIndex({ createdAt: 1 }, { expireAfterSeconds: 30 * 24 * 60 * 60 });
-    res.status(201).json({ success: true, id: result.insertedId, message: "Exercise created. Auto-delete after 30 days." });
+    await goodLifeStyleExerciseCollection.createIndex(
+      { createdAt: 1 },
+      { expireAfterSeconds: 30 * 24 * 60 * 60 }
+    );
+    res
+      .status(201)
+      .json({
+        success: true,
+        id: result.insertedId,
+        message: "Exercise created. Auto-delete after 30 days.",
+      });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -706,7 +496,13 @@ const createGoodLifeStyle = async (req, res) => {
   try {
     const data = { ...req.body, createdAt: new Date().toISOString() };
     const result = await goodLifeStyleCollection.insertOne(data);
-    res.status(201).json({ success: true, message: "Good Life Style created successfully", data: result });
+    res
+      .status(201)
+      .json({
+        success: true,
+        message: "Good Life Style created successfully",
+        data: result,
+      });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -716,7 +512,9 @@ const createGoodLifeStyle = async (req, res) => {
 const deleteGoodLifeStyle = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await goodLifeStyleCollection.deleteOne({ _id: new ObjectId(id) });
+    const result = await goodLifeStyleCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -727,6 +525,124 @@ const deleteGoodLifeStyle = async (req, res) => {
 const getAllGoodLifeStyle = async (req, res) => {
   try {
     const result = await goodLifeStyleCollection.find().toArray();
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// -----------------------------------------------------------------------------
+// idea Share
+// -----------------------------------------------------------------------------
+const ideaSharesFieldsCollection = getThirdLayerIdeaSharesFieldsCollection();
+const ideaSharesCollection = getThirdLayerIdeaSharesCollection();
+const ideaSharesExerciseCollection =
+  getThirdLayerIdeaSharesExerciseCollection();
+
+// ✅ Update Good Life Style Field
+const updateIdeaSharesField = async (req, res) => {
+  try {
+    const { fieldName, value } = req.body;
+    if (!fieldName)
+      return res
+        .status(400)
+        .json({ success: false, message: "fieldName is required" });
+
+    let updateData = {};
+    if (fieldName === "isActive") {
+      const doc = await ideaSharesFieldsCollection.findOne({});
+      if (!doc)
+        return res
+          .status(404)
+          .json({ success: false, message: "No good life style field found" });
+      updateData[fieldName] = doc.isActive === "ON" ? "OFF" : "ON";
+    } else {
+      if (!value)
+        return res
+          .status(400)
+          .json({ success: false, message: "value is required" });
+      updateData[fieldName] = value;
+    }
+
+    const result = await ideaSharesFieldsCollection.updateOne(
+      {},
+      { $set: updateData }
+    );
+    res.json({
+      success: true,
+      message: `${fieldName} updated successfully`,
+      updatedValue: updateData[fieldName],
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// ✅ Get Good Life Style Fields
+const getIdeaSharesField = async (req, res) => {
+  try {
+    const result = await ideaSharesFieldsCollection.find().toArray();
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// ✅ Create Exercise Good Life Style
+const createExerciseIdeaShares = async (req, res) => {
+  try {
+    const data = { ...req.body, createdAt: new Date() };
+    const result = await ideaSharesExerciseCollection.insertOne(data);
+    await ideaSharesExerciseCollection.createIndex(
+      { createdAt: 1 },
+      { expireAfterSeconds: 30 * 24 * 60 * 60 }
+    );
+    res
+      .status(201)
+      .json({
+        success: true,
+        id: result.insertedId,
+        message: "Exercise created. Auto-delete after 30 days.",
+      });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// ✅ Create Good Life Style
+const createIdeaShares = async (req, res) => {
+  try {
+    const data = { ...req.body, createdAt: new Date().toISOString() };
+    const result = await ideaSharesCollection.insertOne(data);
+    res
+      .status(201)
+      .json({
+        success: true,
+        message: "Good Life Style created successfully",
+        data: result,
+      });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// ✅ Delete Good Life Style
+const deleteIdeaShares = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await ideaSharesCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// ✅ Get All Good Life Styles
+const getAllIdeaShares = async (req, res) => {
+  try {
+    const result = await ideaSharesCollection.find().toArray();
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -768,4 +684,12 @@ module.exports = {
   createGoodLifeStyle,
   deleteGoodLifeStyle,
   getAllGoodLifeStyle,
+
+  // Idea Share
+  updateIdeaSharesField,
+  getIdeaSharesField,
+  createExerciseIdeaShares,
+  createIdeaShares,
+  deleteIdeaShares,
+  getAllIdeaShares,
 };

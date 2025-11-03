@@ -40,7 +40,7 @@ const BeforeProfessionalModal = ({ isOpen, onClose, fieldName, currentValue, voc
         }
       );
       const data = await res.json();
-      console.log(data)
+     
       if (!res.ok) {
         throw new Error(data.message || "Failed to update");
       }

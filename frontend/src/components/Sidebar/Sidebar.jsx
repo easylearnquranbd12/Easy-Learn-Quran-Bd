@@ -12,6 +12,7 @@ import { CgProfile } from "react-icons/cg";
 import {
   FaChartLine,
   FaHome,
+  FaIdeal,
   FaKey,
   FaUserGraduate,
   FaUsers,
@@ -384,8 +385,8 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
           color: "text-indigo-600",
         },
         {
-          path: "/admin-dashboard/develop-your-skills",
-          icon: BiEdit,
+          path: "/admin-dashboard/idea-share-and-suggestion",
+          icon: FaIdeal,
           label: " Idea Share and Suggestion",
           description: "Create & History",
           color: "text-indigo-600",
@@ -400,7 +401,7 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
       color: "text-indigo-600",
       subItems: [
         {
-          path: "/admin-dashboard/create-song",
+          path: "/admin-dashboard/create-traveling",
           icon: BiEdit,
           label: "Create  Traveling",
           description: "Create & History",
@@ -417,6 +418,20 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
           path: "/admin-dashboard/create-porem",
           icon: BiEdit,
           label: "Create Porem",
+          description: "Create & History",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/create-movie",
+          icon: BiEdit,
+          label: "Create Movie",
+          description: "Create & History",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/create-novel",
+          icon: BiEdit,
+          label: "Create Novel",
           description: "Create & History",
           color: "text-indigo-600",
         },

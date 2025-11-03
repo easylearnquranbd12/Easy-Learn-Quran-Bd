@@ -49,7 +49,7 @@ const DevelopYourSkills = () => {
           <div className="space-y-6">
             {developFields.map((field) => (
               <div key={field._id} className="p-4">
-                <h3 className="font-semibold text-3xl">{field.title}</h3>
+                <h3 className="font-semibold text-3xl text-teal-600">{field.title}</h3>
                 <p className="text-gray-600 text-sm lg:text-base text-justify py-5">
                   {field.description}
                 </p>
@@ -88,7 +88,7 @@ const DevelopYourSkills = () => {
                 {/* Collapsible Content */}
                 <div
                   className={`overflow-hidden transition-[max-height] duration-500 ease-in-out ${
-                    openIndex === index ? "max-h-[500px]" : "max-h-0"
+                    openIndex === index ? "max-h-[1500px]" : "max-h-0"
                   }`}
                 >
                   <div

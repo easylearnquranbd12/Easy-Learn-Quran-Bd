@@ -71,9 +71,9 @@ const layerComponents = {
   "second-layer": SecondLayer,
   "third-layer": ThirdLayer,
   "fourth-layer": FourthLayer,
-  "five-layer": FiveLayer,
-  "six-layer": SixLayer,
-  "seven-layer": SevenLayer,
+  "fifth-layer": FiveLayer,
+  "sixth-layer": SixLayer,
+  "seventh-layer": SevenLayer,
 };
 
 const LayerRoutes = () => {

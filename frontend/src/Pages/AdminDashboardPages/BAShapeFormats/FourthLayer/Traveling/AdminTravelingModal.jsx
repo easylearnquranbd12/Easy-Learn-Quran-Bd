@@ -1,3 +1,4 @@
+
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -17,7 +18,7 @@ const formatFieldLabel = (fieldName) => {
   return words.join(" ");
 };
 
-const PrepositionModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
+const AdminTravelingModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
   const [value, setValue] = useState(currentValue || "");
   const queryClient = useQueryClient();
 
@@ -32,7 +33,7 @@ const PrepositionModal = ({ isOpen, onClose, fieldName, currentValue, vocabId })
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `http://localhost:5000/second-layer/prepositionField/${vocabId}`,
+        `http://localhost:5000/third-layer/ideaSharesField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -40,7 +41,7 @@ const PrepositionModal = ({ isOpen, onClose, fieldName, currentValue, vocabId })
         }
       );
       const data = await res.json();
-    
+     
       if (!res.ok) {
         throw new Error(data.message || "Failed to update");
       }
@@ -108,4 +109,4 @@ const PrepositionModal = ({ isOpen, onClose, fieldName, currentValue, vocabId })
   );
 };
 
-export default PrepositionModal;
+export default AdminTravelingModal;

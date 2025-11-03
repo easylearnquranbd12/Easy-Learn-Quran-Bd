@@ -4,6 +4,7 @@ import BeforeProfesional from "./BeforeProfesional";
 import CorporateEmail from "./CorporateEmail";
 import DevelopYourSkills from "./DevelopYourSkills";
 import GoodLifeStyle from "./GoodLifeStyle";
+import IdeaShare from "./IdeaShare";
 
 const ThirdLayer = () => {
   return (
@@ -21,6 +22,7 @@ const ThirdLayer = () => {
         <BeforeProfesional />
         <CorporateEmail />
         <DevelopYourSkills />
+        <IdeaShare/>
       </div>
     </div>
   );

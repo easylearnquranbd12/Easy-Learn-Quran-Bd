@@ -39,8 +39,7 @@ const Idiom = () => {
       return res.data.data ;
     },
   });
-console.log(idiom)
-console.log(idiomFields)
+
   
   // Create idiom
   const { mutateAsync: createidiomExercise } = useMutation({

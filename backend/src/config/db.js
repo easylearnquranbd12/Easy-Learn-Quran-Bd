@@ -139,33 +139,6 @@ const getSecondLayerPrepositionExerciseCollection = () => {
     .db("Learning-Quiz-Platfrom")
     .collection("createExercisePreposition");
 };
-// third layer
-// Good Life Style
-// const getThirdLayerGoodLifeStyleFieldsCollection = () => {
-//   return client.db("Learning-Quiz-Platfrom").collection("GoodLifeStyleField");
-// };
-// const getThirdLayerGoodLifeStyleCollection = () => {
-//   return client.db("Learning-Quiz-Platfrom").collection("GoodLifeStyle");
-// };
-// const getThirdLayerGoodLifeStyleExerciseCollection = () => {
-//   return client
-//     .db("Learning-Quiz-Platfrom")
-//     .collection("createExerciseGoodLifeStyle");
-// };
-// // Before Professional
-// const getThirdLayerBeforeProfessionalFieldsCollection = () => {
-//   return client
-//     .db("Learning-Quiz-Platfrom")
-//     .collection("BeforeProfessionalField");
-// };
-// const getThirdLayerBeforeProfessionalCollection = () => {
-//   return client.db("Learning-Quiz-Platfrom").collection("BeforeProfessional");
-// };
-// const getThirdLayerBeforeProfessionalExerciseCollection = () => {
-//   return client
-//     .db("Learning-Quiz-Platfrom")
-//     .collection("createExerciseBeforeProfessional");
-// };
 
 // third layer
 
@@ -218,6 +191,18 @@ const getThirdLayerDevelopSkillsCollection = () => {
   return client.db("Learning-Quiz-Platfrom").collection("DevelopSkills");
 };
 const getThirdLayerDevelopSkillsExerciseCollection = () => {
+  return client
+    .db("Learning-Quiz-Platfrom")
+    .collection("createExerciseDevelopSkills");
+};
+// ✅ idea Sharre Your Skills
+const getThirdLayerIdeaSharesFieldsCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("IdeaSharesField");
+};
+const getThirdLayerIdeaSharesCollection = () => {
+  return client.db("Learning-Quiz-Platfrom").collection("IdeaShares");
+};
+const getThirdLayerIdeaSharesExerciseCollection = () => {
   return client
     .db("Learning-Quiz-Platfrom")
     .collection("createExerciseDevelopSkills");
@@ -312,7 +297,6 @@ module.exports = {
   getUserPaymentCollection,
   getAddPaymentMethodCollection,
 
-  
   getImageAndTextCollection,
   getAuthorTextCollection,
   getSocialLinksCollection,
@@ -382,6 +366,10 @@ module.exports = {
   getThirdLayerDevelopSkillsFieldsCollection,
   getThirdLayerDevelopSkillsCollection,
   getThirdLayerDevelopSkillsExerciseCollection,
+
+  getThirdLayerIdeaSharesCollection,
+  getThirdLayerIdeaSharesFieldsCollection,
+  getThirdLayerIdeaSharesExerciseCollection,
 
   getFiveLayerOldGenerationCollection,
   getFiveLayerOldGenerationFieldsCollection,

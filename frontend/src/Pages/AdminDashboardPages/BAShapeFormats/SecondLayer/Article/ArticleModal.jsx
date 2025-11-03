@@ -40,7 +40,7 @@ const ArticleModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => 
         }
       );
       const data = await res.json();
-      console.log(data)
+    
       if (!res.ok) {
         throw new Error(data.message || "Failed to update");
       }
@@ -53,7 +53,7 @@ const ArticleModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => 
         text: `${formatFieldLabel(fieldName)} updated successfully.`,
         confirmButtonColor: "#16a34a", 
       });
-      queryClient.invalidateQueries(["vocabulary"]); 
+      queryClient.invalidateQueries(["article"]); 
       onClose();
     },
     onError: (error) => {

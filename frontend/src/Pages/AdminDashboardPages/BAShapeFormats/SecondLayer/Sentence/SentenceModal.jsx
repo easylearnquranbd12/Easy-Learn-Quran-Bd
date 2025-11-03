@@ -7,17 +7,21 @@ import Swal from "sweetalert2";
 const formatFieldLabel = (fieldName) => {
   let words = fieldName
     .replace(/([a-z])([A-Z])/g, "$1 $2") // camelCase → separate words
-    .replace(/-/g, " ")                   // kebab-case → replace hyphen with space
+    .replace(/-/g, " ") // kebab-case → replace hyphen with space
     .split(" ");
 
-  words = words.map(
-    (word) => word.charAt(0).toUpperCase() + word.slice(1)
-  );
+  words = words.map((word) => word.charAt(0).toUpperCase() + word.slice(1));
 
   return words.join(" ");
 };
 
-const SentenceModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
+const SentenceModal = ({
+  isOpen,
+  onClose,
+  fieldName,
+  currentValue,
+  vocabId,
+}) => {
   const [value, setValue] = useState(currentValue || "");
   const queryClient = useQueryClient();
 
@@ -40,7 +44,7 @@ const SentenceModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) =>
         }
       );
       const data = await res.json();
-      console.log(data)
+
       if (!res.ok) {
         throw new Error(data.message || "Failed to update");
       }
@@ -51,9 +55,9 @@ const SentenceModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) =>
         icon: "success",
         title: "Updated!",
         text: `${formatFieldLabel(fieldName)} updated successfully.`,
-        confirmButtonColor: "#16a34a", 
+        confirmButtonColor: "#16a34a",
       });
-      queryClient.invalidateQueries(["vocabulary"]); 
+      queryClient.invalidateQueries(["vocabulary"]);
       onClose();
     },
     onError: (error) => {
@@ -61,7 +65,7 @@ const SentenceModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) =>
         icon: "error",
         title: "Oops...",
         text: error.message,
-        confirmButtonColor: "#dc2626", 
+        confirmButtonColor: "#dc2626",
       });
     },
   });
@@ -79,7 +83,8 @@ const SentenceModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) =>
         </button>
 
         <h2 className="text-lg font-semibold mb-4">
-          Edit Field: <span className="text-green-600">{formatFieldLabel(fieldName)}</span>
+          Edit Field:{" "}
+          <span className="text-green-600">{formatFieldLabel(fieldName)}</span>
         </h2>
 
         <textarea

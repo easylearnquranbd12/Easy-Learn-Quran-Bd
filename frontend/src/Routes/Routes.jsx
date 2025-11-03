@@ -22,12 +22,16 @@ import AdminLetterWritting from "../Pages/AdminDashboardPages/BAShapeFormats/Fiv
 import Adminmcq from "../Pages/AdminDashboardPages/BAShapeFormats/FiveLayer/MCQ/Adminmcq";
 import AdminOldGenaration from "../Pages/AdminDashboardPages/BAShapeFormats/FiveLayer/OldGenaration/AdminOldGenaration";
 import AdminStoryWritting from "../Pages/AdminDashboardPages/BAShapeFormats/FiveLayer/StoryWritting/AdminStoryWritting";
+import AdminMovie from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Movie/AdminMovie";
+import AdminNovel from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Novel/AdminNovel";
 import AdminSong from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Song/AdminSong";
+import AdminTraveling from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Traveling/AdminTraveling";
 import LayerManage from "../Pages/AdminDashboardPages/BAShapeFormats/LayerManage/LayerManage";
 import AdminBeforeProfessional from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/BeforeProfessional/AdminBeforeProfessional";
 import AdminCorporateEmail from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/CorporateEmail/AdminCorporateEmail";
 import AdminDevelopYourSkills from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/DevelopYourSkills/AdminDevelopYourSkills";
 import AdminGoodLifeStyle from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/GoodLifeStyle/AdminGoodLifeStyle";
+import IdeaShareAnsSuggestion from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/IdeaShareAnsSuggestion/IdeaShareAnsSuggestion";
 import BlankFormat from "../Pages/ContributePages/BlankFormat/BlankFormat";
 import UploadPDF from "../Pages/ContributePages/UploadPDF/UploadPDF";
 import DashboardRedirect from "../Pages/DashboardRedirect";
@@ -391,11 +395,20 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
+      // First Layer
       {
         path: "create-vocabulary",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <AdminVocabulary />
+          </Suspense>
+        ),
+      },
+       {
+        path: "create-elegant",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminElegant />
           </Suspense>
         ),
       },
@@ -407,6 +420,23 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
+        {
+        path: "create-tantuster",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminTantuster />
+          </Suspense>
+        ),
+      },
+      {
+        path: "new-tantuster",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminNewTantuster />
+          </Suspense>
+        ),
+      },
+      // Second Layer 
       {
         path: "create-sentence",
         element: (
@@ -415,6 +445,40 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
+       {
+        path: "create-verb",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminVerb />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-article",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminArticle />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-tense",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminTense />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-preposition",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminPreposition />
+          </Suspense>
+        ),
+      },
+
+      // Third Layer
       {
         path: "good-life-style",
         element: (
@@ -448,59 +512,21 @@ export const routes = createBrowserRouter([
         ),
       },
       {
-        path: "create-elegant",
+        path: "idea-share-and-suggestion",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
-            <AdminElegant />
+            <IdeaShareAnsSuggestion />
           </Suspense>
         ),
       },
+    
+// Fourth Layer
+           
       {
-        path: "create-tantuster",
+        path: "create-traveling",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
-            <AdminTantuster />
-          </Suspense>
-        ),
-      },
-
-      {
-        path: "create-verb",
-        element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <AdminVerb />
-          </Suspense>
-        ),
-      },
-      {
-        path: "create-article",
-        element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <AdminArticle />
-          </Suspense>
-        ),
-      },
-      {
-        path: "create-tense",
-        element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <AdminTense />
-          </Suspense>
-        ),
-      },
-      {
-        path: "create-preposition",
-        element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <AdminPreposition />
-          </Suspense>
-        ),
-      },
-      {
-        path: "new-tantuster",
-        element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <AdminNewTantuster />
+            <AdminTraveling />
           </Suspense>
         ),
       },
@@ -520,6 +546,23 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
+      {
+        path: "create-movie",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminMovie />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-novel",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminNovel />
+          </Suspense>
+        ),
+      },
+     
       // Five Layer
       {
         path: "create-old-generation",

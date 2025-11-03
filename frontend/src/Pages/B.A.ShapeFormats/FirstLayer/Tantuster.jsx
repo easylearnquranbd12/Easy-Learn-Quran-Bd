@@ -1,5 +1,3 @@
-
-
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -28,7 +26,7 @@ const Tantuster = () => {
     queryKey: ["tantusterFields"],
     queryFn: async () => {
       const res = await axiosPublic.get("/first-layer/tantusterField");
-      console.log(res.data.data);
+
       return res.data.data || [];
     },
   });
@@ -38,7 +36,7 @@ const Tantuster = () => {
     queryKey: ["tantuster"],
     queryFn: async () => {
       const res = await axiosPublic.get("/first-layer/tantuster");
-      console.log(res.data.data);
+
       return res.data.data || [];
     },
   });
@@ -117,11 +115,8 @@ const Tantuster = () => {
       return;
     }
 
-    console.log(data);
-
     reset();
   };
-
 
   return (
     <div className="max-w-[1400px] mx-auto px-2">

@@ -73,9 +73,9 @@ const Adminmcq = () => {
     mutationFn: (id) => axiosPublic.delete(`/five-layer/mcq/${id}`),
     onSuccess: (res) => {
       if (res.data?.deletedCount > 0) {
-        Swal.fire("Deleted!", "Song deleted successfully.", "success");
+        Swal.fire("Deleted!", "Mcq deleted successfully.", "success");
       } else {
-        Swal.fire("Info", "Song not found or already deleted.", "info");
+        Swal.fire("Info", "Mcq not found or already deleted.", "info");
       }
       queryClient.invalidateQueries(["songs"]);
     },
@@ -181,18 +181,18 @@ const Adminmcq = () => {
   };
 
   return (
-    <div className=" px-2">
+    < >
       <Helmet>
-        <title>Admin | Create Good Life Style Management</title>
+        <title>Admin | Create MCQ Management</title>
       </Helmet>
 
       <TittleAnimation
-        tittle="Create Good Life Style"
-        subtittle="Manage Songs & Vocabulary Fields"
+        tittle="Create MCQ"
+        subtittle="Manage MCQ  Fields"
       />
 
-      <div className="mt-10 lg:min-w-[1000px]">
-        <div className=" w-full bg-white shadow-md rounded-2xl p-3 md:p-5">
+      <div className="mt-10 max-w-7xl mx-auto">
+        <div className=" w-full bg-white shadow-md rounded-lg p-2 md:p-5">
           {/* ✅ Vocabulary Fields Section */}
           <div className="text-center mb-6">
             {mcqFields && mcqFields.length > 0 && (
@@ -250,7 +250,7 @@ const Adminmcq = () => {
           </div>
 
           {/* ✅ Create Song Form */}
-          <div className="w-full bg-white shadow-2xl rounded-2xl border border-gray-200 p-6 sm:p-8 mb-10 transition-all duration-300 hover:shadow-orange-200">
+          <div className="w-full bg-white shadow-xl rounded-2xl border border-gray-200 p-6 sm:p-8 mb-10 transition-all duration-300 hover:shadow-teal-200">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               {/* ✅ MCQ Question (Required) */}
               <div className="form-control w-full">
@@ -265,7 +265,7 @@ const Adminmcq = () => {
                     <input
                       {...field}
                       placeholder="Enter your question..."
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all duration-200"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-teal-400 transition-all duration-200"
                     />
                   )}
                 />
@@ -291,7 +291,7 @@ const Adminmcq = () => {
                       <input
                         {...field}
                         placeholder="Enter answer 1..."
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all duration-200"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-teal-400 transition-all duration-200"
                       />
                     )}
                   />
@@ -315,7 +315,7 @@ const Adminmcq = () => {
                       <input
                         {...field}
                         placeholder="Enter answer 2..."
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all duration-200"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-teal-400 transition-all duration-200"
                       />
                     )}
                   />
@@ -338,7 +338,7 @@ const Adminmcq = () => {
                       <input
                         {...field}
                         placeholder="Enter answer 3..."
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all duration-200"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-teal-400 transition-all duration-200"
                       />
                     )}
                   />
@@ -356,7 +356,7 @@ const Adminmcq = () => {
                       <input
                         {...field}
                         placeholder="Enter answer 4..."
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all duration-200"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-teal-400 transition-all duration-200"
                       />
                     )}
                   />
@@ -376,7 +376,7 @@ const Adminmcq = () => {
                     <input
                       {...field}
                       placeholder="Enter the correct answer..."
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all duration-200"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-teal-400 transition-all duration-200"
                     />
                   )}
                 />
@@ -392,7 +392,7 @@ const Adminmcq = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-3 px-6 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-orange-500 disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="w-full py-3 px-6 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? "Adding..." : "Add MCQ"}
                 </button>
@@ -406,9 +406,9 @@ const Adminmcq = () => {
               List
             </h2>
 
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto w-[420px] md:w-full">
               <table className="table-auto w-full text-sm sm:text-base">
-                <thead className="bg-black text-white">
+                <thead className="bg-teal-600 text-white">
                   <tr>
                     <th className="px-4 py-2">MCQ Qustion</th>
                     <th className="px-4 py-2">Answer 1</th>
@@ -482,7 +482,7 @@ const Adminmcq = () => {
           vocabId={selectedVocabId}
         />
       )}
-    </div>
+    </>
   );
 };
 

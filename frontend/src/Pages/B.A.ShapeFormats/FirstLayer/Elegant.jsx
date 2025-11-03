@@ -26,7 +26,7 @@ const Elegant = () => {
     queryKey: ["elegantFields"],
     queryFn: async () => {
       const res = await axiosPublic.get("/first-layer/elegantField");
-      console.log(res.data.data);
+
       return res.data.data || [];
     },
   });
@@ -36,7 +36,7 @@ const Elegant = () => {
     queryKey: ["elegant"],
     queryFn: async () => {
       const res = await axiosPublic.get("/first-layer/elegant");
-      console.log(res.data.data);
+
       return res.data.data || [];
     },
   });
@@ -46,8 +46,7 @@ const Elegant = () => {
   const elegantField = elegantFields[0] || {};
   const data = elegant[0] || {};
 
-  if (!data)
-    return <p className="text-center mt-10">No elegant data found.</p>;
+  if (!data) return <p className="text-center mt-10">No elegant data found.</p>;
 
   // Dynamic tab generation
   const tabs = [
@@ -115,12 +114,9 @@ const Elegant = () => {
       return;
     }
 
-    console.log(data);
-
     reset();
   };
 
- 
   return (
     <div className="max-w-[1400px] mx-auto">
       <div className="py-8 ">

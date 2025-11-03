@@ -10,52 +10,6 @@ import { useTranslation } from "../../context/TranslationContext";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 
-
-
-
-// const getNavigationLinks = (user, setLanguage, field = [],isLoading) => {
-//   const dynamicLayers = field.map((layer) => ({
-//     title: layer.layerName || layer.fieldName,
-//     link: `/b-a-shape-formats/${layer.fieldName}`,
-//     // disabled: layer.isActive !== "ON" // OFF হলে disable হবে
-//   }));
-
-//   const baseLinks = [
-//     { title: "Home", link: "/" },
-//     { title: "About Us", link: "/about-us-more-information" },
-//     {
-//       title: "B.A. Shape Formats",
-//       subLinks: dynamicLayers,
-//     },
-//   ];
-
-//   if (user) {
-//     baseLinks.splice(3, 0, { title: "Dashboard", link: "/dashboard" });
-//   }
-
-//   baseLinks.push(
-//     {
-//       title: "Contribute",
-//       subLinks: [
-//         { title: "Blank Format", link: "/contribute/blank-format" },
-//         { title: "Upload PDF", link: "/contribute/upload-pdf" },
-//       ],
-//     },
-//     { title: "PDF Download", link: "/pdf-download" },
-//     { title: "Blog", link: "/blog-us" },
-//     {
-//       title: "Language",
-//       subLinks: [
-//         { title: "বাংলা", action: () => setLanguage("bn") },
-//         { title: "English", action: () => setLanguage("en") },
-//       ],
-//     }
-//   );
-
-//   return baseLinks;
-// };
-
-
 const getNavigationLinks = (user, setLanguage, field = [], isLoading) => {
   const dynamicLayers = isLoading
     ? [
@@ -109,8 +63,6 @@ const getNavigationLinks = (user, setLanguage, field = [], isLoading) => {
   return baseLinks;
 };
 
-
-
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSubMenu, setActiveSubMenu] = useState(null);
@@ -120,16 +72,14 @@ const Navbar = () => {
   const { setLanguage, loading } = useTranslation();
   const axiosPublic = useAxiosPublic();
 
-
-    // ✅ Fetch all layers
-  const { data: field , isLoading } = useQuery({
+  // ✅ Fetch all layers
+  const { data: field, isLoading } = useQuery({
     queryKey: ["field"],
     queryFn: async () => {
       const res = await axiosPublic.get("/layer-management/field");
       return res.data?.data || [];
     },
   });
-
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "auto";
@@ -138,9 +88,12 @@ const Navbar = () => {
     };
   }, [isOpen]);
 
-
-
-  const navigationLinks = getNavigationLinks(user, setLanguage,field,isLoading);
+  const navigationLinks = getNavigationLinks(
+    user,
+    setLanguage,
+    field,
+    isLoading
+  );
 
   const toggleSubMenu = (index) =>
     setActiveSubMenu(activeSubMenu === index ? null : index);
