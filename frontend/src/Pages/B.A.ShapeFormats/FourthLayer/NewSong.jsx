@@ -78,6 +78,18 @@ const NewSong = () => {
                 <span className="font-medium text-gray-800 text-lg">
                   {song.songName}
                 </span>
+                {song.songLink ? (
+                  <a
+                    href={song.songLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-white text-[8px] md:text-[12px]  bg-teal-600 hover:bg-teal-800  p-2 rounded-lg"
+                  >
+                   Watch Now
+                  </a>
+                ) : (
+                  " "
+                )}
               </li>
             ))}
           </ul>

@@ -29,6 +29,7 @@ const AdminSong = () => {
     defaultValues: {
       songName: "",
       songImage: "",
+      songLink: "",
     },
   });
 
@@ -80,6 +81,7 @@ const AdminSong = () => {
     reset({
       songName: "",
       songImage: "",
+      songLink: "",
     });
     setResetSignal((prev) => prev + 1);
   };
@@ -96,6 +98,7 @@ const AdminSong = () => {
     const finalData = {
       songName: data.songName,
       image: imageUrl,
+      songLink: data.songLink,
     };
 
     createMutation.mutate(finalData);
@@ -168,17 +171,17 @@ const AdminSong = () => {
   };
 
   return (
-    <div className=" px-2">
+    <>
       <Helmet>
         <title>Admin | Songs Management</title>
       </Helmet>
 
       <TittleAnimation
         tittle="Create Good Songs"
-        subtittle="Manage Songs & Vocabulary Fields"
+        subtittle="Manage Songs  Fields"
       />
 
-      <div className="mt-10 lg:min-w-[1000px]">
+      <div className="mt-10 max-w-7xl mx-auto">
         <div className=" w-full bg-white shadow-md rounded-2xl p-3 md:p-5">
           {/* ✅ Vocabulary Fields Section */}
           <div className="text-center mb-6">
@@ -194,12 +197,12 @@ const AdminSong = () => {
                         songFields[0]._id
                       )
                     }
-                    className="w-5 h-5 text-green-600 cursor-pointer"
+                    className="w-5 h-5 min-h-5 min-w-5 text-green-600 cursor-pointer"
                   />
                 </div>
 
                 <div className="flex items-start justify-center gap-2">
-                  <span className="text-base">
+                  <span className="text-base text-justify">
                     {songFields[0].description || "Description"}
                   </span>
                   <Edit
@@ -210,7 +213,7 @@ const AdminSong = () => {
                         songFields[0]._id
                       )
                     }
-                    className="w-5 h-5 text-green-600 cursor-pointer"
+                    className="w-5 h-5 min-h-5 min-w-5 text-green-600 cursor-pointer"
                   />
                 </div>
               </>
@@ -263,7 +266,25 @@ const AdminSong = () => {
                     <input
                       {...field}
                       placeholder="Enter song name..."
-                      className="w-full px-4 py-3 border rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-300"
+                      className="w-full px-4 py-3 border rounded-md text-gray-700 focus:outline-none focus:ring-1 focus:ring-teal-300"
+                    />
+                  )}
+                />
+              </div>
+              <div className="form-control w-full">
+                <label className="label">
+                  <span className="label-text text-base font-medium text-gray-700">
+                    Song Link (Optional):
+                  </span>
+                </label>
+                <Controller
+                  name="songLink"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      {...field}
+                      placeholder="Enter song link..."
+                      className="w-full px-4 py-3 border rounded-md text-gray-700 focus:outline-none focus:ring-1 focus:ring-teal-300"
                     />
                   )}
                 />
@@ -271,7 +292,7 @@ const AdminSong = () => {
 
               <button
                 type="submit"
-                className="w-full py-3 px-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-medium rounded-lg shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-orange-600 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full py-3 px-4 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-medium rounded-lg shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-teal-600 disabled:opacity-70 disabled:cursor-not-allowed"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "Adding..." : "Add Song"}
@@ -281,16 +302,17 @@ const AdminSong = () => {
 
           {/* ✅ Songs List */}
           <div className="w-full bg-white shadow-lg rounded-xl border p-4 sm:p-6">
-            <h2 className="text-lg sm:text-xl font-semibold mb-4 text-indigo-700">
+            <h2 className="text-lg sm:text-xl font-semibold mb-4 text-teal-600-700">
               Songs List
             </h2>
 
             <div className="overflow-x-auto">
               <table className="table-auto w-full text-sm sm:text-base">
-                <thead className="bg-black text-white">
+                <thead className="bg-teal-600 text-white">
                   <tr>
                     <th className="px-4 py-2">Image</th>
                     <th className="px-4 py-2">Song Name</th>
+                    <th className="px-4 py-2">Song Link</th>
                     <th className="px-4 py-2">Actions</th>
                   </tr>
                 </thead>
@@ -325,6 +347,21 @@ const AdminSong = () => {
                           {item.songName}
                         </td>
                         <td className="px-4 py-2 text-center">
+                          {item.songLink ? (
+                            <a
+                              href={item.songLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-600 hover:underline"
+                            >
+                              Listen
+                            </a>
+                          ) : (
+                            "—"
+                          )}
+                        </td>
+
+                        <td className="px-4 py-2 text-center">
                           <button
                             onClick={() => handleDelete(item._id)}
                             className="text-red-600 hover:text-red-800"
@@ -353,7 +390,7 @@ const AdminSong = () => {
           vocabId={selectedVocabId}
         />
       )}
-    </div>
+    </>
   );
 };
 

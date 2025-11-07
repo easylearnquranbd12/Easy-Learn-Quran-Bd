@@ -1,3 +1,4 @@
+
 // // Import the functions you need from the SDKs you need
 // import { initializeApp } from "firebase/app";
 // import { getAuth } from "firebase/auth";
@@ -6,39 +7,34 @@
 
 // // Your web app's Firebase configuration
 // const firebaseConfig = {
-//   apiKey: "AIzaSyARyb1BAOIbUkaZzoI21G5gEj-KyrO4oYE",
-//   authDomain: "network-online-service-a8ffb.firebaseapp.com",
-//   projectId: "network-online-service-a8ffb",
-//   // storageBucket: "network-online-service-a8ffb.firebasestorage.app",
-//   storageBucket: "network-online-service-a8ffb.appspot.com",
-
-//   messagingSenderId: "755298212721",
-//   appId: "1:755298212721:web:a4dbf2aa7334c7fdc0f4d0",
+//   apiKey: "AIzaSyDKrU7glhdxiigzTwWdqpy6GC2uWOfZDvU",
+//   authDomain: "learning-quiz-platfrom.firebaseapp.com",
+//   projectId: "learning-quiz-platfrom",
+//   storageBucket: "learning-quiz-platfrom.firebasestorage.app",
+//   messagingSenderId: "631802761873",
+//   appId: "1:631802761873:web:583f3a74cafda1b618e530",
 // };
 
 // // Initialize Firebase
 // const app = initializeApp(firebaseConfig);
-
 // const auth = getAuth(app);
 // export default auth;
 
-// Import the functions you need from the SDKs you need
+
+
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDKrU7glhdxiigzTwWdqpy6GC2uWOfZDvU",
-  authDomain: "learning-quiz-platfrom.firebaseapp.com",
-  projectId: "learning-quiz-platfrom",
-  storageBucket: "learning-quiz-platfrom.firebasestorage.app",
-  messagingSenderId: "631802761873",
-  appId: "1:631802761873:web:583f3a74cafda1b618e530",
+  apiKey: "AIzaSyDL3NPeHT7YoDYo1yJ07WVxWDT2LUYWx4k",
+  authDomain: "shapion-quiz-platform.firebaseapp.com",
+  projectId: "shapion-quiz-platform",
+  storageBucket: "shapion-quiz-platform.firebasestorage.app",
+  messagingSenderId: "430631071879",
+  appId: "1:430631071879:web:f48e6d58b089227d560822"
 };
 
-// Initialize Firebase
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 export default auth;

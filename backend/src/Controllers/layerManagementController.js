@@ -70,7 +70,7 @@ const updateLayerManagementFields = async (req, res) => {
 const getLayerManagementFields = async (req, res) => {
   try {
     const result = await layerManagementFields.find().toArray();
-    console.log("Layer data found:", result);
+
     res.json({ success: true, data: result });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

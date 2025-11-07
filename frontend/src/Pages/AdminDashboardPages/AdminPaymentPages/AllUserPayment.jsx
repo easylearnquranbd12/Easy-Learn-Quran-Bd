@@ -239,17 +239,26 @@ const AllUserPayment = () => {
                   >
                     <Eye size={16} /> View Details
                   </button>
-                  <button
+                  {/* <button
                     onClick={() => handleStatusUpdate(p._id, "accepted")}
                     className="btn btn-sm bg-green-500 hover:bg-green-600 text-white"
                   >
                     ✓ Approve
-                  </button>
+                  </button> */}
+{(p.status === "pending" || p.status === "rejected") && (
+  <button
+    onClick={() => handleStatusUpdate(p._id, "accepted")}
+    className="btn btn-sm bg-green-500 hover:bg-green-600 text-white"
+  >
+    ✓ Approve
+  </button>
+)}
+
                   <button
                     onClick={() => handleStatusUpdate(p._id, "rejected")}
                     className="btn btn-sm bg-yellow-400 hover:bg-yellow-500 text-white"
                   >
-                    ✕ Cancel
+                    ✕ Rejected
                   </button>
                   <button
                     onClick={() => handleDelete(p._id)}
@@ -283,14 +292,48 @@ const AllUserPayment = () => {
                   <strong>Payment Number:</strong> {p.adminNumber || "N/A"}
                 </p>
                 <p>
-                  <strong>Expired Date:</strong> {p.expireAt || "N/A"}
+                  <strong>Expired Date:</strong>{" "}
+                  {p.expireAt
+                    ? new Date(p.expireAt)
+                        .toLocaleString("en-GB", {
+                          timeZone: "Asia/Dhaka",
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          second: "2-digit",
+                          hour12: true,
+                        })
+                        .replace("am", "AM")
+                        .replace("pm", "PM")
+                    : "N/A"}
                 </p>
+
                 <p>
-                  <strong>Purchase:</strong>{" "}
-                  {new Date(p.createdAt).toLocaleString()}
+                  <strong>Approved Date:</strong>{" "}
+                  {p.approvedAt
+                    ? new Date(p.approvedAt)
+                        .toLocaleString("en-GB", {
+                          timeZone: "Asia/Dhaka",
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          second: "2-digit",
+                          hour12: true,
+                        })
+                        .replace("am", "AM")
+                        .replace("pm", "PM")
+                    : "N/A"}
                 </p>
+
                 <p>
-                  <strong>Transaction ID:</strong> {p.transactionId || "N/A"}
+                  <strong>Transaction ID:</strong>{" "}
+                  <span className="text-teal-600 font-bold">
+                    {p.transactionId || "N/A"}
+                  </span>
                 </p>
               </div>
             </div>

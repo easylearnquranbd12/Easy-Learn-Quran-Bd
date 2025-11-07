@@ -1,8 +1,10 @@
 const { MongoClient, ServerApiVersion } = require("mongodb");
 require("dotenv").config();
 
-// const uri = `mongodb+srv://Construction-Projects:dcw48n9B0WuIIFwp@construction-projects.z7ox4nb.mongodb.net/Learning-Quiz-Platfrom?retryWrites=true&w=majority&appName=Construction-Projects`;
-const uri = `mongodb+srv://Network-Online-Service:3jMat0WHg0uF8lR7@network-online-service.bfjpnvo.mongodb.net/Learning-Quiz-Platfrom-Paid?retryWrites=true&w=majority`;
+// const uri = `mongodb+srv://Network-Online-Service:3jMat0WHg0uF8lR7@Learning-Quiz-Platfrom.bfjpnvo.mongodb.net/Shapion-Quiz-Platform-Paid?retryWrites=true&w=majority`;
+
+const uri =
+  "mongodb+srv://Shapion:1WOvPQzOr1fdRSng@shapion-quiz-platform.wmwc3it.mongodb.net/?appName=Shapion-Quiz-Platform";
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -17,126 +19,125 @@ const connectDB = async () => {
   console.log("✅ MongoDB connected successfully.");
 };
 
+// const getUserCollection = () => {
+//   return client.db("Learning-Quiz-Platfrom").collection("users");
+// };
 const getUserCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("users");
+  return client.db("Shapion-Quiz-Platform").collection("users");
 };
 const getBlogsCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("blog");
+  return client.db("Shapion-Quiz-Platform").collection("blog");
 };
 // First Layer
 // vocabulary
 const getFirstLayerVocabularyCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("VocabularyField");
+  return client.db("Shapion-Quiz-Platform").collection("VocabularyField");
 };
 const getFirstLayerVocabularyCollections = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("Vocabulary");
+  return client.db("Shapion-Quiz-Platform").collection("Vocabulary");
 };
 const getFirstLayerVocabularyExerciseCollections = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("createExercise");
+  return client.db("Shapion-Quiz-Platform").collection("createExercise");
 };
 // idiom
 const getFirstLayerIdiomCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("IdiomField");
+  return client.db("Shapion-Quiz-Platform").collection("IdiomField");
 };
 const getFirstLayerIdiomCollections = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("Idiom");
+  return client.db("Shapion-Quiz-Platform").collection("Idiom");
 };
 const getFirstLayerIdiomExerciseCollections = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("createExerciseIdiom");
+  return client.db("Shapion-Quiz-Platform").collection("createExerciseIdiom");
 };
 
 // elegant
 const getFirstLayerElegantFieldsCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("ElegantField");
+  return client.db("Shapion-Quiz-Platform").collection("ElegantField");
 };
 const getFirstLayerElegantCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("Elegant");
+  return client.db("Shapion-Quiz-Platform").collection("Elegant");
 };
 const getFirstLayerElegantExerciseCollection = () => {
-  return client
-    .db("Learning-Quiz-Platfrom")
-    .collection("createExerciseElegant");
+  return client.db("Shapion-Quiz-Platform").collection("createExerciseElegant");
 };
 // Tantuster
 const getFirstLayerTantusterFieldsCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("TantusterField");
+  return client.db("Shapion-Quiz-Platform").collection("TantusterField");
 };
 const getFirstLayerTantusterCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("Tantuster");
+  return client.db("Shapion-Quiz-Platform").collection("Tantuster");
 };
 const getFirstLayerTantusterExerciseCollection = () => {
   return client
-    .db("Learning-Quiz-Platfrom")
+    .db("Shapion-Quiz-Platform")
     .collection("createExerciseTantuster");
 };
 //new Tantuster
 const getFirstLayerNewTantusterFieldsCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("NewTantusterField");
+  return client.db("Shapion-Quiz-Platform").collection("NewTantusterField");
 };
 const getFirstLayerNewTantusterCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("NewTantuster");
+  return client.db("Shapion-Quiz-Platform").collection("NewTantuster");
 };
 const getFirstLayerNewTantusterExerciseCollection = () => {
   return client
-    .db("Learning-Quiz-Platfrom")
+    .db("Shapion-Quiz-Platform")
     .collection("createExerciseNewTantuster");
 };
 
 // second layer
 // sentence
 const getSecondLayerSentenceFieldsCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("SentenceField");
+  return client.db("Shapion-Quiz-Platform").collection("SentenceField");
 };
 const getSecondLayerSentenceCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("Sentence");
+  return client.db("Shapion-Quiz-Platform").collection("Sentence");
 };
 const getSecondLayerSentenceExerciseCollection = () => {
   return client
-    .db("Learning-Quiz-Platfrom")
+    .db("Shapion-Quiz-Platform")
     .collection("createExerciseSentence");
 };
 // Verb
 const getSecondLayerVerbFieldsCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("VerbField");
+  return client.db("Shapion-Quiz-Platform").collection("VerbField");
 };
 const getSecondLayerVerbCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("Verb");
+  return client.db("Shapion-Quiz-Platform").collection("Verb");
 };
 const getSecondLayerVerbExerciseCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("createExerciseVerb");
+  return client.db("Shapion-Quiz-Platform").collection("createExerciseVerb");
 };
 // Article
 const getSecondLayerArticleFieldsCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("ArticleField");
+  return client.db("Shapion-Quiz-Platform").collection("ArticleField");
 };
 const getSecondLayerArticleCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("Article");
+  return client.db("Shapion-Quiz-Platform").collection("Article");
 };
 const getSecondLayerArticleExerciseCollection = () => {
-  return client
-    .db("Learning-Quiz-Platfrom")
-    .collection("createExerciseArticle");
+  return client.db("Shapion-Quiz-Platform").collection("createExerciseArticle");
 };
 // Tense
 const getSecondLayerTenseFieldsCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("TenseField");
+  return client.db("Shapion-Quiz-Platform").collection("TenseField");
 };
 const getSecondLayerTenseCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("Tense");
+  return client.db("Shapion-Quiz-Platform").collection("Tense");
 };
 const getSecondLayerTenseExerciseCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("createExerciseTense");
+  return client.db("Shapion-Quiz-Platform").collection("createExerciseTense");
 };
 // Preposition
 const getSecondLayerPrepositionFieldsCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("PrepositionField");
+  return client.db("Shapion-Quiz-Platform").collection("PrepositionField");
 };
 const getSecondLayerPrepositionCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("Preposition");
+  return client.db("Shapion-Quiz-Platform").collection("Preposition");
 };
 const getSecondLayerPrepositionExerciseCollection = () => {
   return client
-    .db("Learning-Quiz-Platfrom")
+    .db("Shapion-Quiz-Platform")
     .collection("createExercisePreposition");
 };
 
@@ -144,149 +145,161 @@ const getSecondLayerPrepositionExerciseCollection = () => {
 
 // ✅ Good Life Style
 const getThirdLayerGoodLifeStyleFieldsCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("GoodLifeStyleField");
+  return client.db("Shapion-Quiz-Platform").collection("GoodLifeStyleField");
 };
 const getThirdLayerGoodLifeStyleCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("GoodLifeStyle");
+  return client.db("Shapion-Quiz-Platform").collection("GoodLifeStyle");
 };
 const getThirdLayerGoodLifeStyleExerciseCollection = () => {
   return client
-    .db("Learning-Quiz-Platfrom")
+    .db("Shapion-Quiz-Platform")
     .collection("createExerciseGoodLifeStyle");
 };
 
 // ✅ Before Professional
 const getThirdLayerBeforeProfessionalFieldsCollection = () => {
   return client
-    .db("Learning-Quiz-Platfrom")
+    .db("Shapion-Quiz-Platform")
     .collection("BeforeProfessionalField");
 };
 const getThirdLayerBeforeProfessionalCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("BeforeProfessional");
+  return client.db("Shapion-Quiz-Platform").collection("BeforeProfessional");
 };
 const getThirdLayerBeforeProfessionalExerciseCollection = () => {
   return client
-    .db("Learning-Quiz-Platfrom")
+    .db("Shapion-Quiz-Platform")
     .collection("createExerciseBeforeProfessional");
 };
 
 // ✅ Corporate Email
 const getThirdLayerCorporateEmailFieldsCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("CorporateEmailField");
+  return client.db("Shapion-Quiz-Platform").collection("CorporateEmailField");
 };
 const getThirdLayerCorporateEmailCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("CorporateEmail");
+  return client.db("Shapion-Quiz-Platform").collection("CorporateEmail");
 };
 const getThirdLayerCorporateEmailExerciseCollection = () => {
   return client
-    .db("Learning-Quiz-Platfrom")
+    .db("Shapion-Quiz-Platform")
     .collection("createExerciseCorporateEmail");
 };
 
 // ✅ Develop Your Skills
 const getThirdLayerDevelopSkillsFieldsCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("DevelopSkillsField");
+  return client.db("Shapion-Quiz-Platform").collection("DevelopSkillsField");
 };
 const getThirdLayerDevelopSkillsCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("DevelopSkills");
+  return client.db("Shapion-Quiz-Platform").collection("DevelopSkills");
 };
 const getThirdLayerDevelopSkillsExerciseCollection = () => {
   return client
-    .db("Learning-Quiz-Platfrom")
+    .db("Shapion-Quiz-Platform")
     .collection("createExerciseDevelopSkills");
 };
 // ✅ idea Sharre Your Skills
 const getThirdLayerIdeaSharesFieldsCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("IdeaSharesField");
+  return client.db("Shapion-Quiz-Platform").collection("IdeaSharesField");
 };
 const getThirdLayerIdeaSharesCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("IdeaShares");
+  return client.db("Shapion-Quiz-Platform").collection("IdeaShares");
 };
 const getThirdLayerIdeaSharesExerciseCollection = () => {
   return client
-    .db("Learning-Quiz-Platfrom")
+    .db("Shapion-Quiz-Platform")
     .collection("createExerciseDevelopSkills");
 };
 
 // Four layer
 // Good Song
 const getFourthLayerGoodSongFieldsCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("GoodSongField");
+  return client.db("Shapion-Quiz-Platform").collection("GoodSongField");
 };
 const getFourthLayerGoodSongCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("GoodSong");
+  return client.db("Shapion-Quiz-Platform").collection("GoodSong");
 };
 const getFourthLayerGoodSongExerciseCollection = () => {
   return client
-    .db("Learning-Quiz-Platfrom")
+    .db("Shapion-Quiz-Platform")
     .collection("createExerciseGoodSong");
+};
+// Good Movie
+const getFourthLayerGoodMovieFieldsCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("GoodMovieField");
+};
+const getFourthLayerGoodMovieCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("GoodMovie");
+};
+const getFourthLayerGoodMovieExerciseCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("createExerciseGoodMovie");
 };
 
 // Five layer
 // ✅ Old Generation (Five Layer)
 const getFiveLayerOldGenerationFieldsCollection = () =>
-  client.db("Learning-Quiz-Platfrom").collection("OldGenerationField");
+  client.db("Shapion-Quiz-Platform").collection("OldGenerationField");
 
 const getFiveLayerOldGenerationCollection = () =>
-  client.db("Learning-Quiz-Platfrom").collection("OldGeneration");
+  client.db("Shapion-Quiz-Platform").collection("OldGeneration");
 
 const getFiveLayerOldGenerationExerciseCollection = () =>
-  client.db("Learning-Quiz-Platfrom").collection("OldGenerationExercise");
+  client.db("Shapion-Quiz-Platform").collection("OldGenerationExercise");
 
 // ✅ Story Writing (Five Layer)
 const getFiveLayerStoryWritingFieldsCollection = () =>
-  client.db("Learning-Quiz-Platfrom").collection("StoryWritingField");
+  client.db("Shapion-Quiz-Platform").collection("StoryWritingField");
 
 const getFiveLayerStoryWritingCollection = () =>
-  client.db("Learning-Quiz-Platfrom").collection("StoryWriting");
+  client.db("Shapion-Quiz-Platform").collection("StoryWriting");
 
 const getFiveLayerStoryWritingExerciseCollection = () =>
-  client.db("Learning-Quiz-Platfrom").collection("StoryWritingExercise");
+  client.db("Shapion-Quiz-Platform").collection("StoryWritingExercise");
 
 // ✅ Letter Writing (Five Layer)
 const getFiveLayerLetterWritingFieldsCollection = () =>
-  client.db("Learning-Quiz-Platfrom").collection("LetterWritingField");
+  client.db("Shapion-Quiz-Platform").collection("LetterWritingField");
 
 const getFiveLayerLetterWritingCollection = () =>
-  client.db("Learning-Quiz-Platfrom").collection("LetterWriting");
+  client.db("Shapion-Quiz-Platform").collection("LetterWriting");
 
 const getFiveLayerLetterWritingExerciseCollection = () =>
-  client.db("Learning-Quiz-Platfrom").collection("LetterWritingExercise");
+  client.db("Shapion-Quiz-Platform").collection("LetterWritingExercise");
 // ✅ MCq Writing (Five Layer)
 const getFiveLayerMcqFieldsCollection = () =>
-  client.db("Learning-Quiz-Platfrom").collection("McqField");
+  client.db("Shapion-Quiz-Platform").collection("McqField");
 
 const getFiveLayerMcqCollection = () =>
-  client.db("Learning-Quiz-Platfrom").collection("Mcq");
+  client.db("Shapion-Quiz-Platform").collection("Mcq");
 
 const getLayerManagementFieldsCollection = () =>
-  client.db("Learning-Quiz-Platfrom").collection("LevelManagementField");
+  client.db("Shapion-Quiz-Platform").collection("LevelManagementField");
 // pdf Upload admin panel
 const getAdminPdfUploadCollection = () =>
-  client.db("Learning-Quiz-Platfrom").collection("PdfUploads");
+  client.db("Shapion-Quiz-Platform").collection("PdfUploads");
 const getUserPdfUploadCollection = () =>
-  client.db("Learning-Quiz-Platfrom").collection("UserPdfUploads");
+  client.db("Shapion-Quiz-Platform").collection("UserPdfUploads");
 
 const getAddPaymentMethodCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("AddPaymentMethod");
+  return client.db("Shapion-Quiz-Platform").collection("AddPaymentMethod");
 };
 const getUserPaymentCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("UserPayment");
+  return client.db("Shapion-Quiz-Platform").collection("UserPayment");
 };
 const getPromotionCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("Promotions");
+  return client.db("Shapion-Quiz-Platform").collection("Promotions");
 };
 const getImageAndTextCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("ImageAndText");
+  return client.db("Shapion-Quiz-Platform").collection("ImageAndText");
 };
 const getAuthorTextCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("AuthorInfo");
+  return client.db("Shapion-Quiz-Platform").collection("AuthorInfo");
 };
 const getSocialLinksCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("SocialLinks");
+  return client.db("Shapion-Quiz-Platform").collection("SocialLinks");
 };
 const getBannersCollection = () => {
-  return client.db("Learning-Quiz-Platfrom").collection("banner");
+  return client.db("Shapion-Quiz-Platform").collection("banner");
 };
 module.exports = {
   connectDB,
@@ -338,6 +351,10 @@ module.exports = {
   getFourthLayerGoodSongFieldsCollection,
   getFourthLayerGoodSongCollection,
   getFourthLayerGoodSongExerciseCollection,
+
+  getFourthLayerGoodMovieFieldsCollection,
+  getFourthLayerGoodMovieCollection,
+  getFourthLayerGoodMovieExerciseCollection,
 
   getFirstLayerTantusterFieldsCollection,
   getFirstLayerTantusterCollection,
