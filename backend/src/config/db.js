@@ -3,8 +3,12 @@ require("dotenv").config();
 
 // const uri = `mongodb+srv://Network-Online-Service:3jMat0WHg0uF8lR7@Learning-Quiz-Platfrom.bfjpnvo.mongodb.net/Shapion-Quiz-Platform-Paid?retryWrites=true&w=majority`;
 
-const uri =
-  "mongodb+srv://Shapion:1WOvPQzOr1fdRSng@shapion-quiz-platform.wmwc3it.mongodb.net/?appName=Shapion-Quiz-Platform";
+
+
+// const uri = `mongodb+srv://Network-Online-Service:3jMat0WHg0uF8lR7@Learning-Quiz-Platfrom.bfjpnvo.mongodb.net/Shapion-Quiz-Platform-Paid?retryWrites=true&w=majority`;
+const uri = "mongodb+srv://Shapion:1WOvPQzOr1fdRSng@shapion-quiz-platform.wmwc3it.mongodb.net/?appName=Shapion-Quiz-Platform";
+// const uri =
+//   "mongodb+srv://Shapion:1WOvPQzOr1fdRSng@shapion-quiz-platform.wmwc3it.mongodb.net/?appName=Shapion-Quiz-Platform";
 
 const client = new MongoClient(uri, {
   serverApi: {
