@@ -11,7 +11,7 @@ const AdminPromotionHistory = () => {
   const fetchPromotions = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:5000/api/promotions");
+      const response = await axios.get("https://learning-quiz-platfrom-paid-project-ten.vercel.app/api/promotions");
       setPromotions(response.data);
     } catch (error) {
       console.error(error);
@@ -39,7 +39,7 @@ const AdminPromotionHistory = () => {
     if (result.isConfirmed) {
       setDeletingId(id);
       try {
-        await axios.delete(`http://localhost:5000/api/promotions/${id}`);
+        await axios.delete(`https://learning-quiz-platfrom-paid-project-ten.vercel.app/api/promotions/${id}`);
         setPromotions(promotions.filter((promo) => promo._id !== id));
         Swal.fire("Deleted!", "Promotion has been deleted.", "success");
       } catch (error) {

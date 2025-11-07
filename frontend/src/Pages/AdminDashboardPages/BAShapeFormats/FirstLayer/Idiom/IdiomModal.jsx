@@ -33,7 +33,7 @@ const IdiomModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `http://localhost:5000/first-layer/IdiomField/${vocabId}`,
+        `https://learning-quiz-platfrom-paid-project-ten.vercel.app/first-layer/IdiomField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

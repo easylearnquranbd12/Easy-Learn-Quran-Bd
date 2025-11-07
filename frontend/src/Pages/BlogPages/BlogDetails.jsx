@@ -26,7 +26,7 @@ const BlogDetails = () => {
   };
   const fetchBlog = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/blog/blog/${id}`);
+      const res = await axios.get(`https://learning-quiz-platfrom-paid-project-ten.vercel.app/blog/blog/${id}`);
       setBlog(res.data);
       setLoading(false);
     } catch (err) {

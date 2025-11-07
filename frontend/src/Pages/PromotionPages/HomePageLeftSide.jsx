@@ -8,7 +8,7 @@
 //   useEffect(() => {
 //     const fetchPromotions = async () => {
 //       try {
-//         const { data } = await axios.get("http://localhost:5000/api/promotions");
+//         const { data } = await axios.get("https://learning-quiz-platfrom-paid-project-ten.vercel.app/api/promotions");
 //         // শুধু left side এর জন্য filter
 //         setPromotions(data.filter((p) => p.position === "middle"));
 //       } catch (error) {
@@ -60,7 +60,7 @@ const HomePageLeftSide = () => {
   useEffect(() => {
     const fetchPromotions = async () => {
       try {
-        const { data } = await axios.get("http://localhost:5000/api/promotions");
+        const { data } = await axios.get("https://learning-quiz-platfrom-paid-project-ten.vercel.app/api/promotions");
         // শুধু left side এর জন্য filter
         setPromotions(data.filter((p) => p.position === "middle"));
       } catch (error) {

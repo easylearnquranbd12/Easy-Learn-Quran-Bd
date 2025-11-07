@@ -44,7 +44,7 @@ const PaymentMethod = () => {
   } = useQuery({
     queryKey: ["paymentMethods"],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:5000/payment");
+      const res = await axios.get("https://learning-quiz-platfrom-paid-project-ten.vercel.app/payment");
       const methods = {};
       res.data.forEach((item) => {
         if (
@@ -408,7 +408,7 @@ export default PaymentMethod;
 //   } = useQuery({
 //     queryKey: ["paymentMethods"],
 //     queryFn: async () => {
-//       const res = await axios.get("http://localhost:5000/payment");
+//       const res = await axios.get("https://learning-quiz-platfrom-paid-project-ten.vercel.app/payment");
 //       const methods = {};
 //       res.data.forEach((item) => {
 //         if (

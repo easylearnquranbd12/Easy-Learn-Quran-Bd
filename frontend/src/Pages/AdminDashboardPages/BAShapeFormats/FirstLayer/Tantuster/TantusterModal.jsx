@@ -36,7 +36,7 @@ const TantusterModal = ({
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `http://localhost:5000/first-layer/tantusterField/${vocabId}`,
+        `https://learning-quiz-platfrom-paid-project-ten.vercel.app/first-layer/tantusterField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

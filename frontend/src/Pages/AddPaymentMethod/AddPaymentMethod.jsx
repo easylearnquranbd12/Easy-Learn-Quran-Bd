@@ -11,7 +11,7 @@
 // };
 
 // const fetchPaymentMethods = async () => {
-//   const res = await axios.get("http://localhost:5000/payment");
+//   const res = await axios.get("https://learning-quiz-platfrom-paid-project-ten.vercel.app/payment");
 //   return res.data;
 // };
 
@@ -63,7 +63,7 @@
 
 //     try {
 //       setLoading(true);
-//       await axios.post("http://localhost:5000/payment", {
+//       await axios.post("https://learning-quiz-platfrom-paid-project-ten.vercel.app/payment", {
 //         ...data,
 //         methodCategory: category,
 //       });
@@ -103,7 +103,7 @@
 //     if (!result.isConfirmed) return;
 
 //     try {
-//       await axios.delete(`http://localhost:5000/payment/${id}`);
+//       await axios.delete(`https://learning-quiz-platfrom-paid-project-ten.vercel.app/payment/${id}`);
 //       queryClient.invalidateQueries(["paymentMethods"]);
 //       Swal.fire({
 //         icon: "success",
@@ -321,7 +321,7 @@ const paymentOptions = {
 };
 
 const fetchPaymentMethods = async () => {
-  const res = await axios.get("http://localhost:5000/payment");
+  const res = await axios.get("https://learning-quiz-platfrom-paid-project-ten.vercel.app/payment");
   console.log(res.data)
   return res.data;
 };
@@ -374,7 +374,7 @@ const AddPaymentMethod = () => {
 
     try {
       setLoading(true);
-      await axios.post("http://localhost:5000/payment", {
+      await axios.post("https://learning-quiz-platfrom-paid-project-ten.vercel.app/payment", {
         ...data,
         methodCategory: category,
       });
@@ -414,7 +414,7 @@ const AddPaymentMethod = () => {
     if (!result.isConfirmed) return;
 
     try {
-      await axios.delete(`http://localhost:5000/payment/${id}`);
+      await axios.delete(`https://learning-quiz-platfrom-paid-project-ten.vercel.app/payment/${id}`);
       queryClient.invalidateQueries(["paymentMethods"]);
       Swal.fire({
         icon: "success",

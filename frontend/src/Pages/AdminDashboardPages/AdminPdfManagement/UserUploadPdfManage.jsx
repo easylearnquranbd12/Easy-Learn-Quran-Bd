@@ -14,7 +14,7 @@ const UserUploadPdfManage = () => {
   const fetchPdfs = async () => {
     setLoadingHistory(true);
     try {
-      const res = await fetch("http://localhost:5000/pdf/user");
+      const res = await fetch("https://learning-quiz-platfrom-paid-project-ten.vercel.app/pdf/user");
       const data = await res.json();
       if (res.ok) setPdfs(data);
     } catch (err) {
@@ -53,7 +53,7 @@ const UserUploadPdfManage = () => {
       const formData = new FormData();
       formData.append("pdf", file);
 
-      const res = await fetch("http://localhost:5000/pdf/user/upload", {
+      const res = await fetch("https://learning-quiz-platfrom-paid-project-ten.vercel.app/pdf/user/upload", {
         method: "POST",
         body: formData,
       });
@@ -86,7 +86,7 @@ const UserUploadPdfManage = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const res = await fetch(`http://localhost:5000/pdf/user/${id}`, {
+          const res = await fetch(`https://learning-quiz-platfrom-paid-project-ten.vercel.app/pdf/user/${id}`, {
             method: "DELETE",
           });
           const data = await res.json();
@@ -106,7 +106,7 @@ const UserUploadPdfManage = () => {
   // Update status (accept/reject) - admin action
   const handleStatusUpdate = async (id, newStatus) => {
     try {
-      const res = await fetch(`http://localhost:5000/pdf/user/status/${id}`, {
+      const res = await fetch(`https://learning-quiz-platfrom-paid-project-ten.vercel.app/pdf/user/status/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus }),
@@ -126,7 +126,7 @@ const UserUploadPdfManage = () => {
   // Download PDF
   const handleDownload = async (pdf) => {
     try {
-      const res = await fetch(`http://localhost:5000/pdf/user/download/${pdf._id}`);
+      const res = await fetch(`https://learning-quiz-platfrom-paid-project-ten.vercel.app/pdf/user/download/${pdf._id}`);
       if (!res.ok) throw new Error("Failed to download PDF");
 
       const blob = await res.blob();

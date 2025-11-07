@@ -36,7 +36,7 @@ const SentenceModal = ({
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `http://localhost:5000/second-layer/sentenceField/${vocabId}`,
+        `https://learning-quiz-platfrom-paid-project-ten.vercel.app/second-layer/sentenceField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

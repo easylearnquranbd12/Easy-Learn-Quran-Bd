@@ -32,7 +32,7 @@ const BeforeProfessionalModal = ({ isOpen, onClose, fieldName, currentValue, voc
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `http://localhost:5000/third-layer/beforeProfessionalField/${vocabId}`,
+        `https://learning-quiz-platfrom-paid-project-ten.vercel.app/third-layer/beforeProfessionalField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

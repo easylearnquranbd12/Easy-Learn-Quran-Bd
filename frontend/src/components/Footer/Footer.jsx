@@ -13,7 +13,7 @@ const Footer = () => {
     const fetchSocialLinks = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:5000/api/admin/social-links"
+          "https://learning-quiz-platfrom-paid-project-ten.vercel.app/api/admin/social-links"
         );
         setSocialLinks(data);
       } catch (err) {

@@ -10,7 +10,7 @@ const PDFDownload = () => {
   const fetchPdfs = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/pdf");
+      const res = await fetch("https://learning-quiz-platfrom-paid-project-ten.vercel.app/pdf");
       const data = await res.json();
       if (res.ok) setPdfs(data);
     } catch (err) {
@@ -27,7 +27,7 @@ const PDFDownload = () => {
   // Download PDF
   const handleDownload = async (pdf) => {
     try {
-      const res = await fetch(`http://localhost:5000/pdf/download/${pdf._id}`);
+      const res = await fetch(`https://learning-quiz-platfrom-paid-project-ten.vercel.app/pdf/download/${pdf._id}`);
       if (!res.ok) throw new Error("Failed to download PDF");
 
       const blob = await res.blob();

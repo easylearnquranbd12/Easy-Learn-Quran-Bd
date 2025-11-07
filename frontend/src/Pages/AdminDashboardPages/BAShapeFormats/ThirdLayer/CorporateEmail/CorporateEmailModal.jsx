@@ -32,7 +32,7 @@ const CorporateEmailModal = ({ isOpen, onClose, fieldName, currentValue, vocabId
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `http://localhost:5000/third-layer/corporateEmailField/${vocabId}`,
+        `https://learning-quiz-platfrom-paid-project-ten.vercel.app/third-layer/corporateEmailField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
