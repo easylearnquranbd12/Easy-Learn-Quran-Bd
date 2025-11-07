@@ -52,7 +52,7 @@ router.delete("/goodLifeStyle/:id", deleteGoodLifeStyle);
 router.get("/goodLifeStyle", getAllGoodLifeStyle);
 router.post("/goodLifeStyle", createGoodLifeStyle);
 
-/* --------------------------------------------------------------------------
+/* ---------------------------------------------------------------------oks-----
  ✅ BEFORE PROFESSIONAL ROUTES
 -------------------------------------------------------------------------- */
 router.put("/beforeProfessionalField/:id", updateBeforeProfessionalField);
