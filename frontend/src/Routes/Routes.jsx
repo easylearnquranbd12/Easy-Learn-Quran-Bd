@@ -39,6 +39,8 @@ import PaymentHome from "../Pages/PaymentPages/PaymentHome";
 import PaymentMethod from "../Pages/PaymentPages/PaymentMethod";
 import SuccessPayment from "../Pages/PaymentPages/SuccessPayment";
 import PDFDownload from "../Pages/PDFDownloadPages/PDFDownload";
+import UserDashboard from "../Pages/UserUploadPdf/UserDashboard";
+import UserPaymentHistory from "../Pages/UserUploadPdf/UserPaymentHistory";
 import UserUploadPdf from "../Pages/UserUploadPdf/UserUploadPdf";
 import AdminRoute from "./AdminRoute";
 import LayerRoutes from "./LayerRoutes";
@@ -234,7 +236,7 @@ export const routes = createBrowserRouter([
         element: (
           <PrivateRoute>
             <PaymentRoute>
-            <LayerRoutes />
+              <LayerRoutes />
             </PaymentRoute>
           </PrivateRoute>
         ),
@@ -404,7 +406,7 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
-       {
+      {
         path: "create-elegant",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
@@ -420,7 +422,7 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
-        {
+      {
         path: "create-tantuster",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
@@ -436,7 +438,7 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
-      // Second Layer 
+      // Second Layer
       {
         path: "create-sentence",
         element: (
@@ -445,7 +447,7 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
-       {
+      {
         path: "create-verb",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
@@ -519,9 +521,9 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
-    
-// Fourth Layer
-           
+
+      // Fourth Layer
+
       {
         path: "create-traveling",
         element: (
@@ -562,7 +564,7 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
-     
+
       // Five Layer
       {
         path: "create-old-generation",
@@ -910,7 +912,7 @@ export const routes = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <h1>User Dashboard</h1>,
+        element: <UserDashboard />,
       },
       {
         path: "my-profile",
@@ -925,6 +927,14 @@ export const routes = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <UserUploadPdf />
+          </Suspense>
+        ),
+      },
+      {
+        path: "payment-history",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <UserPaymentHistory />
           </Suspense>
         ),
       },

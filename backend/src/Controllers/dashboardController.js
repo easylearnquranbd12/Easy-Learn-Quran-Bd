@@ -8,6 +8,7 @@ const {
   getFirstLayerVocabularyCollection,
   getSecondLayerSentenceCollection,
   getFiveLayerMcqCollection,
+  getUserPaymentCollection,
 } = require("../config/db");
 
 // Summary: users, admin pdfs, user pdfs
@@ -133,11 +134,51 @@ const getTopCollections = async (req, res) => {
   }
 };
 
+// User Dashboard Summary
+const getUserDashboardSummary = async (req, res) => {
+  try {
+    const { email } = req.params;
+    if (!email) return res.status(400).json({ message: "Email required" });
 
+    const pdfCollection = getUserPdfUploadCollection();
+    const paymentCollection = getUserPaymentCollection();
+
+    // PDFs count by status
+    const pdfStats = await pdfCollection
+      .aggregate([
+        { $match: { email } }, // PDFs এর email
+        { $group: { _id: "$status", count: { $sum: 1 } } },
+      ])
+      .toArray();
+
+    // Payments count by status
+    const paymentStats = await paymentCollection
+      .aggregate([
+        { $match: { userEmail: email } }, // Payments collection এ userEmail
+        { $group: { _id: "$status", count: { $sum: 1 } } },
+      ])
+      .toArray();
+
+    // Total counts
+    const totalPdfs = pdfStats.reduce((sum, i) => sum + i.count, 0);
+    const totalPayments = paymentStats.reduce((sum, i) => sum + i.count, 0);
+
+    res.status(200).json({
+      pdfStats,
+      paymentStats,
+      totalPdfs,
+      totalPayments,
+    });
+  } catch (err) {
+    console.error("Error loading user dashboard summary:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 
 module.exports = {
   getSummary,
   getUserPdfsByStatus,
   getUsersByMonth,
   getTopCollections,
+  getUserDashboardSummary
 };

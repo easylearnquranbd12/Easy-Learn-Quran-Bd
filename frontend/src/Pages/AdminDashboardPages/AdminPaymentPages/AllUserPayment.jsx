@@ -245,14 +245,14 @@ const AllUserPayment = () => {
                   >
                     ✓ Approve
                   </button> */}
-{(p.status === "pending" || p.status === "rejected") && (
-  <button
-    onClick={() => handleStatusUpdate(p._id, "accepted")}
-    className="btn btn-sm bg-green-500 hover:bg-green-600 text-white"
-  >
-    ✓ Approve
-  </button>
-)}
+                  {(p.status === "pending" || p.status === "rejected") && (
+                    <button
+                      onClick={() => handleStatusUpdate(p._id, "accepted")}
+                      className="btn btn-sm bg-green-500 hover:bg-green-600 text-white"
+                    >
+                      ✓ Approve
+                    </button>
+                  )}
 
                   <button
                     onClick={() => handleStatusUpdate(p._id, "rejected")}

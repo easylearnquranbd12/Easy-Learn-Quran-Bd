@@ -344,6 +344,30 @@ const deleteUserPayment = async (req, res) => {
     res.status(500).json({ message: "Failed to delete payment" });
   }
 };
+
+// get single user payment email
+// 📥 Get payments of a specific user
+const getUserPaymentsByEmail = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const email = id;
+    if (!email) {
+      return res.status(400).json({ message: "User email is required" });
+    }
+
+    const collection = getUserPaymentCollection();
+    const payments = await collection
+      .find({ userEmail: email })
+      .sort({ createdAt: -1 })
+      .toArray();
+
+    res.status(200).json(payments);
+  } catch (error) {
+    console.error("Error fetching user payments:", error);
+    res.status(500).json({ message: "Failed to fetch payments" });
+  }
+};
+
 module.exports = {
   addPaymentMethod,
   getAllPaymentMethods,
@@ -353,4 +377,5 @@ module.exports = {
   updatePaymentStatus,
   removeExpiredPayments,
   deleteUserPayment,
+  getUserPaymentsByEmail,
 };

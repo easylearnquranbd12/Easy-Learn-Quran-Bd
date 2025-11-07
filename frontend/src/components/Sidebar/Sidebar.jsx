@@ -644,6 +644,13 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
       description: "Pdf Management",
       color: "text-blue-600",
     },
+    {
+      path: "/user-dashboard/payment-history",
+      icon: MdPayment,
+      label: "Payment History",
+      description: "Payment Management",
+      color: "text-blue-600",
+    },
   ];
 
   const handleMenuClick = (path) => {

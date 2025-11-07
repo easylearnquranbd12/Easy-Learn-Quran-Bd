@@ -1,5 +1,5 @@
 const express = require("express");
-const { addPaymentMethod, getAllPaymentMethods, deletePaymentMethod, addUserPayment, getAllUserPayments, updateUserPaymentStatus, updatePaymentStatus, deleteUserPayment } = require("../Controllers/paymentMethodController");
+const { addPaymentMethod, getAllPaymentMethods, deletePaymentMethod, addUserPayment, getAllUserPayments, updateUserPaymentStatus, updatePaymentStatus, deleteUserPayment, getUserPaymentsByEmail } = require("../Controllers/paymentMethodController");
 
 const router = express.Router();
 
@@ -11,6 +11,7 @@ router.delete("/:id", deletePaymentMethod);
 
 // User submits payment
 router.post("/user", addUserPayment);
+router.get("/user/:id", getUserPaymentsByEmail);
 
 // Admin fetch all payments
 router.get("/admin", getAllUserPayments);
