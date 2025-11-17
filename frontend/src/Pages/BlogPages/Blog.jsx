@@ -16,7 +16,7 @@ const Blog = () => {
     setError("");
     setLoading(true);
     try {
-      const res = await axios.get("https://learning-quiz-platfrom-paid-project-ten.vercel.app/blog/blog", {
+      const res = await axios.get("https://api.betheshape.com/blog/blog", {
         withCredentials: true,
 
       });

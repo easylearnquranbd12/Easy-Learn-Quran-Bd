@@ -35,7 +35,7 @@
 // // Delete helper
 // const deleteFromCloudinary = async (publicId, type) => {
 //   try {
-//     await fetch(`https://learning-quiz-platfrom-paid-project-ten.vercel.app/delete-media/${type}`, {
+//     await fetch(`https://api.betheshape.com/delete-media/${type}`, {
 //       method: "POST",
 //       headers: { "Content-Type": "application/json" },
 //       body: JSON.stringify({ publicId }),
@@ -207,7 +207,7 @@ const uploadToCloudinary = async (file, type) => {
 // Delete helper
 const deleteFromCloudinary = async (publicId, type) => {
   try {
-    await fetch(`https://learning-quiz-platfrom-paid-project-ten.vercel.app/delete-media/${type}`, {
+    await fetch(`https://api.betheshape.com/delete-media/${type}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ publicId }),

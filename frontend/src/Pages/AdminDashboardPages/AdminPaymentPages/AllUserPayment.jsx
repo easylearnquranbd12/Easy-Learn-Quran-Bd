@@ -18,7 +18,7 @@ import useAuth from "../../../hooks/useAuth";
 import useRole from "../../../hooks/useRole";
 
 const fetchPayments = async () => {
-  const res = await axios.get("https://learning-quiz-platfrom-paid-project-ten.vercel.app/payment/admin");
+  const res = await axios.get("https://api.betheshape.com/payment/admin");
   console.log(res.data);
   return res.data;
 };
@@ -58,7 +58,7 @@ const AllUserPayment = () => {
     if (!confirm.isConfirmed) return;
 
     try {
-      await axios.patch(`https://learning-quiz-platfrom-paid-project-ten.vercel.app/payment/status/${id}`, {
+      await axios.patch(`https://api.betheshape.com/payment/status/${id}`, {
         status,
       });
       Swal.fire(
@@ -87,7 +87,7 @@ const AllUserPayment = () => {
     if (!confirm.isConfirmed) return;
 
     try {
-      await axios.delete(`https://learning-quiz-platfrom-paid-project-ten.vercel.app/payment/admin/${id}`);
+      await axios.delete(`https://api.betheshape.com/payment/admin/${id}`);
       Swal.fire("Deleted!", "Payment has been deleted.", "success");
       queryClient.invalidateQueries(["allPayments"]);
     } catch {

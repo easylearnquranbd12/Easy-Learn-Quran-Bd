@@ -32,7 +32,7 @@ const AdminNewTantusterModal = ({ isOpen, onClose, fieldName, currentValue, voca
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `https://learning-quiz-platfrom-paid-project-ten.vercel.app/first-layer/newtantusterField/${vocabId}`,
+        `https://api.betheshape.com/first-layer/newtantusterField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

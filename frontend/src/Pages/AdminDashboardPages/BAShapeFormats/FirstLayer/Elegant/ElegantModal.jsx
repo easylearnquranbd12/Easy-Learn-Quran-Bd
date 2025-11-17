@@ -35,7 +35,7 @@ const ElegantModal = ({
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `https://learning-quiz-platfrom-paid-project-ten.vercel.app/first-layer/elegantField/${vocabId}`,
+        `https://api.betheshape.com/first-layer/elegantField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

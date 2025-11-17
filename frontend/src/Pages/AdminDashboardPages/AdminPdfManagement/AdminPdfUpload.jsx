@@ -14,7 +14,7 @@ const AdminPdfUpload = () => {
   const fetchPdfs = async () => {
     setLoadingHistory(true);
     try {
-      const res = await fetch("https://learning-quiz-platfrom-paid-project-ten.vercel.app/pdf");
+      const res = await fetch("https://api.betheshape.com/pdf");
       const data = await res.json();
       if (res.ok) setPdfs(data);
     } catch (err) {
@@ -53,7 +53,7 @@ const AdminPdfUpload = () => {
       const formData = new FormData();
       formData.append("pdf", file);
 
-      const res = await fetch("https://learning-quiz-platfrom-paid-project-ten.vercel.app/pdf/upload", {
+      const res = await fetch("https://api.betheshape.com/pdf/upload", {
         method: "POST",
         body: formData,
       });
@@ -86,7 +86,7 @@ const AdminPdfUpload = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const res = await fetch(`https://learning-quiz-platfrom-paid-project-ten.vercel.app/pdf/${id}`, {
+          const res = await fetch(`https://api.betheshape.com/pdf/${id}`, {
             method: "DELETE",
           });
           const data = await res.json();

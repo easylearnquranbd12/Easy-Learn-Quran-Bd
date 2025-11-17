@@ -35,7 +35,7 @@ const AdminVocabularyModal = ({
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `https://learning-quiz-platfrom-paid-project-ten.vercel.app/first-layer/VocabularyField/${vocabId}`,
+        `https://api.betheshape.com/first-layer/VocabularyField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

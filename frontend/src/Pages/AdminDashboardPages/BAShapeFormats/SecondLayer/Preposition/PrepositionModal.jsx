@@ -32,7 +32,7 @@ const PrepositionModal = ({ isOpen, onClose, fieldName, currentValue, vocabId })
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `https://learning-quiz-platfrom-paid-project-ten.vercel.app/second-layer/prepositionField/${vocabId}`,
+        `https://api.betheshape.com/second-layer/prepositionField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

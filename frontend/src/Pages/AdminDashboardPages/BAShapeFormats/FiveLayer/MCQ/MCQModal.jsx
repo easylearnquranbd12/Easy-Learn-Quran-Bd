@@ -36,7 +36,7 @@ const MCQModal = ({
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `https://learning-quiz-platfrom-paid-project-ten.vercel.app/five-layer/mcqField/${vocabId}`,
+        `https://api.betheshape.com/five-layer/mcqField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

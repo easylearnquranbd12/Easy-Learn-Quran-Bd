@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const axiosSecure = axios.create({
-  baseURL: 'https://learning-quiz-platfrom-paid-project-ten.vercel.app',
+  baseURL: 'https://api.betheshape.com',
   withCredentials: true,
 });
 

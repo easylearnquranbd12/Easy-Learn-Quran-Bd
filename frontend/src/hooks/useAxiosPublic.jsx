@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const axiosPublic = axios.create({
-    baseURL: 'https://learning-quiz-platfrom-paid-project-ten.vercel.app',
-    // baseURL: 'https://learning-quiz-platfrom-paid-project-ten.vercel.app',
+    baseURL: 'https://api.betheshape.com',
+    // baseURL: 'https://api.betheshape.com',
     withCredentials: true, // ✅ REQUIRED for cookies to be sent
 });
 

@@ -36,7 +36,7 @@ const OldGenarationModal = ({
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `https://learning-quiz-platfrom-paid-project-ten.vercel.app/five-layer/oldGenerationField/${vocabId}`,
+        `https://api.betheshape.com/five-layer/oldGenerationField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

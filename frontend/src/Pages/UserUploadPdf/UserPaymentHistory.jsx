@@ -5,7 +5,7 @@ import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
 
 const fetchUserPayments = async (email) => {
-  const res = await axios.get(`https://learning-quiz-platfrom-paid-project-ten.vercel.app/payment/user/${email}`);
+  const res = await axios.get(`https://api.betheshape.com/payment/user/${email}`);
   return res.data;
 };
 

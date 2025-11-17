@@ -36,7 +36,7 @@ const StoryWrittingModal = ({
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `https://learning-quiz-platfrom-paid-project-ten.vercel.app/five-layer/storyWritingField/${vocabId}`,
+        `https://api.betheshape.com/five-layer/storyWritingField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

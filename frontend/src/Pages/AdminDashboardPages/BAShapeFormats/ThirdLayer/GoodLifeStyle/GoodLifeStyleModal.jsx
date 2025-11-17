@@ -32,7 +32,7 @@ const GoodLifeStyleModal = ({ isOpen, onClose, fieldName, currentValue, vocabId 
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `https://learning-quiz-platfrom-paid-project-ten.vercel.app/third-layer/goodLifeStyleField/${vocabId}`,
+        `https://api.betheshape.com/third-layer/goodLifeStyleField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

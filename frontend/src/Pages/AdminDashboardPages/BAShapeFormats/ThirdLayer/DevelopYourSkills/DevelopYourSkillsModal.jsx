@@ -32,7 +32,7 @@ const DevelopYourSkillsModal = ({ isOpen, onClose, fieldName, currentValue, voca
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `https://learning-quiz-platfrom-paid-project-ten.vercel.app/third-layer/developSkillsField/${vocabId}`,
+        `https://api.betheshape.com/third-layer/developSkillsField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

@@ -17,7 +17,7 @@ import useAuth from "../../hooks/useAuth";
 const COLORS = ["#FFBB28", "#0088FE", "#00C49F", "#FF8042", "#A28BFF"];
 
 const fetchUserDashboard = async (email) => {
-  const res = await axios.get(`https://learning-quiz-platfrom-paid-project-ten.vercel.app/api/dashboard/summary/${email}`);
+  const res = await axios.get(`https://api.betheshape.com/api/dashboard/summary/${email}`);
   return res.data;
 };
 

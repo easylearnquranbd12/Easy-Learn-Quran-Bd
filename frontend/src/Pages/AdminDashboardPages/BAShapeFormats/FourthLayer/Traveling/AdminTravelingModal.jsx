@@ -33,7 +33,7 @@ const AdminTravelingModal = ({ isOpen, onClose, fieldName, currentValue, vocabId
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `https://learning-quiz-platfrom-paid-project-ten.vercel.app/third-layer/ideaSharesField/${vocabId}`,
+        `https://api.betheshape.com/third-layer/ideaSharesField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

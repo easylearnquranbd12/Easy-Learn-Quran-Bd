@@ -36,7 +36,7 @@ const LetterWrittingModal = ({
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `https://learning-quiz-platfrom-paid-project-ten.vercel.app/five-layer/letterWritingField/${vocabId}`,
+        `https://api.betheshape.com/five-layer/letterWritingField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
