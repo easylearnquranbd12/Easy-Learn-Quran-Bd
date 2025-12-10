@@ -16,7 +16,7 @@ const useUserData = () => {
             setLoading(true)
             setError(null)
 
-            const response = await fetch(`https://api.betheshape.com/api/user/dashboard/${user.email}`, {
+            const response = await fetch(`http://localhost:5000/api/user/dashboard/${user.email}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
                     "Content-Type": "application/json",
@@ -43,7 +43,7 @@ const useUserData = () => {
 
     const updateCourseProgress = async (courseId, progress) => {
         try {
-            const response = await fetch(`https://api.betheshape.com/api/user/course-progress`, {
+            const response = await fetch(`http://localhost:5000/api/user/course-progress`, {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
@@ -67,7 +67,7 @@ const useUserData = () => {
 
     const toggleFavorite = async (courseId) => {
         try {
-            const response = await fetch(`https://api.betheshape.com/api/user/favorites/toggle`, {
+            const response = await fetch(`http://localhost:5000/api/user/favorites/toggle`, {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token") || ""}`,

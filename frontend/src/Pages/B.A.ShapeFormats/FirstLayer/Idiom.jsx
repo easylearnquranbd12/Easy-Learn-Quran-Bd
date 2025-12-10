@@ -10,7 +10,7 @@ const Idiom = () => {
   const axiosPublic = useAxiosPublic();
   const [showAll, setShowAll] = useState(false);
   const { register, handleSubmit, reset, setValue } = useForm();
-   const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   // Fetch all idiom Fields
   const {
     data: idiomFields = [],
@@ -27,7 +27,7 @@ const Idiom = () => {
 
   // Fetch idiom
   const {
-    data: idiom ,
+    data: idiom,
     isLoading: idiomLoading,
     isError: idiomError,
     refetch: refetchidiom,
@@ -36,15 +36,17 @@ const Idiom = () => {
     queryKey: ["idiom"],
     queryFn: async () => {
       const res = await axiosPublic.get("/first-layer/idiom");
-      return res.data.data ;
+      return res.data.data;
     },
   });
 
-  
   // Create idiom
   const { mutateAsync: createidiomExercise } = useMutation({
     mutationFn: async (newData) => {
-      const res = await axiosPublic.post("/first-layer/createExerciseIdiom", newData);
+      const res = await axiosPublic.post(
+        "/first-layer/createExerciseIdiom",
+        newData
+      );
       return res.data;
     },
     onSuccess: () => {
@@ -53,78 +55,67 @@ const Idiom = () => {
       queryClient.invalidateQueries({ queryKey: ["idiom"] });
     },
     onError: (error) => {
-      Swal.fire(
-        "❌ Error",
-        error.message || "Failed to create idiom",
-        "error"
-      );
+      Swal.fire("❌ Error", error.message || "Failed to create idiom", "error");
     },
   });
- 
+
   // Toggle show all rows
- const visibleidiom = showAll ? (idiom || []) : (idiom || []).slice(0, 10);
+  const visibleidiom = showAll ? idiom || [] : (idiom || []).slice(0, 10);
 
-const onSubmit = async (data) => {
-  // প্রতিটি row এর ফিল্ড লিস্ট
-  const row1Fields = [
-    data.mainWord,
-    data.banglaPronunciation,
-    data.banglaMeaning,
-    data.synonyms,
-    data.antonyms,
-    data.exampleEnglish,
-    data.exampleBangla,
-  ];
+  const onSubmit = async (data) => {
+    // প্রতিটি row এর ফিল্ড লিস্ট
+    const row1Fields = [
+      data.mainWord,
+      data.banglaPronunciation,
+      data.banglaMeaning,
+      data.synonyms,
+      data.antonyms,
+      data.exampleEnglish,
+      data.exampleBangla,
+    ];
 
-  const row2Fields = [
-    data.mainWord2,
-    data.banglaPronunciation2,
-    data.banglaMeaning2,
-    data.synonyms2,
-    data.antonyms2,
-    data.exampleEnglish2,
-    data.exampleBangla2,
-  ];
+    const row2Fields = [
+      data.mainWord2,
+      data.banglaPronunciation2,
+      data.banglaMeaning2,
+      data.synonyms2,
+      data.antonyms2,
+      data.exampleEnglish2,
+      data.exampleBangla2,
+    ];
 
-  const row3Fields = [
-    data.mainWord3,
-    data.banglaPronunciation3,
-    data.banglaMeaning3,
-    data.synonyms3,
-    data.antonyms3,
-    data.exampleEnglish3,
-    data.exampleBangla3,
-  ];
+    const row3Fields = [
+      data.mainWord3,
+      data.banglaPronunciation3,
+      data.banglaMeaning3,
+      data.synonyms3,
+      data.antonyms3,
+      data.exampleEnglish3,
+      data.exampleBangla3,
+    ];
 
+    const row1Completed = row1Fields.filter((f) => f && f.trim() !== "").length;
 
-  const row1Completed = row1Fields.filter(
-    (f) => f && f.trim() !== ""
-  ).length;
+    const row2Completed = row2Fields.filter((f) => f && f.trim() !== "").length;
 
-  const row2Completed = row2Fields.filter(
-    (f) => f && f.trim() !== ""
-  ).length;
+    const row3Completed = row3Fields.filter((f) => f && f.trim() !== "").length;
 
-  const row3Completed = row3Fields.filter(
-    (f) => f && f.trim() !== ""
-  ).length;
+    if (row1Completed < 3 && row2Completed < 3 && row3Completed < 3) {
+      Swal.fire(
+        "At least one row must have a minimum of 3 completed fields!",
+        "",
+        "warning"
+      );
+      return;
+    }
 
-  
-  if (
-    row1Completed < 3 &&
-    row2Completed < 3 &&
-    row3Completed < 3
-  ) {
-    Swal.fire("At least one row must have a minimum of 3 completed fields!", "", "warning");
-    return;
-  }
+    createidiomExercise(data);
 
-  createidiomExercise(data)
-
-  reset();
-};
-
-
+    reset();
+  };
+  const showSynonymsColumn =
+    idiomFields?.[0]?.synonyms === "no" ||
+    idiomFields?.[0]?.synonyms === "none";
 
   if (isLoading || idiomLoading) return <CustomLoading />;
 
@@ -133,9 +124,7 @@ const onSubmit = async (data) => {
       <div className="min-h-[70vh] flex items-center justify-center p-4">
         <div className="bg-green-200 border border-red-700/50 p-6 rounded-xl text-center max-w-md w-full">
           <AlertCircle size={40} className="text-red-600 mx-auto mb-4" />
-          <h2 className="text-xl text-red-500 mb-2">
-            Unable to Load idiom
-          </h2>
+          <h2 className="text-xl text-red-500 mb-2">Unable to Load idiom</h2>
           <p className="text-black mb-6">
             {error?.message || "Error occurred"}
           </p>
@@ -173,13 +162,32 @@ const onSubmit = async (data) => {
               <thead key={item._id} className="bg-teal-600 text-white text-sm">
                 <tr>
                   <th className="min-w-10">Serial</th>
-                  <th className="min-w-96">{item?.mainWord}</th>
-                  <th className="min-w-96">{item?.banglaPronunciation}</th>
-                  <th className="min-w-96">{item?.banglaMeaning}</th>
-                  <th className="min-w-96">{item?.synonyms}</th>
-                  <th className="min-w-96">{item?.antonyms}</th>
-                  <th className="min-w-96">{item?.exampleEnglish}</th>
-                  <th className="min-w-96">{item?.exampleBangla}</th>
+                  {item && item.mainWord && (
+                    <th className="min-w-96">{item?.mainWord}</th>
+                  )}
+                  {item && item.banglaPronunciation && (
+                    <th className="min-w-96">{item?.banglaPronunciation}</th>
+                  )}
+                  {item && item.banglaMeaning && (
+                    <th className="min-w-96">{item?.banglaMeaning}</th>
+                  )}
+                  {item &&
+                    item.synonyms !== "no" &&
+                    item.synonyms !== "none" && (
+                      <th className="min-w-96">{item?.synonyms}</th>
+                    )}
+                  {item &&
+                    item.antonyms !== "no" &&
+                    item.antonyms !== "none" && (
+                      <th className="min-w-96">{item?.antonyms}</th>
+                    )}
+
+                  {item && item.exampleEnglish && (
+                    <th className="min-w-96">{item?.exampleEnglish}</th>
+                  )}
+                  {item && item.exampleBangla && (
+                    <th className="min-w-96">{item?.exampleBangla}</th>
+                  )}
                 </tr>
               </thead>
             ))}
@@ -212,20 +220,27 @@ const onSubmit = async (data) => {
                         defaultValue={row.banglaMeaning}
                       />
                     </td>
-                    <td>
-                      <textarea
-                        readOnly
-                        className="input input-sm w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300"
-                        defaultValue={row.synonyms}
-                      />
-                    </td>
-                    <td>
-                      <textarea
-                        readOnly
-                        className="input input-sm w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300"
-                        defaultValue={row.antonyms}
-                      />
-                    </td>
+                    {idiomFields?.[0]?.synonyms !== "no" &&
+                      idiomFields?.[0]?.synonyms !== "none" && (
+                        <td>
+                          <textarea
+                            readOnly
+                            defaultValue={row.synonyms}
+                            className="input input-sm w-full min-w-96 min-h-20 ..."
+                          />
+                        </td>
+                      )}
+                    {idiomFields?.[0]?.antonyms !== "no" &&
+                      idiomFields?.[0]?.antonyms !== "none" && (
+                        <td>
+                          <textarea
+                            readOnly
+                            defaultValue={row.antonyms}
+                            className="input input-sm w-full min-w-96 min-h-20 ..."
+                          />
+                        </td>
+                      )}
+
                     <td>
                       <textarea
                         readOnly
@@ -285,8 +300,16 @@ const onSubmit = async (data) => {
                               {item?.banglaPronunciation}
                             </th>
                             <th className="min-w-96">{item?.banglaMeaning}</th>
-                            <th className="min-w-96">{item?.synonyms}</th>
-                            <th className="min-w-96">{item?.antonyms}</th>
+                            {item &&
+                              item.synonyms !== "no" &&
+                              item.synonyms !== "none" && (
+                                <th className="min-w-96">{item?.synonyms}</th>
+                              )}
+                            {item &&
+                              item.antonyms !== "no" &&
+                              item.antonyms !== "none" && (
+                                <th className="min-w-96">{item?.antonyms}</th>
+                              )}
                             <th className="min-w-96">{item?.exampleEnglish}</th>
                             <th className="min-w-96">{item?.exampleBangla}</th>
                           </tr>
@@ -315,20 +338,26 @@ const onSubmit = async (data) => {
                                 placeholder={`Enter Your ${item.banglaMeaning}`}
                               />
                             </td>
-                            <td>
-                              <textarea
-                                {...register("synonyms")}
-                                className="input input-base w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
-                                placeholder={`Enter Your ${item.synonyms}`}
-                              />
-                            </td>
-                            <td>
-                              <textarea
-                                {...register("antonyms")}
-                                className="input input-base w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
-                                placeholder={`Enter Your ${item.antonyms}`}
-                              />
-                            </td>
+                            {idiomFields?.[0]?.synonyms !== "no" &&
+                              idiomFields?.[0]?.synonyms !== "none" && (
+                                <td>
+                                  <textarea
+                                    {...register("exampleEnglish")}
+                                    className="input input-base w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
+                                    placeholder={`Enter Your ${item.synonyms}`}
+                                  />
+                                </td>
+                              )}
+                            {idiomFields?.[0]?.antonyms !== "no" &&
+                              idiomFields?.[0]?.antonyms !== "none" && (
+                                <td>
+                                  <textarea
+                                    {...register("exampleEnglish")}
+                                    className="input input-base w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
+                                    placeholder={`Enter Your ${item.antonyms}`}
+                                  />
+                                </td>
+                              )}
                             <td>
                               <textarea
                                 {...register("exampleEnglish")}
@@ -459,10 +488,7 @@ const onSubmit = async (data) => {
                     </div>
 
                     <div className="flex justify-center mt-5">
-                      <button
-                        className="px-6 py-2 bg-teal-600 text-white rounded-lg shadow hover:bg-teal-700 transition"
-                       
-                      >
+                      <button className="px-6 py-2 bg-teal-600 text-white rounded-lg shadow hover:bg-teal-700 transition">
                         Submit Now
                       </button>
                     </div>

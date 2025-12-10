@@ -32,7 +32,7 @@ const TenseModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `https://api.betheshape.com/second-layer/tenseField/${vocabId}`,
+        `http://localhost:5000/second-layer/tenseField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

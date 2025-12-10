@@ -144,6 +144,59 @@ const getIdiomField = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+// ✅ Get Single Idiom by ID
+const getSingleIdiom = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await idiom.findOne({ _id: new ObjectId(id) });
+
+    if (!result) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Idiom not found" });
+    }
+
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const updateIdiom = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    if (!Object.keys(updateData).length) {
+      return res.status(400).json({
+        success: false,
+        message: "No fields provided for update",
+      });
+    }
+
+    const result = await idiom.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updateData }
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Idiom not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Idiom updated successfully",
+      updatedData: updateData,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 // Temporari Excursise data
 // Exercise Controller
 const createExerciseIdiom = async (req, res) => {
@@ -734,11 +787,6 @@ const createExerciseNewTantuster = async (req, res) => {
   }
 };
 
-
-
-
-
-
 module.exports = {
   createVocabulary,
   getAllVocabulary,
@@ -770,4 +818,6 @@ module.exports = {
   updateIdiomField,
   getIdiomField,
   createExerciseIdiom,
+  updateIdiom,
+  getSingleIdiom,
 };

@@ -30,6 +30,8 @@ const {
   updateIdiomField,
   getIdiomField,
   createExerciseIdiom,
+  updateIdiom,
+  getSingleIdiom,
 } = require("../Controllers/firstLayerController");
 
 const router = express.Router();
@@ -38,6 +40,8 @@ const router = express.Router();
 router.get("/idiom", getAllIdiom);
 router.post("/idiom", createIdiom);
 router.delete("/idiom/:id", deleteIdiom);
+router.get("/idiom/:id", getSingleIdiom);
+router.put("/idiom/:id", updateIdiom);
 // Idiom field
 router.put("/idiomField/:id", updateIdiomField);
 router.get("/idiomField", getIdiomField);

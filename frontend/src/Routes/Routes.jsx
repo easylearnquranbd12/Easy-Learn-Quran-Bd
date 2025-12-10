@@ -16,6 +16,7 @@ import AllUserPayment from "../Pages/AdminDashboardPages/AdminPaymentPages/AllUs
 import AdminPdfUpload from "../Pages/AdminDashboardPages/AdminPdfManagement/AdminPdfUpload";
 import UserUploadPdfManage from "../Pages/AdminDashboardPages/AdminPdfManagement/UserUploadPdfManage";
 import AdminIdiom from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Idiom/AdminIdiom";
+import AdminIdiomEdit from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Idiom/AdminIdiomEdit";
 import AdminNewTantuster from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/NewTantuster/AdminNewTantuster";
 import AdminTantuster from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Tantuster/AdminTantuster";
 import AdminLetterWritting from "../Pages/AdminDashboardPages/BAShapeFormats/FiveLayer/LetterWritting/AdminLetterWritting";
@@ -419,6 +420,14 @@ export const routes = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <AdminIdiom />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-idiom/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminIdiomEdit />
           </Suspense>
         ),
       },

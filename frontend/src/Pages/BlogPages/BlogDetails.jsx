@@ -26,7 +26,7 @@ const BlogDetails = () => {
   };
   const fetchBlog = async () => {
     try {
-      const res = await axios.get(`https://api.betheshape.com/blog/blog/${id}`);
+      const res = await axios.get(`http://localhost:5000/blog/blog/${id}`);
       setBlog(res.data);
       setLoading(false);
     } catch (err) {

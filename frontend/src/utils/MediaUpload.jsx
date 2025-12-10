@@ -35,7 +35,7 @@
 // // Delete helper
 // const deleteFromCloudinary = async (publicId, type) => {
 //   try {
-//     await fetch(`https://api.betheshape.com/delete-media/${type}`, {
+//     await fetch(`http://localhost:5000/delete-media/${type}`, {
 //       method: "POST",
 //       headers: { "Content-Type": "application/json" },
 //       body: JSON.stringify({ publicId }),
@@ -207,7 +207,7 @@ const uploadToCloudinary = async (file, type) => {
 // Delete helper
 const deleteFromCloudinary = async (publicId, type) => {
   try {
-    await fetch(`https://api.betheshape.com/delete-media/${type}`, {
+    await fetch(`http://localhost:5000/delete-media/${type}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ publicId }),

@@ -14,7 +14,7 @@
 //   const fetchPdfs = async () => {
 //     setLoadingHistory(true);
 //     try {
-//       const res = await fetch("https://api.betheshape.com/pdf/user");
+//       const res = await fetch("http://localhost:5000/pdf/user");
 //       const data = await res.json();
 //       if (res.ok) setPdfs(data);
 //     } catch (err) {
@@ -53,7 +53,7 @@
 //       const formData = new FormData();
 //       formData.append("pdf", file);
 
-//       const res = await fetch("https://api.betheshape.com/pdf/user/upload", {
+//       const res = await fetch("http://localhost:5000/pdf/user/upload", {
 //         method: "POST",
 //         body: formData,
 //       });
@@ -86,7 +86,7 @@
 //     }).then(async (result) => {
 //       if (result.isConfirmed) {
 //         try {
-//           const res = await fetch(`https://api.betheshape.com/pdf/user/${id}`, {
+//           const res = await fetch(`http://localhost:5000/pdf/user/${id}`, {
 //             method: "DELETE",
 //           });
 //           const data = await res.json();
@@ -261,7 +261,7 @@ const fetchPdfs = async () => {
   if (!user?.email) return;
   setLoadingHistory(true);
   try {
-    const res = await fetch(`https://api.betheshape.com/pdf/user?email=${user.email}`);
+    const res = await fetch(`http://localhost:5000/pdf/user?email=${user.email}`);
     if (!res.ok) throw new Error("Failed to fetch PDFs");
     const data = await res.json();
     setPdfs(data); // ✅ update state
@@ -308,7 +308,7 @@ const fetchPdfs = async () => {
       formData.append("pdf", file);
       formData.append("email", user.email); // ✅ send email
 
-      const res = await fetch("https://api.betheshape.com/pdf/user/upload", {
+      const res = await fetch("http://localhost:5000/pdf/user/upload", {
         method: "POST",
         body: formData,
       });
@@ -341,7 +341,7 @@ const fetchPdfs = async () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const res = await fetch(`https://api.betheshape.com/pdf/user/${id}`, {
+          const res = await fetch(`http://localhost:5000/pdf/user/${id}`, {
             method: "DELETE",
           });
           const data = await res.json();

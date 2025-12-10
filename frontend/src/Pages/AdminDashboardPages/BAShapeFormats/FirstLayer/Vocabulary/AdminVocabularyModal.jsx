@@ -35,7 +35,7 @@ const AdminVocabularyModal = ({
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `https://api.betheshape.com/first-layer/VocabularyField/${vocabId}`,
+        `http://localhost:5000/first-layer/VocabularyField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

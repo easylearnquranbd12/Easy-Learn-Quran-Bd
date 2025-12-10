@@ -5,7 +5,7 @@
 // import useAuth from "../hooks/useAuth";
 
 // const fetchPayments = async () => {
-//   const res = await axios.get("https://api.betheshape.com/payment/admin");
+//   const res = await axios.get("http://localhost:5000/payment/admin");
 //   return res.data;
 // };
 
@@ -84,7 +84,7 @@ import Swal from "sweetalert2";
 import useAuth from "../hooks/useAuth";
 
 const fetchPayments = async () => {
-  const res = await axios.get("https://api.betheshape.com/payment/admin");
+  const res = await axios.get("http://localhost:5000/payment/admin");
   return res.data;
 };
 

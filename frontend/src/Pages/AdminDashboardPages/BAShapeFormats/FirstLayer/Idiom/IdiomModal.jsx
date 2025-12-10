@@ -1,19 +1,16 @@
-
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-
+import ModalRichText from "../../../../../shared/TextEditor/ModalRichText";
 
 const formatFieldLabel = (fieldName) => {
   let words = fieldName
     .replace(/([a-z])([A-Z])/g, "$1 $2") // camelCase → separate words
-    .replace(/-/g, " ")                   // kebab-case → replace hyphen with space
+    .replace(/-/g, " ") // kebab-case → replace hyphen with space
     .split(" ");
 
-  words = words.map(
-    (word) => word.charAt(0).toUpperCase() + word.slice(1)
-  );
+  words = words.map((word) => word.charAt(0).toUpperCase() + word.slice(1));
 
   return words.join(" ");
 };
@@ -33,7 +30,7 @@ const IdiomModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `https://api.betheshape.com/first-layer/IdiomField/${vocabId}`,
+        `http://localhost:5000/first-layer/IdiomField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -51,9 +48,9 @@ const IdiomModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
         icon: "success",
         title: "Updated!",
         text: `${formatFieldLabel(fieldName)} updated successfully.`,
-        confirmButtonColor: "#16a34a", 
+        confirmButtonColor: "#16a34a",
       });
-      queryClient.invalidateQueries(["vocabulary"]); 
+      queryClient.invalidateQueries(["vocabulary"]);
       onClose();
     },
     onError: (error) => {
@@ -61,7 +58,7 @@ const IdiomModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
         icon: "error",
         title: "Oops...",
         text: error.message,
-        confirmButtonColor: "#dc2626", 
+        confirmButtonColor: "#dc2626",
       });
     },
   });
@@ -79,15 +76,19 @@ const IdiomModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
         </button>
 
         <h2 className="text-lg font-semibold mb-4">
-          Edit Field: <span className="text-green-600">{formatFieldLabel(fieldName)}</span>
+          Edit Field:{" "}
+          <span className="text-green-600">{formatFieldLabel(fieldName)}</span>
         </h2>
 
-        <textarea
+        {/* <textarea
           value={value}
           onChange={(e) => setValue(e.target.value)}
           className="textarea textarea-bordered w-full mb-4"
+        /> */}
+        <ModalRichText
+          onChange={(e) => setValue(e.target.value)}
+          value={value}
         />
-
         <div className="flex justify-end gap-2">
           <button
             onClick={onClose}
