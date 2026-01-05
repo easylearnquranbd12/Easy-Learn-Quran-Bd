@@ -9,6 +9,7 @@ import AdminLoading from "../../../../../components/Loading/AdminLoading";
 import TittleAnimation from "../../../../../components/TittleAnimation/TittleAnimation";
 import useAuth from "../../../../../hooks/useAuth";
 import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
+import RichTextField from "../../../../../shared/TextEditor/RichTextField";
 import IdiomModal from "./IdiomModal";
 
 const AdminIdiom = () => {
@@ -20,7 +21,7 @@ const AdminIdiom = () => {
   const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
   const queryClient = useQueryClient();
-  const { register, handleSubmit, reset, setValue } = useForm({
+  const { register, handleSubmit, reset, setValue,control } = useForm({
     defaultValues: {
       mainWord: "",
       banglaPronunciation: "",
@@ -260,9 +261,8 @@ const AdminIdiom = () => {
               <form onSubmit={handleSubmit(onSubmit)}>
                 {idiomFields?.map((item) => (
                   <div key={item._id} className="space-y-4 p-2">
-                    {/* Main Word */}
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200 ">
-                      <div className="flex items-center justify-start gap-5 mb-2 ">
+                      <div className="flex items-center justify-start gap-5 mb-2">
                         <label className="text-sm font-semibold text-gray-700">
                           {item.mainWord || "Main-Word"}
                         </label>
@@ -277,16 +277,17 @@ const AdminIdiom = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <textarea
-                        {...register("mainWord")}
-                        className="textarea textarea-bordered w-full min-h-[80px] md:min-h-[180px]"
-                        placeholder={`Enter Your ${item.mainWord}`}
-                      />
+                      <div>
+                        <RichTextField
+                          name="mainWord"
+                          control={control}
+                          placeholder={`Enter Your ${item.mainWord}`}
+                        />
+                      </div>
                     </div>
 
-                    {/* Bangla Pronunciation */}
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                      <div className="flex items-center justify-start gap-5 mb-2 ">
+                      <div className="flex items-center justify-start gap-5 mb-2">
                         <label className="text-sm font-semibold text-gray-700">
                           {item.banglaPronunciation || "Bangla-Pronunciation"}
                         </label>
@@ -301,16 +302,17 @@ const AdminIdiom = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <textarea
-                        {...register("banglaPronunciation")}
-                        className="textarea textarea-bordered w-full min-h-[80px] md:min-h-[180px]"
-                        placeholder={`Enter Your ${item.banglaPronunciation}`}
-                      />
+                      <div>
+                        <RichTextField
+                          name="banglaPronunciation"
+                          control={control}
+                          placeholder={`Enter Your ${item.banglaPronunciation}`}
+                        />
+                      </div>
                     </div>
 
-                    {/* Bangla Meaning */}
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                      <div className="flex items-center justify-start gap-5 mb-2 ">
+                      <div className="flex items-center justify-start gap-5 mb-2">
                         <label className="text-sm font-semibold text-gray-700">
                           {item.banglaMeaning || "Bangla-Meaning"}
                         </label>
@@ -325,16 +327,17 @@ const AdminIdiom = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <textarea
-                        {...register("banglaMeaning")}
-                        className="textarea textarea-bordered w-full min-h-[80px] md:min-h-[180px]"
-                        placeholder={`Enter Your ${item.banglaMeaning}`}
-                      />
+                      <div>
+                        <RichTextField
+                          name="banglaMeaning"
+                          control={control}
+                          placeholder={`Enter Your ${item.banglaMeaning}`}
+                        />
+                      </div>
                     </div>
 
-                    {/* Synonyms */}
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                      <div className="flex items-center justify-start gap-5 mb-2 ">
+                      <div className="flex items-center justify-start gap-5 mb-2">
                         <label className="text-sm font-semibold text-gray-700">
                           {item.synonyms || "Synonyms"}
                         </label>
@@ -349,16 +352,17 @@ const AdminIdiom = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <textarea
-                        {...register("synonyms")}
-                        className="textarea textarea-bordered w-full min-h-[80px] md:min-h-[180px]"
-                        placeholder={`Enter Your ${item.synonyms}`}
-                      />
+                      <div>
+                        <RichTextField
+                          name="synonyms"
+                          control={control}
+                          placeholder={`Enter Your ${item.synonyms}`}
+                        />
+                      </div>
                     </div>
 
-                    {/* Antonyms */}
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                      <div className="flex items-center justify-start gap-5 mb-2 ">
+                      <div className="flex items-center justify-start gap-5 mb-2">
                         <label className="text-sm font-semibold text-gray-700">
                           {item.antonyms || "Antonyms"}
                         </label>
@@ -373,16 +377,17 @@ const AdminIdiom = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <textarea
-                        {...register("antonyms")}
-                        className="textarea textarea-bordered w-full min-h-[80px] md:min-h-[180px]"
-                        placeholder={`Enter Your ${item.antonyms}`}
-                      />
+                      <div>
+                        <RichTextField
+                          name="antonyms"
+                          control={control}
+                          placeholder={`Enter Your ${item.antonyms}`}
+                        />
+                      </div>
                     </div>
 
-                    {/* Example (English) */}
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                      <div className="flex items-center justify-start gap-5 mb-2 ">
+                      <div className="flex items-center justify-start gap-5 mb-2">
                         <label className="text-sm font-semibold text-gray-700">
                           {item.exampleEnglish || "Example (English)"}
                         </label>
@@ -397,16 +402,17 @@ const AdminIdiom = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <textarea
-                        {...register("exampleEnglish")}
-                        className="textarea textarea-bordered w-full min-h-[80px] md:min-h-[180px]"
-                        placeholder={`Enter Your ${item.exampleEnglish}`}
-                      />
+                      <div>
+                        <RichTextField
+                          name="exampleEnglish"
+                          control={control}
+                          placeholder={`Enter Your ${item.exampleEnglish}`}
+                        />
+                      </div>
                     </div>
 
-                    {/* Example (Bangla) */}
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                      <div className="flex items-center justify-start gap-5 mb-2 ">
+                      <div className="flex items-center justify-start gap-5 mb-2">
                         <label className="text-sm font-semibold text-gray-700">
                           {item.exampleBangla || "Example (Bangla)"}
                         </label>
@@ -421,11 +427,13 @@ const AdminIdiom = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <textarea
-                        {...register("exampleBangla")}
-                        className="textarea textarea-bordered w-full min-h-[80px] md:min-h-[180px]"
-                        placeholder={`Enter Your ${item.exampleBangla}`}
-                      />
+                      <div>
+                        <RichTextField
+                          name="exampleBangla"
+                          control={control}
+                          placeholder={`Enter Your ${item.exampleBangla}`}
+                        />
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -489,52 +497,59 @@ const AdminIdiom = () => {
                     >
                       <td className="font-semibold min-w-10">{i + 1}</td>
                       <td>
-                        <textarea
-                          readOnly
-                          className="input input-sm w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300"
-                          defaultValue={row.mainWord}
+                        <div
+                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          dangerouslySetInnerHTML={{
+                            __html: row.mainWord,
+                          }}
                         />
                       </td>
                       <td>
-                        <textarea
-                          readOnly
-                          className="input input-sm w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300"
-                          defaultValue={row.banglaPronunciation}
+                        <div
+                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          dangerouslySetInnerHTML={{
+                            __html: row.banglaPronunciation,
+                          }}
                         />
                       </td>
                       <td>
-                        <textarea
-                          readOnly
-                          className="input input-sm w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300"
-                          defaultValue={row.banglaMeaning}
+                        <div
+                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          dangerouslySetInnerHTML={{
+                            __html: row.banglaMeaning,
+                          }}
                         />
                       </td>
                       <td>
-                        <textarea
-                          readOnly
-                          className="input input-sm w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300"
-                          defaultValue={row.synonyms}
+                        <div
+                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          dangerouslySetInnerHTML={{
+                            __html: row.synonyms,
+                          }}
                         />
                       </td>
                       <td>
-                        <textarea
-                          readOnly
-                          className="input input-sm w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300"
-                          defaultValue={row.antonyms}
+                        <div
+                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          dangerouslySetInnerHTML={{
+                            __html: row.antonyms,
+                          }}
                         />
                       </td>
                       <td>
-                        <textarea
-                          readOnly
-                          className="input input-sm w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300"
-                          defaultValue={row.exampleEnglish}
+                        <div
+                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          dangerouslySetInnerHTML={{
+                            __html: row.exampleEnglish,
+                          }}
                         />
                       </td>
                       <td>
-                        <textarea
-                          readOnly
-                          className="input input-sm w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300"
-                          defaultValue={row.exampleBangla}
+                        <div
+                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          dangerouslySetInnerHTML={{
+                            __html: row.exampleBangla,
+                          }}
                         />
                       </td>
 

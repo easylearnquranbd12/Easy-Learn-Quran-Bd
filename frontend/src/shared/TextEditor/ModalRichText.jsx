@@ -34,7 +34,7 @@ const ModalRichText = ({ value, placeholder = "Write something..." }) => {
     <td className="align-top">
       <div className="editor-wrapper">
         <Controller
-          control={value}
+          control={value || ""}
           defaultValue=""
           render={({ field }) => (
             <ReactQuill

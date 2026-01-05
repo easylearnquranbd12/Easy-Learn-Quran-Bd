@@ -2,9 +2,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import ModalRichText from "../../../../../shared/TextEditor/ModalRichText";
+
 
 const formatFieldLabel = (fieldName) => {
+
   let words = fieldName
     .replace(/([a-z])([A-Z])/g, "$1 $2") // camelCase → separate words
     .replace(/-/g, " ") // kebab-case → replace hyphen with space
@@ -80,15 +81,12 @@ const IdiomModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
           <span className="text-green-600">{formatFieldLabel(fieldName)}</span>
         </h2>
 
-        {/* <textarea
+        <textarea
           value={value}
           onChange={(e) => setValue(e.target.value)}
           className="textarea textarea-bordered w-full mb-4"
-        /> */}
-        <ModalRichText
-          onChange={(e) => setValue(e.target.value)}
-          value={value}
         />
+     
         <div className="flex justify-end gap-2">
           <button
             onClick={onClose}
