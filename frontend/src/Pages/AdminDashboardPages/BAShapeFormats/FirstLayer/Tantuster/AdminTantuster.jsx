@@ -1,24 +1,29 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Edit, Trash2 } from "lucide-react";
+import { Edit, Edit2, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import AdminLoading from "../../../../../components/Loading/AdminLoading";
 import TittleAnimation from "../../../../../components/TittleAnimation/TittleAnimation";
+import useAuth from "../../../../../hooks/useAuth";
 import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
 import RichTextField from "../../../../../shared/TextEditor/RichTextField";
 import TantusterModal from "./TantusterModal";
+
+
 
 const AdminTantuster = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [fieldName, setFieldName] = useState("");
   const [selectedVocabId, setSelectedVocabId] = useState(null);
   const [currentValue, setCurrentValue] = useState("");
-
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
   const queryClient = useQueryClient();
-  const { register, handleSubmit, reset, setValue, control } = useForm({
+  const { register, handleSubmit, reset, setValue,control } = useForm({
     defaultValues: {
       mainWord: "",
       banglaPronunciation: "",
@@ -40,7 +45,6 @@ const AdminTantuster = () => {
     queryKey: ["tantusterFields"],
     queryFn: async () => {
       const res = await axiosPublic.get("/first-layer/tantusterField");
-    
       return res.data.data;
     },
   });
@@ -57,11 +61,7 @@ const AdminTantuster = () => {
       queryClient.invalidateQueries({ queryKey: ["tantuster"] });
     },
     onError: (error) => {
-      Swal.fire(
-        "❌ Error",
-        error.message || "Failed to create tantuster",
-        "error"
-      );
+      Swal.fire("❌ Error", error.message || "Failed to create tantuster", "error");
     },
   });
   // Fetch all tantuster
@@ -126,6 +126,24 @@ const AdminTantuster = () => {
     setModalOpen(true);
   };
 
+  // edit handler
+  const handleEdit = (id) => {
+    const role = user?.role;
+    console.log(role);
+    switch (role) {
+      case "admin":
+        navigate(`/admin-dashboard/edit-tantuster/${id}`);
+        break;
+
+      case "moderator":
+        navigate(`/moderator-dashboard/edit-tantuster/${id}`);
+        break;
+
+      default:
+        navigate("/login");
+    }
+  };
+
   // Toggle handler using item.isActive
   const handleToggle = (currentState) => {
     Swal.fire({
@@ -171,7 +189,6 @@ const AdminTantuster = () => {
       );
     },
   });
-
   if (isLoading || tantusterLoading) {
     return <AdminLoading />;
   }
@@ -188,7 +205,6 @@ const AdminTantuster = () => {
       <div className="mt-10">
         <div className="card bg-white shadow-md rounded-2xl p-3 md:p-5">
           <div className="w-full">
-            {/* Mobile View - Vertical Layout */}
             <div className=" space-y-4">
               <div className="mb-4 text-center">
                 {tantusterFields && tantusterFields.length > 0 && (
@@ -462,7 +478,7 @@ const AdminTantuster = () => {
                   className="bg-teal-600 text-white text-sm"
                 >
                   <tr>
-                    <th className="min-w-10">Serial</th>
+                    <th >Serial</th>
                     <th className="min-w-96">{item?.mainWord}</th>
                     <th className="min-w-96">{item?.banglaPronunciation}</th>
                     <th className="min-w-96">{item?.banglaMeaning}</th>
@@ -484,7 +500,12 @@ const AdminTantuster = () => {
                       <td className="font-semibold min-w-10">{i + 1}</td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.mainWord,
                           }}
@@ -492,7 +513,12 @@ const AdminTantuster = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.banglaPronunciation,
                           }}
@@ -500,7 +526,12 @@ const AdminTantuster = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.banglaMeaning,
                           }}
@@ -508,7 +539,12 @@ const AdminTantuster = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.synonyms,
                           }}
@@ -516,7 +552,12 @@ const AdminTantuster = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.antonyms,
                           }}
@@ -524,7 +565,12 @@ const AdminTantuster = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.exampleEnglish,
                           }}
@@ -532,19 +578,30 @@ const AdminTantuster = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.exampleBangla,
                           }}
                         />
                       </td>
 
-                      <td className="min-w-16">
+                      <td className="min-w-16 flex justify-center items-center gap-1">
                         <button
                           onClick={() => handleDelete(row._id)}
                           className="px-2 py-1 text-red-600 rounded-md hover:bg-red-100 flex items-center gap-1"
                         >
                           <Trash2 size={18} />
+                        </button>
+                        <button
+                          onClick={() => handleEdit(row._id)}
+                          className="px-2 py-1 text-green-600 rounded-md hover:bg-green-100 flex items-center gap-1"
+                        >
+                          <Edit2 size={18} />
                         </button>
                       </td>
                     </tr>
@@ -564,7 +621,7 @@ const AdminTantuster = () => {
           <div className="flex justify-center mt-4">
             <button
               onClick={() => setShowAll(!showAll)}
-              className="px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700"
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
             >
               {showAll ? "See Less" : "See More"}
             </button>

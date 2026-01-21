@@ -476,7 +476,7 @@ const AdminIdiom = () => {
                   className="bg-teal-600 text-white text-sm"
                 >
                   <tr>
-                    <th className="min-w-10">Serial</th>
+                    <th >Serial</th>
                     <th className="min-w-96">{item?.mainWord}</th>
                     <th className="min-w-96">{item?.banglaPronunciation}</th>
                     <th className="min-w-96">{item?.banglaMeaning}</th>
@@ -498,7 +498,12 @@ const AdminIdiom = () => {
                       <td className="font-semibold min-w-10">{i + 1}</td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.mainWord,
                           }}
@@ -506,7 +511,12 @@ const AdminIdiom = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.banglaPronunciation,
                           }}
@@ -514,7 +524,12 @@ const AdminIdiom = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.banglaMeaning,
                           }}
@@ -522,7 +537,12 @@ const AdminIdiom = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.synonyms,
                           }}
@@ -530,7 +550,12 @@ const AdminIdiom = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.antonyms,
                           }}
@@ -538,7 +563,12 @@ const AdminIdiom = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.exampleEnglish,
                           }}
@@ -546,7 +576,12 @@ const AdminIdiom = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.exampleBangla,
                           }}

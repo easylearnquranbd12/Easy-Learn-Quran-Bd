@@ -1,11 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Edit, Trash2 } from "lucide-react";
+import { Edit, Edit2, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import AdminLoading from "../../../../../components/Loading/AdminLoading";
 import TittleAnimation from "../../../../../components/TittleAnimation/TittleAnimation";
+import useAuth from "../../../../../hooks/useAuth";
 import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
 import RichTextField from "../../../../../shared/TextEditor/RichTextField";
 import AdminNewTantusterModal from "./AdminNewTantusterModal";
@@ -15,10 +17,11 @@ const AdminNewTantuster = () => {
   const [fieldName, setFieldName] = useState("");
   const [selectedVocabId, setSelectedVocabId] = useState(null);
   const [currentValue, setCurrentValue] = useState("");
-
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
   const queryClient = useQueryClient();
-  const { register, handleSubmit, reset, setValue, control } = useForm({
+  const { register, handleSubmit, reset, setValue,control } = useForm({
     defaultValues: {
       mainWord: "",
       banglaPronunciation: "",
@@ -30,7 +33,7 @@ const AdminNewTantuster = () => {
     },
   });
 
-  // Fetch all newtantusters Fields
+  // Fetch all newtantuster Fields
   const {
     data: newtantusterFields = [],
     isLoading,
@@ -40,56 +43,52 @@ const AdminNewTantuster = () => {
     queryKey: ["newtantusterFields"],
     queryFn: async () => {
       const res = await axiosPublic.get("/first-layer/newtantusterField");
-
       return res.data.data;
     },
   });
 
-  // Create newtantusters
-  const { mutateAsync: createnewtantusters } = useMutation({
+  // Create newtantuster
+  const { mutateAsync: createnewtantuster } = useMutation({
     mutationFn: async (newData) => {
       const res = await axiosPublic.post("/first-layer/newtantuster", newData);
       return res.data;
     },
     onSuccess: () => {
-      Swal.fire("✅ Success", "newtantusters created successfully!", "success");
+      Swal.fire("✅ Success", "newtantuster created successfully!", "success");
       reset();
-      queryClient.invalidateQueries({ queryKey: ["newtantusters"] });
+      queryClient.invalidateQueries({ queryKey: ["newtantuster"] });
     },
     onError: (error) => {
-      Swal.fire(
-        "❌ Error",
-        error.message || "Failed to create newtantusters",
-        "error"
-      );
+      Swal.fire("❌ Error", error.message || "Failed to create newtantuster", "error");
     },
   });
-  // Fetch all newtantusters
+  // Fetch all newtantuster
   const {
-    data: newtantusters = [],
-    isLoading: newtantustersLoading,
-    refetch: refetchnewtantusters,
-    isError: newtantustersError,
+    data: newtantuster = [],
+    isLoading: newtantusterLoading,
+    refetch: refetchnewtantuster,
+    isError: newtantusterError,
   } = useQuery({
-    queryKey: ["newtantusters"],
+    queryKey: ["newtantuster"],
     queryFn: async () => {
       const res = await axiosPublic.get("/first-layer/newtantuster");
       return res.data.data || [];
     },
   });
 
-  // delete newtantusters
-  const { mutateAsync: deletenewtantusters } = useMutation({
+  // delete newtantuster
+  const { mutateAsync: deletenewtantuster } = useMutation({
     mutationFn: async (id) => {
       const res = await axiosPublic.delete(`/first-layer/newtantuster/${id}`);
       return res.data;
     },
     onSuccess: () => {
       Swal.fire("Deleted!", "newtantuster has been deleted.", "success");
-      refetchnewtantusters(); // Refetch the list after deletion
+      refetchnewtantuster(); // Refetch the list after deletion
     },
     onError: (error) => {
       Swal.fire("Error!", "Failed to delete newtantuster.", "error");
+      console.error(error);
     },
   });
 
@@ -97,7 +96,7 @@ const AdminNewTantuster = () => {
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "You want to delete this elegant?",
+      text: "You want to delete this newtantuster?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -105,18 +104,16 @@ const AdminNewTantuster = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        deletenewtantusters(id);
+        deletenewtantuster(id);
       }
     });
   };
   const [showAll, setShowAll] = useState(false);
   // Toggle show all rows
-  const visiblenewtantusters = showAll
-    ? newtantusters
-    : newtantusters.slice(0, 10);
+  const visiblenewtantuster = showAll ? newtantuster : newtantuster.slice(0, 10);
   // form submit
   const onSubmit = async (data) => {
-    createnewtantusters(data);
+    createnewtantuster(data);
   };
 
   // modal open
@@ -127,13 +124,31 @@ const AdminNewTantuster = () => {
     setModalOpen(true);
   };
 
+  // edit handler
+  const handleEdit = (id) => {
+    const role = user?.role;
+    console.log(role);
+    switch (role) {
+      case "admin":
+        navigate(`/admin-dashboard/edit-newtantuster/${id}`);
+        break;
+
+      case "moderator":
+        navigate(`/moderator-dashboard/edit-newtantuster/${id}`);
+        break;
+
+      default:
+        navigate("/login");
+    }
+  };
+
   // Toggle handler using item.isActive
   const handleToggle = (currentState) => {
     Swal.fire({
       title: "Are you sure?",
       text: `You want to turn ${
         currentState === "ON" ? "OFF" : "ON"
-      } this newtantusters?`,
+      } this newtantuster?`,
       icon: "question",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -150,20 +165,17 @@ const AdminNewTantuster = () => {
   // Toggle mutation using item.isActive
   const toggleIsActiveMutation = useMutation({
     mutationFn: async (currentState) => {
-      const res = await axiosPublic.put(
-        `/first-layer/newTantusterField/toggle`,
-        {
-          fieldName: "isActive", // ✅ এটা দিতে হবে
-          currentValue: currentState,
-        }
-      );
+      const res = await axiosPublic.put(`/first-layer/newtantusterField/toggle`, {
+        fieldName: "isActive", // ✅ এটা দিতে হবে
+        currentValue: currentState,
+      });
       return res.data;
     },
     onSuccess: (data) => {
       Swal.fire({
         icon: "success",
         title: "Success",
-        text: `newtantusters is now ${data.updatedValue}`,
+        text: `newtantuster is now ${data.updatedValue}`,
       });
       queryClient.invalidateQueries({ queryKey: ["newtantusterFields"] });
     },
@@ -175,22 +187,21 @@ const AdminNewTantuster = () => {
       );
     },
   });
-
-  if (isLoading || newtantustersLoading) {
+  if (isLoading || newtantusterLoading) {
     return <AdminLoading />;
   }
   return (
-    <div className="w-full max-w-[1400px] mx-auto px-2">
+    <div className="max-w-[1400px] mx-auto px-2">
       <Helmet>
-        <title>Quiz | newtantusters</title>
+        <title>Quiz | newtantuster</title>
       </Helmet>
       <TittleAnimation
-        tittle="Create newtantusters"
+        tittle="Create newtantuster"
         subtittle="Create With admin or Moderator"
       />
 
       <div className="mt-10">
-        <div className="bg-white rounded-lg shadow-md p-5 mt-10 w-full ">
+        <div className="card bg-white shadow-md rounded-2xl p-3 md:p-5">
           <div className="w-full">
             <div className=" space-y-4">
               <div className="mb-4 text-center">
@@ -234,7 +245,7 @@ const AdminNewTantuster = () => {
                 {newtantusterFields.map((item) => (
                   <div key={item._id} className="flex items-center gap-2 my-2">
                     <span className="font-semibold">
-                      Create {item.title || "newtantusters"} Exercise
+                      Create {item.title || "newtantuster"} Exercise
                     </span>
                     <input
                       type="checkbox"
@@ -247,7 +258,6 @@ const AdminNewTantuster = () => {
                   </div>
                 ))}
               </div>
-
               <form onSubmit={handleSubmit(onSubmit)}>
                 {newtantusterFields?.map((item) => (
                   <div key={item._id} className="space-y-4 p-2">
@@ -445,18 +455,18 @@ const AdminNewTantuster = () => {
       {/* History */}
       <div className="bg-white rounded-lg shadow-md p-5 mt-10 w-[450px] md:w-full">
         <h1 className="mb-5">
-          Total newtantusters Items:{" "}
-          <span className="text-3xl font-bold ">{newtantusters.length}</span>
+          Total newtantuster Items:{" "}
+          <span className="text-3xl font-bold ">{newtantuster.length}</span>
         </h1>
 
         <div className="overflow-x-auto rounded-xl shadow border border-gray-200">
-          {newtantustersLoading ? (
+          {newtantusterLoading ? (
             <div className="p-6 text-center text-gray-500">
-              Loading newtantusters...
+              Loading newtantuster...
             </div>
-          ) : newtantustersError ? (
+          ) : newtantusterError ? (
             <div className="p-6 text-center text-red-500">
-              Error loading newtantusters.
+              Error loading newtantuster.
             </div>
           ) : (
             <table className="table w-full">
@@ -466,7 +476,7 @@ const AdminNewTantuster = () => {
                   className="bg-teal-600 text-white text-sm"
                 >
                   <tr>
-                    <th className="min-w-10">Serial</th>
+                    <th >Serial</th>
                     <th className="min-w-96">{item?.mainWord}</th>
                     <th className="min-w-96">{item?.banglaPronunciation}</th>
                     <th className="min-w-96">{item?.banglaMeaning}</th>
@@ -479,8 +489,8 @@ const AdminNewTantuster = () => {
                 </thead>
               ))}
               <tbody>
-                {visiblenewtantusters.length > 0 ? (
-                  visiblenewtantusters.map((row, i) => (
+                {visiblenewtantuster.length > 0 ? (
+                  visiblenewtantuster.map((row, i) => (
                     <tr
                       key={i}
                       className="hover:bg-gray-50 transition border-b text-sm"
@@ -488,7 +498,12 @@ const AdminNewTantuster = () => {
                       <td className="font-semibold min-w-10">{i + 1}</td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.mainWord,
                           }}
@@ -496,7 +511,12 @@ const AdminNewTantuster = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.banglaPronunciation,
                           }}
@@ -504,7 +524,12 @@ const AdminNewTantuster = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.banglaMeaning,
                           }}
@@ -512,7 +537,12 @@ const AdminNewTantuster = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.synonyms,
                           }}
@@ -520,7 +550,12 @@ const AdminNewTantuster = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.antonyms,
                           }}
@@ -528,7 +563,12 @@ const AdminNewTantuster = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.exampleEnglish,
                           }}
@@ -536,19 +576,30 @@ const AdminNewTantuster = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.exampleBangla,
                           }}
                         />
                       </td>
 
-                      <td className="min-w-16">
+                      <td className="min-w-16 flex justify-center items-center gap-1">
                         <button
                           onClick={() => handleDelete(row._id)}
                           className="px-2 py-1 text-red-600 rounded-md hover:bg-red-100 flex items-center gap-1"
                         >
                           <Trash2 size={18} />
+                        </button>
+                        <button
+                          onClick={() => handleEdit(row._id)}
+                          className="px-2 py-1 text-green-600 rounded-md hover:bg-green-100 flex items-center gap-1"
+                        >
+                          <Edit2 size={18} />
                         </button>
                       </td>
                     </tr>
@@ -556,7 +607,7 @@ const AdminNewTantuster = () => {
                 ) : (
                   <tr>
                     <td colSpan="9" className="text-center py-6 text-gray-500">
-                      No elegant found.
+                      No newtantuster found.
                     </td>
                   </tr>
                 )}
@@ -564,7 +615,7 @@ const AdminNewTantuster = () => {
             </table>
           )}
         </div>
-        {newtantusters.length > 10 && (
+        {newtantuster.length > 10 && (
           <div className="flex justify-center mt-4">
             <button
               onClick={() => setShowAll(!showAll)}

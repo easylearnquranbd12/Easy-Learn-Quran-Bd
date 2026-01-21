@@ -15,10 +15,14 @@ import AdminPorem from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/
 import AllUserPayment from "../Pages/AdminDashboardPages/AdminPaymentPages/AllUserPayment";
 import AdminPdfUpload from "../Pages/AdminDashboardPages/AdminPdfManagement/AdminPdfUpload";
 import UserUploadPdfManage from "../Pages/AdminDashboardPages/AdminPdfManagement/UserUploadPdfManage";
+import AdminElegantEdit from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Elegant/AdminElegantEdit";
 import AdminIdiom from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Idiom/AdminIdiom";
 import AdminIdiomEdit from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Idiom/AdminIdiomEdit";
 import AdminNewTantuster from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/NewTantuster/AdminNewTantuster";
+import AdminNewTantusterEdit from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/NewTantuster/AdminNewTantusterEdit";
 import AdminTantuster from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Tantuster/AdminTantuster";
+import AdminTantusterEdit from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Tantuster/AdminTantusterEdit";
+import AdminVocabularyEdit from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Vocabulary/AdminVocabularyEdit";
 import AdminLetterWritting from "../Pages/AdminDashboardPages/BAShapeFormats/FiveLayer/LetterWritting/AdminLetterWritting";
 import Adminmcq from "../Pages/AdminDashboardPages/BAShapeFormats/FiveLayer/MCQ/Adminmcq";
 import AdminOldGenaration from "../Pages/AdminDashboardPages/BAShapeFormats/FiveLayer/OldGenaration/AdminOldGenaration";
@@ -52,95 +56,94 @@ import UserRoute from "./UserRouter";
 
 // Lazy load components
 const ChangePassword = lazy(() => import("../Authentication/ChangePassword"));
-const AdminSentence = lazy(() =>
-  import(
-    "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Sentence/AdminSentence"
-  )
+const AdminSentence = lazy(
+  () =>
+    import("../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Sentence/AdminSentence"),
 );
-const AdminElegant = lazy(() =>
-  import(
-    "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Elegant/AdminElegant"
-  )
+const AdminElegant = lazy(
+  () =>
+    import("../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Elegant/AdminElegant"),
 );
 const ForgotPassword = lazy(() => import("../Authentication/ForgotPassword"));
 const Login = lazy(() => import("../Authentication/Login"));
 const Register = lazy(() => import("../Authentication/Register"));
 const About = lazy(() => import("../Pages/AboutPages/About"));
-const AddPaymentMethod = lazy(() =>
-  import("../Pages/AddPaymentMethod/AddPaymentMethod")
+const AddPaymentMethod = lazy(
+  () => import("../Pages/AddPaymentMethod/AddPaymentMethod"),
 );
-const AdminDashboard = lazy(() =>
-  import("../Pages/AdminDashboard/AdminDashboard")
+const AdminDashboard = lazy(
+  () => import("../Pages/AdminDashboard/AdminDashboard"),
 );
-const AdminBlogCreate = lazy(() =>
-  import("../Pages/AdminDashboardPages/AdminBlogsPages/AdminBlogCreate")
+const AdminBlogCreate = lazy(
+  () => import("../Pages/AdminDashboardPages/AdminBlogsPages/AdminBlogCreate"),
 );
-const AdminBlogHistory = lazy(() =>
-  import("../Pages/AdminDashboardPages/AdminBlogsPages/AdminBlogHistory")
+const AdminBlogHistory = lazy(
+  () => import("../Pages/AdminDashboardPages/AdminBlogsPages/AdminBlogHistory"),
 );
-const AdminBlogHistoryDetails = lazy(() =>
-  import("../Pages/AdminDashboardPages/AdminBlogsPages/AdminBlogHistoryDetails")
+const AdminBlogHistoryDetails = lazy(
+  () =>
+    import("../Pages/AdminDashboardPages/AdminBlogsPages/AdminBlogHistoryDetails"),
 );
-const AdminEditBlog = lazy(() =>
-  import("../Pages/AdminDashboardPages/AdminBlogsPages/AdminEditBlog")
+const AdminEditBlog = lazy(
+  () => import("../Pages/AdminDashboardPages/AdminBlogsPages/AdminEditBlog"),
 );
-const InstructorProfile = lazy(() =>
-  import("../Pages/AdminDashboardPages/AdminHomePagesEdit/InstructorProfile")
+const InstructorProfile = lazy(
+  () =>
+    import("../Pages/AdminDashboardPages/AdminHomePagesEdit/InstructorProfile"),
 );
-const AdminTestimonialsSection = lazy(() =>
-  import(
-    "../Pages/AdminDashboardPages/AdminHomePagesEdit/AdminTestimonialsSection"
-  )
+const AdminTestimonialsSection = lazy(
+  () =>
+    import("../Pages/AdminDashboardPages/AdminHomePagesEdit/AdminTestimonialsSection"),
 );
-const FooterFacebookLink = lazy(() =>
-  import("../Pages/AdminDashboardPages/AdminHomePagesEdit/FooterFacebookLink")
+const FooterFacebookLink = lazy(
+  () =>
+    import("../Pages/AdminDashboardPages/AdminHomePagesEdit/FooterFacebookLink"),
 );
-const HometextCreate = lazy(() =>
-  import("../Pages/AdminDashboardPages/AdminHomePagesEdit/HometextCreate")
+const HometextCreate = lazy(
+  () =>
+    import("../Pages/AdminDashboardPages/AdminHomePagesEdit/HometextCreate"),
 );
-const ImageandText = lazy(() =>
-  import("../Pages/AdminDashboardPages/AdminHomePagesEdit/ImageandText")
+const ImageandText = lazy(
+  () => import("../Pages/AdminDashboardPages/AdminHomePagesEdit/ImageandText"),
 );
-const YouTubeVideoPlayer = lazy(() =>
-  import("../Pages/AdminDashboardPages/AdminHomePagesEdit/YouTubeVideoPlayer")
+const YouTubeVideoPlayer = lazy(
+  () =>
+    import("../Pages/AdminDashboardPages/AdminHomePagesEdit/YouTubeVideoPlayer"),
 );
-const AdminPromotion = lazy(() =>
-  import(
-    "../Pages/AdminDashboardPages/AdminPromotionPages/AdminPromotion/AdminPromotion"
-  )
+const AdminPromotion = lazy(
+  () =>
+    import("../Pages/AdminDashboardPages/AdminPromotionPages/AdminPromotion/AdminPromotion"),
 );
-const AdminPromotionHistory = lazy(() =>
-  import(
-    "../Pages/AdminDashboardPages/AdminPromotionPages/AdminPromotionHistory/AdminPromotionHistory"
-  )
+const AdminPromotionHistory = lazy(
+  () =>
+    import("../Pages/AdminDashboardPages/AdminPromotionPages/AdminPromotionHistory/AdminPromotionHistory"),
 );
-const AllUsers = lazy(() =>
-  import("../Pages/AdminDashboardPages/AllUsers/AllUsers")
+const AllUsers = lazy(
+  () => import("../Pages/AdminDashboardPages/AllUsers/AllUsers"),
 );
-const FirstLayer = lazy(() =>
-  import("../Pages/B.A.ShapeFormats/FirstLayer/FirstLayer")
+const FirstLayer = lazy(
+  () => import("../Pages/B.A.ShapeFormats/FirstLayer/FirstLayer"),
 );
-const FourthLayer = lazy(() =>
-  import("../Pages/B.A.ShapeFormats/FourthLayer/FourthLayer")
+const FourthLayer = lazy(
+  () => import("../Pages/B.A.ShapeFormats/FourthLayer/FourthLayer"),
 );
-const SecondLayer = lazy(() =>
-  import("../Pages/B.A.ShapeFormats/SecondLayer/SecondLayer")
+const SecondLayer = lazy(
+  () => import("../Pages/B.A.ShapeFormats/SecondLayer/SecondLayer"),
 );
-const AdminVocabulary = lazy(() =>
-  import(
-    "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Vocabulary/AdminVocabulary"
-  )
+const AdminVocabulary = lazy(
+  () =>
+    import("../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Vocabulary/AdminVocabulary"),
 );
-const ThirdLayer = lazy(() =>
-  import("../Pages/B.A.ShapeFormats/ThirdLayer/ThirdLayer")
+const ThirdLayer = lazy(
+  () => import("../Pages/B.A.ShapeFormats/ThirdLayer/ThirdLayer"),
 );
 const Blog = lazy(() => import("../Pages/BlogPages/Blog"));
 const BlogDetails = lazy(() => import("../Pages/BlogPages/BlogDetails"));
 const Contact = lazy(() => import("../Pages/FooterPages/Contact"));
 const PrivacyPolicy = lazy(() => import("../Pages/FooterPages/PrivacyPolicy"));
 const RefundPolicy = lazy(() => import("../Pages/FooterPages/RefundPolicy"));
-const TermsAndConditions = lazy(() =>
-  import("../Pages/FooterPages/TermsAndConditions")
+const TermsAndConditions = lazy(
+  () => import("../Pages/FooterPages/TermsAndConditions"),
 );
 const Home = lazy(() => import("../Pages/HomePages/Home"));
 const Profile = lazy(() => import("../Pages/ProfilePages/Profile"));
@@ -408,10 +411,26 @@ export const routes = createBrowserRouter([
         ),
       },
       {
+        path: "edit-vocabulary/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminVocabularyEdit />
+          </Suspense>
+        ),
+      },
+      {
         path: "create-elegant",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <AdminElegant />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-elegant/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminElegantEdit />
           </Suspense>
         ),
       },
@@ -440,10 +459,26 @@ export const routes = createBrowserRouter([
         ),
       },
       {
+        path: "edit-tantuster/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminTantusterEdit />
+          </Suspense>
+        ),
+      },
+      {
         path: "new-tantuster",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <AdminNewTantuster />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-newtantuster/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminNewTantusterEdit />
           </Suspense>
         ),
       },

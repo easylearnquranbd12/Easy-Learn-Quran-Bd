@@ -45,7 +45,7 @@ const Idiom = () => {
     mutationFn: async (newData) => {
       const res = await axiosPublic.post(
         "/first-layer/createExerciseIdiom",
-        newData
+        newData,
       );
       return res.data;
     },
@@ -104,18 +104,15 @@ const Idiom = () => {
       Swal.fire(
         "At least one row must have a minimum of 3 completed fields!",
         "",
-        "warning"
+        "warning",
       );
       return;
     }
 
-    createidiomExercise(data);
+    console.log(data);
 
     reset();
   };
-  const showSynonymsColumn =
-    idiomFields?.[0]?.synonyms === "no" ||
-    idiomFields?.[0]?.synonyms === "none";
 
   if (isLoading || idiomLoading) return <CustomLoading />;
 
@@ -161,33 +158,45 @@ const Idiom = () => {
             {idiomFields?.map((item, index) => (
               <thead key={item._id} className="bg-teal-600 text-white text-sm">
                 <tr>
-                  <th className="min-w-10">Serial</th>
-                  {item && item.mainWord && (
-                    <th className="min-w-96">{item?.mainWord}</th>
-                  )}
-                  {item && item.banglaPronunciation && (
-                    <th className="min-w-96">{item?.banglaPronunciation}</th>
-                  )}
-                  {item && item.banglaMeaning && (
-                    <th className="min-w-96">{item?.banglaMeaning}</th>
-                  )}
+                  <th>Serial</th>
+
+                  {item &&
+                    item.mainWord !== "no" &&
+                    item.mainWord !== "none" && (
+                      <th className="w-72 md:w-96">{item?.mainWord}</th>
+                    )}
+                  {item &&
+                    item.banglaPronunciation !== "no" &&
+                    item.banglaPronunciation !== "none" && (
+                      <th className="w-72 md:w-96">
+                        {item?.banglaPronunciation}
+                      </th>
+                    )}
+                  {item &&
+                    item.banglaMeaning !== "no" &&
+                    item.banglaMeaning !== "none" && (
+                      <th className="w-72 md:w-96">{item?.banglaMeaning}</th>
+                    )}
                   {item &&
                     item.synonyms !== "no" &&
                     item.synonyms !== "none" && (
-                      <th className="min-w-96">{item?.synonyms}</th>
+                      <th className="w-72 md:w-96">{item?.synonyms}</th>
                     )}
                   {item &&
                     item.antonyms !== "no" &&
                     item.antonyms !== "none" && (
-                      <th className="min-w-96">{item?.antonyms}</th>
+                      <th className="w-72 md:w-96">{item?.antonyms}</th>
                     )}
-
-                  {item && item.exampleEnglish && (
-                    <th className="min-w-96">{item?.exampleEnglish}</th>
-                  )}
-                  {item && item.exampleBangla && (
-                    <th className="min-w-96">{item?.exampleBangla}</th>
-                  )}
+                  {item &&
+                    item.exampleEnglish !== "no" &&
+                    item.exampleEnglish !== "none" && (
+                      <th className="w-72 md:w-96">{item?.exampleEnglish}</th>
+                    )}
+                  {item &&
+                    item.exampleBangla !== "no" &&
+                    item.exampleBangla !== "none" && (
+                      <th className="w-72 md:w-96">{item?.exampleBangla}</th>
+                    )}
                 </tr>
               </thead>
             ))}
@@ -198,63 +207,120 @@ const Idiom = () => {
                     key={i}
                     className="hover:bg-gray-50 transition border-b text-sm"
                   >
-                    <td className="font-semibold min-w-10">{i + 1}</td>
-                    <td>
-                      <textarea
-                        readOnly
-                        className="input input-sm w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300"
-                        defaultValue={row.mainWord}
-                      />
-                    </td>
-                    <td>
-                      <textarea
-                        readOnly
-                        className="input input-sm w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300"
-                        defaultValue={row.banglaPronunciation}
-                      />
-                    </td>
-                    <td>
-                      <textarea
-                        readOnly
-                        className="input input-sm w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300"
-                        defaultValue={row.banglaMeaning}
-                      />
-                    </td>
+                    <td className="font-semibold ">{i + 1}</td>
+
+                    {idiomFields?.[0]?.mainWord !== "no" &&
+                      idiomFields?.[0]?.mainWord !== "none" && (
+                        <td>
+                          <div
+                            className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
+                            dangerouslySetInnerHTML={{ __html: row.mainWord }}
+                          />
+                        </td>
+                      )}
+
+                    {idiomFields?.[0]?.banglaPronunciation !== "no" &&
+                      idiomFields?.[0]?.banglaPronunciation !== "none" && (
+                        <td>
+                          <div
+                            className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
+                            dangerouslySetInnerHTML={{
+                              __html: row.banglaPronunciation,
+                            }}
+                          />
+                        </td>
+                      )}
+                    {idiomFields?.[0]?.banglaMeaning !== "no" &&
+                      idiomFields?.[0]?.banglaMeaning !== "none" && (
+                        <td>
+                          <div
+                            className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
+                            dangerouslySetInnerHTML={{
+                              __html: row.banglaMeaning,
+                            }}
+                          />
+                        </td>
+                      )}
+
                     {idiomFields?.[0]?.synonyms !== "no" &&
                       idiomFields?.[0]?.synonyms !== "none" && (
                         <td>
-                          <textarea
-                            readOnly
-                            defaultValue={row.synonyms}
-                            className="input input-sm w-full min-w-96 min-h-20 ..."
+                          <div
+                            className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
+                            dangerouslySetInnerHTML={{
+                              __html: row.synonyms,
+                            }}
                           />
                         </td>
                       )}
                     {idiomFields?.[0]?.antonyms !== "no" &&
                       idiomFields?.[0]?.antonyms !== "none" && (
                         <td>
-                          <textarea
-                            readOnly
-                            defaultValue={row.antonyms}
-                            className="input input-sm w-full min-w-96 min-h-20 ..."
+                          <div
+                            className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
+                            dangerouslySetInnerHTML={{
+                              __html: row.antonyms,
+                            }}
                           />
                         </td>
                       )}
-
-                    <td>
-                      <textarea
-                        readOnly
-                        className="input input-sm w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300"
-                        defaultValue={row.exampleEnglish}
-                      />
-                    </td>
-                    <td>
-                      <textarea
-                        readOnly
-                        className="input input-sm w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300"
-                        defaultValue={row.exampleBangla}
-                      />
-                    </td>
+                    {idiomFields?.[0]?.exampleEnglish !== "no" &&
+                      idiomFields?.[0]?.exampleEnglish !== "none" && (
+                        <td>
+                          <div
+                            className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
+                            dangerouslySetInnerHTML={{
+                              __html: row.exampleEnglish,
+                            }}
+                          />
+                        </td>
+                      )}
+                    {idiomFields?.[0]?.exampleBangla !== "no" &&
+                      idiomFields?.[0]?.exampleBangla !== "none" && (
+                        <td>
+                          <div
+                            className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
+                            dangerouslySetInnerHTML={{
+                              __html: row.exampleBangla,
+                            }}
+                          />
+                        </td>
+                      )}
                   </tr>
                 ))
               ) : (
@@ -294,56 +360,99 @@ const Idiom = () => {
                       <table className="table w-full">
                         <thead className="bg-teal-600 text-white text-sm">
                           <tr>
-                            <th className="min-w-10">Serial</th>
-                            <th className="min-w-96">{item?.mainWord}</th>
-                            <th className="min-w-96">
-                              {item?.banglaPronunciation}
-                            </th>
-                            <th className="min-w-96">{item?.banglaMeaning}</th>
+                            <th>Serial</th>
+                            {item &&
+                              item.mainWord !== "no" &&
+                              item.mainWord !== "none" && (
+                                <th className="w-72 md:w-96">
+                                  {item?.mainWord}
+                                </th>
+                              )}
+                            {item &&
+                              item.banglaPronunciation !== "no" &&
+                              item.banglaPronunciation !== "none" && (
+                                <th className="w-72 md:w-96">
+                                  {item?.banglaPronunciation}
+                                </th>
+                              )}
+                            {item &&
+                              item.banglaMeaning !== "no" &&
+                              item.banglaMeaning !== "none" && (
+                                <th className="w-72 md:w-96">
+                                  {item?.banglaMeaning}
+                                </th>
+                              )}
                             {item &&
                               item.synonyms !== "no" &&
                               item.synonyms !== "none" && (
-                                <th className="min-w-96">{item?.synonyms}</th>
+                                <th className="w-72 md:w-96">
+                                  {item?.synonyms}
+                                </th>
                               )}
                             {item &&
                               item.antonyms !== "no" &&
                               item.antonyms !== "none" && (
-                                <th className="min-w-96">{item?.antonyms}</th>
+                                <th className="w-72 md:w-96">
+                                  {item?.antonyms}
+                                </th>
                               )}
-                            <th className="min-w-96">{item?.exampleEnglish}</th>
-                            <th className="min-w-96">{item?.exampleBangla}</th>
+                            {item &&
+                              item.exampleEnglish !== "no" &&
+                              item.exampleEnglish !== "none" && (
+                                <th className="w-72 md:w-96">
+                                  {item?.exampleEnglish}
+                                </th>
+                              )}
+                            {item &&
+                              item.exampleBangla !== "no" &&
+                              item.exampleBangla !== "none" && (
+                                <th className="w-72 md:w-96">
+                                  {item?.exampleBangla}
+                                </th>
+                              )}
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
                             <td>1</td>
-                            <td>
-                              <textarea
-                                {...register("mainWord")}
-                                className="input input-base w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
-                                placeholder={`Enter Your ${item.mainWord}`}
-                              />
-                            </td>
-                            <td>
-                              <textarea
-                                {...register("banglaPronunciation")}
-                                className="input input-base w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
-                                placeholder={`Enter Your ${item.banglaPronunciation}`}
-                              />
-                            </td>
-                            <td>
-                              <textarea
-                                {...register("banglaMeaning")}
-                                className="input input-base w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
-                                placeholder={`Enter Your ${item.banglaMeaning}`}
-                              />
-                            </td>
+
+                            {idiomFields?.[0]?.mainWord !== "no" &&
+                              idiomFields?.[0]?.mainWord !== "none" && (
+                                <td>
+                                  <textarea
+                                    {...register("mainWord")}
+                                    className="input input-base  w-72 md:w-96 min-h-20 cursor-text bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
+                                    placeholder={`Enter Your ${item.mainWord}`}
+                                  />
+                                </td>
+                              )}
+                            {idiomFields?.[0]?.banglaPronunciation !== "no" &&
+                              idiomFields?.[0]?.banglaPronunciation !==
+                                "none" && (
+                                <td>
+                                  <textarea
+                                    {...register("banglaPronunciation")}
+                                    className="input input-base  w-72 md:w-96 min-h-20 cursor-text bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
+                                    placeholder={`Enter Your ${item.banglaPronunciation}`}
+                                  />
+                                </td>
+                              )}
+                            {idiomFields?.[0]?.banglaMeaning !== "no" &&
+                              idiomFields?.[0]?.banglaMeaning !== "none" && (
+                                <td>
+                                  <textarea
+                                    {...register("banglaMeaning")}
+                                    className="input input-base  w-72 md:w-96 min-h-20 cursor-text bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
+                                    placeholder={`Enter Your ${item.banglaMeaning}`}
+                                  />
+                                </td>
+                              )}
                             {idiomFields?.[0]?.synonyms !== "no" &&
                               idiomFields?.[0]?.synonyms !== "none" && (
                                 <td>
                                   <textarea
-                                    {...register("exampleEnglish")}
-                                    className="input input-base w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
+                                    {...register("synonyms")}
+                                    className="input input-base  w-72 md:w-96 min-h-20 cursor-text bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
                                     placeholder={`Enter Your ${item.synonyms}`}
                                   />
                                 </td>
@@ -352,136 +461,188 @@ const Idiom = () => {
                               idiomFields?.[0]?.antonyms !== "none" && (
                                 <td>
                                   <textarea
-                                    {...register("exampleEnglish")}
-                                    className="input input-base w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
+                                    {...register("antonyms")}
+                                    className="input input-base  w-72 md:w-96 min-h-20 cursor-text bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
                                     placeholder={`Enter Your ${item.antonyms}`}
                                   />
                                 </td>
                               )}
-                            <td>
-                              <textarea
-                                {...register("exampleEnglish")}
-                                className="input input-base w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
-                                placeholder={`Enter Your ${item.exampleEnglish}`}
-                              />
-                            </td>
-                            <td>
-                              <textarea
-                                {...register("exampleBangla")}
-                                className="input input-base w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
-                                placeholder={`Enter Your ${item.exampleBangla}`}
-                              />
-                            </td>
+                            {idiomFields?.[0]?.exampleEnglish !== "no" &&
+                              idiomFields?.[0]?.exampleEnglish !== "none" && (
+                                <td>
+                                  <textarea
+                                    {...register("exampleEnglish")}
+                                    className="input input-base  w-72 md:w-96 min-h-20 cursor-text bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
+                                    placeholder={`Enter Your ${item.exampleEnglish}`}
+                                  />
+                                </td>
+                              )}
+                            {idiomFields?.[0]?.exampleBangla !== "no" &&
+                              idiomFields?.[0]?.exampleBangla !== "none" && (
+                                <td>
+                                  <textarea
+                                    {...register("exampleBangla")}
+                                    className="input input-base  w-72 md:w-96 min-h-20 cursor-text bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
+                                    placeholder={`Enter Your ${item.exampleBangla}`}
+                                  />
+                                </td>
+                              )}
                           </tr>
                         </tbody>
                         {/* 2 */}
                         <tbody>
                           <tr>
                             <td>2</td>
-                            <td>
-                              <textarea
-                                {...register("mainWord2")}
-                                className="input input-base w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
-                                placeholder={`Enter Your ${item.mainWord}`}
-                              />
-                            </td>
-                            <td>
-                              <textarea
-                                {...register("banglaPronunciation2")}
-                                className="input input-base w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
-                                placeholder={`Enter Your ${item.banglaPronunciation}`}
-                              />
-                            </td>
-                            <td>
-                              <textarea
-                                {...register("banglaMeaning2")}
-                                className="input input-base w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
-                                placeholder={`Enter Your ${item.banglaMeaning}`}
-                              />
-                            </td>
-                            <td>
-                              <textarea
-                                {...register("synonyms2")}
-                                className="input input-base w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
-                                placeholder={`Enter Your ${item.synonyms}`}
-                              />
-                            </td>
-                            <td>
-                              <textarea
-                                {...register("antonyms2")}
-                                className="input input-base w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
-                                placeholder={`Enter Your ${item.antonyms}`}
-                              />
-                            </td>
-                            <td>
-                              <textarea
-                                {...register("exampleEnglish2")}
-                                className="input input-base w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
-                                placeholder={`Enter Your ${item.exampleEnglish}`}
-                              />
-                            </td>
-                            <td>
-                              <textarea
-                                {...register("exampleBangla2")}
-                                className="input input-base w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
-                                placeholder={`Enter Your ${item.exampleBangla}`}
-                              />
-                            </td>
+
+                            {idiomFields?.[0]?.mainWord !== "no" &&
+                              idiomFields?.[0]?.mainWord !== "none" && (
+                                <td>
+                                  <textarea
+                                    {...register("mainWord2")}
+                                    className="input input-base  w-72 md:w-96 min-h-20 cursor-text bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
+                                    placeholder={`Enter Your ${item.mainWord}`}
+                                  />
+                                </td>
+                              )}
+                            {idiomFields?.[0]?.banglaPronunciation !== "no" &&
+                              idiomFields?.[0]?.banglaPronunciation !==
+                                "none" && (
+                                <td>
+                                  <textarea
+                                    {...register("banglaPronunciation2")}
+                                    className="input input-base  w-72 md:w-96 min-h-20 cursor-text bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
+                                    placeholder={`Enter Your ${item.banglaPronunciation}`}
+                                  />
+                                </td>
+                              )}
+                            {idiomFields?.[0]?.banglaMeaning !== "no" &&
+                              idiomFields?.[0]?.banglaMeaning !== "none" && (
+                                <td>
+                                  <textarea
+                                    {...register("banglaMeaning2")}
+                                    className="input input-base  w-72 md:w-96 min-h-20 cursor-text bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
+                                    placeholder={`Enter Your ${item.banglaMeaning}`}
+                                  />
+                                </td>
+                              )}
+                            {idiomFields?.[0]?.synonyms !== "no" &&
+                              idiomFields?.[0]?.synonyms !== "none" && (
+                                <td>
+                                  <textarea
+                                    {...register("synonyms2")}
+                                    className="input input-base  w-72 md:w-96 min-h-20 cursor-text bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
+                                    placeholder={`Enter Your ${item.synonyms}`}
+                                  />
+                                </td>
+                              )}
+                            {idiomFields?.[0]?.antonyms !== "no" &&
+                              idiomFields?.[0]?.antonyms !== "none" && (
+                                <td>
+                                  <textarea
+                                    {...register("antonyms2")}
+                                    className="input input-base  w-72 md:w-96 min-h-20 cursor-text bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
+                                    placeholder={`Enter Your ${item.antonyms}`}
+                                  />
+                                </td>
+                              )}
+                            {idiomFields?.[0]?.exampleEnglish !== "no" &&
+                              idiomFields?.[0]?.exampleEnglish !== "none" && (
+                                <td>
+                                  <textarea
+                                    {...register("exampleEnglish2")}
+                                    className="input input-base  w-72 md:w-96 min-h-20 cursor-text bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
+                                    placeholder={`Enter Your ${item.exampleEnglish}`}
+                                  />
+                                </td>
+                              )}
+                            {idiomFields?.[0]?.exampleBangla !== "no" &&
+                              idiomFields?.[0]?.exampleBangla !== "none" && (
+                                <td>
+                                  <textarea
+                                    {...register("exampleBangla2")}
+                                    className="input input-base  w-72 md:w-96 min-h-20 cursor-text bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
+                                    placeholder={`Enter Your ${item.exampleBangla}`}
+                                  />
+                                </td>
+                              )}
                           </tr>
                         </tbody>
                         {/* 3 */}
                         <tbody>
                           <tr>
                             <td>3</td>
-                            <td>
-                              <textarea
-                                {...register("mainWord3")}
-                                className="input input-base w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
-                                placeholder={`Enter Your ${item.mainWord}`}
-                              />
-                            </td>
-                            <td>
-                              <textarea
-                                {...register("banglaPronunciation3")}
-                                className="input input-base w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
-                                placeholder={`Enter Your ${item.banglaPronunciation}`}
-                              />
-                            </td>
-                            <td>
-                              <textarea
-                                {...register("banglaMeaning3")}
-                                className="input input-base w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
-                                placeholder={`Enter Your ${item.banglaMeaning}`}
-                              />
-                            </td>
-                            <td>
-                              <textarea
-                                {...register("synonyms3")}
-                                className="input input-base w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
-                                placeholder={`Enter Your ${item.synonyms}`}
-                              />
-                            </td>
-                            <td>
-                              <textarea
-                                {...register("antonyms3")}
-                                className="input input-base w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
-                                placeholder={`Enter Your ${item.antonyms}`}
-                              />
-                            </td>
-                            <td>
-                              <textarea
-                                {...register("exampleEnglish3")}
-                                className="input input-base w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
-                                placeholder={`Enter Your ${item.exampleEnglish}`}
-                              />
-                            </td>
-                            <td>
-                              <textarea
-                                {...register("exampleBangla3")}
-                                className="input input-base w-full min-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
-                                placeholder={`Enter Your ${item.exampleBangla}`}
-                              />
-                            </td>
+
+                            {idiomFields?.[0]?.mainWord !== "no" &&
+                              idiomFields?.[0]?.mainWord !== "none" && (
+                                <td>
+                                  <textarea
+                                    {...register("mainWord3")}
+                                    className="input input-base  w-72 md:w-96 min-h-20 cursor-text bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
+                                    placeholder={`Enter Your ${item.mainWord}`}
+                                  />
+                                </td>
+                              )}
+                            {idiomFields?.[0]?.banglaPronunciation !== "no" &&
+                              idiomFields?.[0]?.banglaPronunciation !==
+                                "none" && (
+                                <td>
+                                  <textarea
+                                    {...register("banglaPronunciation3")}
+                                    className="input input-base  w-72 md:w-96 min-h-20 cursor-text bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
+                                    placeholder={`Enter Your ${item.banglaPronunciation}`}
+                                  />
+                                </td>
+                              )}
+                            {idiomFields?.[0]?.banglaMeaning !== "no" &&
+                              idiomFields?.[0]?.banglaMeaning !== "none" && (
+                                <td>
+                                  <textarea
+                                    {...register("banglaMeaning3")}
+                                    className="input input-base  w-72 md:w-96 min-h-20 cursor-text bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
+                                    placeholder={`Enter Your ${item.banglaMeaning}`}
+                                  />
+                                </td>
+                              )}
+                            {idiomFields?.[0]?.synonyms !== "no" &&
+                              idiomFields?.[0]?.synonyms !== "none" && (
+                                <td>
+                                  <textarea
+                                    {...register("synonyms3")}
+                                    className="input input-base  w-72 md:w-96 min-h-20 cursor-text bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
+                                    placeholder={`Enter Your ${item.synonyms}`}
+                                  />
+                                </td>
+                              )}
+                            {idiomFields?.[0]?.antonyms !== "no" &&
+                              idiomFields?.[0]?.antonyms !== "none" && (
+                                <td>
+                                  <textarea
+                                    {...register("antonyms3")}
+                                    className="input input-base  w-72 md:w-96 min-h-20 cursor-text bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
+                                    placeholder={`Enter Your ${item.antonyms}`}
+                                  />
+                                </td>
+                              )}
+                            {idiomFields?.[0]?.exampleEnglish !== "no" &&
+                              idiomFields?.[0]?.exampleEnglish !== "none" && (
+                                <td>
+                                  <textarea
+                                    {...register("exampleEnglish3")}
+                                    className="input input-base  w-72 md:w-96 min-h-20 cursor-text bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
+                                    placeholder={`Enter Your ${item.exampleEnglish}`}
+                                  />
+                                </td>
+                              )}
+                            {idiomFields?.[0]?.exampleBangla !== "no" &&
+                              idiomFields?.[0]?.exampleBangla !== "none" && (
+                                <td>
+                                  <textarea
+                                    {...register("exampleBangla3")}
+                                    className="input input-base  w-72 md:w-96 min-h-20 cursor-text bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-green-300 rounded-md"
+                                    placeholder={`Enter Your ${item.exampleBangla}`}
+                                  />
+                                </td>
+                              )}
                           </tr>
                         </tbody>
                       </table>
@@ -494,7 +655,7 @@ const Idiom = () => {
                     </div>
                   </div>
                 </div>
-              )
+              ),
           )}
         </form>
       </div>

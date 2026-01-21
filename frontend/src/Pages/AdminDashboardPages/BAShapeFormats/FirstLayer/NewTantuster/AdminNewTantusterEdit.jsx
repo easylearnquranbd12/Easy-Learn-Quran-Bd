@@ -1,4 +1,6 @@
 
+
+
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
@@ -11,56 +13,56 @@ import TittleAnimation from "../../../../../components/TittleAnimation/TittleAni
 import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
 import RichTextField from "../../../../../shared/TextEditor/RichTextField";
 
-const AdminIdiomEdit = () => {
+const AdminNewTantusterEdit = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const axiosPublic = useAxiosPublic();
 
   const { handleSubmit, setValue, control } = useForm();
 
-  // 🔹 Fetch idiom field labels
+  // 🔹 Fetch newtantuster field labels
   const {
-    data: idiomFields = [],
-    isLoading: isLoadingIdiomFields,
+    data: newtantusterFields = [],
+    isLoading: isLoadingnewtantusterFields,
   } = useQuery({
-    queryKey: ["idiomFields"],
+    queryKey: ["newtantusterFields"],
     queryFn: async () => {
-      const res = await axiosPublic.get("/first-layer/idiomField");
+      const res = await axiosPublic.get("/first-layer/newtantusterField");
       return res.data.data;
     },
   });
 
-  // 🔹 Fetch single idiom data
-  const { data: idiom, isLoading } = useQuery({
-    queryKey: ["idiom", id],
+  // 🔹 Fetch single newtantuster data
+  const { data: newtantuster, isLoading } = useQuery({
+    queryKey: ["newtantuster", id],
     queryFn: async () => {
-      const res = await axiosPublic.get(`/first-layer/idiom/${id}`);
+      const res = await axiosPublic.get(`/first-layer/newtantuster/${id}`);
       return res.data.data;
     },
   });
 
   // 🔹 Set default values
   useEffect(() => {
-    if (idiom) {
-      setValue("mainWord", idiom.mainWord || "");
-      setValue("banglaPronunciation", idiom.banglaPronunciation || "");
-      setValue("banglaMeaning", idiom.banglaMeaning || "");
-      setValue("synonyms", idiom.synonyms || "");
-      setValue("antonyms", idiom.antonyms || "");
-      setValue("exampleEnglish", idiom.exampleEnglish || "");
-      setValue("exampleBangla", idiom.exampleBangla || "");
+    if (newtantuster) {
+      setValue("mainWord", newtantuster.mainWord || "");
+      setValue("banglaPronunciation", newtantuster.banglaPronunciation || "");
+      setValue("banglaMeaning", newtantuster.banglaMeaning || "");
+      setValue("synonyms", newtantuster.synonyms || "");
+      setValue("antonyms", newtantuster.antonyms || "");
+      setValue("exampleEnglish", newtantuster.exampleEnglish || "");
+      setValue("exampleBangla", newtantuster.exampleBangla || "");
     }
-  }, [idiom, setValue]);
+  }, [newtantuster, setValue]);
 
   // 🔹 Submit handler
  const onSubmit = async (data) => {
   try {
-    await axiosPublic.put(`/first-layer/idiom/${id}`, data);
+    await axiosPublic.put(`/first-layer/newtantuster/${id}`, data);
 
     Swal.fire({
       icon: "success",
       title: "Updated Successfully!",
-      text: "Idiom information has been updated.",
+      text: "newtantuster information has been updated.",
       confirmButtonColor: "#0d9488",
     });
 
@@ -78,17 +80,17 @@ const AdminIdiomEdit = () => {
 };
 
 
-  if (isLoading || isLoadingIdiomFields) return <AdminLoading />;
+  if (isLoading || isLoadingnewtantusterFields) return <AdminLoading />;
 
-  const labels = idiomFields[0] || {};
+  const labels = newtantusterFields[0] || {};
 
   return (
     <div className="max-w-[1400px] mx-auto px-2">
       <Helmet>
-        <title>Edit Idiom</title>
+        <title>Edit newtantuster</title>
       </Helmet>
 
-      <TittleAnimation tittle="Edit Idiom" subtittle="Admin / Moderator" />
+      <TittleAnimation tittle="Edit newtantuster" subtittle="Admin / Moderator" />
 
       <div className="mt-10">
         <div className="bg-white shadow-md rounded-2xl p-3 md:p-5">
@@ -182,7 +184,7 @@ const AdminIdiomEdit = () => {
               type="submit"
               className="w-full px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-lg"
             >
-              Update Idiom
+              Update newtantuster
             </button>
           </form>
         </div>
@@ -191,5 +193,5 @@ const AdminIdiomEdit = () => {
   );
 };
 
-export default AdminIdiomEdit;
+export default AdminNewTantusterEdit;
 

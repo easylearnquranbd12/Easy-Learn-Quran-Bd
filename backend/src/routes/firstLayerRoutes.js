@@ -32,6 +32,15 @@ const {
   createExerciseIdiom,
   updateIdiom,
   getSingleIdiom,
+  updateVocabulary,
+  getSingleVocabulary,
+  createExerciseVocabulary,
+  getSingleElegant,
+  updateElegant,
+  getSingleTantuster,
+  updateTantuster,
+  getSingleNewTantuster,
+  updateNewTantuster,
 } = require("../Controllers/firstLayerController");
 
 const router = express.Router();
@@ -50,15 +59,19 @@ router.post("/createExerciseIdiom", createExerciseIdiom);
 router.get("/vocabulary", getAllVocabulary);
 router.post("/vocabulary", createVocabulary);
 router.delete("/vocabulary/:id", deleteVocabulary);
+router.get("/vocabulary/:id", getSingleVocabulary);
+router.put("/vocabulary/:id", updateVocabulary);
 // Vocabulary field
 router.put("/vocabularyField/:id", updateVocabularyField);
 router.get("/vocabularyField", getVocabularyField);
-router.post("/createExercise", createExercise);
+router.post("/createExerciseVocabulary", createExerciseVocabulary);
 
 // elegant
 router.get("/elegant", getAllElegant);
 router.post("/elegant", createElegant);
 router.delete("/elegant/:id", deleteElegant);
+router.get("/elegant/:id", getSingleElegant);
+router.put("/elegant/:id", updateElegant);
 // elegant field
 router.put("/elegantField/:id", updateElegantField);
 router.get("/elegantField", getElegantField);
@@ -68,6 +81,8 @@ router.post("/createExerciseElegant", createExerciseElegant);
 router.get("/tantuster", getAllTantuster);
 router.post("/tantuster", createTantuster);
 router.delete("/tantuster/:id", deleteTantuster);
+router.get("/tantuster/:id", getSingleTantuster);
+router.put("/tantuster/:id", updateTantuster);
 // tantuster field
 router.put("/tantusterField/:id", updateTantusterField);
 router.get("/tantusterField", getTantusterField);
@@ -77,6 +92,8 @@ router.post("/createExerciseTantuster", createExerciseTantuster);
 router.get("/newtantuster", getAllNewTantuster);
 router.post("/newtantuster", createNewTantuster);
 router.delete("/newtantuster/:id", deleteNewTantuster);
+router.get("/newtantuster/:id", getSingleNewTantuster);
+router.put("/newtantuster/:id", updateNewTantuster);
 // new tantuster field
 router.put("/newtantusterField/:id", updateNewTantusterField);
 router.get("/newtantusterField", getNewTantusterField);

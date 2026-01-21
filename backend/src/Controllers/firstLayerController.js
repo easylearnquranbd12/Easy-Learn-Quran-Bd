@@ -16,10 +16,11 @@ const {
   getFirstLayerIdiomCollections,
   getFirstLayerIdiomExerciseCollections,
 } = require("../config/db");
+const { get } = require("../routes/firstLayerRoutes");
 
 const vocabularyCollection = getFirstLayerVocabularyCollection();
 const vocabulary = getFirstLayerVocabularyCollections();
-const exercise = getFirstLayerVocabularyExerciseCollections();
+const vocabularyExercise = getFirstLayerVocabularyExerciseCollections();
 
 // idiom
 const idiomCollection = getFirstLayerIdiomCollection();
@@ -27,9 +28,9 @@ const idiom = getFirstLayerIdiomCollections();
 const idiomExercise = getFirstLayerIdiomExerciseCollections();
 
 // elegant
-const elegantFieldsCollection = getFirstLayerElegantFieldsCollection();
-const elegantCollection = getFirstLayerElegantCollection();
-const elegantExerciseCollection = getFirstLayerElegantExerciseCollection();
+const elegantCollection = getFirstLayerElegantFieldsCollection();
+const elegant = getFirstLayerElegantCollection();
+const elegantExercise = getFirstLayerElegantExerciseCollection();
 // Tantuster
 const tantusterFieldsCollection = getFirstLayerTantusterFieldsCollection();
 const tantusterCollection = getFirstLayerTantusterCollection();
@@ -177,7 +178,7 @@ const updateIdiom = async (req, res) => {
 
     const result = await idiom.updateOne(
       { _id: new ObjectId(id) },
-      { $set: updateData }
+      { $set: updateData },
     );
 
     if (result.matchedCount === 0) {
@@ -197,7 +198,6 @@ const updateIdiom = async (req, res) => {
   }
 };
 
-// Temporari Excursise data
 // Exercise Controller
 const createExerciseIdiom = async (req, res) => {
   try {
@@ -212,7 +212,7 @@ const createExerciseIdiom = async (req, res) => {
     // Create TTL index (will auto delete after 30 days)
     await idiomExercise.createIndex(
       { createdAt: 1 },
-      { expireAfterSeconds: 10 * 24 * 60 * 60 } // 30 days
+      { expireAfterSeconds: 10 * 24 * 60 * 60 }, // 30 days
     );
 
     res.status(201).json({
@@ -305,7 +305,7 @@ const updateVocabularyField = async (req, res) => {
 
     const result = await vocabularyCollection.updateOne(
       {},
-      { $set: updateData }
+      { $set: updateData },
     );
 
     if (result.matchedCount === 0) {
@@ -335,9 +335,60 @@ const getVocabularyField = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-// Temporari Excursise data
+// ✅ Get Single Vocabulary by ID
+const getSingleVocabulary = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await vocabulary.findOne({ _id: new ObjectId(id) });
+    if (!result) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Vocabulary not found" });
+    }
+
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const updateVocabulary = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    if (!Object.keys(updateData).length) {
+      return res.status(400).json({
+        success: false,
+        message: "No fields provided for update",
+      });
+    }
+
+    const result = await vocabulary.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updateData },
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Vocabulary not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Vocabulary updated successfully",
+      updatedData: updateData,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 // Exercise Controller
-const createExercise = async (req, res) => {
+const createExerciseVocabulary = async (req, res) => {
   try {
     const data = {
       ...req.body,
@@ -345,12 +396,12 @@ const createExercise = async (req, res) => {
     };
 
     // Insert exercise
-    const result = await exercise.insertOne(data);
+    const result = await vocabularyExercise.insertOne(data);
 
     // Create TTL index (will auto delete after 30 days)
-    await exercise.createIndex(
+    await vocabularyExercise.createIndex(
       { createdAt: 1 },
-      { expireAfterSeconds: 10 * 24 * 60 * 60 } // 30 days
+      { expireAfterSeconds: 10 * 24 * 60 * 60 }, // 30 days
     );
 
     res.status(201).json({
@@ -372,7 +423,7 @@ const createExercise = async (req, res) => {
 const createElegant = async (req, res) => {
   try {
     const data = req.body;
-    const result = await elegantCollection.insertOne(data);
+    const result = await elegant.insertOne(data);
 
     res.status(201).json({ success: true, id: result.insertedId });
   } catch (error) {
@@ -383,7 +434,7 @@ const createElegant = async (req, res) => {
 // ✅ Get All Elegant
 const getAllElegant = async (req, res) => {
   try {
-    const result = await elegantCollection.find().toArray();
+    const result = await elegant.find().toArray();
     res.json({ success: true, data: result });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -394,7 +445,7 @@ const getAllElegant = async (req, res) => {
 const deleteElegant = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await elegantCollection.deleteOne({
+    const result = await elegant.deleteOne({
       _id: new ObjectId(id),
     });
 
@@ -425,7 +476,7 @@ const updateElegantField = async (req, res) => {
 
     if (fieldName === "isActive") {
       // যদি isActive update হয়, toggle কর
-      const doc = await elegantFieldsCollection.findOne({});
+      const doc = await elegantCollection.findOne({});
       if (!doc) {
         return res
           .status(404)
@@ -443,10 +494,7 @@ const updateElegantField = async (req, res) => {
       updateData[fieldName] = value;
     }
 
-    const result = await elegantFieldsCollection.updateOne(
-      {},
-      { $set: updateData }
-    );
+    const result = await elegantCollection.updateOne({}, { $set: updateData });
 
     if (result.matchedCount === 0) {
       return res
@@ -469,13 +517,63 @@ const updateElegantField = async (req, res) => {
 // ✅ Get Elegant Fields
 const getElegantField = async (req, res) => {
   try {
-    const result = await elegantFieldsCollection.find().toArray();
+    const result = await elegantCollection.find().toArray();
     res.json({ success: true, data: result });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-// Temporary Exercise data
+// ✅ Get Single Elegant by ID
+const getSingleElegant = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await elegant.findOne({ _id: new ObjectId(id) });
+    if (!result) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Elegant not found" });
+    }
+
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const updateElegant = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    if (!Object.keys(updateData).length) {
+      return res.status(400).json({
+        success: false,
+        message: "No fields provided for update",
+      });
+    }
+
+    const result = await elegant.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updateData },
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Elegant not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Vocabulary updated successfully",
+      updatedData: updateData,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 // Exercise Controller
 const createExerciseElegant = async (req, res) => {
   try {
@@ -490,7 +588,7 @@ const createExerciseElegant = async (req, res) => {
     // Create TTL index (will auto delete after 30 days)
     await elegantExerciseCollection.createIndex(
       { createdAt: 1 },
-      { expireAfterSeconds: 10 * 24 * 60 * 60 } // 30 days
+      { expireAfterSeconds: 10 * 24 * 60 * 60 }, // 30 days
     );
 
     res.status(201).json({
@@ -585,7 +683,7 @@ const updateTantusterField = async (req, res) => {
 
     const result = await tantusterFieldsCollection.updateOne(
       {},
-      { $set: updateData }
+      { $set: updateData },
     );
 
     if (result.matchedCount === 0) {
@@ -615,7 +713,58 @@ const getTantusterField = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-// Temporary Exercise data
+
+const getSingleTantuster = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await tantusterCollection.findOne({ _id: new ObjectId(id) });
+    if (!result) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Tantuster not found" });
+    }
+
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const updateTantuster = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    if (!Object.keys(updateData).length) {
+      return res.status(400).json({
+        success: false,
+        message: "No fields provided for update",
+      });
+    }
+
+    const result = await tantusterCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updateData },
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Tantuster not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Tantuster updated successfully",
+      updatedData: updateData,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 // Exercise Controller
 const createExerciseTantuster = async (req, res) => {
   try {
@@ -630,7 +779,7 @@ const createExerciseTantuster = async (req, res) => {
     // Create TTL index (will auto delete after 30 days)
     await tantusterExerciseCollection.createIndex(
       { createdAt: 1 },
-      { expireAfterSeconds: 10 * 24 * 60 * 60 } // 30 days
+      { expireAfterSeconds: 10 * 24 * 60 * 60 }, // 30 days
     );
 
     res.status(201).json({
@@ -725,7 +874,7 @@ const updateNewTantusterField = async (req, res) => {
 
     const result = await newTantusterFieldsCollection.updateOne(
       {},
-      { $set: updateData }
+      { $set: updateData },
     );
 
     if (result.matchedCount === 0) {
@@ -755,6 +904,56 @@ const getNewTantusterField = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+const getSingleNewTantuster = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await newTantusterCollection.findOne({ _id: new ObjectId(id) });
+    if (!result) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Tantuster not found" });
+    }
+
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const updateNewTantuster = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    if (!Object.keys(updateData).length) {
+      return res.status(400).json({
+        success: false,
+        message: "No fields provided for update",
+      });
+    }
+
+    const result = await newTantusterCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updateData },
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Tantuster not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Tantuster updated successfully",
+      updatedData: updateData,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 // Temporary Exercise data
 // Exercise Controller
 const createExerciseNewTantuster = async (req, res) => {
@@ -770,7 +969,7 @@ const createExerciseNewTantuster = async (req, res) => {
     // Create TTL index (will auto delete after 30 days)
     await newTantusterExerciseCollection.createIndex(
       { createdAt: 1 },
-      { expireAfterSeconds: 10 * 24 * 60 * 60 } // 30 days
+      { expireAfterSeconds: 10 * 24 * 60 * 60 }, // 30 days
     );
 
     res.status(201).json({
@@ -790,10 +989,11 @@ const createExerciseNewTantuster = async (req, res) => {
 module.exports = {
   createVocabulary,
   getAllVocabulary,
+  getSingleVocabulary,
   deleteVocabulary,
   updateVocabularyField,
   getVocabularyField,
-  createExercise,
+  createExerciseVocabulary,
   createElegant,
   getAllElegant,
   deleteElegant,
@@ -820,4 +1020,11 @@ module.exports = {
   createExerciseIdiom,
   updateIdiom,
   getSingleIdiom,
+  updateVocabulary,
+  getSingleElegant,
+  updateElegant,
+  getSingleTantuster,
+  updateTantuster,
+  getSingleNewTantuster,
+  updateNewTantuster,
 };
