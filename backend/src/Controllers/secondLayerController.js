@@ -138,10 +138,60 @@ const updateSentenceField = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+const updateSentence = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    if (!Object.keys(updateData).length) {
+      return res.status(400).json({
+        success: false,
+        message: "No fields provided for update",
+      });
+    }
+
+    const result = await sentenceCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updateData },
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Sentence not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Sentence updated successfully",
+      updatedData: updateData,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 // ✅ Get Sentence Fields
 const getSentenceField = async (req, res) => {
   try {
     const result = await sentenceFieldsCollection.find().toArray();
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const getSingleSentence = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await sentenceCollection.findOne({ _id: new ObjectId(id) });
+    if (!result) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Sentence not found" });
+    }
+
     res.json({ success: true, data: result });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -769,4 +819,6 @@ module.exports = {
   updatePrepositionField,
   getPrepositionField,
   createExercisePreposition,
+  updateSentence,
+  getSingleSentence,
 };

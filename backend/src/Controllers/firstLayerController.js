@@ -199,21 +199,26 @@ const updateIdiom = async (req, res) => {
 };
 
 // Exercise Controller
+
 const createExerciseIdiom = async (req, res) => {
   try {
+    const { user, rows } = req.body;
+
+    if (!user || !rows || !Array.isArray(rows)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid payload. user and rows are required.",
+      });
+    }
+
     const data = {
-      ...req.body,
-      createdAt: new Date(), // Save timestamp
+      user, // who created
+      rows, // 3 rows of exercise
+      createdAt: new Date(), // timestamp for TTL
     };
 
     // Insert exercise
     const result = await idiomExercise.insertOne(data);
-
-    // Create TTL index (will auto delete after 30 days)
-    await idiomExercise.createIndex(
-      { createdAt: 1 },
-      { expireAfterSeconds: 10 * 24 * 60 * 60 }, // 30 days
-    );
 
     res.status(201).json({
       success: true,
@@ -222,6 +227,55 @@ const createExerciseIdiom = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating exercise:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+// ✅ Get All Exercise Idiom
+const getAllExerciseIdiom = async (req, res) => {
+  try {
+    const result = await idiomExercise
+      .find()
+      .sort({ createdAt: -1 }) // latest first
+      .toArray();
+
+    res.json({
+      success: true,
+      total: result.length,
+      data: result,
+    });
+  } catch (error) {
+    console.error("Error getting exercise vocabulary:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+// ✅ Delete Exercise Idiom
+const deleteExerciseIdiom = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await idiomExercise.deleteOne({
+      _id: new ObjectId(id),
+    });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Exercise not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Exercise deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting exercise:", error);
     res.status(500).json({
       success: false,
       message: error.message,
@@ -390,19 +444,23 @@ const updateVocabulary = async (req, res) => {
 // Exercise Controller
 const createExerciseVocabulary = async (req, res) => {
   try {
+    const { user, rows } = req.body;
+
+    if (!user || !rows || !Array.isArray(rows)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid payload. user and rows are required.",
+      });
+    }
+
     const data = {
-      ...req.body,
-      createdAt: new Date(), // Save timestamp
+      user, // who created
+      rows, // 3 rows of exercise
+      createdAt: new Date(), // timestamp for TTL
     };
 
     // Insert exercise
     const result = await vocabularyExercise.insertOne(data);
-
-    // Create TTL index (will auto delete after 30 days)
-    await vocabularyExercise.createIndex(
-      { createdAt: 1 },
-      { expireAfterSeconds: 10 * 24 * 60 * 60 }, // 30 days
-    );
 
     res.status(201).json({
       success: true,
@@ -411,6 +469,55 @@ const createExerciseVocabulary = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating exercise:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+// ✅ Get All Exercise Vocabulary
+const getAllExerciseVocabulary = async (req, res) => {
+  try {
+    const result = await vocabularyExercise
+      .find()
+      .sort({ createdAt: -1 }) // latest first
+      .toArray();
+
+    res.json({
+      success: true,
+      total: result.length,
+      data: result,
+    });
+  } catch (error) {
+    console.error("Error getting exercise vocabulary:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+// ✅ Delete Exercise Vocabulary
+const deleteExerciseVocabulary = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await vocabularyExercise.deleteOne({
+      _id: new ObjectId(id),
+    });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Exercise not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Exercise deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting exercise:", error);
     res.status(500).json({
       success: false,
       message: error.message,
@@ -574,22 +681,27 @@ const updateElegant = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
 // Exercise Controller
 const createExerciseElegant = async (req, res) => {
   try {
+    const { user, rows } = req.body;
+
+    if (!user || !rows || !Array.isArray(rows)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid payload. user and rows are required.",
+      });
+    }
+
     const data = {
-      ...req.body,
-      createdAt: new Date(), // Save timestamp
+      user, // who created
+      rows, // 3 rows of exercise
+      createdAt: new Date(), // timestamp for TTL
     };
 
     // Insert exercise
-    const result = await elegantExerciseCollection.insertOne(data);
-
-    // Create TTL index (will auto delete after 30 days)
-    await elegantExerciseCollection.createIndex(
-      { createdAt: 1 },
-      { expireAfterSeconds: 10 * 24 * 60 * 60 }, // 30 days
-    );
+    const result = await elegantExercise.insertOne(data);
 
     res.status(201).json({
       success: true,
@@ -598,6 +710,55 @@ const createExerciseElegant = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating exercise:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+// ✅ Get All Exercise Elegant
+const getAllExerciseElegant = async (req, res) => {
+  try {
+    const result = await elegantExercise
+      .find()
+      .sort({ createdAt: -1 }) // latest first
+      .toArray();
+
+    res.json({
+      success: true,
+      total: result.length,
+      data: result,
+    });
+  } catch (error) {
+    console.error("Error getting exercise vocabulary:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+// ✅ Delete Exercise Elegant
+const deleteExerciseElegant = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await elegantExercise.deleteOne({
+      _id: new ObjectId(id),
+    });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Exercise not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Exercise deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting exercise:", error);
     res.status(500).json({
       success: false,
       message: error.message,
@@ -768,19 +929,23 @@ const updateTantuster = async (req, res) => {
 // Exercise Controller
 const createExerciseTantuster = async (req, res) => {
   try {
+    const { user, rows } = req.body;
+
+    if (!user || !rows || !Array.isArray(rows)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid payload. user and rows are required.",
+      });
+    }
+
     const data = {
-      ...req.body,
-      createdAt: new Date(), // Save timestamp
+      user, // who created
+      rows, // 3 rows of exercise
+      createdAt: new Date(), // timestamp for TTL
     };
 
     // Insert exercise
     const result = await tantusterExerciseCollection.insertOne(data);
-
-    // Create TTL index (will auto delete after 30 days)
-    await tantusterExerciseCollection.createIndex(
-      { createdAt: 1 },
-      { expireAfterSeconds: 10 * 24 * 60 * 60 }, // 30 days
-    );
 
     res.status(201).json({
       success: true,
@@ -789,6 +954,55 @@ const createExerciseTantuster = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating exercise:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+// ✅ Get All Exercise Tantuster
+const getAllExerciseTantuster = async (req, res) => {
+  try {
+    const result = await tantusterExerciseCollection
+      .find()
+      .sort({ createdAt: -1 }) // latest first
+      .toArray();
+
+    res.json({
+      success: true,
+      total: result.length,
+      data: result,
+    });
+  } catch (error) {
+    console.error("Error getting exercise vocabulary:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+// ✅ Delete Exercise Tantuster
+const deleteExerciseTantuster = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await tantusterExerciseCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Exercise not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Exercise deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting exercise:", error);
     res.status(500).json({
       success: false,
       message: error.message,
@@ -908,7 +1122,9 @@ const getSingleNewTantuster = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const result = await newTantusterCollection.findOne({ _id: new ObjectId(id) });
+    const result = await newTantusterCollection.findOne({
+      _id: new ObjectId(id),
+    });
     if (!result) {
       return res
         .status(404)
@@ -958,19 +1174,23 @@ const updateNewTantuster = async (req, res) => {
 // Exercise Controller
 const createExerciseNewTantuster = async (req, res) => {
   try {
+    const { user, rows } = req.body;
+
+    if (!user || !rows || !Array.isArray(rows)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid payload. user and rows are required.",
+      });
+    }
+
     const data = {
-      ...req.body,
-      createdAt: new Date(), // Save timestamp
+      user, // who created
+      rows, // 3 rows of exercise
+      createdAt: new Date(), // timestamp for TTL
     };
 
     // Insert exercise
     const result = await newTantusterExerciseCollection.insertOne(data);
-
-    // Create TTL index (will auto delete after 30 days)
-    await newTantusterExerciseCollection.createIndex(
-      { createdAt: 1 },
-      { expireAfterSeconds: 10 * 24 * 60 * 60 }, // 30 days
-    );
 
     res.status(201).json({
       success: true,
@@ -979,6 +1199,55 @@ const createExerciseNewTantuster = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating exercise:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+// ✅ Get All Exercise Tantuster
+const getAllExerciseNewTantuster = async (req, res) => {
+  try {
+    const result = await newTantusterExerciseCollection
+      .find()
+      .sort({ createdAt: -1 }) // latest first
+      .toArray();
+
+    res.json({
+      success: true,
+      total: result.length,
+      data: result,
+    });
+  } catch (error) {
+    console.error("Error getting exercise vocabulary:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+// ✅ Delete Exercise New Tantuster
+const deleteExerciseNewTantuster = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await newTantusterExerciseCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Exercise not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Exercise deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting exercise:", error);
     res.status(500).json({
       success: false,
       message: error.message,
@@ -1027,4 +1296,14 @@ module.exports = {
   updateTantuster,
   getSingleNewTantuster,
   updateNewTantuster,
+  getAllExerciseVocabulary,
+  deleteExerciseVocabulary,
+  getAllExerciseElegant,
+  deleteExerciseElegant,
+  getAllExerciseTantuster,
+  deleteExerciseTantuster,
+  getAllExerciseNewTantuster,
+  deleteExerciseNewTantuster,
+  getAllExerciseIdiom,
+  deleteExerciseIdiom,
 };

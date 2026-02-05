@@ -41,6 +41,16 @@ const {
   updateTantuster,
   getSingleNewTantuster,
   updateNewTantuster,
+  getAllExerciseVocabulary,
+  deleteExerciseVocabulary,
+  getAllExerciseElegant,
+  deleteExerciseElegant,
+  getAllExerciseTantuster,
+  deleteExerciseTantuster,
+  getAllExerciseNewTantuster,
+  deleteExerciseNewTantuster,
+  getAllExerciseIdiom,
+  deleteExerciseIdiom,
 } = require("../Controllers/firstLayerController");
 
 const router = express.Router();
@@ -54,7 +64,10 @@ router.put("/idiom/:id", updateIdiom);
 // Idiom field
 router.put("/idiomField/:id", updateIdiomField);
 router.get("/idiomField", getIdiomField);
+// Idiom exercise
 router.post("/createExerciseIdiom", createExerciseIdiom);
+router.get("/getAllExerciseIdiom", getAllExerciseIdiom);
+router.delete("/deleteExerciseIdiom/:id", deleteExerciseIdiom);
 // Vocabulary
 router.get("/vocabulary", getAllVocabulary);
 router.post("/vocabulary", createVocabulary);
@@ -64,7 +77,10 @@ router.put("/vocabulary/:id", updateVocabulary);
 // Vocabulary field
 router.put("/vocabularyField/:id", updateVocabularyField);
 router.get("/vocabularyField", getVocabularyField);
+// Vocabulary exercise
 router.post("/createExerciseVocabulary", createExerciseVocabulary);
+router.get("/getAllExerciseVocabulary", getAllExerciseVocabulary);
+router.delete("/deleteExerciseVocabulary/:id", deleteExerciseVocabulary);
 
 // elegant
 router.get("/elegant", getAllElegant);
@@ -75,7 +91,11 @@ router.put("/elegant/:id", updateElegant);
 // elegant field
 router.put("/elegantField/:id", updateElegantField);
 router.get("/elegantField", getElegantField);
+// elegant exercise
 router.post("/createExerciseElegant", createExerciseElegant);
+router.get("/getAllExerciseElegant", getAllExerciseElegant);
+router.delete("/deleteExerciseElegant/:id", deleteExerciseElegant);
+
 
 //  tantuster
 router.get("/tantuster", getAllTantuster);
@@ -86,7 +106,10 @@ router.put("/tantuster/:id", updateTantuster);
 // tantuster field
 router.put("/tantusterField/:id", updateTantusterField);
 router.get("/tantusterField", getTantusterField);
+// tantuster exercise
 router.post("/createExerciseTantuster", createExerciseTantuster);
+router.get("/getAllExerciseTantuster", getAllExerciseTantuster);
+router.delete("/deleteExerciseTantuster/:id", deleteExerciseTantuster);
 
 // new tantuster
 router.get("/newtantuster", getAllNewTantuster);
@@ -97,6 +120,9 @@ router.put("/newtantuster/:id", updateNewTantuster);
 // new tantuster field
 router.put("/newtantusterField/:id", updateNewTantusterField);
 router.get("/newtantusterField", getNewTantusterField);
+// new tantuster exercise
 router.post("/createExerciseNewTantuster", createExerciseNewTantuster);
+router.get("/getAllExerciseNewTantuster", getAllExerciseNewTantuster);
+router.delete("/deleteExerciseNewTantuster/:id", deleteExerciseNewTantuster);
 
 module.exports = router;

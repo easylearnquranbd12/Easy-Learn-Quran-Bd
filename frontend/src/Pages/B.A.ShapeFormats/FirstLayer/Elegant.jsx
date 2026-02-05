@@ -1,8 +1,9 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import CustomLoading from "../../../components/Loading/CustomLoading";
+import useAuth from "../../../hooks/useAuth";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const Elegant = () => {
@@ -10,6 +11,7 @@ const Elegant = () => {
   const [activeSection, setActiveSection] = useState("mainWord");
   const { register, handleSubmit, reset, setValue } = useForm();
   const queryClient = useQueryClient();
+  const { user } = useAuth();
 
   const refs = {
     mainWord: useRef(null),
@@ -41,6 +43,28 @@ const Elegant = () => {
     },
   });
 
+  const { mutateAsync: createElegantExercise } = useMutation({
+    mutationFn: async (newData) => {
+      const res = await axiosPublic.post(
+        "/first-layer/createExerciseElegant",
+        newData,
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      Swal.fire("✅ Success", "Exercise created successfully!", "success");
+      reset();
+      queryClient.invalidateQueries({ queryKey: ["elegant"] });
+    },
+    onError: (error) => {
+      Swal.fire(
+        "❌ Error",
+        error.message || "Failed to create elegant",
+        "error",
+      );
+    },
+  });
+
   if (fieldLoading || elegantLoading) return <CustomLoading />;
 
   const elegantField = elegantFields[0] || {};
@@ -59,60 +83,68 @@ const Elegant = () => {
     { id: "exampleBangla", label: elegantField.exampleBangla },
   ];
 
-const handleSectionScroll = (section) => {
-  setActiveSection(section);
+  const handleSectionScroll = (section) => {
+    setActiveSection(section);
 
-  const yOffset = -120; // এখানে navbar + tabs এর height অনুযায়ী adjust করো
-  const element = refs[section].current;
+    const yOffset = -120; // এখানে navbar + tabs এর height অনুযায়ী adjust করো
+    const element = refs[section].current;
 
-  if (element) {
-    const y =
-      element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+    if (element) {
+      const y =
+        element.getBoundingClientRect().top + window.pageYOffset + yOffset;
 
-    window.scrollTo({ top: y, behavior: "smooth" });
-  }
-};
-
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+  };
 
   const onSubmit = async (data) => {
-    // প্রতিটি row এর ফিল্ড লিস্ট
-    const row1Fields = [
-      data.mainWord,
-      data.banglaPronunciation,
-      data.banglaMeaning,
-      data.synonyms,
-      data.antonyms,
-      data.exampleEnglish,
-      data.exampleBangla,
-    ];
+    const payload = {
+      user: {
+        uid: user?.uid,
+        email: user?.email,
+        name: user?.displayName,
+      },
+      rows: [
+        {
+          mainWord: data.mainWord,
+          banglaPronunciation: data.banglaPronunciation,
+          banglaMeaning: data.banglaMeaning,
+          synonyms: data.synonyms,
+          antonyms: data.antonyms,
+          exampleEnglish: data.exampleEnglish,
+          exampleBangla: data.exampleBangla,
+        },
+        {
+          mainWord2: data.mainWord2,
+          banglaPronunciation2: data.banglaPronunciation2,
+          banglaMeaning2: data.banglaMeaning2,
+          synonyms2: data.synonyms2,
+          antonyms2: data.antonyms2,
+          exampleEnglish2: data.exampleEnglish2,
+          exampleBangla2: data.exampleBangla2,
+        },
+        {
+          mainWord3: data.mainWord3,
+          banglaPronunciation3: data.banglaPronunciation3,
+          banglaMeaning3: data.banglaMeaning3,
+          synonyms3: data.synonyms3,
+          antonyms3: data.antonyms3,
+          exampleEnglish3: data.exampleEnglish3,
+          exampleBangla3: data.exampleBangla3,
+        },
+      ],
+      createdAt: new Date(),
+    };
 
-    const row2Fields = [
-      data.mainWord2,
-      data.banglaPronunciation2,
-      data.banglaMeaning2,
-      data.synonyms2,
-      data.antonyms2,
-      data.exampleEnglish2,
-      data.exampleBangla2,
-    ];
+    // ✅ validation (আগের logic রাখছি)
+    const countFilled = (row) =>
+      Object.values(row).filter((v) => v && v.trim() !== "").length;
 
-    const row3Fields = [
-      data.mainWord3,
-      data.banglaPronunciation3,
-      data.banglaMeaning3,
-      data.synonyms3,
-      data.antonyms3,
-      data.exampleEnglish3,
-      data.exampleBangla3,
-    ];
+    const r1 = countFilled(payload.rows[0]);
+    const r2 = countFilled(payload.rows[1]);
+    const r3 = countFilled(payload.rows[2]);
 
-    const row1Completed = row1Fields.filter((f) => f && f.trim() !== "").length;
-
-    const row2Completed = row2Fields.filter((f) => f && f.trim() !== "").length;
-
-    const row3Completed = row3Fields.filter((f) => f && f.trim() !== "").length;
-
-    if (row1Completed < 3 && row2Completed < 3 && row3Completed < 3) {
+    if (r1 < 3 && r2 < 3 && r3 < 3) {
       Swal.fire(
         "At least one row must have a minimum of 3 completed fields!",
         "",
@@ -121,6 +153,8 @@ const handleSectionScroll = (section) => {
       return;
     }
 
+    // 🔥 এখন full payload পাঠাও
+    createElegantExercise(payload);
     reset();
   };
 

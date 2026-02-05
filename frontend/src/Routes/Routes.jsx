@@ -16,6 +16,11 @@ import AllUserPayment from "../Pages/AdminDashboardPages/AdminPaymentPages/AllUs
 import AdminPdfUpload from "../Pages/AdminDashboardPages/AdminPdfManagement/AdminPdfUpload";
 import UserUploadPdfManage from "../Pages/AdminDashboardPages/AdminPdfManagement/UserUploadPdfManage";
 import AdminElegantEdit from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Elegant/AdminElegantEdit";
+import ElegantExercise from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Exercise/ElegantExercise";
+import IdiomExercise from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Exercise/IdiomExercise";
+import NewTantusterExercise from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Exercise/NewTantusterExercise";
+import TantusterExercise from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Exercise/TantusterExercise";
+import VocabularyExercise from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Exercise/VocabularyExercise";
 import AdminIdiom from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Idiom/AdminIdiom";
 import AdminIdiomEdit from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Idiom/AdminIdiomEdit";
 import AdminNewTantuster from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/NewTantuster/AdminNewTantuster";
@@ -32,6 +37,7 @@ import AdminNovel from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/
 import AdminSong from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Song/AdminSong";
 import AdminTraveling from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Traveling/AdminTraveling";
 import LayerManage from "../Pages/AdminDashboardPages/BAShapeFormats/LayerManage/LayerManage";
+import AdminSentenceEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Sentence/AdminSentenceEdit";
 import AdminBeforeProfessional from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/BeforeProfessional/AdminBeforeProfessional";
 import AdminCorporateEmail from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/CorporateEmail/AdminCorporateEmail";
 import AdminDevelopYourSkills from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/DevelopYourSkills/AdminDevelopYourSkills";
@@ -419,6 +425,14 @@ export const routes = createBrowserRouter([
         ),
       },
       {
+        path: "vocabulary-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <VocabularyExercise />
+          </Suspense>
+        ),
+      },
+      {
         path: "create-elegant",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
@@ -431,6 +445,14 @@ export const routes = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <AdminElegantEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "elegant-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <ElegantExercise />
           </Suspense>
         ),
       },
@@ -451,6 +473,14 @@ export const routes = createBrowserRouter([
         ),
       },
       {
+        path: "idiom-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <IdiomExercise />
+          </Suspense>
+        ),
+      },
+      {
         path: "create-tantuster",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
@@ -463,6 +493,14 @@ export const routes = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <AdminTantusterEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "tantuster-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <TantusterExercise />
           </Suspense>
         ),
       },
@@ -482,12 +520,28 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
+      {
+        path: "newtantuster-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <NewTantusterExercise />
+          </Suspense>
+        ),
+      },
       // Second Layer
       {
         path: "create-sentence",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <AdminSentence />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-sentence/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminSentenceEdit />
           </Suspense>
         ),
       },

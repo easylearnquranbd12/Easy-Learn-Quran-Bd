@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import CustomLoading from "../../../components/Loading/CustomLoading";
+import useAuth from "../../../hooks/useAuth";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const vocabulary = () => {
@@ -11,6 +12,7 @@ const vocabulary = () => {
   const [showAll, setShowAll] = useState(false);
   const { register, handleSubmit, reset, setValue } = useForm();
   const queryClient = useQueryClient();
+  const {user} = useAuth()
   // Fetch all vocabulary Fields
   const {
     data: vocabularyFields = [],
@@ -59,60 +61,71 @@ const vocabulary = () => {
     },
   });
 
+
   // Toggle show all rows
   const visiblevocabulary = showAll ? vocabulary || [] : (vocabulary || []).slice(0, 10);
 
-  const onSubmit = async (data) => {
-    // প্রতিটি row এর ফিল্ড লিস্ট
-    const row1Fields = [
-      data.mainWord,
-      data.banglaPronunciation,
-      data.banglaMeaning,
-      data.synonyms,
-      data.antonyms,
-      data.exampleEnglish,
-      data.exampleBangla,
-    ];
-
-    const row2Fields = [
-      data.mainWord2,
-      data.banglaPronunciation2,
-      data.banglaMeaning2,
-      data.synonyms2,
-      data.antonyms2,
-      data.exampleEnglish2,
-      data.exampleBangla2,
-    ];
-
-    const row3Fields = [
-      data.mainWord3,
-      data.banglaPronunciation3,
-      data.banglaMeaning3,
-      data.synonyms3,
-      data.antonyms3,
-      data.exampleEnglish3,
-      data.exampleBangla3,
-    ];
-
-    const row1Completed = row1Fields.filter((f) => f && f.trim() !== "").length;
-
-    const row2Completed = row2Fields.filter((f) => f && f.trim() !== "").length;
-
-    const row3Completed = row3Fields.filter((f) => f && f.trim() !== "").length;
-
-    if (row1Completed < 3 && row2Completed < 3 && row3Completed < 3) {
-      Swal.fire(
-        "At least one row must have a minimum of 3 completed fields!",
-        "",
-        "warning",
-      );
-      return;
-    }
-
-    console.log(data);
-
-    reset();
+const onSubmit = async (data) => {
+  const payload = {
+    user: {
+      uid: user?.uid,
+      email: user?.email,
+      name: user?.displayName,
+    },
+    rows: [
+      {
+        mainWord: data.mainWord,
+        banglaPronunciation: data.banglaPronunciation,
+        banglaMeaning: data.banglaMeaning,
+        synonyms: data.synonyms,
+        antonyms: data.antonyms,
+        exampleEnglish: data.exampleEnglish,
+        exampleBangla: data.exampleBangla,
+      },
+      {
+        mainWord2: data.mainWord2,
+        banglaPronunciation2: data.banglaPronunciation2,
+        banglaMeaning2: data.banglaMeaning2,
+        synonyms2: data.synonyms2,
+        antonyms2: data.antonyms2,
+        exampleEnglish2: data.exampleEnglish2,
+        exampleBangla2: data.exampleBangla2,
+      },
+      {
+        mainWord3: data.mainWord3,
+        banglaPronunciation3: data.banglaPronunciation3,
+        banglaMeaning3: data.banglaMeaning3,
+        synonyms3: data.synonyms3,
+        antonyms3: data.antonyms3,
+        exampleEnglish3: data.exampleEnglish3,
+        exampleBangla3: data.exampleBangla3,
+      },
+    ],
+    createdAt: new Date(),
   };
+
+  // ✅ validation (আগের logic রাখছি)
+  const countFilled = (row) =>
+    Object.values(row).filter((v) => v && v.trim() !== "").length;
+
+  const r1 = countFilled(payload.rows[0]);
+  const r2 = countFilled(payload.rows[1]);
+  const r3 = countFilled(payload.rows[2]);
+
+  if (r1 < 3 && r2 < 3 && r3 < 3) {
+    Swal.fire(
+      "At least one row must have a minimum of 3 completed fields!",
+      "",
+      "warning",
+    );
+    return;
+  }
+
+  // 🔥 এখন full payload পাঠাও
+  createvocabularyExercise(payload);
+  reset();
+};
+
 
   if (isLoading || vocabularyLoading) return <CustomLoading />;
 

@@ -30,6 +30,8 @@ const {
   updatePrepositionField,
   getPrepositionField,
   createExercisePreposition,
+  getSingleSentence,
+  updateSentence,
 } = require("../Controllers/secondLayerController");
 
 const router = express.Router();
@@ -38,6 +40,8 @@ const router = express.Router();
 router.get("/sentence", getAllSentence);
 router.post("/sentence", createSentence);
 router.delete("/sentence/:id", deleteSentence);
+router.get("/sentence/:id", getSingleSentence);
+router.put("/sentence/:id", updateSentence);
 // sentence field
 router.put("/sentenceField/:id", updateSentenceField);
 router.get("/sentenceField", getSentenceField);

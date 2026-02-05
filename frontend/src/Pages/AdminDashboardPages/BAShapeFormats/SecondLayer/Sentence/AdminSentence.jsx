@@ -1,24 +1,614 @@
+// import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+// import { Edit, Trash2 } from "lucide-react";
+// import { useState } from "react";
+// import { Helmet } from "react-helmet-async";
+// import { useForm } from "react-hook-form";
+// import Swal from "sweetalert2";
+// import AdminLoading from "../../../../../components/Loading/AdminLoading";
+// import TittleAnimation from "../../../../../components/TittleAnimation/TittleAnimation";
+// import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
+// import RichTextField from "../../../../../shared/TextEditor/RichTextField";
+// import SentenceModal from "./SentenceModal";
+
+// const AdminSentence = () => {
+//   const [modalOpen, setModalOpen] = useState(false);
+//   const [fieldName, setFieldName] = useState("");
+//   const [selectedVocabId, setSelectedVocabId] = useState(null);
+//   const [currentValue, setCurrentValue] = useState("");
+
+//   const axiosPublic = useAxiosPublic();
+//   const queryClient = useQueryClient();
+//   const { register, handleSubmit, reset, setValue, control } = useForm({
+//     defaultValues: {
+//       mainWord: "",
+//       banglaPronunciation: "",
+//       banglaMeaning: "",
+//       synonyms: "",
+//       antonyms: "",
+//       exampleEnglish: "",
+//       exampleBangla: "",
+//     },
+//   });
+
+//   // Fetch all sentence Fields
+//   const {
+//     data: sentenceFields = [],
+//     isLoading,
+//     isError,
+//     refetch,
+//   } = useQuery({
+//     queryKey: ["sentenceFields"],
+//     queryFn: async () => {
+//       const res = await axiosPublic.get("/second-layer/sentenceField");
+
+//       return res.data.data;
+//     },
+//   });
+
+//   // Create sentence
+//   const { mutateAsync: createsentence } = useMutation({
+//     mutationFn: async (newData) => {
+//       const res = await axiosPublic.post("/second-layer/sentence", newData);
+//       return res.data;
+//     },
+//     onSuccess: () => {
+//       Swal.fire("✅ Success", "sentence created successfully!", "success");
+//       reset();
+//       queryClient.invalidateQueries({ queryKey: ["sentence"] });
+//     },
+//     onError: (error) => {
+//       Swal.fire(
+//         "❌ Error",
+//         error.message || "Failed to create sentence",
+//         "error"
+//       );
+//     },
+//   });
+//   // Fetch all sentence
+//   const {
+//     data: sentence = [],
+//     isLoading: sentenceLoading,
+//     refetch: refetchsentence,
+//     isError: sentenceError,
+//   } = useQuery({
+//     queryKey: ["sentence"],
+//     queryFn: async () => {
+//       const res = await axiosPublic.get("/second-layer/sentence");
+//       return res.data.data || [];
+//     },
+//   });
+
+//   // delete sentence
+//   const { mutateAsync: deletesentence } = useMutation({
+//     mutationFn: async (id) => {
+//       const res = await axiosPublic.delete(`/second-layer/sentence/${id}`);
+//       return res.data;
+//     },
+//     onSuccess: () => {
+//       Swal.fire("Deleted!", "Sentence has been deleted.", "success");
+//       refetchsentence(); // Refetch the list after deletion
+//     },
+//     onError: (error) => {
+//       Swal.fire("Error!", "Failed to delete Sentence.", "error");
+//       console.error(error);
+//     },
+//   });
+
+//   // Delete handler
+//   const handleDelete = (id) => {
+//     Swal.fire({
+//       title: "Are you sure?",
+//       text: "You want to delete this Sentence?",
+//       icon: "warning",
+//       showCancelButton: true,
+//       confirmButtonColor: "#d33",
+//       cancelButtonColor: "#3085d6",
+//       confirmButtonText: "Yes, delete it!",
+//     }).then((result) => {
+//       if (result.isConfirmed) {
+//         deletesentence(id);
+//       }
+//     });
+//   };
+//   const [showAll, setShowAll] = useState(false);
+//   // Toggle show all rows
+//   const visiblesentence = showAll ? sentence : sentence.slice(0, 10);
+//   // form submit
+//   const onSubmit = async (data) => {
+//     createsentence(data);
+//   };
+
+//   // modal open
+//   const handleEditClick = (field, value, id) => {
+//     setFieldName(field);
+//     setCurrentValue(value);
+//     setSelectedVocabId(id);
+//     setModalOpen(true);
+//   };
+
+//   // Toggle handler using item.isActive
+//   const handleToggle = (currentState) => {
+//     Swal.fire({
+//       title: "Are you sure?",
+//       text: `You want to turn ${
+//         currentState === "ON" ? "OFF" : "ON"
+//       } this sentence?`,
+//       icon: "question",
+//       showCancelButton: true,
+//       confirmButtonColor: "#3085d6",
+//       cancelButtonColor: "#d33",
+//       confirmButtonText: "Yes",
+//       cancelButtonText: "Cancel",
+//     }).then((result) => {
+//       if (result.isConfirmed) {
+//         toggleIsActiveMutation.mutate(currentState);
+//       }
+//     });
+//   };
+
+//   // Toggle mutation using item.isActive
+//   const toggleIsActiveMutation = useMutation({
+//     mutationFn: async (currentState) => {
+//       const res = await axiosPublic.put(`/second-layer/sentenceField/toggle`, {
+//         fieldName: "isActive", // ✅ এটা দিতে হবে
+//         currentValue: currentState,
+//       });
+//       return res.data;
+//     },
+//     onSuccess: (data) => {
+//       Swal.fire({
+//         icon: "success",
+//         title: "Success",
+//         text: `sentence is now ${data.updatedValue}`,
+//       });
+//       queryClient.invalidateQueries({ queryKey: ["sentenceFields"] });
+//     },
+//     onError: (error) => {
+//       Swal.fire(
+//         "Error",
+//         error.response?.data?.message || error.message,
+//         "error"
+//       );
+//     },
+//   });
+//   if (isLoading || sentenceLoading) {
+//     return <AdminLoading />;
+//   }
+//   return (
+//     <div className="max-w-[1400px] mx-auto px-2">
+//       <Helmet>
+//         <title>Quiz | sentence</title>
+//       </Helmet>
+//       <TittleAnimation
+//         tittle="Create sentence"
+//         subtittle="Create With admin or Moderator"
+//       />
+
+//       <div className="mt-10">
+//         <div className="card bg-white shadow-md rounded-2xl p-3 md:p-5">
+//           <div className="w-full">
+//             <div className=" space-y-4">
+//               <div className="mb-4 text-center">
+//                 {sentenceFields && sentenceFields.length > 0 && (
+//                   <>
+//                     {/* Title */}
+//                     <div className="flex items-start justify-center gap-2 mb-2">
+//                       {sentenceFields[0].title || "Title"}
+//                       <Edit
+//                         onClick={() =>
+//                           handleEditClick(
+//                             "title",
+//                             sentenceFields[0].title,
+//                             sentenceFields[0].title
+//                           )
+//                         }
+//                         className="w-5 h-5 text-green-600 cursor-pointer"
+//                       />
+//                     </div>
+
+//                     {/* description */}
+//                     <div className="flex items-start justify-center gap-2">
+//                       <span className="text-base">
+//                         {sentenceFields[0].description || "description"}
+//                       </span>
+//                       <Edit
+//                         onClick={() =>
+//                           handleEditClick(
+//                             "description",
+//                             sentenceFields[0].description,
+//                             sentenceFields[0].description
+//                           )
+//                         }
+//                         className="min-w-5 min-h-5 w-5 h-5 text-green-600 cursor-pointer"
+//                       />
+//                     </div>
+//                   </>
+//                 )}
+//               </div>
+//               <div>
+//                 {sentenceFields.map((item) => (
+//                   <div key={item._id} className="flex items-center gap-2 my-2">
+//                     <span className="font-semibold">
+//                       Create {item.title || "sentence"} Exercise
+//                     </span>
+//                     <input
+//                       type="checkbox"
+//                       className={`toggle ${
+//                         item.isActive === "ON" ? "toggle-success" : ""
+//                       }`}
+//                       checked={item.isActive === "ON"}
+//                       onChange={() => handleToggle(item.isActive)}
+//                     />
+//                   </div>
+//                 ))}
+//               </div>
+//               <form onSubmit={handleSubmit(onSubmit)}>
+//                 {sentenceFields?.map((item) => (
+//                   <div key={item._id} className="space-y-4 p-2">
+//                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+//                       <div className="flex items-center justify-start gap-5 mb-2">
+//                         <label className="text-sm font-semibold text-gray-700">
+//                           {item.mainWord || "Main-Word"}
+//                         </label>
+//                         <Edit
+//                           onClick={() =>
+//                             handleEditClick(
+//                               "mainWord",
+//                               item.mainWord,
+//                               item.mainWord
+//                             )
+//                           }
+//                           className="w-4 h-4 text-green-600 cursor-pointer"
+//                         />
+//                       </div>
+//                       <td className="align-top">
+//                         <RichTextField
+//                           name="mainWord"
+//                           control={control}
+//                           placeholder={`Enter Your ${item.mainWord}`}
+//                         />
+//                       </td>
+//                     </div>
+
+//                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+//                       <div className="flex items-center justify-start gap-5 mb-2">
+//                         <label className="text-sm font-semibold text-gray-700">
+//                           {item.banglaPronunciation || "Bangla-Pronunciation"}
+//                         </label>
+//                         <Edit
+//                           onClick={() =>
+//                             handleEditClick(
+//                               "banglaPronunciation",
+//                               item.banglaPronunciation,
+//                               item.banglaPronunciation
+//                             )
+//                           }
+//                           className="w-4 h-4 text-green-600 cursor-pointer"
+//                         />
+//                       </div>
+//                       <td className="align-top">
+//                         <RichTextField
+//                           name="banglaPronunciation"
+//                           control={control}
+//                           placeholder={`Enter Your ${item.banglaPronunciation}`}
+//                         />
+//                       </td>
+//                     </div>
+
+//                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+//                       <div className="flex items-center justify-start gap-5 mb-2">
+//                         <label className="text-sm font-semibold text-gray-700">
+//                           {item.banglaMeaning || "Bangla-Meaning"}
+//                         </label>
+//                         <Edit
+//                           onClick={() =>
+//                             handleEditClick(
+//                               "banglaMeaning",
+//                               item.banglaMeaning,
+//                               item.banglaMeaning
+//                             )
+//                           }
+//                           className="w-4 h-4 text-green-600 cursor-pointer"
+//                         />
+//                       </div>
+//                       <td className="align-top">
+//                         <RichTextField
+//                           name="banglaMeaning"
+//                           control={control}
+//                           placeholder={`Enter Your ${item.banglaMeaning}`}
+//                         />
+//                       </td>
+//                     </div>
+
+//                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+//                       <div className="flex items-center justify-start gap-5 mb-2">
+//                         <label className="text-sm font-semibold text-gray-700">
+//                           {item.synonyms || "Synonyms"}
+//                         </label>
+//                         <Edit
+//                           onClick={() =>
+//                             handleEditClick(
+//                               "synonyms",
+//                               item.synonyms,
+//                               item.synonyms
+//                             )
+//                           }
+//                           className="w-4 h-4 text-green-600 cursor-pointer"
+//                         />
+//                       </div>
+//                       <td className="align-top">
+//                         <RichTextField
+//                           name="synonyms"
+//                           control={control}
+//                           placeholder={`Enter Your ${item.synonyms}`}
+//                         />
+//                       </td>
+//                     </div>
+
+//                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+//                       <div className="flex items-center justify-start gap-5 mb-2">
+//                         <label className="text-sm font-semibold text-gray-700">
+//                           {item.antonyms || "Antonyms"}
+//                         </label>
+//                         <Edit
+//                           onClick={() =>
+//                             handleEditClick(
+//                               "antonyms",
+//                               item.antonyms,
+//                               item.antonyms
+//                             )
+//                           }
+//                           className="w-4 h-4 text-green-600 cursor-pointer"
+//                         />
+//                       </div>
+//                       <td className="align-top">
+//                         <RichTextField
+//                           name="antonyms"
+//                           control={control}
+//                           placeholder={`Enter Your ${item.antonyms}`}
+//                         />
+//                       </td>
+//                     </div>
+
+//                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+//                       <div className="flex items-center justify-start gap-5 mb-2">
+//                         <label className="text-sm font-semibold text-gray-700">
+//                           {item.exampleEnglish || "Example (English)"}
+//                         </label>
+//                         <Edit
+//                           onClick={() =>
+//                             handleEditClick(
+//                               "exampleEnglish",
+//                               item.exampleEnglish,
+//                               item.exampleEnglish
+//                             )
+//                           }
+//                           className="w-4 h-4 text-green-600 cursor-pointer"
+//                         />
+//                       </div>
+//                       <td className="align-top">
+//                         <RichTextField
+//                           name="exampleEnglish"
+//                           control={control}
+//                           placeholder={`Enter Your ${item.exampleEnglish}`}
+//                         />
+//                       </td>
+//                     </div>
+
+//                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+//                       <div className="flex items-center justify-start gap-5 mb-2">
+//                         <label className="text-sm font-semibold text-gray-700">
+//                           {item.exampleBangla || "Example (Bangla)"}
+//                         </label>
+//                         <Edit
+//                           onClick={() =>
+//                             handleEditClick(
+//                               "exampleBangla",
+//                               item.exampleBangla,
+//                               item.exampleBangla
+//                             )
+//                           }
+//                           className="w-4 h-4 text-green-600 cursor-pointer"
+//                         />
+//                       </div>
+//                       <td className="align-top">
+//                         <RichTextField
+//                           name="exampleBangla"
+//                           control={control}
+//                           placeholder={`Enter Your ${item.exampleBangla}`}
+//                         />
+//                       </td>
+//                     </div>
+//                   </div>
+//                 ))}
+
+//                 <div className="flex justify-center mt-6 p-2">
+//                   <button
+//                     type="submit"
+//                     className="px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-lg shadow-md w-full"
+//                   >
+//                     Submit
+//                   </button>
+//                 </div>
+//               </form>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* History */}
+//       <div className="bg-white rounded-lg shadow-md p-2 md:p-5 mt-10 w-[450px] md:w-full">
+//         <h1 className="mb-5">
+//           Total sentence Items:{" "}
+//           <span className="text-3xl font-bold ">{sentence.length}</span>
+//         </h1>
+
+//         <div className="overflow-x-auto rounded-xl shadow border border-gray-200">
+//           {sentenceLoading ? (
+//             <div className="p-6 text-center text-gray-500">
+//               Loading sentence...
+//             </div>
+//           ) : sentenceError ? (
+//             <div className="p-6 text-center text-red-500">
+//               Error loading sentence.
+//             </div>
+//           ) : (
+//             <table className="table w-full">
+//               {sentenceFields?.map((item, index) => (
+//                 <thead
+//                   key={item._id}
+//                   className="bg-teal-600 text-white text-sm"
+//                 >
+//                   <tr>
+//                     <th className="min-w-10">Serial</th>
+//                     <th className="min-w-96">{item?.mainWord}</th>
+//                     <th className="min-w-96">{item?.banglaPronunciation}</th>
+//                     <th className="min-w-96">{item?.banglaMeaning}</th>
+//                     <th className="min-w-96">{item?.synonyms}</th>
+//                     <th className="min-w-96">{item?.antonyms}</th>
+//                     <th className="min-w-96">{item?.exampleEnglish}</th>
+//                     <th className="min-w-96">{item?.exampleBangla}</th>
+//                     <th className="min-w-16">Action</th>
+//                   </tr>
+//                 </thead>
+//               ))}
+//               <tbody>
+//                 {visiblesentence.length > 0 ? (
+//                   visiblesentence.map((row, i) => (
+//                     <tr
+//                       key={i}
+//                       className="hover:bg-gray-50 transition border-b text-sm"
+//                     >
+//                       <td className="font-semibold min-w-10">{i + 1}</td>
+//                       <td>
+//                         <div
+//                           className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+//                           dangerouslySetInnerHTML={{
+//                             __html: row.mainWord,
+//                           }}
+//                         />
+//                       </td>
+//                       <td>
+//                         <div
+//                           className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+//                           dangerouslySetInnerHTML={{
+//                             __html: row.banglaPronunciation,
+//                           }}
+//                         />
+//                       </td>
+//                       <td>
+//                         <div
+//                           className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+//                           dangerouslySetInnerHTML={{
+//                             __html: row.banglaMeaning,
+//                           }}
+//                         />
+//                       </td>
+//                       <td>
+//                         <div
+//                           className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+//                           dangerouslySetInnerHTML={{
+//                             __html: row.synonyms,
+//                           }}
+//                         />
+//                       </td>
+//                       <td>
+//                         <div
+//                           className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+//                           dangerouslySetInnerHTML={{
+//                             __html: row.antonyms,
+//                           }}
+//                         />
+//                       </td>
+//                       <td>
+//                         <div
+//                           className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+//                           dangerouslySetInnerHTML={{
+//                             __html: row.exampleEnglish,
+//                           }}
+//                         />
+//                       </td>
+//                       <td>
+//                         <div
+//                           className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+//                           dangerouslySetInnerHTML={{
+//                             __html: row.exampleBangla,
+//                           }}
+//                         />
+//                       </td>
+
+//                       <td className="min-w-16">
+//                         <button
+//                           onClick={() => handleDelete(row._id)}
+//                           className="px-2 py-1 text-red-600 rounded-md hover:bg-red-100 flex items-center gap-1"
+//                         >
+//                           <Trash2 size={18} />
+//                         </button>
+//                       </td>
+//                     </tr>
+//                   ))
+//                 ) : (
+//                   <tr>
+//                     <td colSpan="9" className="text-center py-6 text-gray-500">
+//                       No Sentence found.
+//                     </td>
+//                   </tr>
+//                 )}
+//               </tbody>
+//             </table>
+//           )}
+//         </div>
+//         {sentence.length > 10 && (
+//           <div className="flex justify-center mt-4">
+//             <button
+//               onClick={() => setShowAll(!showAll)}
+//               className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+//             >
+//               {showAll ? "See Less" : "See More"}
+//             </button>
+//           </div>
+//         )}
+//       </div>
+
+//       {/* Modal */}
+//       {modalOpen && (
+//         <SentenceModal
+//           isOpen={modalOpen}
+//           onClose={() => setModalOpen(false)}
+//           fieldName={fieldName}
+//           currentValue={currentValue}
+//           vocabId={selectedVocabId}
+//         />
+//       )}
+//     </div>
+//   );
+// };
+
+// export default AdminSentence;
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Edit, Trash2 } from "lucide-react";
+import { Edit, Edit2, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import AdminLoading from "../../../../../components/Loading/AdminLoading";
 import TittleAnimation from "../../../../../components/TittleAnimation/TittleAnimation";
+import useAuth from "../../../../../hooks/useAuth";
 import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
 import RichTextField from "../../../../../shared/TextEditor/RichTextField";
-import SentenceModal from "./SentenceModal";
+import SentenceModal from "./sentenceModal";
 
 const AdminSentence = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [fieldName, setFieldName] = useState("");
   const [selectedVocabId, setSelectedVocabId] = useState(null);
   const [currentValue, setCurrentValue] = useState("");
-
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
   const queryClient = useQueryClient();
-  const { register, handleSubmit, reset, setValue, control } = useForm({
+  const { register, handleSubmit, reset, setValue,control } = useForm({
     defaultValues: {
       mainWord: "",
       banglaPronunciation: "",
@@ -40,7 +630,6 @@ const AdminSentence = () => {
     queryKey: ["sentenceFields"],
     queryFn: async () => {
       const res = await axiosPublic.get("/second-layer/sentenceField");
-
       return res.data.data;
     },
   });
@@ -57,11 +646,7 @@ const AdminSentence = () => {
       queryClient.invalidateQueries({ queryKey: ["sentence"] });
     },
     onError: (error) => {
-      Swal.fire(
-        "❌ Error",
-        error.message || "Failed to create sentence",
-        "error"
-      );
+      Swal.fire("❌ Error", error.message || "Failed to create sentence", "error");
     },
   });
   // Fetch all sentence
@@ -85,11 +670,11 @@ const AdminSentence = () => {
       return res.data;
     },
     onSuccess: () => {
-      Swal.fire("Deleted!", "Sentence has been deleted.", "success");
+      Swal.fire("Deleted!", "sentence has been deleted.", "success");
       refetchsentence(); // Refetch the list after deletion
     },
     onError: (error) => {
-      Swal.fire("Error!", "Failed to delete Sentence.", "error");
+      Swal.fire("Error!", "Failed to delete sentence.", "error");
       console.error(error);
     },
   });
@@ -98,7 +683,7 @@ const AdminSentence = () => {
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "You want to delete this Sentence?",
+      text: "You want to delete this sentence?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -124,6 +709,24 @@ const AdminSentence = () => {
     setCurrentValue(value);
     setSelectedVocabId(id);
     setModalOpen(true);
+  };
+
+  // edit handler
+  const handleEdit = (id) => {
+    const role = user?.role;
+    console.log(role);
+    switch (role) {
+      case "admin":
+        navigate(`/admin-dashboard/edit-sentence/${id}`);
+        break;
+
+      case "moderator":
+        navigate(`/moderator-dashboard/edit-sentence/${id}`);
+        break;
+
+      default:
+        navigate("/login");
+    }
   };
 
   // Toggle handler using item.isActive
@@ -245,7 +848,7 @@ const AdminSentence = () => {
               <form onSubmit={handleSubmit(onSubmit)}>
                 {sentenceFields?.map((item) => (
                   <div key={item._id} className="space-y-4 p-2">
-                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-200 ">
                       <div className="flex items-center justify-start gap-5 mb-2">
                         <label className="text-sm font-semibold text-gray-700">
                           {item.mainWord || "Main-Word"}
@@ -261,13 +864,13 @@ const AdminSentence = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <td className="align-top">
+                      <div>
                         <RichTextField
                           name="mainWord"
                           control={control}
                           placeholder={`Enter Your ${item.mainWord}`}
                         />
-                      </td>
+                      </div>
                     </div>
 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
@@ -286,13 +889,13 @@ const AdminSentence = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <td className="align-top">
+                      <div>
                         <RichTextField
                           name="banglaPronunciation"
                           control={control}
                           placeholder={`Enter Your ${item.banglaPronunciation}`}
                         />
-                      </td>
+                      </div>
                     </div>
 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
@@ -311,13 +914,13 @@ const AdminSentence = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <td className="align-top">
+                      <div>
                         <RichTextField
                           name="banglaMeaning"
                           control={control}
                           placeholder={`Enter Your ${item.banglaMeaning}`}
                         />
-                      </td>
+                      </div>
                     </div>
 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
@@ -336,13 +939,13 @@ const AdminSentence = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <td className="align-top">
+                      <div>
                         <RichTextField
                           name="synonyms"
                           control={control}
                           placeholder={`Enter Your ${item.synonyms}`}
                         />
-                      </td>
+                      </div>
                     </div>
 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
@@ -361,13 +964,13 @@ const AdminSentence = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <td className="align-top">
+                      <div>
                         <RichTextField
                           name="antonyms"
                           control={control}
                           placeholder={`Enter Your ${item.antonyms}`}
                         />
-                      </td>
+                      </div>
                     </div>
 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
@@ -386,13 +989,13 @@ const AdminSentence = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <td className="align-top">
+                      <div>
                         <RichTextField
                           name="exampleEnglish"
                           control={control}
                           placeholder={`Enter Your ${item.exampleEnglish}`}
                         />
-                      </td>
+                      </div>
                     </div>
 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
@@ -411,13 +1014,13 @@ const AdminSentence = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <td className="align-top">
+                      <div>
                         <RichTextField
                           name="exampleBangla"
                           control={control}
                           placeholder={`Enter Your ${item.exampleBangla}`}
                         />
-                      </td>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -437,7 +1040,7 @@ const AdminSentence = () => {
       </div>
 
       {/* History */}
-      <div className="bg-white rounded-lg shadow-md p-2 md:p-5 mt-10 w-[450px] md:w-full">
+      <div className="bg-white rounded-lg shadow-md p-5 mt-10 w-[450px] md:w-full">
         <h1 className="mb-5">
           Total sentence Items:{" "}
           <span className="text-3xl font-bold ">{sentence.length}</span>
@@ -460,7 +1063,7 @@ const AdminSentence = () => {
                   className="bg-teal-600 text-white text-sm"
                 >
                   <tr>
-                    <th className="min-w-10">Serial</th>
+                    <th >Serial</th>
                     <th className="min-w-96">{item?.mainWord}</th>
                     <th className="min-w-96">{item?.banglaPronunciation}</th>
                     <th className="min-w-96">{item?.banglaMeaning}</th>
@@ -482,7 +1085,12 @@ const AdminSentence = () => {
                       <td className="font-semibold min-w-10">{i + 1}</td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.mainWord,
                           }}
@@ -490,7 +1098,12 @@ const AdminSentence = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.banglaPronunciation,
                           }}
@@ -498,7 +1111,12 @@ const AdminSentence = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.banglaMeaning,
                           }}
@@ -506,7 +1124,12 @@ const AdminSentence = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.synonyms,
                           }}
@@ -514,7 +1137,12 @@ const AdminSentence = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.antonyms,
                           }}
@@ -522,7 +1150,12 @@ const AdminSentence = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.exampleEnglish,
                           }}
@@ -530,19 +1163,30 @@ const AdminSentence = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.exampleBangla,
                           }}
                         />
                       </td>
 
-                      <td className="min-w-16">
+                      <td className="min-w-16 flex justify-center items-center gap-1">
                         <button
                           onClick={() => handleDelete(row._id)}
                           className="px-2 py-1 text-red-600 rounded-md hover:bg-red-100 flex items-center gap-1"
                         >
                           <Trash2 size={18} />
+                        </button>
+                        <button
+                          onClick={() => handleEdit(row._id)}
+                          className="px-2 py-1 text-green-600 rounded-md hover:bg-green-100 flex items-center gap-1"
+                        >
+                          <Edit2 size={18} />
                         </button>
                       </td>
                     </tr>
@@ -550,7 +1194,7 @@ const AdminSentence = () => {
                 ) : (
                   <tr>
                     <td colSpan="9" className="text-center py-6 text-gray-500">
-                      No Sentence found.
+                      No sentence found.
                     </td>
                   </tr>
                 )}

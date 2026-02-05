@@ -553,6 +553,55 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
       ],
     },
 
+{
+      path: "/admin-dashboard/first-layer/exercise",
+      icon: HiOutlineDocumentText,
+      label: "First Layer Exercise",
+      description: "First Layer Exercise Info",
+      color: "text-indigo-600",
+      subItems: [
+        {
+          path: "/admin-dashboard/vocabulary-exercise",
+          icon: BiEdit,
+          label: "Vocabulary Exercise",
+          description: "User Vocabulary Post",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/elegant-exercise",
+          icon: MdPayment,
+          label: "Elegant Exercise",
+          description: "User Elegant Post",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/idiom-exercise",
+          icon: BiEdit,
+          label: "Idiom Exercise",
+          description: "User Idiom Post",
+          color: "text-indigo-600",
+        },
+
+        {
+          path: "/admin-dashboard/tantuster-exercise",
+          icon: BiEdit,
+          label: "Tantuster Exercise",
+          description: "User Tantuster Post",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/newtantuster-exercise",
+          icon: BiEdit,
+          label: "Unique Exercise",
+          description: "User Unique Exercise",
+          color: "text-indigo-600",
+        },
+      ],
+    },
+
+
+
+
     {
       path: "/admin-dashboard/blog",
       icon: MdAppBlocking,

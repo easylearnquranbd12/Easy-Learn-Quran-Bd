@@ -1,8 +1,9 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import CustomLoading from "../../../components/Loading/CustomLoading";
+import useAuth from "../../../hooks/useAuth";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const Newtantuster = () => {
@@ -10,7 +11,7 @@ const Newtantuster = () => {
   const [activeSection, setActiveSection] = useState("mainWord");
   const { register, handleSubmit, reset, setValue } = useForm();
   const queryClient = useQueryClient();
-
+  const { user } = useAuth();
   const refs = {
     mainWord: useRef(null),
     banglaPronunciation: useRef(null),
@@ -41,12 +42,35 @@ const Newtantuster = () => {
     },
   });
 
+  const { mutateAsync: createNewTantusterExercise } = useMutation({
+    mutationFn: async (newData) => {
+      const res = await axiosPublic.post(
+        "/first-layer/createExerciseNewTantuster",
+        newData,
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      Swal.fire("✅ Success", "Exercise created successfully!", "success");
+      reset();
+      queryClient.invalidateQueries({ queryKey: ["NewTantuster"] });
+    },
+    onError: (error) => {
+      Swal.fire(
+        "❌ Error",
+        error.message || "Failed to create NewTantuster",
+        "error",
+      );
+    },
+  });
+
   if (fieldLoading || newtantusterLoading) return <CustomLoading />;
 
   const newtantusterField = newtantusterFields[0] || {};
   const data = newtantuster[0] || {};
 
-  if (!data) return <p className="text-center mt-10">No newtantuster data found.</p>;
+  if (!data)
+    return <p className="text-center mt-10">No newtantuster data found.</p>;
 
   // Dynamic tab generation
   const tabs = [
@@ -59,60 +83,68 @@ const Newtantuster = () => {
     { id: "exampleBangla", label: newtantusterField.exampleBangla },
   ];
 
-const handleSectionScroll = (section) => {
-  setActiveSection(section);
+  const handleSectionScroll = (section) => {
+    setActiveSection(section);
 
-  const yOffset = -120; // এখানে navbar + tabs এর height অনুযায়ী adjust করো
-  const element = refs[section].current;
+    const yOffset = -120; // এখানে navbar + tabs এর height অনুযায়ী adjust করো
+    const element = refs[section].current;
 
-  if (element) {
-    const y =
-      element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+    if (element) {
+      const y =
+        element.getBoundingClientRect().top + window.pageYOffset + yOffset;
 
-    window.scrollTo({ top: y, behavior: "smooth" });
-  }
-};
-
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+  };
 
   const onSubmit = async (data) => {
-    // প্রতিটি row এর ফিল্ড লিস্ট
-    const row1Fields = [
-      data.mainWord,
-      data.banglaPronunciation,
-      data.banglaMeaning,
-      data.synonyms,
-      data.antonyms,
-      data.exampleEnglish,
-      data.exampleBangla,
-    ];
+    const payload = {
+      user: {
+        uid: user?.uid,
+        email: user?.email,
+        name: user?.displayName,
+      },
+      rows: [
+        {
+          mainWord: data.mainWord,
+          banglaPronunciation: data.banglaPronunciation,
+          banglaMeaning: data.banglaMeaning,
+          synonyms: data.synonyms,
+          antonyms: data.antonyms,
+          exampleEnglish: data.exampleEnglish,
+          exampleBangla: data.exampleBangla,
+        },
+        {
+          mainWord2: data.mainWord2,
+          banglaPronunciation2: data.banglaPronunciation2,
+          banglaMeaning2: data.banglaMeaning2,
+          synonyms2: data.synonyms2,
+          antonyms2: data.antonyms2,
+          exampleEnglish2: data.exampleEnglish2,
+          exampleBangla2: data.exampleBangla2,
+        },
+        {
+          mainWord3: data.mainWord3,
+          banglaPronunciation3: data.banglaPronunciation3,
+          banglaMeaning3: data.banglaMeaning3,
+          synonyms3: data.synonyms3,
+          antonyms3: data.antonyms3,
+          exampleEnglish3: data.exampleEnglish3,
+          exampleBangla3: data.exampleBangla3,
+        },
+      ],
+      createdAt: new Date(),
+    };
 
-    const row2Fields = [
-      data.mainWord2,
-      data.banglaPronunciation2,
-      data.banglaMeaning2,
-      data.synonyms2,
-      data.antonyms2,
-      data.exampleEnglish2,
-      data.exampleBangla2,
-    ];
+    // ✅ validation (আগের logic রাখছি)
+    const countFilled = (row) =>
+      Object.values(row).filter((v) => v && v.trim() !== "").length;
 
-    const row3Fields = [
-      data.mainWord3,
-      data.banglaPronunciation3,
-      data.banglaMeaning3,
-      data.synonyms3,
-      data.antonyms3,
-      data.exampleEnglish3,
-      data.exampleBangla3,
-    ];
+    const r1 = countFilled(payload.rows[0]);
+    const r2 = countFilled(payload.rows[1]);
+    const r3 = countFilled(payload.rows[2]);
 
-    const row1Completed = row1Fields.filter((f) => f && f.trim() !== "").length;
-
-    const row2Completed = row2Fields.filter((f) => f && f.trim() !== "").length;
-
-    const row3Completed = row3Fields.filter((f) => f && f.trim() !== "").length;
-
-    if (row1Completed < 3 && row2Completed < 3 && row3Completed < 3) {
+    if (r1 < 3 && r2 < 3 && r3 < 3) {
       Swal.fire(
         "At least one row must have a minimum of 3 completed fields!",
         "",
@@ -121,6 +153,8 @@ const handleSectionScroll = (section) => {
       return;
     }
 
+    // 🔥 এখন full payload পাঠাও
+    createNewTantusterExercise(payload);
     reset();
   };
 
@@ -263,7 +297,8 @@ const handleSectionScroll = (section) => {
                                   />
                                 </td>
                               )}
-                            {newtantusterFields?.[0]?.banglaPronunciation !== "no" &&
+                            {newtantusterFields?.[0]?.banglaPronunciation !==
+                              "no" &&
                               newtantusterFields?.[0]?.banglaPronunciation !==
                                 "none" && (
                                 <td>
@@ -275,7 +310,8 @@ const handleSectionScroll = (section) => {
                                 </td>
                               )}
                             {newtantusterFields?.[0]?.banglaMeaning !== "no" &&
-                              newtantusterFields?.[0]?.banglaMeaning !== "none" && (
+                              newtantusterFields?.[0]?.banglaMeaning !==
+                                "none" && (
                                 <td>
                                   <textarea
                                     {...register("banglaMeaning")}
@@ -305,7 +341,8 @@ const handleSectionScroll = (section) => {
                                 </td>
                               )}
                             {newtantusterFields?.[0]?.exampleEnglish !== "no" &&
-                              newtantusterFields?.[0]?.exampleEnglish !== "none" && (
+                              newtantusterFields?.[0]?.exampleEnglish !==
+                                "none" && (
                                 <td>
                                   <textarea
                                     {...register("exampleEnglish")}
@@ -315,7 +352,8 @@ const handleSectionScroll = (section) => {
                                 </td>
                               )}
                             {newtantusterFields?.[0]?.exampleBangla !== "no" &&
-                              newtantusterFields?.[0]?.exampleBangla !== "none" && (
+                              newtantusterFields?.[0]?.exampleBangla !==
+                                "none" && (
                                 <td>
                                   <textarea
                                     {...register("exampleBangla")}
@@ -341,7 +379,8 @@ const handleSectionScroll = (section) => {
                                   />
                                 </td>
                               )}
-                            {newtantusterFields?.[0]?.banglaPronunciation !== "no" &&
+                            {newtantusterFields?.[0]?.banglaPronunciation !==
+                              "no" &&
                               newtantusterFields?.[0]?.banglaPronunciation !==
                                 "none" && (
                                 <td>
@@ -353,7 +392,8 @@ const handleSectionScroll = (section) => {
                                 </td>
                               )}
                             {newtantusterFields?.[0]?.banglaMeaning !== "no" &&
-                              newtantusterFields?.[0]?.banglaMeaning !== "none" && (
+                              newtantusterFields?.[0]?.banglaMeaning !==
+                                "none" && (
                                 <td>
                                   <textarea
                                     {...register("banglaMeaning2")}
@@ -383,7 +423,8 @@ const handleSectionScroll = (section) => {
                                 </td>
                               )}
                             {newtantusterFields?.[0]?.exampleEnglish !== "no" &&
-                              newtantusterFields?.[0]?.exampleEnglish !== "none" && (
+                              newtantusterFields?.[0]?.exampleEnglish !==
+                                "none" && (
                                 <td>
                                   <textarea
                                     {...register("exampleEnglish2")}
@@ -393,7 +434,8 @@ const handleSectionScroll = (section) => {
                                 </td>
                               )}
                             {newtantusterFields?.[0]?.exampleBangla !== "no" &&
-                              newtantusterFields?.[0]?.exampleBangla !== "none" && (
+                              newtantusterFields?.[0]?.exampleBangla !==
+                                "none" && (
                                 <td>
                                   <textarea
                                     {...register("exampleBangla2")}
@@ -419,7 +461,8 @@ const handleSectionScroll = (section) => {
                                   />
                                 </td>
                               )}
-                            {newtantusterFields?.[0]?.banglaPronunciation !== "no" &&
+                            {newtantusterFields?.[0]?.banglaPronunciation !==
+                              "no" &&
                               newtantusterFields?.[0]?.banglaPronunciation !==
                                 "none" && (
                                 <td>
@@ -431,7 +474,8 @@ const handleSectionScroll = (section) => {
                                 </td>
                               )}
                             {newtantusterFields?.[0]?.banglaMeaning !== "no" &&
-                              newtantusterFields?.[0]?.banglaMeaning !== "none" && (
+                              newtantusterFields?.[0]?.banglaMeaning !==
+                                "none" && (
                                 <td>
                                   <textarea
                                     {...register("banglaMeaning3")}
@@ -461,7 +505,8 @@ const handleSectionScroll = (section) => {
                                 </td>
                               )}
                             {newtantusterFields?.[0]?.exampleEnglish !== "no" &&
-                              newtantusterFields?.[0]?.exampleEnglish !== "none" && (
+                              newtantusterFields?.[0]?.exampleEnglish !==
+                                "none" && (
                                 <td>
                                   <textarea
                                     {...register("exampleEnglish3")}
@@ -471,7 +516,8 @@ const handleSectionScroll = (section) => {
                                 </td>
                               )}
                             {newtantusterFields?.[0]?.exampleBangla !== "no" &&
-                              newtantusterFields?.[0]?.exampleBangla !== "none" && (
+                              newtantusterFields?.[0]?.exampleBangla !==
+                                "none" && (
                                 <td>
                                   <textarea
                                     {...register("exampleBangla3")}
