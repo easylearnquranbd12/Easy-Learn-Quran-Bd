@@ -28,7 +28,7 @@ const {
   deleteMcq,
   getAllMcq,
   createMcq,
-} = require("../Controllers/fiveLayerController");
+} = require("../controllers/fiveLayerController");
 
 const router = express.Router();
 

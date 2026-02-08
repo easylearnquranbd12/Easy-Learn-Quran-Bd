@@ -7,7 +7,7 @@ const {
   getUserByEmail,
   deleteUser,
   updateUserRole,
-} = require("../Controllers/userController");
+} = require("../controllers/userController");
 const router = express.Router();
 
 router.post("/register", registerUser);

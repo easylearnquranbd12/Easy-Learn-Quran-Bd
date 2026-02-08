@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllAuthors, createAuthor, deleteAuthor } = require("../Controllers/testimonialController");
+const { getAllAuthors, createAuthor, deleteAuthor } = require("../controllers/testimonialController");
 
 
 

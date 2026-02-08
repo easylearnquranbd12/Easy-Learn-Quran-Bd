@@ -22,7 +22,7 @@ const About = () => {
   return (
     <div>
       <Helmet>
-        <title>Quiz-Platfrom | About</title>
+        <title>Be The Shape | About</title>
       </Helmet>
       <div className="py-5 max-w-[1400px] mx-auto px-2 ">
         <TittleAnimation tittle="About" subtittle="About Us More Information" />
@@ -34,7 +34,7 @@ const About = () => {
           animate="visible"
           custom={1}
         >
-          Quiz-Platfrom — The Journey of Precision, Curiosity, and Confidence
+          Be The Shape — The Journey of Precision, Curiosity, and Confidence
         </motion.h1>
 
         <motion.p
@@ -44,13 +44,13 @@ const About = () => {
           animate="visible"
           custom={2}
         >
-          Quiz-Platfrom has always been more than just numbers. It’s the silent
+          Be The Shape has always been more than just numbers. It’s the silent
           language that shapes the universe — from the spiral of a galaxy to the
           rhythm of our heartbeat. With this belief at its core, our journey
           began — not with crowds, but with a small group of curious minds, and
           a dream:{" "}
           <strong className="text-blue-600">
-            to make Quiz-Platfrom open, accessible, and empowering for every
+            to make Be The Shape open, accessible, and empowering for every
             student
           </strong>
           .
@@ -162,7 +162,7 @@ const About = () => {
           custom={10}
         >
           Thousands of learners have already discovered the joy of learning
-          Quiz-Platfrom with us — completely free. We’re not just teaching
+          Be The Shape with us — completely free. We’re not just teaching
           formulas; we’re building{" "}
           <strong>confidence, logic, and a lifelong love for learning</strong>.
         </motion.p>
@@ -174,7 +174,7 @@ const About = () => {
           animate="visible"
           custom={11}
         >
-          ✨ Join us in this journey. Let Quiz-Platfrom unlock the genius within
+          ✨ Join us in this journey. Let Be The Shape unlock the genius within
           you.
         </motion.p>
       </div>

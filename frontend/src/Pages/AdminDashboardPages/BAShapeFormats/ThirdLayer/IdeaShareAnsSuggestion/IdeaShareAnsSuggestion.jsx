@@ -9,6 +9,7 @@ import TittleAnimation from "../../../../../components/TittleAnimation/TittleAni
 import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
 import RichTextField from "../../../../../shared/TextEditor/RichTextField";
 import MediaUpload from "../../../../../utils/MediaUpload";
+import EditIdeaShareModal from "./EditIdeaShareModal";
 import IdeaShareAnsSuggestionModal from "./IdeaShareAnsSuggestionModal";
 
 const IdeaShareAnsSuggestion = () => {
@@ -19,6 +20,24 @@ const IdeaShareAnsSuggestion = () => {
   const [resetSignal, setResetSignal] = useState(0);
   const axiosPublic = useAxiosPublic();
   const queryClient = useQueryClient();
+
+  const [editOpen, setEditOpen] = useState(false);
+  const [selectedIdea, setSelectedIdea] = useState(null);
+
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }) =>
+      axiosPublic.put(`/third-layer/ideaShares/${id}`, data),
+    onSuccess: () => {
+      Swal.fire("Updated!", "Idea Share updated successfully", "success");
+      queryClient.invalidateQueries(["ideashares"]);
+    },
+    onError: () => Swal.fire("Error!", "Failed to update Idea Share", "error"),
+  });
+
+  const handleEdit = (idea) => {
+    setSelectedIdea(idea);
+    setEditOpen(true);
+  };
 
   // ✅ Form Setup
   const {
@@ -40,7 +59,7 @@ const IdeaShareAnsSuggestion = () => {
     queryKey: ["ideashareFields"],
     queryFn: async () => {
       const res = await axiosPublic.get("/third-layer/ideaSharesField");
-      console.log(res.data.data)
+      console.log(res.data.data);
       return res.data?.data || [];
     },
   });
@@ -53,7 +72,7 @@ const IdeaShareAnsSuggestion = () => {
       Swal.fire(
         "✅ Success!",
         "Develop Your Skill  added successfully.",
-        "success"
+        "success",
       );
       resetForm();
     },
@@ -95,10 +114,7 @@ const IdeaShareAnsSuggestion = () => {
 
   // ✅ Submit Handler
   const onSubmit = async (data) => {
-    // if (!imageUrl) {
-    //   Swal.fire("Error!", "Please upload a song image.", "error");
-    //   return;
-    // }
+  
 
     createMutation.mutate(data);
   };
@@ -146,7 +162,7 @@ const IdeaShareAnsSuggestion = () => {
       Swal.fire(
         "Error!",
         error.response?.data?.message || error.message,
-        "error"
+        "error",
       ),
   });
 
@@ -191,9 +207,8 @@ const IdeaShareAnsSuggestion = () => {
         subtittle="Manage Idea Share and Suggestion Fields"
       />
 
-      <div className="mt-10 max-w-7xl mx-auto px-2">
+      <div className="mt-10 max-w-[1400px] mx-auto px-2">
         <div className=" w-full bg-white shadow-md rounded-lg p-2 md:p-5">
-          {/* ✅ Vocabulary Fields Section */}
           <div className="text-center mb-6">
             {ideashareFields && ideashareFields.length > 0 && (
               <>
@@ -204,10 +219,10 @@ const IdeaShareAnsSuggestion = () => {
                       handleEditClick(
                         "title",
                         ideashareFields[0].title,
-                        ideashareFields[0]._id
+                        ideashareFields[0]._id,
                       )
                     }
-                    className="w-5 h-5 min-h-5 min-w-5 text-green-600 cursor-pointer"
+                    className="min-h-5 min-w-5 w-5 h-5 text-green-600 cursor-pointer"
                   />
                 </div>
 
@@ -220,22 +235,19 @@ const IdeaShareAnsSuggestion = () => {
                       handleEditClick(
                         "description",
                         ideashareFields[0].description,
-                        ideashareFields[0]._id
+                        ideashareFields[0]._id,
                       )
                     }
-                    className="w-5 h-5 min-h-5 min-w-5 text-green-600 cursor-pointer"
+                    className="w-5 h-5 min-h-5 min-w-5  text-green-600 cursor-pointer"
                   />
                 </div>
               </>
             )}
 
             {ideashareFields.map((item) => (
-              <div
-                key={item._id}
-                className="flex items-center gap-2 justify-center mt-3"
-              >
+              <div key={item._id} className="flex items-start gap-2  mt-3">
                 <span className="font-semibold">
-                  Toggle {item.title || "Song Field"}
+                  Toggle {item.title || "Develop Your Skills Field"}
                 </span>
                 <input
                   type="checkbox"
@@ -256,7 +268,7 @@ const IdeaShareAnsSuggestion = () => {
               <div className="form-control w-full py-6">
                 <label className="label">
                   <span className="label-text text-base font-medium text-gray-700">
-                    Name:
+                    Tittle:
                   </span>
                 </label>
                 <Controller
@@ -372,7 +384,15 @@ const IdeaShareAnsSuggestion = () => {
                           }}
                         ></td>
                         <td className="px-4 py-2 text-center">{item.link}</td>
-                        <td className="px-4 py-2 text-center">
+                        <td className="px-4 py-2 text-center flex gap-3 justify-center mt-2">
+                          <button
+                            onClick={() => handleEdit(item)}
+                            className="text-green-600 hover:text-green-800"
+                            title="Edit"
+                          >
+                            <Edit size={18} />
+                          </button>
+
                           <button
                             onClick={() => handleDelete(item._id)}
                             className="text-red-600 hover:text-red-800"
@@ -399,6 +419,19 @@ const IdeaShareAnsSuggestion = () => {
           fieldName={fieldName}
           currentValue={currentValue}
           vocabId={selectedVocabId}
+        />
+      )}
+      {editOpen && selectedIdea && (
+        <EditIdeaShareModal
+          isOpen={editOpen}
+          onClose={() => setEditOpen(false)}
+          idea={selectedIdea}
+          onUpdate={(data) =>
+            updateMutation.mutate({
+              id: selectedIdea._id,
+              data,
+            })
+          }
         />
       )}
     </>

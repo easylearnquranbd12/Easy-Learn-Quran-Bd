@@ -1,6 +1,6 @@
 const express = require("express");
-const { createBanner, getAllBanners, getBannerById, updateBanner, deleteBanner } = require("../Controllers/bannerController");
-// const { createBanner, getAllBanners, getBannerById, updateBanner, deleteBanner } = require("../Controllers/bannerController");
+const { createBanner, getAllBanners, getBannerById, updateBanner, deleteBanner } = require("../controllers/bannerController");
+// const { createBanner, getAllBanners, getBannerById, updateBanner, deleteBanner } = require("../controllers/bannerController");
 
 
 const router = express.Router();

@@ -1,5 +1,6 @@
 
 
+import axios from "axios";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
@@ -9,7 +10,6 @@ import { toast } from "react-toastify";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import "./QuillCustom.css";
-import axios from "axios";
 
 const AdminBlogCreate = () => {
   const {
@@ -77,7 +77,7 @@ const AdminBlogCreate = () => {
         authorRole: user.role,
         authorUrl: user.photoURL,
       };
-      console.log(blogData);
+    
       const res = await axiosPublic.post("/blog/blog", blogData);
       if (res.status === 200 || res.status === 201) {
         toast.success("Blog post created successfully!");
@@ -88,7 +88,7 @@ const AdminBlogCreate = () => {
         toast.error("Failed to create blog post.");
       }
     } catch (error) {
-      console.error(error);
+   
       toast.error("Something went wrong!");
     } finally {
       setLoading(false);

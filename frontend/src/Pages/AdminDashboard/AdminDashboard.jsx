@@ -2,17 +2,17 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import {
-    Bar,
-    BarChart,
-    CartesianGrid,
-    Cell, Legend,
-    Line,
-    LineChart,
-    Pie,
-    PieChart,
-    ResponsiveContainer,
-    Tooltip,
-    XAxis, YAxis
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell, Legend,
+  Line,
+  LineChart,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis, YAxis
 } from "recharts";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#A28BFF"];
@@ -59,7 +59,7 @@ export default function AdminDashboard() {
     <div className="p-6 bg-gray-50 min-h-screen">
       <Helmet><title>Admin Dashboard</title></Helmet>
       <header className="mb-6">
-        <h1 className="text-2xl font-bold">Admin Dashboard — Learning Quiz Platform</h1>
+        <h1 className="text-2xl font-bold">Admin Dashboard — Be The Shape</h1>
         <p className="text-sm text-gray-600">Overview of users, PDFs, and content collections.</p>
       </header>
 

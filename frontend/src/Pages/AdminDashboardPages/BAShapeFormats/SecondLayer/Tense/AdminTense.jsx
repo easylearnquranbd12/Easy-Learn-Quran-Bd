@@ -1,11 +1,14 @@
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Edit, Trash2 } from "lucide-react";
+import { Edit, Edit2, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import AdminLoading from "../../../../../components/Loading/AdminLoading";
 import TittleAnimation from "../../../../../components/TittleAnimation/TittleAnimation";
+import useAuth from "../../../../../hooks/useAuth";
 import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
 import RichTextField from "../../../../../shared/TextEditor/RichTextField";
 import TenseModal from "./TenseModal";
@@ -15,10 +18,11 @@ const AdminTense = () => {
   const [fieldName, setFieldName] = useState("");
   const [selectedVocabId, setSelectedVocabId] = useState(null);
   const [currentValue, setCurrentValue] = useState("");
-
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
   const queryClient = useQueryClient();
-  const { register, handleSubmit, reset, setValue, control } = useForm({
+  const { register, handleSubmit, reset, setValue,control } = useForm({
     defaultValues: {
       mainWord: "",
       banglaPronunciation: "",
@@ -40,7 +44,6 @@ const AdminTense = () => {
     queryKey: ["tenseFields"],
     queryFn: async () => {
       const res = await axiosPublic.get("/second-layer/tenseField");
-
       return res.data.data;
     },
   });
@@ -86,6 +89,7 @@ const AdminTense = () => {
     },
     onError: (error) => {
       Swal.fire("Error!", "Failed to delete tense.", "error");
+      console.error(error);
     },
   });
 
@@ -119,6 +123,24 @@ const AdminTense = () => {
     setCurrentValue(value);
     setSelectedVocabId(id);
     setModalOpen(true);
+  };
+
+  // edit handler
+  const handleEdit = (id) => {
+    const role = user?.role;
+    console.log(role);
+    switch (role) {
+      case "admin":
+        navigate(`/admin-dashboard/edit-tense/${id}`);
+        break;
+
+      case "moderator":
+        navigate(`/moderator-dashboard/edit-tense/${id}`);
+        break;
+
+      default:
+        navigate("/login");
+    }
   };
 
   // Toggle handler using item.isActive
@@ -166,7 +188,6 @@ const AdminTense = () => {
       );
     },
   });
-
   if (isLoading || tenseLoading) {
     return <AdminLoading />;
   }
@@ -182,9 +203,7 @@ const AdminTense = () => {
 
       <div className="mt-10">
         <div className="card bg-white shadow-md rounded-2xl p-3 md:p-5">
-          {/* Mobile & Desktop Responsive Container */}
           <div className="w-full">
-            {/* Mobile View - Vertical Layout */}
             <div className=" space-y-4">
               <div className="mb-4 text-center">
                 {tenseFields && tenseFields.length > 0 && (
@@ -200,13 +219,13 @@ const AdminTense = () => {
                             tenseFields[0].title
                           )
                         }
-                        className="w-5 h-5 text-green-600 cursor-pointer"
+                        className="min-w-5 min-h-5 w-5 h-5 text-green-600 cursor-pointer"
                       />
                     </div>
 
                     {/* description */}
                     <div className="flex items-start justify-center gap-2">
-                      <span className="text-base">
+                      <span className="text-base text-justify">
                         {tenseFields[0].description || "description"}
                       </span>
                       <Edit
@@ -243,7 +262,7 @@ const AdminTense = () => {
               <form onSubmit={handleSubmit(onSubmit)}>
                 {tenseFields?.map((item) => (
                   <div key={item._id} className="space-y-4 p-2">
-                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                    <div className="bg-gray-50 p-3 rounded-lg border border-gray-200 ">
                       <div className="flex items-center justify-start gap-5 mb-2">
                         <label className="text-sm font-semibold text-gray-700">
                           {item.mainWord || "Main-Word"}
@@ -259,13 +278,13 @@ const AdminTense = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <td className="align-top">
+                      <div>
                         <RichTextField
                           name="mainWord"
                           control={control}
                           placeholder={`Enter Your ${item.mainWord}`}
                         />
-                      </td>
+                      </div>
                     </div>
 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
@@ -284,13 +303,13 @@ const AdminTense = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <td className="align-top">
+                      <div>
                         <RichTextField
                           name="banglaPronunciation"
                           control={control}
                           placeholder={`Enter Your ${item.banglaPronunciation}`}
                         />
-                      </td>
+                      </div>
                     </div>
 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
@@ -309,13 +328,13 @@ const AdminTense = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <td className="align-top">
+                      <div>
                         <RichTextField
                           name="banglaMeaning"
                           control={control}
                           placeholder={`Enter Your ${item.banglaMeaning}`}
                         />
-                      </td>
+                      </div>
                     </div>
 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
@@ -334,13 +353,13 @@ const AdminTense = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <td className="align-top">
+                      <div>
                         <RichTextField
                           name="synonyms"
                           control={control}
                           placeholder={`Enter Your ${item.synonyms}`}
                         />
-                      </td>
+                      </div>
                     </div>
 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
@@ -359,13 +378,13 @@ const AdminTense = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <td className="align-top">
+                      <div>
                         <RichTextField
                           name="antonyms"
                           control={control}
                           placeholder={`Enter Your ${item.antonyms}`}
                         />
-                      </td>
+                      </div>
                     </div>
 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
@@ -384,13 +403,13 @@ const AdminTense = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <td className="align-top">
+                      <div>
                         <RichTextField
                           name="exampleEnglish"
                           control={control}
                           placeholder={`Enter Your ${item.exampleEnglish}`}
                         />
-                      </td>
+                      </div>
                     </div>
 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
@@ -409,13 +428,13 @@ const AdminTense = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <td className="align-top">
+                      <div>
                         <RichTextField
                           name="exampleBangla"
                           control={control}
                           placeholder={`Enter Your ${item.exampleBangla}`}
                         />
-                      </td>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -458,7 +477,7 @@ const AdminTense = () => {
                   className="bg-teal-600 text-white text-sm"
                 >
                   <tr>
-                    <th className="min-w-10">Serial</th>
+                    <th >Serial</th>
                     <th className="min-w-96">{item?.mainWord}</th>
                     <th className="min-w-96">{item?.banglaPronunciation}</th>
                     <th className="min-w-96">{item?.banglaMeaning}</th>
@@ -480,7 +499,12 @@ const AdminTense = () => {
                       <td className="font-semibold min-w-10">{i + 1}</td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.mainWord,
                           }}
@@ -488,7 +512,12 @@ const AdminTense = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.banglaPronunciation,
                           }}
@@ -496,7 +525,12 @@ const AdminTense = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.banglaMeaning,
                           }}
@@ -504,7 +538,12 @@ const AdminTense = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.synonyms,
                           }}
@@ -512,7 +551,12 @@ const AdminTense = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.antonyms,
                           }}
@@ -520,7 +564,12 @@ const AdminTense = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.exampleEnglish,
                           }}
@@ -528,19 +577,30 @@ const AdminTense = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.exampleBangla,
                           }}
                         />
                       </td>
 
-                      <td className="min-w-16">
+                      <td className="min-w-16 flex justify-center items-center gap-1">
                         <button
                           onClick={() => handleDelete(row._id)}
                           className="px-2 py-1 text-red-600 rounded-md hover:bg-red-100 flex items-center gap-1"
                         >
                           <Trash2 size={18} />
+                        </button>
+                        <button
+                          onClick={() => handleEdit(row._id)}
+                          className="px-2 py-1 text-green-600 rounded-md hover:bg-green-100 flex items-center gap-1"
+                        >
+                          <Edit2 size={18} />
                         </button>
                       </td>
                     </tr>

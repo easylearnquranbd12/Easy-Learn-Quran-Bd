@@ -1,6 +1,6 @@
 // routes/dashboardRoutes.js
 const express = require("express");
-const { getSummary, getUserPdfsByStatus, getUsersByMonth, getTopCollections, getUserDashboardSummary } = require("../Controllers/dashboardController");
+const { getSummary, getUserPdfsByStatus, getUsersByMonth, getTopCollections, getUserDashboardSummary } = require("../controllers/dashboardController");
 const router = express.Router();
 
 

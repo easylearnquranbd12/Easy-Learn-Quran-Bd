@@ -1,5 +1,5 @@
 const express = require("express");
-const { updateLayerManagementFields, getLayerManagementFields } = require("../Controllers/layerManagementController");
+const { updateLayerManagementFields, getLayerManagementFields } = require("../controllers/layerManagementController");
 
 
 const router = express.Router();

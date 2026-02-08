@@ -137,7 +137,6 @@ const EditModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
         }
       );
       const data = await res.json();
-      console.log(data)
       if (!res.ok) {
         throw new Error(data.message || "Failed to update");
       }

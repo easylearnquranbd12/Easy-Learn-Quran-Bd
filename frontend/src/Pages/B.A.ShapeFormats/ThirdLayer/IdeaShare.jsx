@@ -62,7 +62,7 @@ const IdeaShare = () => {
             {ideaSharess.map((item, index) => (
               <div
                 key={item._id}
-                className="group relative bg-white/70 backdrop-blur-md rounded-2xl overflow-hidden shadow-md hover:shadow-2xl border border-gray-100 hover:scale-[1.02] transition-all duration-300"
+                className="group relative bg-white/70 backdrop-blur-md rounded-2xl overflow-hidden shadow-md hover:shadow-xl border border-gray-100  transition-all duration-300"
               >
                 {/* Image */}
                 <div className="h-56 w-full overflow-hidden">

@@ -1,90 +1,138 @@
+
 import { useQuery } from "@tanstack/react-query";
 import { ChevronDown } from "lucide-react";
-import { useState } from "react";
-import CustomLoading from "../../../components/Loading/CustomLoading";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+import useAuth from "../../../hooks/useAuth";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import RichTextField from "../../../shared/TextEditor/RichTextField";
 
 const BeforeProfesional = () => {
   const axiosPublic = useAxiosPublic();
-  const [openIndex, setOpenIndex] = useState(null);
+  const [openIndex, setOpenIndex] = useState(0);
+  const { user } = useAuth();
+  // ✅ Form setup
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting },
+  } = useForm({
+    defaultValues: {
+      name: "",
+      description: "",
+    },
+  });
 
-  // ✅ Fetch beforeProfessional fields
-  const { data: beforeProfesionalFields = [], isLoading: fieldsLoading } =
+  // ✅ Fetch corporate email fields
+  const { data: beforeProfessionalFields = [], isLoading: fieldsLoading } =
     useQuery({
-      queryKey: ["beforeProfesionalFields"],
+      queryKey: ["beforeProfessionalFields"],
       queryFn: async () => {
-        const res = await axiosPublic.get(
-          "/third-layer/beforeProfessionalField"
-        );
-    
+        const res = await axiosPublic.get("/third-layer/beforeProfessionalField");
         return res.data?.data || [];
       },
     });
-  // preposition("before",beforeProfesionalFields)
-  // ✅ Fetch all good beforeProfessionals
-  const {
-    data: beforeProfesional = [],
-    isLoading: beforeProfessionalsLoading,
-  } = useQuery({
-    queryKey: ["beforeProfesional"],
-    queryFn: async () => {
-      const res = await axiosPublic.get("/third-layer/beforeProfessional");
-      return res.data || [];
-    },
-  });
-  // console.log("before d ",beforeProfesional)
-  const isLoading = fieldsLoading || beforeProfessionalsLoading;
 
-  // ✅ Loading state
+  // ✅ Fetch corporate emails
+  const { data: beforeProfessional = [], isLoading: beforeProfessionalLoading } =
+    useQuery({
+      queryKey: ["beforeProfessional"],
+      queryFn: async () => {
+        const res = await axiosPublic.get("/third-layer/beforeProfessional");
+        return res.data || [];
+      },
+    });
+
+  const isLoading = fieldsLoading || beforeProfessionalLoading;
+  useEffect(() => {
+    if (beforeProfessional.length > 0) {
+      setOpenIndex(0);
+    }
+  }, [beforeProfessional]);
+  // ✅ Submit handler (Learning Your Exercise)
+  const onSubmit = async (data) => {
+    const payload = {
+      name: data.name,
+      description: data.description,
+      userInfo: {
+        userId: user?._id,
+        name: user?.displayName,
+        email: user?.email,
+        role: user?.role,
+      },
+    };
+
+    try {
+      const res = await axiosPublic.post(
+        "/third-layer/createExercisebeforeProfessional",
+        payload,
+      );
+      if (res.data.success) {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Exercise submitted successfully",
+        });
+        reset();
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error.response?.data?.message || "Something went wrong",
+      });
+    }
+  };
+
   if (isLoading) {
-    return <CustomLoading />;
+    return (
+      <div className="text-center py-10 text-gray-500 text-lg">Loading...</div>
+    );
   }
 
-  // ✅ Toggle collapse item
   const handleToggle = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
+  const activeField = beforeProfessionalFields.find(
+    (item) => item.isActive === "ON",
+  );
+
   return (
-    <div className="max-w-[1400px] mx-auto p-6 space-y-10 bg-white rounded-lg shadow-md my-10">
-      {/* ✅ beforeProfessional Fields */}
+    <div className="max-w-[1400px] mx-auto p-6 space-y-10 bg-white rounded-2xl shadow-md my-10">
+      {/* ✅ Title & Description */}
       <section className="text-center">
-        {beforeProfesionalFields.length === 0 ? (
-          <p className="text-gray-500">No beforeProfessional fields found.</p>
-        ) : (
-          <div className="space-y-6">
-            {beforeProfesionalFields.map((field) => (
-              <div key={field._id} className="p-4">
-                <h3 className="font-semibold text-3xl text-teal-700">
-                  {field.title}
-                </h3>
-                <p className="text-gray-600 text-sm lg:text-base text-justify py-5">
-                  {field.description}
-                </p>
-              </div>
-            ))}
+        {beforeProfessionalFields.map((field) => (
+          <div key={field._id} className="p-4">
+            <h3 className="font-semibold text-3xl text-teal-600">
+              {field.title}
+            </h3>
+            <p className="text-gray-600 text-sm lg:text-base text-justify py-5">
+              {field.description}
+            </p>
           </div>
-        )}
+        ))}
       </section>
 
-      {/* ✅ Good Life Style Section (Collapsible) */}
+      {/* ✅ Corporate Email List */}
       <section>
-        {beforeProfesional.length === 0 ? (
+        {beforeProfessional.length === 0 ? (
           <p className="text-gray-500 text-center">No items found.</p>
         ) : (
           <div className="space-y-3">
-            {beforeProfesional.map((beforeProfessional, index) => (
+            {beforeProfessional.map((item, index) => (
               <div
-                key={beforeProfessional._id}
+                key={item._id}
                 className="border rounded-xl overflow-hidden transition-all duration-300"
               >
-                {/* Header Button */}
                 <button
                   onClick={() => handleToggle(index)}
                   className="w-full flex justify-between items-center px-4 py-3 font-semibold bg-gray-100 hover:bg-gray-200 transition"
                 >
                   <span>
-                    {index + 1}. {beforeProfessional.name}
+                    {index + 1}. {item.name}
                   </span>
                   <ChevronDown
                     className={`h-5 w-5 transition-transform duration-300 ${
@@ -93,16 +141,15 @@ const BeforeProfesional = () => {
                   />
                 </button>
 
-                {/* Collapsible Content */}
                 <div
-                  className={`overflow-hidden transition-[max-height] duration-500 ease-in-out ${
+                  className={`overflow-hidden transition-[max-height] duration-500 ${
                     openIndex === index ? "max-h-[1500px]" : "max-h-0"
                   }`}
                 >
                   <div
                     className="px-4 py-3 text-gray-700 text-sm lg:text-base"
                     dangerouslySetInnerHTML={{
-                      __html: beforeProfessional.description,
+                      __html: item.description,
                     }}
                   />
                 </div>
@@ -111,6 +158,51 @@ const BeforeProfesional = () => {
           </div>
         )}
       </section>
+
+      {/* ✅ Learning Your Exercise (ONLY if Active) */}
+      {activeField && (
+        <section className="card bg-white shadow-2xl rounded-2xl p-4 md:p-6 mt-10 space-y-5">
+          <h3 className="text-xl font-semibold text-teal-600">
+            📖 Learning Your Exercise
+          </h3>
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            <div className="form-control w-full mb-5">
+              <label className="label">
+                <span className="label-text text-base font-medium text-gray-700">
+                  Tittle:
+                </span>
+              </label>
+              <Controller
+                name="name"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    placeholder="Enter Your Tittle..."
+                    className="w-full px-4 py-3 border rounded-md text-gray-700 focus:outline-none focus:ring-1 focus:ring-teal-300"
+                  />
+                )}
+              />
+            </div>
+
+            <RichTextField
+              name="description"
+              control={control}
+              placeholder="Enter Your Description..."
+              className="w-full"
+            />
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full py-3 px-4 bg-gradient-to-r from-teal-500 to-teal-600 text-white rounded-lg"
+            >
+              {isSubmitting ? "Adding..." : "Add Corporate Email Exercise"}
+            </button>
+          </form>
+        </section>
+      )}
     </div>
   );
 };

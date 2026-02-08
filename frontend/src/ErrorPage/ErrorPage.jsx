@@ -17,7 +17,7 @@ const ErrorPage = () => {
 
       {/* Animated title */}
       <motion.h2
-        className="text-3xl md:text-4xl font-semibold mt-4 text-gray-800"
+        className="text-2xl md:text-4xl font-semibold mt-4 text-gray-800"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.3 }}

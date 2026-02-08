@@ -219,7 +219,11 @@ const createExerciseIdiom = async (req, res) => {
 
     // Insert exercise
     const result = await idiomExercise.insertOne(data);
-
+    // ✅ Create TTL index if not exists (safe to run multiple times)
+    await idiomExercise.createIndex(
+      { createdAt: 1 },
+      { expireAfterSeconds: 30 * 24 * 60 * 60 }, // 30 days
+    );
     res.status(201).json({
       success: true,
       id: result.insertedId,
@@ -461,7 +465,11 @@ const createExerciseVocabulary = async (req, res) => {
 
     // Insert exercise
     const result = await vocabularyExercise.insertOne(data);
-
+    // ✅ Create TTL index if not exists (safe to run multiple times)
+    await vocabularyExercise.createIndex(
+      { createdAt: 1 },
+      { expireAfterSeconds: 30 * 24 * 60 * 60 }, // 30 days
+    );
     res.status(201).json({
       success: true,
       id: result.insertedId,
@@ -702,7 +710,11 @@ const createExerciseElegant = async (req, res) => {
 
     // Insert exercise
     const result = await elegantExercise.insertOne(data);
-
+    // ✅ Create TTL index if not exists (safe to run multiple times)
+    await elegantExercise.createIndex(
+      { createdAt: 1 },
+      { expireAfterSeconds: 30 * 24 * 60 * 60 }, // 30 days
+    );
     res.status(201).json({
       success: true,
       id: result.insertedId,
@@ -946,7 +958,11 @@ const createExerciseTantuster = async (req, res) => {
 
     // Insert exercise
     const result = await tantusterExerciseCollection.insertOne(data);
-
+    // ✅ Create TTL index if not exists (safe to run multiple times)
+    await tantusterExerciseCollection.createIndex(
+      { createdAt: 1 },
+      { expireAfterSeconds: 30 * 24 * 60 * 60 }, // 30 days
+    );
     res.status(201).json({
       success: true,
       id: result.insertedId,
@@ -1191,7 +1207,11 @@ const createExerciseNewTantuster = async (req, res) => {
 
     // Insert exercise
     const result = await newTantusterExerciseCollection.insertOne(data);
-
+    // ✅ Create TTL index if not exists (safe to run multiple times)
+    await newTantusterExerciseCollection.createIndex(
+      { createdAt: 1 },
+      { expireAfterSeconds: 30 * 24 * 60 * 60 }, // 30 days
+    );
     res.status(201).json({
       success: true,
       id: result.insertedId,

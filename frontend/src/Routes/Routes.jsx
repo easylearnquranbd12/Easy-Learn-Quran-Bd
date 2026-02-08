@@ -37,10 +37,24 @@ import AdminNovel from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/
 import AdminSong from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Song/AdminSong";
 import AdminTraveling from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Traveling/AdminTraveling";
 import LayerManage from "../Pages/AdminDashboardPages/BAShapeFormats/LayerManage/LayerManage";
+import AdminArticleEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Article/AdminArticleEdit";
+import ArticleExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Exercise/ArticleExercise";
+import PrepositionExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Exercise/PrepositionExercise";
+import SentenceExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Exercise/SentenceExercise";
+import TenseExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Exercise/TenseExercise";
+import VerbExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Exercise/VerbExercise";
+import AdminPrepositionEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Preposition/AdminPrepositionEdit";
 import AdminSentenceEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Sentence/AdminSentenceEdit";
+import AdminTenseEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Tense/AdminTenseEdit";
+import AdminVerbEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Verb/AdminVerbEdit";
 import AdminBeforeProfessional from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/BeforeProfessional/AdminBeforeProfessional";
 import AdminCorporateEmail from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/CorporateEmail/AdminCorporateEmail";
 import AdminDevelopYourSkills from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/DevelopYourSkills/AdminDevelopYourSkills";
+import BeforeProfessionalExcersice from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/Excersice/BeforeProfessionalExcersice";
+import CorporateEmailExcersice from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/Excersice/CorporateEmailExcersice";
+import DevelopYourSkillsExcersice from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/Excersice/DevelopYourSkillsExcersice";
+import GoodLifeStyleExcersice from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/Excersice/GoodLifeStyleExcersice";
+import IdeaShareExcersice from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/Excersice/IdeaShareExcersice";
 import AdminGoodLifeStyle from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/GoodLifeStyle/AdminGoodLifeStyle";
 import IdeaShareAnsSuggestion from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/IdeaShareAnsSuggestion/IdeaShareAnsSuggestion";
 import BlankFormat from "../Pages/ContributePages/BlankFormat/BlankFormat";
@@ -190,57 +204,6 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
-      // {
-      //   path: "b-a-shape-formats/1st-layer",
-      //   element: (
-      //     // <PrivateRoute>
-      //     <Suspense fallback={<LoadingSpinner />}>
-      //       <FirstLayer />
-      //     </Suspense>
-      //     // </PrivateRoute>
-      //   ),
-      // },
-      // {
-      //   path: "b-a-shape-formats/2nd-layer",
-      //   element: (
-      //     <PrivateRoute>
-      //       <Suspense fallback={<LoadingSpinner />}>
-      //         <SecondLayer />
-      //       </Suspense>
-      //     </PrivateRoute>
-      //   ),
-      // },
-      // {
-      //   path: "b-a-shape-formats/3rd-layer",
-      //   element: (
-      //     <PrivateRoute>
-      //       <Suspense fallback={<LoadingSpinner />}>
-      //         <ThirdLayer />
-      //       </Suspense>
-      //     </PrivateRoute>
-      //   ),
-      // },
-      // {
-      //   path: "b-a-shape-formats/4th-layer",
-      //   element: (
-      //     <PrivateRoute>
-      //       <Suspense fallback={<LoadingSpinner />}>
-      //         <FourthLayer />
-      //       </Suspense>
-      //     </PrivateRoute>
-      //   ),
-      // },
-      // {
-      //   path: "b-a-shape-formats/5th-layer",
-      //   element: (
-      //     <PrivateRoute>
-      //       <Suspense fallback={<LoadingSpinner />}>
-      //         <FiveLayer />
-      //       </Suspense>
-      //     </PrivateRoute>
-      //   ),
-      // },
-
       {
         path: "b-a-shape-formats/*",
         element: (
@@ -546,10 +509,34 @@ export const routes = createBrowserRouter([
         ),
       },
       {
+        path: "sentence-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <SentenceExercise />
+          </Suspense>
+        ),
+      },
+      {
         path: "create-verb",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <AdminVerb />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-verb/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminVerbEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "verb-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <VerbExercise />
           </Suspense>
         ),
       },
@@ -562,6 +549,22 @@ export const routes = createBrowserRouter([
         ),
       },
       {
+        path: "edit-article/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminArticleEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "article-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <ArticleExercise />
+          </Suspense>
+        ),
+      },
+      {
         path: "create-tense",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
@@ -570,10 +573,42 @@ export const routes = createBrowserRouter([
         ),
       },
       {
+        path: "edit-tense/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminTenseEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "tense-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <TenseExercise />
+          </Suspense>
+        ),
+      },
+      {
         path: "create-preposition",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <AdminPreposition />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-preposition/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminPrepositionEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "preposition-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <PrepositionExercise />
           </Suspense>
         ),
       },
@@ -588,10 +623,26 @@ export const routes = createBrowserRouter([
         ),
       },
       {
+        path: "good-life-style-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <GoodLifeStyleExcersice />
+          </Suspense>
+        ),
+      },
+      {
         path: "professional-life-style",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <AdminBeforeProfessional />
+          </Suspense>
+        ),
+      },
+      {
+        path: "before-professional-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <BeforeProfessionalExcersice />
           </Suspense>
         ),
       },
@@ -604,10 +655,26 @@ export const routes = createBrowserRouter([
         ),
       },
       {
+        path: "corporate-email-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <CorporateEmailExcersice />
+          </Suspense>
+        ),
+      },
+      {
         path: "develop-your-skills",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <AdminDevelopYourSkills />
+          </Suspense>
+        ),
+      },
+      {
+        path: "develop-your-skills-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <DevelopYourSkillsExcersice />
           </Suspense>
         ),
       },
@@ -619,7 +686,14 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
-
+      {
+        path: "idea-share-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <IdeaShareExcersice />
+          </Suspense>
+        ),
+      },
       // Fourth Layer
 
       {

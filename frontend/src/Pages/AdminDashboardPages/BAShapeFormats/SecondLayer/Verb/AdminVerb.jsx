@@ -1,11 +1,14 @@
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Edit, Trash2 } from "lucide-react";
+import { Edit, Edit2, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import AdminLoading from "../../../../../components/Loading/AdminLoading";
 import TittleAnimation from "../../../../../components/TittleAnimation/TittleAnimation";
+import useAuth from "../../../../../hooks/useAuth";
 import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
 import RichTextField from "../../../../../shared/TextEditor/RichTextField";
 import VerbModal from "./VerbModal";
@@ -15,10 +18,11 @@ const AdminVerb = () => {
   const [fieldName, setFieldName] = useState("");
   const [selectedVocabId, setSelectedVocabId] = useState(null);
   const [currentValue, setCurrentValue] = useState("");
-
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
   const queryClient = useQueryClient();
-  const { register, handleSubmit, reset, setValue, control } = useForm({
+  const { register, handleSubmit, reset, setValue,control } = useForm({
     defaultValues: {
       mainWord: "",
       banglaPronunciation: "",
@@ -40,7 +44,6 @@ const AdminVerb = () => {
     queryKey: ["verbFields"],
     queryFn: async () => {
       const res = await axiosPublic.get("/second-layer/verbField");
-     
       return res.data.data;
     },
   });
@@ -57,11 +60,7 @@ const AdminVerb = () => {
       queryClient.invalidateQueries({ queryKey: ["verb"] });
     },
     onError: (error) => {
-      Swal.fire(
-        "❌ Error",
-        error.message || "Failed to create verb",
-        "error"
-      );
+      Swal.fire("❌ Error", error.message || "Failed to create verb", "error");
     },
   });
   // Fetch all verb
@@ -126,6 +125,24 @@ const AdminVerb = () => {
     setModalOpen(true);
   };
 
+  // edit handler
+  const handleEdit = (id) => {
+    const role = user?.role;
+    console.log(role);
+    switch (role) {
+      case "admin":
+        navigate(`/admin-dashboard/edit-verb/${id}`);
+        break;
+
+      case "moderator":
+        navigate(`/moderator-dashboard/edit-verb/${id}`);
+        break;
+
+      default:
+        navigate("/login");
+    }
+  };
+
   // Toggle handler using item.isActive
   const handleToggle = (currentState) => {
     Swal.fire({
@@ -171,7 +188,6 @@ const AdminVerb = () => {
       );
     },
   });
-
   if (isLoading || verbLoading) {
     return <AdminLoading />;
   }
@@ -187,9 +203,7 @@ const AdminVerb = () => {
 
       <div className="mt-10">
         <div className="card bg-white shadow-md rounded-2xl p-3 md:p-5">
-          {/* Mobile & Desktop Responsive Container */}
           <div className="w-full">
-            {/* Mobile View - Vertical Layout */}
             <div className=" space-y-4">
               <div className="mb-4 text-center">
                 {verbFields && verbFields.length > 0 && (
@@ -205,13 +219,13 @@ const AdminVerb = () => {
                             verbFields[0].title
                           )
                         }
-                        className="w-5 h-5 text-green-600 cursor-pointer"
+                        className="min-w-5 min-h-5 w-5 h-5 text-green-600 cursor-pointer"
                       />
                     </div>
 
                     {/* description */}
                     <div className="flex items-start justify-center gap-2">
-                      <span className="text-base">
+                      <span className="text-base text-justify">
                         {verbFields[0].description || "description"}
                       </span>
                       <Edit
@@ -264,13 +278,13 @@ const AdminVerb = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <td className="align-top">
+                      <div>
                         <RichTextField
                           name="mainWord"
                           control={control}
                           placeholder={`Enter Your ${item.mainWord}`}
                         />
-                      </td>
+                      </div>
                     </div>
 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
@@ -289,13 +303,13 @@ const AdminVerb = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <td className="align-top">
+                      <div>
                         <RichTextField
                           name="banglaPronunciation"
                           control={control}
                           placeholder={`Enter Your ${item.banglaPronunciation}`}
                         />
-                      </td>
+                      </div>
                     </div>
 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
@@ -314,13 +328,13 @@ const AdminVerb = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <td className="align-top">
+                      <div>
                         <RichTextField
                           name="banglaMeaning"
                           control={control}
                           placeholder={`Enter Your ${item.banglaMeaning}`}
                         />
-                      </td>
+                      </div>
                     </div>
 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
@@ -339,13 +353,13 @@ const AdminVerb = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <td className="align-top">
+                      <div>
                         <RichTextField
                           name="synonyms"
                           control={control}
                           placeholder={`Enter Your ${item.synonyms}`}
                         />
-                      </td>
+                      </div>
                     </div>
 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
@@ -364,13 +378,13 @@ const AdminVerb = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <td className="align-top">
+                      <div>
                         <RichTextField
                           name="antonyms"
                           control={control}
                           placeholder={`Enter Your ${item.antonyms}`}
                         />
-                      </td>
+                      </div>
                     </div>
 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
@@ -389,13 +403,13 @@ const AdminVerb = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <td className="align-top">
+                      <div>
                         <RichTextField
                           name="exampleEnglish"
                           control={control}
                           placeholder={`Enter Your ${item.exampleEnglish}`}
                         />
-                      </td>
+                      </div>
                     </div>
 
                     <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
@@ -414,13 +428,13 @@ const AdminVerb = () => {
                           className="w-4 h-4 text-green-600 cursor-pointer"
                         />
                       </div>
-                      <td className="align-top">
+                      <div>
                         <RichTextField
                           name="exampleBangla"
                           control={control}
                           placeholder={`Enter Your ${item.exampleBangla}`}
                         />
-                      </td>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -463,7 +477,7 @@ const AdminVerb = () => {
                   className="bg-teal-600 text-white text-sm"
                 >
                   <tr>
-                    <th className="min-w-10">Serial</th>
+                    <th >Serial</th>
                     <th className="min-w-96">{item?.mainWord}</th>
                     <th className="min-w-96">{item?.banglaPronunciation}</th>
                     <th className="min-w-96">{item?.banglaMeaning}</th>
@@ -485,7 +499,12 @@ const AdminVerb = () => {
                       <td className="font-semibold min-w-10">{i + 1}</td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.mainWord,
                           }}
@@ -493,7 +512,12 @@ const AdminVerb = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.banglaPronunciation,
                           }}
@@ -501,7 +525,12 @@ const AdminVerb = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.banglaMeaning,
                           }}
@@ -509,7 +538,12 @@ const AdminVerb = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.synonyms,
                           }}
@@ -517,7 +551,12 @@ const AdminVerb = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.antonyms,
                           }}
@@ -525,7 +564,12 @@ const AdminVerb = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.exampleEnglish,
                           }}
@@ -533,19 +577,30 @@ const AdminVerb = () => {
                       </td>
                       <td>
                         <div
-                          className="input input-sm w-full max-w-96 min-h-20 cursor-default bg-white text-black border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-300 p-2 rounded overflow-hidden line-clamp-3"
+                          className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words"
                           dangerouslySetInnerHTML={{
                             __html: row.exampleBangla,
                           }}
                         />
                       </td>
 
-                      <td className="min-w-16">
+                      <td className="min-w-16 flex justify-center items-center gap-1">
                         <button
                           onClick={() => handleDelete(row._id)}
                           className="px-2 py-1 text-red-600 rounded-md hover:bg-red-100 flex items-center gap-1"
                         >
                           <Trash2 size={18} />
+                        </button>
+                        <button
+                          onClick={() => handleEdit(row._id)}
+                          className="px-2 py-1 text-green-600 rounded-md hover:bg-green-100 flex items-center gap-1"
+                        >
+                          <Edit2 size={18} />
                         </button>
                       </td>
                     </tr>
@@ -565,7 +620,7 @@ const AdminVerb = () => {
           <div className="flex justify-center mt-4">
             <button
               onClick={() => setShowAll(!showAll)}
-              className="px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700"
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
             >
               {showAll ? "See Less" : "See More"}
             </button>

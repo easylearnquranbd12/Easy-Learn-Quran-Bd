@@ -5,7 +5,6 @@ const useAuth = () => {
   const context = useContext(AuthContext);
 
   if (!context) {
-    console.warn("useAuth must be used within an AuthProvider");
     return {
       user: null,
       loading: true,

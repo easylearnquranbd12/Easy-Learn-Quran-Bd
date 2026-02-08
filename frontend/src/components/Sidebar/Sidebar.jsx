@@ -19,7 +19,14 @@ import {
 } from "react-icons/fa";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { HiLogout, HiOutlineDocumentText, HiX } from "react-icons/hi";
-import { MdAppBlocking, MdDashboard, MdOutlinePayments, MdPayment, MdPayments, MdSchool } from "react-icons/md";
+import {
+  MdAppBlocking,
+  MdDashboard,
+  MdOutlinePayments,
+  MdPayment,
+  MdPayments,
+  MdSchool,
+} from "react-icons/md";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useRole from "../../hooks/useRole";
@@ -40,7 +47,7 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
   useEffect(() => {
     const allMenuItems = role === "admin" ? adminMenuItems : userMenuItems;
     const activeMenu = allMenuItems.find((item) =>
-      item.subItems?.some((sub) => isActive(sub.path))
+      item.subItems?.some((sub) => isActive(sub.path)),
     );
     if (activeMenu) {
       setOpenDropdown(activeMenu.label);
@@ -553,7 +560,7 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
       ],
     },
 
-{
+    {
       path: "/admin-dashboard/first-layer/exercise",
       icon: HiOutlineDocumentText,
       label: "First Layer Exercise",
@@ -590,7 +597,7 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
           color: "text-indigo-600",
         },
         {
-          path: "/admin-dashboard/newtantuster-exercise",
+          path: "/admin-dashboard/preposition-exercise",
           icon: BiEdit,
           label: "Unique Exercise",
           description: "User Unique Exercise",
@@ -598,9 +605,96 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
         },
       ],
     },
+    {
+      path: "/admin-dashboard/second-layer/exercise",
+      icon: HiOutlineDocumentText,
+      label: "Second Layer Exercise",
+      description: "Second Layer Exercise Info",
+      color: "text-indigo-600",
+      subItems: [
+        {
+          path: "/admin-dashboard/sentence-exercise",
+          icon: BiEdit,
+          label: "Sentence Exercise",
+          description: "User Sentence Post",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/verb-exercise",
+          icon: MdPayment,
+          label: "Verb Exercise",
+          description: "User Verb Post",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/article-exercise",
+          icon: BiEdit,
+          label: "Article Exercise",
+          description: "User Article Post",
+          color: "text-indigo-600",
+        },
 
-
-
+        {
+          path: "/admin-dashboard/tense-exercise",
+          icon: BiEdit,
+          label: "Tense Exercise",
+          description: "User Tense Post",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/preposition-exercise",
+          icon: BiEdit,
+          label: "Preposition Exercise",
+          description: "User Preposition Exercise",
+          color: "text-indigo-600",
+        },
+      ],
+    },
+    {
+      path: "/admin-dashboard/third-layer/exercise",
+      icon: HiOutlineDocumentText,
+      label: "Third Layer Exercise",
+      description: "Third Layer Exercise Info",
+      color: "text-indigo-600",
+      subItems: [
+        {
+          path: "/admin-dashboard/good-life-style-exercise",
+          icon: BiEdit,
+          label: "Good Life Style Exercise",
+          description: "User Good Life Style Post",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/before-professional-exercise",
+          icon: BiEdit,
+          label: "Before Professional Exercise",
+          description: "User Before Professional Post",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/corporate-email-exercise",
+          icon: BiEdit,
+          label: "Corporate Email Exercise",
+          description: "User Corporate Email Post",
+          color: "text-indigo-600",
+        },
+        
+        {
+          path: "/admin-dashboard/develop-your-skills-exercise",
+          icon: BiEdit,
+          label: "Develop Your Skills Exercise",
+          description: "User Develop Your Skills Post",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/idea-share-exercise",
+          icon: BiEdit,
+          label: "Idea Share And Suggestion Exercise",
+          description: "User Idea Share And Suggestion Exercise",
+          color: "text-indigo-600",
+        },
+      ],
+    },
 
     {
       path: "/admin-dashboard/blog",
@@ -730,8 +824,8 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
                     role === "admin"
                       ? "/admin-dashboard/my-profile"
                       : role === "moderator"
-                      ? "/moderator-dashboard/my-profile"
-                      : "/user-dashboard/my-profile"
+                        ? "/moderator-dashboard/my-profile"
+                        : "/user-dashboard/my-profile"
                   }
                 >
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-md overflow-hidden cursor-pointer">
@@ -751,8 +845,8 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
                   {role === "admin"
                     ? "Control Panel"
                     : role === "moderator"
-                    ? "Moderator Panel"
-                    : "Learning Panel"}
+                      ? "Moderator Panel"
+                      : "Learning Panel"}
                 </h1>
                 <p className="text-gray-600 text-xs font-medium">
                   {user.displayName}
@@ -867,22 +961,22 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
                         role === "admin"
                           ? "/admin-dashboard/my-profile"
                           : role === "moderator"
-                          ? "/moderator-dashboard/my-profile"
-                          : "/user-dashboard/my-profile",
+                            ? "/moderator-dashboard/my-profile"
+                            : "/user-dashboard/my-profile",
                       icon: CgProfile,
                       label:
                         role === "admin"
                           ? "Admin Profile"
                           : role === "moderator"
-                          ? "Moderator Profile"
-                          : "My Profile",
+                            ? "Moderator Profile"
+                            : "My Profile",
                       description: "Personal Settings",
                       color:
                         role === "admin"
                           ? "text-yellow-600"
                           : role === "moderator"
-                          ? "text-green-600"
-                          : "text-purple-600",
+                            ? "text-green-600"
+                            : "text-purple-600",
                     }}
                     onClick={handleMenuClick}
                   />
@@ -892,8 +986,8 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
                         role === "admin"
                           ? "/admin-dashboard/change-password"
                           : role === "moderator"
-                          ? "/moderator-dashboard/change-password"
-                          : "/user-dashboard/change-password",
+                            ? "/moderator-dashboard/change-password"
+                            : "/user-dashboard/change-password",
                       icon: FaKey,
                       label: "Change Password",
                       description: "Update your password",
@@ -901,8 +995,8 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
                         role === "admin"
                           ? "text-yellow-600"
                           : role === "moderator"
-                          ? "text-green-600"
-                          : "text-purple-600",
+                            ? "text-green-600"
+                            : "text-purple-600",
                     }}
                     onClick={handleMenuClick}
                   />

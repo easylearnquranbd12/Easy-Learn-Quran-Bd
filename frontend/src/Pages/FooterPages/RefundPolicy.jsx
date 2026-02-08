@@ -15,7 +15,7 @@ const RefundPolicy = () => {
   return (
     <>
       <Helmet>
-        <title>Nasmatics | Refund Policy</title>
+        <title>Be The Shape | Refund Policy</title>
       </Helmet>
       <div className="px-2 py-6 max-w-7xl mx-auto">
         <TittleAnimation
@@ -30,7 +30,7 @@ const RefundPolicy = () => {
           animate="visible"
           custom={1}
         >
-          At <strong>Nasmatics</strong>, we are committed to delivering
+          At <strong>Be The Shape</strong>, we are committed to delivering
           high-quality educational content and a smooth learning experience. To
           ensure clarity and fairness for all users, please read our refund and
           return policy carefully.
@@ -91,10 +91,10 @@ const RefundPolicy = () => {
           <li>
             Refund requests must be submitted via email to{" "}
             <a
-              href="mailto:support@Nasmatics.com"
+              href="mailto:support@betheshape.com"
               className="text-blue-600 underline"
             >
-              support@Nasmatics.com
+              support@betheshape.com
             </a>{" "}
             along with payment details.
           </li>
@@ -121,7 +121,7 @@ const RefundPolicy = () => {
             downloaded, refund requests will not be accepted.
           </li>
           <li>
-            Nasmatics reserves the right to <strong>deny refunds</strong> that
+            Be The Shape reserves the right to <strong>deny refunds</strong> that
             do not comply with our policy.
           </li>
         </motion.ul>

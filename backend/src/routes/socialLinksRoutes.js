@@ -1,5 +1,5 @@
 const express = require('express');
-const { getSocialLinks, updateSocialLinks } = require('../Controllers/socialLinksController');
+const { getSocialLinks, updateSocialLinks } = require('../controllers/socialLinksController');
 const router = express.Router();
 
 

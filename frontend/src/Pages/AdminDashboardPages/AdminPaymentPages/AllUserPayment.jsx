@@ -1,16 +1,16 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import {
-    BookOpen,
-    Calendar,
-    CheckCircle,
-    CreditCard,
-    Eye,
-    GraduationCap,
-    Mail,
-    Trash2,
-    Users,
-    XCircle,
+  BookOpen,
+  Calendar,
+  CheckCircle,
+  CreditCard,
+  Eye,
+  GraduationCap,
+  Mail,
+  Trash2,
+  Users,
+  XCircle,
 } from "lucide-react";
 import { useState } from "react";
 import Swal from "sweetalert2";
@@ -19,7 +19,6 @@ import useRole from "../../../hooks/useRole";
 
 const fetchPayments = async () => {
   const res = await axios.get("http://localhost:5000/payment/admin");
-  console.log(res.data);
   return res.data;
 };
 

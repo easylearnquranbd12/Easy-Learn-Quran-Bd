@@ -71,8 +71,6 @@ const AdminTantusterEdit = () => {
       text: error?.response?.data?.message || "Something went wrong",
       confirmButtonColor: "#dc2626",
     });
-
-    console.error("Update error:", error);
   }
 };
 

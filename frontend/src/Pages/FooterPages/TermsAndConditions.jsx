@@ -23,7 +23,7 @@ const TermsAndConditions = () => {
   return (
     <>
       <Helmet>
-        <title>Nasmatics | Terms & Conditions</title>
+        <title>Be The Shape | Terms & Conditions</title>
       </Helmet>
       <div className="px-2 py-5 max-w-7xl mx-auto">
         <TittleAnimation
@@ -38,7 +38,7 @@ const TermsAndConditions = () => {
           animate="visible"
           custom={1}
         >
-          Welcome to Nasmatics
+          Welcome to Be The Shape
         </motion.h1>
 
         <motion.p
@@ -50,12 +50,12 @@ const TermsAndConditions = () => {
         >
           By accessing and using our website at{" "}
           <a
-            href="https://Nasmatics.com"
+            href="https://betheshape.com"
             className="text-blue-600 underline"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Nasmatics.com
+            betheshape.com
           </a>
           , you agree to be bound by these terms and conditions. Please read
           them carefully.
@@ -100,8 +100,8 @@ const TermsAndConditions = () => {
           animate="visible"
           custom={6}
         >
-          All content on Nasmatics is protected by copyright and belongs to
-          Nasmatics or its licensors. You may use content for personal,
+          All content on Be The Shape is protected by copyright and belongs to
+          Be The Shape or its licensors. You may use content for personal,
           non-commercial purposes only. You may not reproduce, sell, or
           redistribute any material.
         </motion.p>
@@ -168,7 +168,7 @@ const TermsAndConditions = () => {
         >
           We are not responsible for content that appears on external websites
           linking to us. You agree to defend us against claims arising from
-          content on your site that links to Nasmatics.
+          content on your site that links to Be The Shape.
         </motion.p>
 
         <motion.h2
@@ -211,7 +211,7 @@ const TermsAndConditions = () => {
           custom={16}
         >
           We do not guarantee the accuracy, completeness, or availability of
-          information on our site. Nasmatics will not be liable for any
+          information on our site. Be The Shape will not be liable for any
           damages resulting from the use of our website.
         </motion.p>
 
@@ -222,7 +222,7 @@ const TermsAndConditions = () => {
           animate="visible"
           custom={17}
         >
-          📘 Thank you for trusting Nasmatics. If you have any questions about
+          📘 Thank you for trusting Be The Shape. If you have any questions about
           these terms, please contact us.
         </motion.p>
       </div>

@@ -75,9 +75,7 @@ const ModeratorLayout = () => {
 
         {/* Main Content Area */}
         <div className="flex-1 pt-5 lg:ml-64 transition-all duration-300 ease-in-out bg-[#edf7f4]">
-          {/* Page Content */}
           <div className="max-w-7xl mx-auto mt-12 ">
-            {/* <div className="bg-white rounded-lg shadow-xl border border-indigo-700 min-h-[calc(100vh-8rem)]"> */}
             <div className=" min-h-[calc(100vh-11rem)]">
               <div className="p-2 md:p-4">
                 <Outlet />

@@ -39,7 +39,6 @@ const Login = () => {
     try {
       const result = await signIn(data.email, data.password);
       const user = result.user;
-      console.log(user);
 
       // ✅ Removed: No call to /auth/jwt or any backend login
 

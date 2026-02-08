@@ -64,7 +64,7 @@ const Blog = () => {
   return (
     <div>
       <Helmet>
-        <title>Nasmatics | Blog</title>
+        <title>Be The Shape | Blog</title>
       </Helmet>
       <div className="max-w-7xl mx-auto  py-8">
         <TittleAnimation tittle="Blog" subtittle="Latest Blogs" />

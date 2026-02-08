@@ -72,7 +72,6 @@ const AdminElegantEdit = () => {
       confirmButtonColor: "#dc2626",
     });
 
-    console.error("Update error:", error);
   }
 };
 

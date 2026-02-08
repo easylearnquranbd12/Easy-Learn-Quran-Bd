@@ -24,7 +24,7 @@ const NewTantusterExercise = () => {
       return res.data.data || [];
     },
   });
-  console.log(exercises);
+
   // 🔹 DELETE exercise (delete one submission = one user block)
   const { mutateAsync: deleteExercise } = useMutation({
     mutationFn: async (id) =>

@@ -15,7 +15,7 @@ const AdminCorporateEmail = () => {
   const [fieldName, setFieldName] = useState("");
   const [selectedVocabId, setSelectedVocabId] = useState(null);
   const [currentValue, setCurrentValue] = useState("");
-
+  const [editItem, setEditItem] = useState(null);
   const axiosPublic = useAxiosPublic();
   const queryClient = useQueryClient();
 
@@ -43,22 +43,22 @@ const AdminCorporateEmail = () => {
       return res.data?.data || [];
     },
   });
-  // ✅ Create Song
+  // ✅ Create Corporate Email
   const createMutation = useMutation({
     mutationFn: (newData) =>
       axiosPublic.post("/third-layer/corporateEmail", newData),
     onSuccess: () => {
-      queryClient.invalidateQueries(["songs"]);
+      queryClient.invalidateQueries(["corporateEmail"]);
       Swal.fire(
         "✅ Success!",
         "Corporate Email added successfully.",
-        "success"
+        "success",
       );
       resetForm();
     },
-    onError: () => Swal.fire("❌ Error!", "Failed to add song.", "error"),
+    onError: () => Swal.fire("❌ Error!", "Failed to add Corporate Email.", "error"),
   });
-  // ✅ Get all song fetch Data
+  // ✅ Get all Corporate Email fetch Data
   const { data: corporateEmails = [], isLoading } = useQuery({
     queryKey: ["corporateEmails"],
     queryFn: async () => {
@@ -66,19 +66,36 @@ const AdminCorporateEmail = () => {
       return res.data || [];
     },
   });
+  // ✅ Update Corporate Email
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }) =>
+      axiosPublic.put(`/third-layer/corporateEmail/${id}`, data),
+    onSuccess: () => {
+      Swal.fire(
+        "✅ Updated!",
+        "Corporate Email updated successfully.",
+        "success",
+      );
+      queryClient.invalidateQueries(["corporateEmails"]);
+      resetForm();
+      setEditItem(null);
+    },
+    onError: () =>
+      Swal.fire("❌ Error!", "Failed to update Corporate Email.", "error"),
+  });
 
-  // ✅ Delete Song
+  // ✅ Delete Corporate Email
   const deleteMutation = useMutation({
     mutationFn: (id) => axiosPublic.delete(`/third-layer/corporateEmail/${id}`),
     onSuccess: (res) => {
       if (res.data?.deletedCount > 0) {
-        Swal.fire("Deleted!", "Song deleted successfully.", "success");
+        Swal.fire("Deleted!", "Corporate Email deleted successfully.", "success");
       } else {
-        Swal.fire("Info", "Song not found or already deleted.", "info");
+        Swal.fire("Info", "Corporate Email not found or already deleted.", "info");
       }
-      queryClient.invalidateQueries(["songs"]);
+      queryClient.invalidateQueries(["corporateEmail"]);
     },
-    onError: () => Swal.fire("Error!", "Failed to delete song.", "error"),
+    onError: () => Swal.fire("Error!", "Failed to delete Corporate Email.", "error"),
   });
 
   // ✅ Reset Form
@@ -87,16 +104,18 @@ const AdminCorporateEmail = () => {
       name: "",
       description: "",
     });
+    setEditItem(null);
   };
 
-  // ✅ Submit Handler
   const onSubmit = async (data) => {
-    // if (!imageUrl) {
-    //   Swal.fire("Error!", "Please upload a song image.", "error");
-    //   return;
-    // }
-
-    createMutation.mutate(data);
+    if (editItem) {
+      updateMutation.mutate({
+        id: editItem._id,
+        data,
+      });
+    } else {
+      createMutation.mutate(data);
+    }
   };
 
   // ✅ Delete Handler
@@ -129,7 +148,7 @@ const AdminCorporateEmail = () => {
         {
           fieldName: "isActive",
           currentValue: currentState,
-        }
+        },
       );
       return res.data;
     },
@@ -145,7 +164,7 @@ const AdminCorporateEmail = () => {
       Swal.fire(
         "Error!",
         error.response?.data?.message || error.message,
-        "error"
+        "error",
       ),
   });
 
@@ -191,7 +210,7 @@ const AdminCorporateEmail = () => {
         subtittle="Manage Corporate Emails "
       />
 
-      <div className="mt-10 max-w-7xl mx-auto">
+      <div className="mt-10 max-w-[1400px] mx-auto">
         <div className=" w-full bg-white shadow-md rounded-xl p-2 md:p-5">
           {/* ✅ Vocabulary Fields Section */}
           <div className="text-center mb-6">
@@ -204,7 +223,7 @@ const AdminCorporateEmail = () => {
                       handleEditClick(
                         "title",
                         corporateEmailFields[0].title,
-                        corporateEmailFields[0]._id
+                        corporateEmailFields[0]._id,
                       )
                     }
                     className="min-h-5 min-w-5 w-5 h-5 text-green-600 cursor-pointer"
@@ -220,7 +239,7 @@ const AdminCorporateEmail = () => {
                       handleEditClick(
                         "description",
                         corporateEmailFields[0].description,
-                        corporateEmailFields[0]._id
+                        corporateEmailFields[0]._id,
                       )
                     }
                     className="w-5 h-5 min-h-5 min-w-5  text-green-600 cursor-pointer"
@@ -230,12 +249,9 @@ const AdminCorporateEmail = () => {
             )}
 
             {corporateEmailFields.map((item) => (
-              <div
-                key={item._id}
-                className="flex items-center gap-2 justify-center mt-3"
-              >
+              <div key={item._id} className="flex items-start gap-2  mt-3">
                 <span className="font-semibold">
-                  Toggle {item.title || "Song Field"}
+                  Toggle {item.title || "Corporate Email Field"}
                 </span>
                 <input
                   type="checkbox"
@@ -249,14 +265,14 @@ const AdminCorporateEmail = () => {
             ))}
           </div>
 
-          {/* ✅ Create Song Form */}
+          {/* ✅ Create Corporate Email Form */}
           <div className="w-full  bg-white shadow-2xl rounded-xl border p-4 sm:p-6 mb-10">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-              {/* Song Name */}
+              {/* Corporate Email Name */}
               <div className="form-control w-full py-6">
                 <label className="label">
                   <span className="label-text text-base font-medium text-gray-700">
-                    Name:
+                    Tittle:
                   </span>
                 </label>
                 <Controller
@@ -265,7 +281,7 @@ const AdminCorporateEmail = () => {
                   render={({ field }) => (
                     <input
                       {...field}
-                      placeholder="Enter song name..."
+                      placeholder="Enter Your Tittle..."
                       className="w-full px-4 py-3 border rounded-md text-gray-700 focus:outline-none focus:ring-1 focus:ring-teal-300"
                     />
                   )}
@@ -284,12 +300,18 @@ const AdminCorporateEmail = () => {
                 className="w-full py-3 px-4 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-medium rounded-lg shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-teal-600 disabled:opacity-70 disabled:cursor-not-allowed"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Adding..." : "Add Corporate Email"}
+                {isSubmitting
+                  ? editItem
+                    ? "Updating..."
+                    : "Adding..."
+                  : editItem
+                    ? "Update Corporate Email"
+                    : "Add Corporate Email"}
               </button>
             </form>
           </div>
 
-          {/* ✅ Songs List */}
+          {/* ✅ corporateEmail List */}
           <div className="w-full bg-white shadow-lg rounded-xl border p-4 sm:p-6">
             <h2 className="text-lg sm:text-xl font-semibold mb-4 text-teal-700">
               List
@@ -299,7 +321,7 @@ const AdminCorporateEmail = () => {
               <table className="table-auto w-full text-sm sm:text-base">
                 <thead className="bg-teal-600 text-white">
                   <tr>
-                    <th className="px-4 py-2">Name</th>
+                    <th className="px-4 py-2">Tittle</th>
                     <th className="px-4 py-2">Description</th>
                     <th className="px-4 py-2">Actions</th>
                   </tr>
@@ -314,7 +336,7 @@ const AdminCorporateEmail = () => {
                   ) : corporateEmails.length === 0 ? (
                     <tr>
                       <td colSpan={3} className="text-center py-4">
-                        No songs found.
+                        No corporateEmail found.
                       </td>
                     </tr>
                   ) : (
@@ -327,7 +349,24 @@ const AdminCorporateEmail = () => {
                             __html: truncateHTML(item.description, 10),
                           }}
                         ></td>
-                        <td className="px-4 py-2 text-center">
+                        <td className="px-4 py-2 text-center flex justify-center gap-3">
+                          {/* Edit */}
+                          <button
+                            onClick={() => {
+                              setEditItem(item);
+                              reset({
+                                name: item.name,
+                                description: item.description,
+                              });
+                              window.scrollTo({ top: 0, behavior: "smooth" });
+                            }}
+                            className="text-green-600 hover:text-green-800"
+                            title="Edit"
+                          >
+                            <Edit size={18} />
+                          </button>
+
+                          {/* Delete */}
                           <button
                             onClick={() => handleDelete(item._id)}
                             className="text-red-600 hover:text-red-800"

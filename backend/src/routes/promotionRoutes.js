@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllPromotions, createPromotion, deletePromotion } = require("../Controllers/promotionController");
+const { getAllPromotions, createPromotion, deletePromotion } = require("../controllers/promotionController");
 const router = express.Router();
 
 

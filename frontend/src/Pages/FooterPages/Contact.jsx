@@ -85,7 +85,7 @@ const Contact = () => {
   return (
     <div>
        <Helmet>
-        <title>Nasmatics | contact</title>
+        <title>Be The Shape | contact</title>
       </Helmet>
     <div className="bg-white py-5 px-2 ">
       <div className="text-center mb-10">

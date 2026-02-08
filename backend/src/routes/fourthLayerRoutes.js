@@ -12,7 +12,7 @@ const {
   deleteMovie,
   getAllMovies,
   createMovies,
-} = require("../Controllers/fourthLayerController");
+} = require("../controllers/fourthLayerController");
 
 const router = express.Router();
 

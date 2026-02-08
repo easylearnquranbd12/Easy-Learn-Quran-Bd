@@ -28,7 +28,7 @@
 //   return (
 //     <div>
 //       <Helmet>
-//         <title>Nasmatics | Home</title>
+//         <title>Be The Shape | Home</title>
 //       </Helmet>
 //       <div className="flex items-center justify-center mt-10 max-w-[1400px] mx-auto min-h-[50vh] ">
 //         <div className="w-full">
@@ -81,12 +81,10 @@ import "swiper/css";
 import "swiper/css/autoplay";
 import "swiper/css/pagination";
 import CustomLoading from "../../components/Loading/CustomLoading";
-import { useTranslation } from "../../context/TranslationContext"; // ✅ context import
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const HometextCreateui = () => {
   const axiosPublic = useAxiosPublic();
-  const { language, loading } = useTranslation(); // Navbar থেকে setLanguage হবে
 
   // fetch banner data
   const { data: banners = [], isLoading } = useQuery({
@@ -105,7 +103,7 @@ const HometextCreateui = () => {
   return (
     <div>
       <Helmet>
-        <title>Nasmatics | Home</title>
+        <title>Be The Shape | Home</title>
       </Helmet>
 
       {/* Banner Section */}

@@ -1,3 +1,4 @@
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Edit, Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -10,12 +11,13 @@ import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
 import RichTextField from "../../../../../shared/TextEditor/RichTextField";
 import DevelopYourSkillsModal from "./DevelopYourSkillsModal";
 
+
 const AdminDevelopYourSkills = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [fieldName, setFieldName] = useState("");
   const [selectedVocabId, setSelectedVocabId] = useState(null);
   const [currentValue, setCurrentValue] = useState("");
-
+  const [editItem, setEditItem] = useState(null);
   const axiosPublic = useAxiosPublic();
   const queryClient = useQueryClient();
 
@@ -33,58 +35,69 @@ const AdminDevelopYourSkills = () => {
   });
 
   // ✅ Fetch vocabulary fields
-  const { data: developyourSkillFields = [], isLoading: developLoading } =
-    useQuery({
-      queryKey: ["developyourSkillFields"],
-      queryFn: async () => {
-        const res = await axiosPublic.get("/third-layer/developSkillsField");
-        return res.data?.data || [];
-      },
-    });
-  // ✅ Create Song
+  const {
+    data: developSkillsFields = [],
+    isLoading: developSkillsFieldsLoading,
+  } = useQuery({
+    queryKey: ["developSkillsFields"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/third-layer/developSkillsField");
+      return res.data?.data || [];
+    },
+  });
+  // ✅ Create Develop Your Skills
   const createMutation = useMutation({
     mutationFn: (newData) =>
       axiosPublic.post("/third-layer/developSkills", newData),
     onSuccess: () => {
-      queryClient.invalidateQueries(["developyourSkills"]);
+      queryClient.invalidateQueries(["developSkills"]);
       Swal.fire(
         "✅ Success!",
-        "Develop Your Skill  added successfully.",
-        "success"
+        "Develop Your Skills added successfully.",
+        "success",
       );
       resetForm();
     },
-    onError: () => Swal.fire("❌ Error!", "Failed to add song.", "error"),
+    onError: () => Swal.fire("❌ Error!", "Failed to add Develop Your Skills.", "error"),
   });
-  // ✅ Get all song fetch Data
-  const { data: developyourSkills = [], isLoading } = useQuery({
-    queryKey: ["developyourSkills"],
+  // ✅ Get all Develop Your Skills fetch Data
+  const { data: developSkillss = [], isLoading } = useQuery({
+    queryKey: ["developSkillss"],
     queryFn: async () => {
       const res = await axiosPublic.get("/third-layer/developSkills");
       return res.data || [];
     },
   });
+  // ✅ Update Develop Your Skills
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }) =>
+      axiosPublic.put(`/third-layer/developSkills/${id}`, data),
+    onSuccess: () => {
+      Swal.fire(
+        "✅ Updated!",
+        "Develop Your Skills updated successfully.",
+        "success",
+      );
+      queryClient.invalidateQueries(["developSkillss"]);
+      resetForm();
+      setEditItem(null);
+    },
+    onError: () =>
+      Swal.fire("❌ Error!", "Failed to update Develop Your Skills.", "error"),
+  });
 
-  // ✅ Delete Song
+  // ✅ Delete Develop Your Skills
   const deleteMutation = useMutation({
     mutationFn: (id) => axiosPublic.delete(`/third-layer/developSkills/${id}`),
     onSuccess: (res) => {
       if (res.data?.deletedCount > 0) {
-        Swal.fire(
-          "Deleted!",
-          "Develop Your Skill deleted successfully.",
-          "success"
-        );
+        Swal.fire("Deleted!", "Develop Your Skills deleted successfully.", "success");
       } else {
-        Swal.fire(
-          "Info",
-          "Develop Your Skill not found or already deleted.",
-          "info"
-        );
+        Swal.fire("Info", "Develop Your Skills not found or already deleted.", "info");
       }
-      queryClient.invalidateQueries(["developyourSkills"]);
+      queryClient.invalidateQueries(["developSkills"]);
     },
-    onError: () => Swal.fire("Error!", "Failed to delete song.", "error"),
+    onError: () => Swal.fire("Error!", "Failed to delete Develop Your Skills.", "error"),
   });
 
   // ✅ Reset Form
@@ -93,16 +106,18 @@ const AdminDevelopYourSkills = () => {
       name: "",
       description: "",
     });
+    setEditItem(null);
   };
 
-  // ✅ Submit Handler
   const onSubmit = async (data) => {
-    // if (!imageUrl) {
-    //   Swal.fire("Error!", "Please upload a song image.", "error");
-    //   return;
-    // }
-
-    createMutation.mutate(data);
+    if (editItem) {
+      updateMutation.mutate({
+        id: editItem._id,
+        data,
+      });
+    } else {
+      createMutation.mutate(data);
+    }
   };
 
   // ✅ Delete Handler
@@ -135,7 +150,7 @@ const AdminDevelopYourSkills = () => {
         {
           fieldName: "isActive",
           currentValue: currentState,
-        }
+        },
       );
       return res.data;
     },
@@ -143,15 +158,15 @@ const AdminDevelopYourSkills = () => {
       Swal.fire({
         icon: "success",
         title: "Updated!",
-        text: `Develop Your Skill field is now ${data.updatedValue}`,
+        text: `Develop Your Skills field is now ${data.updatedValue}`,
       });
-      queryClient.invalidateQueries(["developyourSkillFields"]);
+      queryClient.invalidateQueries(["developSkillsFields"]);
     },
     onError: (error) =>
       Swal.fire(
         "Error!",
         error.response?.data?.message || error.message,
-        "error"
+        "error",
       ),
   });
 
@@ -182,65 +197,63 @@ const AdminDevelopYourSkills = () => {
       words.join(" ") + (text.split(/\s+/).length > wordLimit ? "..." : "")
     );
   };
-  if (isLoading || developLoading) {
+  if (developSkillsFieldsLoading || isLoading) {
     return <AdminLoading />;
   }
+
   return (
-    < >
+    <>
       <Helmet>
-        <title>Admin | Create Good Life Style Management</title>
+        <title>Admin | Create Develop Your Skills Management</title>
       </Helmet>
 
       <TittleAnimation
-        tittle="Create Develop Your Skill "
-        subtittle="Manage Develop Your Skill Fields"
+        tittle="Create Develop Your Skills"
+        subtittle="Manage Develop Your Skillss "
       />
 
-      <div className="mt-10 max-w-7xl mx-auto px-2">
-        <div className=" w-full bg-white shadow-md rounded-lg p-2 md:p-5">
+      <div className="mt-10 max-w-[1400px] mx-auto">
+        <div className=" w-full bg-white shadow-md rounded-xl p-2 md:p-5">
           {/* ✅ Vocabulary Fields Section */}
           <div className="text-center mb-6">
-            {developyourSkillFields && developyourSkillFields.length > 0 && (
+            {developSkillsFields && developSkillsFields.length > 0 && (
               <>
                 <div className="flex items-start justify-center gap-2 mb-2">
-                  {developyourSkillFields[0].title || "Title"}
+                  {developSkillsFields[0].title || "Title"}
                   <Edit
                     onClick={() =>
                       handleEditClick(
                         "title",
-                        developyourSkillFields[0].title,
-                        developyourSkillFields[0]._id
+                        developSkillsFields[0].title,
+                        developSkillsFields[0]._id,
                       )
                     }
-                    className="w-5 h-5 min-h-5 min-w-5 text-green-600 cursor-pointer"
+                    className="min-h-5 min-w-5 w-5 h-5 text-green-600 cursor-pointer"
                   />
                 </div>
 
                 <div className="flex items-start justify-center gap-2">
                   <span className="text-base text-justify">
-                    {developyourSkillFields[0].description || "Description"}
+                    {developSkillsFields[0].description || "Description"}
                   </span>
                   <Edit
                     onClick={() =>
                       handleEditClick(
                         "description",
-                        developyourSkillFields[0].description,
-                        developyourSkillFields[0]._id
+                        developSkillsFields[0].description,
+                        developSkillsFields[0]._id,
                       )
                     }
-                    className="w-5 h-5 min-h-5 min-w-5 text-green-600 cursor-pointer"
+                    className="w-5 h-5 min-h-5 min-w-5  text-green-600 cursor-pointer"
                   />
                 </div>
               </>
             )}
 
-            {developyourSkillFields.map((item) => (
-              <div
-                key={item._id}
-                className="flex items-center gap-2 justify-center mt-3"
-              >
+            {developSkillsFields.map((item) => (
+              <div key={item._id} className="flex items-start gap-2  mt-3">
                 <span className="font-semibold">
-                  Toggle {item.title || "Song Field"}
+                  Toggle {item.title || "Develop Your Skills Field"}
                 </span>
                 <input
                   type="checkbox"
@@ -254,14 +267,14 @@ const AdminDevelopYourSkills = () => {
             ))}
           </div>
 
-          {/* ✅ Create Song Form */}
+          {/* ✅ Create Develop Your Skills Form */}
           <div className="w-full  bg-white shadow-2xl rounded-xl border p-4 sm:p-6 mb-10">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-              {/* Song Name */}
+              {/* Develop Your Skills Name */}
               <div className="form-control w-full py-6">
                 <label className="label">
                   <span className="label-text text-base font-medium text-gray-700">
-                    Name:
+                    Tittle:
                   </span>
                 </label>
                 <Controller
@@ -270,7 +283,7 @@ const AdminDevelopYourSkills = () => {
                   render={({ field }) => (
                     <input
                       {...field}
-                      placeholder="Enter tittle..."
+                      placeholder="Enter Your Tittle..."
                       className="w-full px-4 py-3 border rounded-md text-gray-700 focus:outline-none focus:ring-1 focus:ring-teal-300"
                     />
                   )}
@@ -289,13 +302,19 @@ const AdminDevelopYourSkills = () => {
                 className="w-full py-3 px-4 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-medium rounded-lg shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-teal-600 disabled:opacity-70 disabled:cursor-not-allowed"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Adding..." : "Add Develop Your Skill"}
+                {isSubmitting
+                  ? editItem
+                    ? "Updating..."
+                    : "Adding..."
+                  : editItem
+                    ? "Update Develop Your Skills"
+                    : "Add Develop Your Skills"}
               </button>
             </form>
           </div>
 
-          {/* ✅ Songs List */}
-          <div className=" bg-white shadow-lg rounded-xl border p-4 sm:p-6 w-[450px] md:w-full">
+          {/* ✅ developSkills List */}
+          <div className="w-full bg-white shadow-lg rounded-xl border p-4 sm:p-6">
             <h2 className="text-lg sm:text-xl font-semibold mb-4 text-teal-700">
               List
             </h2>
@@ -304,7 +323,7 @@ const AdminDevelopYourSkills = () => {
               <table className="table-auto w-full text-sm sm:text-base">
                 <thead className="bg-teal-600 text-white">
                   <tr>
-                    <th className="px-4 py-2">Name</th>
+                    <th className="px-4 py-2">Tittle</th>
                     <th className="px-4 py-2">Description</th>
                     <th className="px-4 py-2">Actions</th>
                   </tr>
@@ -316,14 +335,14 @@ const AdminDevelopYourSkills = () => {
                         Loading...
                       </td>
                     </tr>
-                  ) : developyourSkills.length === 0 ? (
+                  ) : developSkillss.length === 0 ? (
                     <tr>
                       <td colSpan={3} className="text-center py-4">
-                        No Develop Your Skill found.
+                        No developSkills found.
                       </td>
                     </tr>
                   ) : (
-                    developyourSkills.map((item) => (
+                    developSkillss.map((item) => (
                       <tr key={item._id} className="hover:bg-gray-50 border-b">
                         <td className="px-4 py-2 text-center">{item.name}</td>
                         <td
@@ -332,7 +351,24 @@ const AdminDevelopYourSkills = () => {
                             __html: truncateHTML(item.description, 10),
                           }}
                         ></td>
-                        <td className="px-4 py-2 text-center">
+                        <td className="px-4 py-2 text-center flex justify-center gap-3">
+                          {/* Edit */}
+                          <button
+                            onClick={() => {
+                              setEditItem(item);
+                              reset({
+                                name: item.name,
+                                description: item.description,
+                              });
+                              window.scrollTo({ top: 0, behavior: "smooth" });
+                            }}
+                            className="text-green-600 hover:text-green-800"
+                            title="Edit"
+                          >
+                            <Edit size={18} />
+                          </button>
+
+                          {/* Delete */}
                           <button
                             onClick={() => handleDelete(item._id)}
                             className="text-red-600 hover:text-red-800"

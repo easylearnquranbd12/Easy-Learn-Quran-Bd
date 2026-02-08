@@ -38,7 +38,7 @@ const {
   createIdeaShares,
   deleteIdeaShares,
   createExerciseIdeaShares,
-} = require("../Controllers/thirdLayerController");
+} = require("../controllers/thirdLayerController");
 
 const router = express.Router();
 

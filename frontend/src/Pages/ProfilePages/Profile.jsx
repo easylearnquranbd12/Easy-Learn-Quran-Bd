@@ -107,7 +107,7 @@ const Profile = () => {
   return (
     <div className=" ">
       <Helmet>
-        <title>Mathematics | Profile Management</title>
+        <title>Be The Shape | Profile Management</title>
       </Helmet>
       <div className="mx-auto">
         <div className="bg-white rounded-lg max-w-7xl mx-auto  border border-primary shadow-xl hover:shadow-2xl overflow-hidden">

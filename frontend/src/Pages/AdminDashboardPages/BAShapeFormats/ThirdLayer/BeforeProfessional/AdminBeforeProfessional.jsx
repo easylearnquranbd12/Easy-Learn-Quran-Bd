@@ -10,12 +10,13 @@ import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
 import RichTextField from "../../../../../shared/TextEditor/RichTextField";
 import BeforeProfessionalModal from "./BeforeProfessionalModal";
 
+
 const AdminBeforeProfessional = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [fieldName, setFieldName] = useState("");
   const [selectedVocabId, setSelectedVocabId] = useState(null);
   const [currentValue, setCurrentValue] = useState("");
-
+  const [editItem, setEditItem] = useState(null);
   const axiosPublic = useAxiosPublic();
   const queryClient = useQueryClient();
 
@@ -33,14 +34,17 @@ const AdminBeforeProfessional = () => {
   });
 
   // ✅ Fetch vocabulary fields
-  const { data: beforeProfessionalFields = [], isLoading } = useQuery({
+  const {
+    data: beforeProfessionalFields = [],
+    isLoading: beforeProfessionalFieldsLoading,
+  } = useQuery({
     queryKey: ["beforeProfessionalFields"],
     queryFn: async () => {
       const res = await axiosPublic.get("/third-layer/beforeProfessionalField");
       return res.data?.data || [];
     },
   });
-  // ✅ Create beforeProfessional
+  // ✅ Create Before Professional Life Style
   const createMutation = useMutation({
     mutationFn: (newData) =>
       axiosPublic.post("/third-layer/beforeProfessional", newData),
@@ -48,48 +52,51 @@ const AdminBeforeProfessional = () => {
       queryClient.invalidateQueries(["beforeProfessional"]);
       Swal.fire(
         "✅ Success!",
-        "Good Life Style added successfully.",
-        "success"
+        "Before Professional Life Style added successfully.",
+        "success",
       );
       resetForm();
     },
-    onError: () =>
-      Swal.fire("❌ Error!", "Failed to add beforeProfessional.", "error"),
+    onError: () => Swal.fire("❌ Error!", "Failed to add Before Professional Life Style.", "error"),
   });
-  // ✅ Get all beforeProfessional fetch Data
-  const {
-    data: beforeProfessionals = [],
-    isLoading: beforeProfessionalsLoading,
-  } = useQuery({
+  // ✅ Get all Before Professional Life Style fetch Data
+  const { data: beforeProfessionals = [], isLoading } = useQuery({
     queryKey: ["beforeProfessionals"],
     queryFn: async () => {
       const res = await axiosPublic.get("/third-layer/beforeProfessional");
       return res.data || [];
     },
   });
+  // ✅ Update Before Professional Life Style
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }) =>
+      axiosPublic.put(`/third-layer/beforeProfessional/${id}`, data),
+    onSuccess: () => {
+      Swal.fire(
+        "✅ Updated!",
+        "Before Professional Life Style updated successfully.",
+        "success",
+      );
+      queryClient.invalidateQueries(["beforeProfessionals"]);
+      resetForm();
+      setEditItem(null);
+    },
+    onError: () =>
+      Swal.fire("❌ Error!", "Failed to update Before Professional Life Style.", "error"),
+  });
 
-  // ✅ Delete beforeProfessional
+  // ✅ Delete Before Professional Life Style
   const deleteMutation = useMutation({
-    mutationFn: (id) =>
-      axiosPublic.delete(`/third-layer/beforeProfessional/${id}`),
+    mutationFn: (id) => axiosPublic.delete(`/third-layer/beforeProfessional/${id}`),
     onSuccess: (res) => {
       if (res.data?.deletedCount > 0) {
-        Swal.fire(
-          "Deleted!",
-          "beforeProfessional deleted successfully.",
-          "success"
-        );
+        Swal.fire("Deleted!", "Before Professional Life Style deleted successfully.", "success");
       } else {
-        Swal.fire(
-          "Info",
-          "beforeProfessional not found or already deleted.",
-          "info"
-        );
+        Swal.fire("Info", "Before Professional Life Style not found or already deleted.", "info");
       }
       queryClient.invalidateQueries(["beforeProfessional"]);
     },
-    onError: () =>
-      Swal.fire("Error!", "Failed to delete beforeProfessional.", "error"),
+    onError: () => Swal.fire("Error!", "Failed to delete Before Professional Life Style.", "error"),
   });
 
   // ✅ Reset Form
@@ -98,16 +105,18 @@ const AdminBeforeProfessional = () => {
       name: "",
       description: "",
     });
+    setEditItem(null);
   };
 
-  // ✅ Submit Handler
   const onSubmit = async (data) => {
-    // if (!imageUrl) {
-    //   Swal.fire("Error!", "Please upload a beforeProfessional image.", "error");
-    //   return;
-    // }
-
-    createMutation.mutate(data);
+    if (editItem) {
+      updateMutation.mutate({
+        id: editItem._id,
+        data,
+      });
+    } else {
+      createMutation.mutate(data);
+    }
   };
 
   // ✅ Delete Handler
@@ -140,7 +149,7 @@ const AdminBeforeProfessional = () => {
         {
           fieldName: "isActive",
           currentValue: currentState,
-        }
+        },
       );
       return res.data;
     },
@@ -148,7 +157,7 @@ const AdminBeforeProfessional = () => {
       Swal.fire({
         icon: "success",
         title: "Updated!",
-        text: `beforeProfessional field is now ${data.updatedValue}`,
+        text: `Before Professional Life Style field is now ${data.updatedValue}`,
       });
       queryClient.invalidateQueries(["beforeProfessionalFields"]);
     },
@@ -156,7 +165,7 @@ const AdminBeforeProfessional = () => {
       Swal.fire(
         "Error!",
         error.response?.data?.message || error.message,
-        "error"
+        "error",
       ),
   });
 
@@ -187,66 +196,63 @@ const AdminBeforeProfessional = () => {
       words.join(" ") + (text.split(/\s+/).length > wordLimit ? "..." : "")
     );
   };
-  if (isLoading || beforeProfessionalsLoading) {
+  if (beforeProfessionalFieldsLoading || isLoading) {
     return <AdminLoading />;
   }
+
   return (
-    <div>
+    <>
       <Helmet>
-        <title>quiz | Create Good Life Style Management</title>
+        <title>Admin | Create Before Professional Life Style Management</title>
       </Helmet>
 
       <TittleAnimation
-        tittle="Create Good Life Style"
-        subtittle="Manage beforeProfessional & Vocabulary Fields"
+        tittle="Create Before Professional Life Style"
+        subtittle="Manage Before Professional Life Styles "
       />
 
-      <div className="mt-10 max-w-7xl mx-auto ">
-        <div className=" w-full bg-white shadow-md rounded-lg p-3 md:p-5">
+      <div className="mt-10 max-w-[1400px] mx-auto">
+        <div className=" w-full bg-white shadow-md rounded-xl p-2 md:p-5">
           {/* ✅ Vocabulary Fields Section */}
           <div className="text-center mb-6">
-            {beforeProfessionalFields &&
-              beforeProfessionalFields.length > 0 && (
-                <>
-                  <div className="flex items-start justify-center gap-2 mb-2">
-                    {beforeProfessionalFields[0].title || "Title"}
-                    <Edit
-                      onClick={() =>
-                        handleEditClick(
-                          "title",
-                          beforeProfessionalFields[0].title,
-                          beforeProfessionalFields[0]._id
-                        )
-                      }
-                      className="w-5 h-5 text-green-600 cursor-pointer"
-                    />
-                  </div>
+            {beforeProfessionalFields && beforeProfessionalFields.length > 0 && (
+              <>
+                <div className="flex items-start justify-center gap-2 mb-2">
+                  {beforeProfessionalFields[0].title || "Title"}
+                  <Edit
+                    onClick={() =>
+                      handleEditClick(
+                        "title",
+                        beforeProfessionalFields[0].title,
+                        beforeProfessionalFields[0]._id,
+                      )
+                    }
+                    className="min-h-5 min-w-5 w-5 h-5 text-green-600 cursor-pointer"
+                  />
+                </div>
 
-                  <div className="flex items-start justify-center gap-2">
-                    <span className="text-base text-justify">
-                      {beforeProfessionalFields[0].description || "Description"}
-                    </span>
-                    <Edit
-                      onClick={() =>
-                        handleEditClick(
-                          "description",
-                          beforeProfessionalFields[0].description,
-                          beforeProfessionalFields[0]._id
-                        )
-                      }
-                      className="w-5 h-5 text-green-600 cursor-pointer"
-                    />
-                  </div>
-                </>
-              )}
+                <div className="flex items-start justify-center gap-2">
+                  <span className="text-base text-justify">
+                    {beforeProfessionalFields[0].description || "Description"}
+                  </span>
+                  <Edit
+                    onClick={() =>
+                      handleEditClick(
+                        "description",
+                        beforeProfessionalFields[0].description,
+                        beforeProfessionalFields[0]._id,
+                      )
+                    }
+                    className="w-5 h-5 min-h-5 min-w-5  text-green-600 cursor-pointer"
+                  />
+                </div>
+              </>
+            )}
 
             {beforeProfessionalFields.map((item) => (
-              <div
-                key={item._id}
-                className="flex items-center gap-2 justify-center mt-3"
-              >
+              <div key={item._id} className="flex items-start gap-2  mt-3">
                 <span className="font-semibold">
-                  Excurise {item.title || "beforeProfessional Field"}
+                  Toggle {item.title || "Before Professional Life Style Field"}
                 </span>
                 <input
                   type="checkbox"
@@ -260,14 +266,14 @@ const AdminBeforeProfessional = () => {
             ))}
           </div>
 
-          {/* ✅ Create beforeProfessional Form */}
+          {/* ✅ Create Before Professional Life Style Form */}
           <div className="w-full  bg-white shadow-2xl rounded-xl border p-4 sm:p-6 mb-10">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-              {/* beforeProfessional Name */}
+              {/* Before Professional Life Style Name */}
               <div className="form-control w-full py-6">
                 <label className="label">
                   <span className="label-text text-base font-medium text-gray-700">
-                    Name:
+                    Tittle:
                   </span>
                 </label>
                 <Controller
@@ -276,7 +282,7 @@ const AdminBeforeProfessional = () => {
                   render={({ field }) => (
                     <input
                       {...field}
-                      placeholder="Enter beforeProfessional name..."
+                      placeholder="Enter Your Tittle..."
                       className="w-full px-4 py-3 border rounded-md text-gray-700 focus:outline-none focus:ring-1 focus:ring-teal-300"
                     />
                   )}
@@ -292,10 +298,16 @@ const AdminBeforeProfessional = () => {
               </div>
               <button
                 type="submit"
-                className="w-full py-3 px-4 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-medium rounded-lg shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-orange-600 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full py-3 px-4 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-medium rounded-lg shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-teal-600 disabled:opacity-70 disabled:cursor-not-allowed"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Adding..." : "Add Before Professional"}
+                {isSubmitting
+                  ? editItem
+                    ? "Updating..."
+                    : "Adding..."
+                  : editItem
+                    ? "Update Before Professional Life Style"
+                    : "Add Before Professional Life Style"}
               </button>
             </form>
           </div>
@@ -308,9 +320,9 @@ const AdminBeforeProfessional = () => {
 
             <div className="overflow-x-auto">
               <table className="table-auto w-full text-sm sm:text-base">
-                <thead className="bg-teal-600  text-white">
+                <thead className="bg-teal-600 text-white">
                   <tr>
-                    <th className="px-4 py-2">Name</th>
+                    <th className="px-4 py-2">Tittle</th>
                     <th className="px-4 py-2">Description</th>
                     <th className="px-4 py-2">Actions</th>
                   </tr>
@@ -325,7 +337,7 @@ const AdminBeforeProfessional = () => {
                   ) : beforeProfessionals.length === 0 ? (
                     <tr>
                       <td colSpan={3} className="text-center py-4">
-                        No before Professional found.
+                        No beforeProfessional found.
                       </td>
                     </tr>
                   ) : (
@@ -338,7 +350,24 @@ const AdminBeforeProfessional = () => {
                             __html: truncateHTML(item.description, 10),
                           }}
                         ></td>
-                        <td className="px-4 py-2 text-center">
+                        <td className="px-4 py-2 text-center flex justify-center gap-3">
+                          {/* Edit */}
+                          <button
+                            onClick={() => {
+                              setEditItem(item);
+                              reset({
+                                name: item.name,
+                                description: item.description,
+                              });
+                              window.scrollTo({ top: 0, behavior: "smooth" });
+                            }}
+                            className="text-green-600 hover:text-green-800"
+                            title="Edit"
+                          >
+                            <Edit size={18} />
+                          </button>
+
+                          {/* Delete */}
                           <button
                             onClick={() => handleDelete(item._id)}
                             className="text-red-600 hover:text-red-800"
@@ -367,7 +396,7 @@ const AdminBeforeProfessional = () => {
           vocabId={selectedVocabId}
         />
       )}
-    </div>
+    </>
   );
 };
 

@@ -27,7 +27,6 @@ const ForgotPassword = () => {
         "Password reset email sent successfully! Please check your inbox."
       );
     } catch (err) {
-      console.log("frirma", err.code);
       // Firebase error mapping
       const firebaseErrorMap = {
         "auth/invalid-email": "Invalid email address.",

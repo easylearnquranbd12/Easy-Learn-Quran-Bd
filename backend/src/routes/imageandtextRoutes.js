@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllImageAndText, getImageAndTextById, createImageAndText, updateImageAndText, deleteImageAndText } = require("../Controllers/imageandtextController");
+const { getAllImageAndText, getImageAndTextById, createImageAndText, updateImageAndText, deleteImageAndText } = require("../controllers/imageandtextController");
 
 
 const router = express.Router();

@@ -6,7 +6,7 @@ const AdminLoading = () => {
       <div className="flex flex-col items-center space-y-4">
         <FadeLoader color="#134e4a" size={60} speedMultiplier={1.2} />
         <p className="text-teal-700 font-semibold text-lg tracking-wide animate-pulse">
-          Loading Admin Dashboard, please wait...
+          Loading Dashboard, please wait...
         </p>
       </div>
     </div>

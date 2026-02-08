@@ -51,7 +51,6 @@ const createSentence = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
 // ✅ Get All Sentence
 const getAllSentence = async (req, res) => {
   try {
@@ -61,7 +60,6 @@ const getAllSentence = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
 // ✅ Delete Sentence
 const deleteSentence = async (req, res) => {
   try {
@@ -81,7 +79,6 @@ const deleteSentence = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
 // ✅ Update Sentence Field (like synonyms, antonyms, exampleEnglish, exampleBangla, isActive)
 const updateSentenceField = async (req, res) => {
   try {
@@ -117,7 +114,7 @@ const updateSentenceField = async (req, res) => {
 
     const result = await sentenceFieldsCollection.updateOne(
       {},
-      { $set: updateData }
+      { $set: updateData },
     );
 
     if (result.matchedCount === 0) {
@@ -180,7 +177,6 @@ const getSentenceField = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
 const getSingleSentence = async (req, res) => {
   try {
     const { id } = req.params;
@@ -198,23 +194,30 @@ const getSingleSentence = async (req, res) => {
   }
 };
 // Temporary Exercise data
-
 const createExerciseSentence = async (req, res) => {
   try {
+    const { user, rows } = req.body;
+
+    if (!user || !rows || !Array.isArray(rows)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid payload. user and rows are required.",
+      });
+    }
+
     const data = {
-      ...req.body,
-      createdAt: new Date(), // Save timestamp
+      user, // who created
+      rows, // 3 rows of exercise
+      createdAt: new Date(), // timestamp for TTL
     };
 
     // Insert exercise
     const result = await sentenceExerciseCollection.insertOne(data);
-
-    // Create TTL index (will auto delete after 30 days)
+    // ✅ Create TTL index if not exists (safe to run multiple times)
     await sentenceExerciseCollection.createIndex(
       { createdAt: 1 },
-      { expireAfterSeconds: 10 * 24 * 60 * 60 } // 30 days
+      { expireAfterSeconds: 30 * 24 * 60 * 60 }, // 30 days
     );
-
     res.status(201).json({
       success: true,
       id: result.insertedId,
@@ -222,6 +225,55 @@ const createExerciseSentence = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating exercise:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+// ✅ Get All Exercise Sentence
+const getAllExerciseSentence = async (req, res) => {
+  try {
+    const result = await sentenceExerciseCollection
+      .find()
+      .sort({ createdAt: -1 }) // latest first
+      .toArray();
+
+    res.json({
+      success: true,
+      total: result.length,
+      data: result,
+    });
+  } catch (error) {
+    console.error("Error getting exercise vocabulary:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+// ✅ Delete Exercise Sentence
+const deleteExerciseSentence = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await sentenceExerciseCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Exercise not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Exercise deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting exercise:", error);
     res.status(500).json({
       success: false,
       message: error.message,
@@ -241,7 +293,6 @@ const createVerb = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
 // ✅ Get All Verb
 const getAllVerb = async (req, res) => {
   try {
@@ -307,7 +358,7 @@ const updateVerbField = async (req, res) => {
 
     const result = await verbFieldsCollection.updateOne(
       {},
-      { $set: updateData }
+      { $set: updateData },
     );
 
     if (result.matchedCount === 0) {
@@ -337,24 +388,80 @@ const getVerbField = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-// Temporary Exercise data
+const updateVerb = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
 
+    if (!Object.keys(updateData).length) {
+      return res.status(400).json({
+        success: false,
+        message: "No fields provided for update",
+      });
+    }
+
+    const result = await verbCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updateData },
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Verb not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Verb updated successfully",
+      updatedData: updateData,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+const getSingleVerb = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await verbCollection.findOne({ _id: new ObjectId(id) });
+    if (!result) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Verb not found" });
+    }
+
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+// Temporary Exercise data
 const createExerciseVerb = async (req, res) => {
   try {
+    const { user, rows } = req.body;
+
+    if (!user || !rows || !Array.isArray(rows)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid payload. user and rows are required.",
+      });
+    }
+
     const data = {
-      ...req.body,
-      createdAt: new Date(), // Save timestamp
+      user, // who created
+      rows, // 3 rows of exercise
+      createdAt: new Date(), // timestamp for TTL
     };
 
     // Insert exercise
     const result = await verbExerciseCollection.insertOne(data);
-
-    // Create TTL index (will auto delete after 30 days)
+    // ✅ Create TTL index if not exists (safe to run multiple times)
     await verbExerciseCollection.createIndex(
       { createdAt: 1 },
-      { expireAfterSeconds: 10 * 24 * 60 * 60 } // 30 days
+      { expireAfterSeconds: 30 * 24 * 60 * 60 }, // 30 days
     );
-
     res.status(201).json({
       success: true,
       id: result.insertedId,
@@ -362,6 +469,55 @@ const createExerciseVerb = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating exercise:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+// ✅ Get All Exercise Verb
+const getAllExerciseVerb = async (req, res) => {
+  try {
+    const result = await verbExerciseCollection
+      .find()
+      .sort({ createdAt: -1 }) // latest first
+      .toArray();
+
+    res.json({
+      success: true,
+      total: result.length,
+      data: result,
+    });
+  } catch (error) {
+    console.error("Error getting exercise vocabulary:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+// ✅ Delete Exercise Verb
+const deleteExerciseVerb = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await verbExerciseCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Exercise not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Exercise deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting exercise:", error);
     res.status(500).json({
       success: false,
       message: error.message,
@@ -447,7 +603,7 @@ const updateArticleField = async (req, res) => {
 
     const result = await articleFieldsCollection.updateOne(
       {},
-      { $set: updateData }
+      { $set: updateData },
     );
 
     if (result.matchedCount === 0) {
@@ -478,23 +634,80 @@ const getArticleField = async (req, res) => {
   }
 };
 // Temporary Exercise data
+const updateArticle = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
 
+    if (!Object.keys(updateData).length) {
+      return res.status(400).json({
+        success: false,
+        message: "No fields provided for update",
+      });
+    }
+
+    const result = await articleCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updateData },
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Article not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Article updated successfully",
+      updatedData: updateData,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+const getSingleArticle = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await articleCollection.findOne({ _id: new ObjectId(id) });
+    if (!result) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Article not found" });
+    }
+
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+// Temporary Exercise data
 const createExerciseArticle = async (req, res) => {
   try {
+    const { user, rows } = req.body;
+
+    if (!user || !rows || !Array.isArray(rows)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid payload. user and rows are required.",
+      });
+    }
+
     const data = {
-      ...req.body,
-      createdAt: new Date(), // Save timestamp
+      user, // who created
+      rows, // 3 rows of exercise
+      createdAt: new Date(), // timestamp for TTL
     };
 
     // Insert exercise
     const result = await articleExerciseCollection.insertOne(data);
-
-    // Create TTL index (will auto delete after 30 days)
+    // ✅ Create TTL index if not exists (safe to run multiple times)
     await articleExerciseCollection.createIndex(
       { createdAt: 1 },
-      { expireAfterSeconds: 10 * 24 * 60 * 60 } // 30 days
+      { expireAfterSeconds: 30 * 24 * 60 * 60 }, // 30 days
     );
-
     res.status(201).json({
       success: true,
       id: result.insertedId,
@@ -508,7 +721,55 @@ const createExerciseArticle = async (req, res) => {
     });
   }
 };
+// ✅ Get All Exercise Article
+const getAllExerciseArticle = async (req, res) => {
+  try {
+    const result = await articleExerciseCollection
+      .find()
+      .sort({ createdAt: -1 }) // latest first
+      .toArray();
 
+    res.json({
+      success: true,
+      total: result.length,
+      data: result,
+    });
+  } catch (error) {
+    console.error("Error getting exercise vocabulary:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+// ✅ Delete Exercise Article
+const deleteExerciseArticle = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await articleExerciseCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Exercise not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Exercise deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting exercise:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 // Tense
 // ✅ Create Tense
 const createTense = async (req, res) => {
@@ -587,7 +848,7 @@ const updateTenseField = async (req, res) => {
 
     const result = await tenseFieldsCollection.updateOne(
       {},
-      { $set: updateData }
+      { $set: updateData },
     );
 
     if (result.matchedCount === 0) {
@@ -618,23 +879,80 @@ const getTenseField = async (req, res) => {
   }
 };
 // Temporary Exercise data
+const updateTense = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
 
+    if (!Object.keys(updateData).length) {
+      return res.status(400).json({
+        success: false,
+        message: "No fields provided for update",
+      });
+    }
+
+    const result = await tenseCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updateData },
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Tense not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Tense updated successfully",
+      updatedData: updateData,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+const getSingleTense = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await tenseCollection.findOne({ _id: new ObjectId(id) });
+    if (!result) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Tense not found" });
+    }
+
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+// Temporary Exercise data
 const createExerciseTense = async (req, res) => {
   try {
+    const { user, rows } = req.body;
+
+    if (!user || !rows || !Array.isArray(rows)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid payload. user and rows are required.",
+      });
+    }
+
     const data = {
-      ...req.body,
-      createdAt: new Date(), // Save timestamp
+      user, // who created
+      rows, // 3 rows of exercise
+      createdAt: new Date(), // timestamp for TTL
     };
 
     // Insert exercise
     const result = await tenseExerciseCollection.insertOne(data);
-
-    // Create TTL index (will auto delete after 30 days)
+    // ✅ Create TTL index if not exists (safe to run multiple times)
     await tenseExerciseCollection.createIndex(
       { createdAt: 1 },
-      { expireAfterSeconds: 10 * 24 * 60 * 60 } // 30 days
+      { expireAfterSeconds: 30 * 24 * 60 * 60 }, // 30 days
     );
-
     res.status(201).json({
       success: true,
       id: result.insertedId,
@@ -642,6 +960,55 @@ const createExerciseTense = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating exercise:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+// ✅ Get All Exercise Tense
+const getAllExerciseTense = async (req, res) => {
+  try {
+    const result = await tenseExerciseCollection
+      .find()
+      .sort({ createdAt: -1 }) // latest first
+      .toArray();
+
+    res.json({
+      success: true,
+      total: result.length,
+      data: result,
+    });
+  } catch (error) {
+    console.error("Error getting exercise vocabulary:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+// ✅ Delete Exercise Tense
+const deleteExerciseTense = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await tenseExerciseCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Exercise not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Exercise deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting exercise:", error);
     res.status(500).json({
       success: false,
       message: error.message,
@@ -726,7 +1093,7 @@ const updatePrepositionField = async (req, res) => {
 
     const result = await prepositionFieldsCollection.updateOne(
       {},
-      { $set: updateData }
+      { $set: updateData },
     );
 
     if (result.matchedCount === 0) {
@@ -758,22 +1125,82 @@ const getPrepositionField = async (req, res) => {
 };
 // Temporary Exercise data
 
+const updatePreposition = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    if (!Object.keys(updateData).length) {
+      return res.status(400).json({
+        success: false,
+        message: "No fields provided for update",
+      });
+    }
+
+    const result = await prepositionCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updateData },
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Preposition not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Preposition updated successfully",
+      updatedData: updateData,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+const getSinglePreposition = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await prepositionCollection.findOne({
+      _id: new ObjectId(id),
+    });
+    if (!result) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Preposition not found" });
+    }
+
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+// Temporary Exercise data
 const createExercisePreposition = async (req, res) => {
   try {
+    const { user, rows } = req.body;
+
+    if (!user || !rows || !Array.isArray(rows)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid payload. user and rows are required.",
+      });
+    }
+
     const data = {
-      ...req.body,
-      createdAt: new Date(), // Save timestamp
+      user, // who created
+      rows, // 3 rows of exercise
+      createdAt: new Date(), // timestamp for TTL
     };
 
     // Insert exercise
     const result = await prepositionExerciseCollection.insertOne(data);
-
-    // Create TTL index (will auto delete after 30 days)
+    // ✅ Create TTL index if not exists (safe to run multiple times)
     await prepositionExerciseCollection.createIndex(
       { createdAt: 1 },
-      { expireAfterSeconds: 10 * 24 * 60 * 60 } // 30 days
+      { expireAfterSeconds: 30 * 24 * 60 * 60 }, // 30 days
     );
-
     res.status(201).json({
       success: true,
       id: result.insertedId,
@@ -781,6 +1208,55 @@ const createExercisePreposition = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating exercise:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+// ✅ Get All Exercise Preposition
+const getAllExercisePreposition = async (req, res) => {
+  try {
+    const result = await prepositionExerciseCollection
+      .find()
+      .sort({ createdAt: -1 }) // latest first
+      .toArray();
+
+    res.json({
+      success: true,
+      total: result.length,
+      data: result,
+    });
+  } catch (error) {
+    console.error("Error getting exercise vocabulary:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+// ✅ Delete Exercise Preposition
+const deleteExercisePreposition = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await prepositionExerciseCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Exercise not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Exercise deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting exercise:", error);
     res.status(500).json({
       success: false,
       message: error.message,
@@ -821,4 +1297,22 @@ module.exports = {
   createExercisePreposition,
   updateSentence,
   getSingleSentence,
+  updateVerb,
+  getSingleVerb,
+  updateArticle,
+  getSingleArticle,
+  updateTense,
+  getSingleTense,
+  updatePreposition,
+  getSinglePreposition,
+  getAllExerciseSentence,
+  deleteExerciseSentence,
+  getAllExerciseVerb,
+  deleteExerciseVerb,
+  getAllExerciseArticle,
+  deleteExerciseArticle,
+  getAllExerciseTense,
+  deleteExerciseTense,
+  getAllExercisePreposition,
+  deleteExercisePreposition,
 };

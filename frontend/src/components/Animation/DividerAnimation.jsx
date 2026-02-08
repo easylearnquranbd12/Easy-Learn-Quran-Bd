@@ -25,8 +25,6 @@ const DividerAnimation = ({ titte }) => {
           height: "2px",
           backgroundImage:
             "radial-gradient(circle at center, rgba(22,163,74,1) 0%, rgba(234,88,12,0.8) 25%, rgba(234,88,12,0.4) 45%, transparent 70%)",
-          // backgroundImage:
-          //   "radial-gradient(circle at 50%, rgba(22,163,74,1) 0%, rgba(22,163,74,0.3) 40%, transparent 70%)",
           transformOrigin: "left",
         }}
         initial={{ scaleX: 0 }}

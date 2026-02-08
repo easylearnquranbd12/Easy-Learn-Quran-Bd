@@ -1,5 +1,5 @@
 // const express = require("express");
-// const { uploadPdf, upload, getAllPdfs, deletePdf, downloadPdf } = require("../Controllers/pdfController");
+// const { uploadPdf, upload, getAllPdfs, deletePdf, downloadPdf } = require("../controllers/pdfController");
 
 // const router = express.Router();
 
@@ -22,7 +22,7 @@ const {
   userDeletePdf,
   updatePdfStatus,
   userDownloadPdf,
-} = require("../Controllers/pdfController");
+} = require("../controllers/pdfController");
 const router = express.Router();
 
 // ===== Admin Routes =====

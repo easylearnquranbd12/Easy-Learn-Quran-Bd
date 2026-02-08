@@ -51,7 +51,7 @@ const {
   deleteExerciseNewTantuster,
   getAllExerciseIdiom,
   deleteExerciseIdiom,
-} = require("../Controllers/firstLayerController");
+} = require("../controllers/firstLayerController");
 
 const router = express.Router();
 

@@ -129,7 +129,6 @@ const AdminTantuster = () => {
   // edit handler
   const handleEdit = (id) => {
     const role = user?.role;
-    console.log(role);
     switch (role) {
       case "admin":
         navigate(`/admin-dashboard/edit-tantuster/${id}`);

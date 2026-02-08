@@ -15,7 +15,7 @@ const AdminGoodLifeStyle = () => {
   const [fieldName, setFieldName] = useState("");
   const [selectedVocabId, setSelectedVocabId] = useState(null);
   const [currentValue, setCurrentValue] = useState("");
-
+  const [editItem, setEditItem] = useState(null);
   const axiosPublic = useAxiosPublic();
   const queryClient = useQueryClient();
 
@@ -43,23 +43,24 @@ const AdminGoodLifeStyle = () => {
       return res.data?.data || [];
     },
   });
-  // ✅ Create goodLifeStyles
+  console.log(goodLifeStyleFields);
+  // ✅ Create Good Life Style
   const createMutation = useMutation({
     mutationFn: (newData) =>
       axiosPublic.post("/third-layer/goodLifeStyle", newData),
     onSuccess: () => {
-      queryClient.invalidateQueries(["goodLifeStyless"]);
+      queryClient.invalidateQueries(["goodLifeStyle"]);
       Swal.fire(
         "✅ Success!",
         "Good Life Style added successfully.",
-        "success"
+        "success",
       );
       resetForm();
     },
     onError: () =>
-      Swal.fire("❌ Error!", "Failed to add goodLifeStyles.", "error"),
+      Swal.fire("❌ Error!", "Failed to add Good Life Style.", "error"),
   });
-  // ✅ Get all goodLifeStyles fetch Data
+  // ✅ Get all Good Life Style fetch Data
   const { data: goodLifeStyles = [], isLoading } = useQuery({
     queryKey: ["goodLifeStyles"],
     queryFn: async () => {
@@ -67,28 +68,45 @@ const AdminGoodLifeStyle = () => {
       return res.data || [];
     },
   });
+  // ✅ Update Good Life Style
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }) =>
+      axiosPublic.put(`/third-layer/goodLifeStyle/${id}`, data),
+    onSuccess: () => {
+      Swal.fire(
+        "✅ Updated!",
+        "Good Life Style updated successfully.",
+        "success",
+      );
+      queryClient.invalidateQueries(["goodLifeStyles"]);
+      resetForm();
+      setEditItem(null);
+    },
+    onError: () =>
+      Swal.fire("❌ Error!", "Failed to update Good Life Style.", "error"),
+  });
 
-  // ✅ Delete goodLifeStyles
+  // ✅ Delete Good Life Style
   const deleteMutation = useMutation({
     mutationFn: (id) => axiosPublic.delete(`/third-layer/goodLifeStyle/${id}`),
     onSuccess: (res) => {
       if (res.data?.deletedCount > 0) {
         Swal.fire(
           "Deleted!",
-          "goodLifeStyles deleted successfully.",
-          "success"
+          "Good Life Style deleted successfully.",
+          "success",
         );
       } else {
         Swal.fire(
           "Info",
-          "goodLifeStyles not found or already deleted.",
-          "info"
+          "Good Life Style not found or already deleted.",
+          "info",
         );
       }
-      queryClient.invalidateQueries(["goodLifeStyless"]);
+      queryClient.invalidateQueries(["goodLifeStyle"]);
     },
     onError: () =>
-      Swal.fire("Error!", "Failed to delete goodLifeStyles.", "error"),
+      Swal.fire("Error!", "Failed to delete Good Life Style.", "error"),
   });
 
   // ✅ Reset Form
@@ -97,16 +115,18 @@ const AdminGoodLifeStyle = () => {
       name: "",
       description: "",
     });
+    setEditItem(null);
   };
 
-  // ✅ Submit Handler
   const onSubmit = async (data) => {
-    // if (!imageUrl) {
-    //   Swal.fire("Error!", "Please upload a goodLifeStyles image.", "error");
-    //   return;
-    // }
-
-    createMutation.mutate(data);
+    if (editItem) {
+      updateMutation.mutate({
+        id: editItem._id,
+        data,
+      });
+    } else {
+      createMutation.mutate(data);
+    }
   };
 
   // ✅ Delete Handler
@@ -139,7 +159,7 @@ const AdminGoodLifeStyle = () => {
         {
           fieldName: "isActive",
           currentValue: currentState,
-        }
+        },
       );
       return res.data;
     },
@@ -155,7 +175,7 @@ const AdminGoodLifeStyle = () => {
       Swal.fire(
         "Error!",
         error.response?.data?.message || error.message,
-        "error"
+        "error",
       ),
   });
 
@@ -177,7 +197,6 @@ const AdminGoodLifeStyle = () => {
       }
     });
   };
-
   // ✅ Safe truncate function
   const truncateHTML = (html = "", wordLimit = 10) => {
     if (!html || typeof html !== "string") return "";
@@ -187,23 +206,23 @@ const AdminGoodLifeStyle = () => {
       words.join(" ") + (text.split(/\s+/).length > wordLimit ? "..." : "")
     );
   };
-
   if (goodLifeStyleFieldsLoading || isLoading) {
     return <AdminLoading />;
   }
+
   return (
     <>
       <Helmet>
-        <title>quiz | Create Good Life Style Management</title>
+        <title>Admin | Create Good Life Style Management</title>
       </Helmet>
 
       <TittleAnimation
         tittle="Create Good Life Style"
-        subtittle="Manage goodLifeStyles & Vocabulary Fields"
+        subtittle="Manage Good Life Style "
       />
 
-      <div className="mt-10 max-w-7xl mx-auto">
-        <div className=" w-full bg-white shadow-md rounded-2xl p-3 md:p-5">
+      <div className="mt-10 max-w-[1400px] mx-auto">
+        <div className=" w-full bg-white shadow-md rounded-xl p-2 md:p-5">
           {/* ✅ Vocabulary Fields Section */}
           <div className="text-center mb-6">
             {goodLifeStyleFields && goodLifeStyleFields.length > 0 && (
@@ -215,15 +234,15 @@ const AdminGoodLifeStyle = () => {
                       handleEditClick(
                         "title",
                         goodLifeStyleFields[0].title,
-                        goodLifeStyleFields[0]._id
+                        goodLifeStyleFields[0]._id,
                       )
                     }
-                    className="w-5 h-5 text-green-600 cursor-pointer"
+                    className="min-h-5 min-w-5 w-5 h-5 text-green-600 cursor-pointer"
                   />
                 </div>
 
                 <div className="flex items-start justify-center gap-2">
-                  <span className="text-base">
+                  <span className="text-base text-justify">
                     {goodLifeStyleFields[0].description || "Description"}
                   </span>
                   <Edit
@@ -231,22 +250,19 @@ const AdminGoodLifeStyle = () => {
                       handleEditClick(
                         "description",
                         goodLifeStyleFields[0].description,
-                        goodLifeStyleFields[0]._id
+                        goodLifeStyleFields[0]._id,
                       )
                     }
-                    className="w-5 h-5 text-green-600 cursor-pointer"
+                    className="w-5 h-5 min-h-5 min-w-5  text-green-600 cursor-pointer"
                   />
                 </div>
               </>
             )}
 
             {goodLifeStyleFields.map((item) => (
-              <div
-                key={item._id}
-                className="flex items-center gap-2 justify-center mt-3"
-              >
+              <div key={item._id} className="flex items-start gap-2  mt-3">
                 <span className="font-semibold">
-                  Toggle {item.title || "goodLifeStyles Field"}
+                  Toggle {item.title || "Good Life Style Field"}
                 </span>
                 <input
                   type="checkbox"
@@ -260,14 +276,14 @@ const AdminGoodLifeStyle = () => {
             ))}
           </div>
 
-          {/* ✅ Create goodLifeStyles Form */}
-          <div className="w-full  bg-white shadow-xl rounded-xl border p-4 sm:p-6 mb-10">
+          {/* ✅ Create Good Life Style Form */}
+          <div className="w-full  bg-white shadow-2xl rounded-xl border p-4 sm:p-6 mb-10">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-              {/* goodLifeStyles Name */}
+              {/* Good Life Style Name */}
               <div className="form-control w-full py-6">
                 <label className="label">
                   <span className="label-text text-base font-medium text-gray-700">
-                    Name:
+                    Tittle:
                   </span>
                 </label>
                 <Controller
@@ -276,7 +292,7 @@ const AdminGoodLifeStyle = () => {
                   render={({ field }) => (
                     <input
                       {...field}
-                      placeholder="Enter good Life Styles name..."
+                      placeholder="Enter Your Tittle..."
                       className="w-full px-4 py-3 border rounded-md text-gray-700 focus:outline-none focus:ring-1 focus:ring-teal-300"
                     />
                   )}
@@ -292,15 +308,21 @@ const AdminGoodLifeStyle = () => {
               </div>
               <button
                 type="submit"
-                className="w-full py-3 px-4 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-medium rounded-lg shadow-md transition-all focus:outline-none focus:ring-1 focus:ring-teal-600 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full py-3 px-4 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-medium rounded-lg shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-teal-600 disabled:opacity-70 disabled:cursor-not-allowed"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Adding..." : "Add goodLifeStyles"}
+                {isSubmitting
+                  ? editItem
+                    ? "Updating..."
+                    : "Adding..."
+                  : editItem
+                    ? "Update Good Life Style"
+                    : "Add Good Life Style"}
               </button>
             </form>
           </div>
 
-          {/* ✅ goodLifeStyles List */}
+          {/* ✅ goodLifeStyle List */}
           <div className="w-full bg-white shadow-lg rounded-xl border p-4 sm:p-6">
             <h2 className="text-lg sm:text-xl font-semibold mb-4 text-teal-700">
               List
@@ -310,7 +332,7 @@ const AdminGoodLifeStyle = () => {
               <table className="table-auto w-full text-sm sm:text-base">
                 <thead className="bg-teal-600 text-white">
                   <tr>
-                    <th className="px-4 py-2">Name</th>
+                    <th className="px-4 py-2">Tittle</th>
                     <th className="px-4 py-2">Description</th>
                     <th className="px-4 py-2">Actions</th>
                   </tr>
@@ -325,7 +347,7 @@ const AdminGoodLifeStyle = () => {
                   ) : goodLifeStyles.length === 0 ? (
                     <tr>
                       <td colSpan={3} className="text-center py-4">
-                        No goodLifeStyless found.
+                        No goodLifeStyle found.
                       </td>
                     </tr>
                   ) : (
@@ -338,7 +360,24 @@ const AdminGoodLifeStyle = () => {
                             __html: truncateHTML(item.description, 10),
                           }}
                         ></td>
-                        <td className="px-4 py-2 text-center">
+                        <td className="px-4 py-2 text-center flex justify-center gap-3">
+                          {/* Edit */}
+                          <button
+                            onClick={() => {
+                              setEditItem(item);
+                              reset({
+                                name: item.name,
+                                description: item.description,
+                              });
+                              window.scrollTo({ top: 0, behavior: "smooth" });
+                            }}
+                            className="text-green-600 hover:text-green-800"
+                            title="Edit"
+                          >
+                            <Edit size={18} />
+                          </button>
+
+                          {/* Delete */}
                           <button
                             onClick={() => handleDelete(item._id)}
                             className="text-red-600 hover:text-red-800"

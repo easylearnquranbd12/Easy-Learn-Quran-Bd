@@ -61,7 +61,7 @@ const BlogDetails = () => {
   return (
     <div>
       <Helmet>
-        <title>Nasmatics | Blog Details</title>
+        <title>Be The Shape | Blog Details</title>
       </Helmet>
       <div className="max-w-7xl mx-auto  py-8">
         {/* TittleAnimation - no change */}

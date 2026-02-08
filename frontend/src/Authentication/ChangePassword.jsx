@@ -55,7 +55,6 @@ const ChangePassword = () => {
       setModalMessage("Password updated successfully!");
       reset();
     } catch (error) {
-      console.error(error);
       const errorMap = {
         "auth/wrong-password": "Incorrect current password.",
         "auth/weak-password": "Password should be at least 6 characters.",

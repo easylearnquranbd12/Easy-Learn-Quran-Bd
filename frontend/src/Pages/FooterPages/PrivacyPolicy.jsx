@@ -38,7 +38,7 @@ const PrivacyPolicy = () => {
   return (
     <div>
       <Helmet>
-        <title>Nasmatics | Privacy Policy</title>
+        <title>Be The Shape | Privacy Policy</title>
       </Helmet>
       <div>
         <motion.div

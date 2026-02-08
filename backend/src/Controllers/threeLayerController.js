@@ -50,37 +50,31 @@ const updateBeforeProfessionalField = async (req, res) => {
     if (fieldName === "isActive") {
       const doc = await beforeProfessionalFieldsCollection.findOne({});
       if (!doc) {
-        return res
-          .status(404)
-          .json({
-            success: false,
-            message: "No before professional field found",
-          });
+        return res.status(404).json({
+          success: false,
+          message: "No before professional field found",
+        });
       }
       updateData[fieldName] = doc.isActive === "ON" ? "OFF" : "ON";
     } else {
       if (!value) {
-        return res
-          .status(400)
-          .json({
-            success: false,
-            message: "value is required for this field",
-          });
+        return res.status(400).json({
+          success: false,
+          message: "value is required for this field",
+        });
       }
       updateData[fieldName] = value;
     }
 
     const result = await beforeProfessionalFieldsCollection.updateOne(
       {},
-      { $set: updateData }
+      { $set: updateData },
     );
     if (result.matchedCount === 0) {
-      return res
-        .status(404)
-        .json({
-          success: false,
-          message: "No before professional field found to update",
-        });
+      return res.status(404).json({
+        success: false,
+        message: "No before professional field found to update",
+      });
     }
 
     res.json({
@@ -95,8 +89,6 @@ const updateBeforeProfessionalField = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
-// ✅ Get Before Professional Fields
 const getBeforeProfessionalField = async (req, res) => {
   try {
     const result = await beforeProfessionalFieldsCollection.find().toArray();
@@ -106,44 +98,71 @@ const getBeforeProfessionalField = async (req, res) => {
   }
 };
 
-// ✅ Create Exercise Before Professional
-const createExerciseBeforeProfessional = async (req, res) => {
+// ✅ Create Before CURD
+const createBeforeProfessional = async (req, res) => {
   try {
-    const data = { ...req.body, createdAt: new Date() };
-    const result = await beforeProfessionalExerciseCollection.insertOne(data);
-    await beforeProfessionalExerciseCollection.createIndex(
-      { createdAt: 1 },
-      { expireAfterSeconds: 30 * 24 * 60 * 60 }
-    );
-
+    const data = { ...req.body, createdAt: new Date().toISOString() };
+    const result = await beforeProfessionalCollection.insertOne(data);
     res.status(201).json({
       success: true,
-      id: result.insertedId,
-      message: "Exercise created. It will auto-delete after 30 days.",
+      message: "Before Professional created successfully",
+      data: result,
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
-// ✅ Create Before Professional
-const createBeforeProfessional = async (req, res) => {
+const getAllBeforeProfessional = async (req, res) => {
   try {
-    const data = { ...req.body, createdAt: new Date().toISOString() };
-    const result = await beforeProfessionalCollection.insertOne(data);
-    res
-      .status(201)
-      .json({
-        success: true,
-        message: "Before Professional created successfully",
-        data: result,
-      });
+    const result = await beforeProfessionalCollection.find().toArray();
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+const getSingleBeforeProfessional = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await beforeProfessionalCollection.findOne({
+      _id: new ObjectId(id),
+    });
+
+    if (!result) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Before Professional not found" });
+    }
+
+    res.json({ success: true, data: result });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+const updateBeforeProfessional = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
 
-// ✅ Delete Before Professional
+    const result = await beforeProfessionalCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updateData },
+    );
+
+    if (result.matchedCount === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Before Professional not found" });
+    }
+
+    res.json({
+      success: true,
+      message: "Before Professional updated successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 const deleteBeforeProfessional = async (req, res) => {
   try {
     const { id } = req.params;
@@ -156,16 +175,91 @@ const deleteBeforeProfessional = async (req, res) => {
   }
 };
 
-// ✅ Get All Before Professionals
-const getAllBeforeProfessional = async (req, res) => {
+// ✅ Create Exercise Before Professional
+const createExerciseBeforeProfessional = async (req, res) => {
   try {
-    const result = await beforeProfessionalCollection.find().toArray();
-    res.status(200).json(result);
+    const {
+      name,
+      description,
+      userInfo, // 👈 frontend theke আসবে
+    } = req.body;
+
+    if (!name || !description) {
+      return res.status(400).json({
+        success: false,
+        message: "Name and description are required",
+      });
+    }
+
+    if (!userInfo?.email) {
+      return res.status(400).json({
+        success: false,
+        message: "User info is required",
+      });
+    }
+
+    const data = {
+      name,
+      description,
+      userInfo: {
+        userId: userInfo.userId,
+        name: userInfo.name,
+        email: userInfo.email,
+        role: userInfo.role || "student",
+      },
+      createdAt: new Date(),
+    };
+
+    const result = await beforeProfessionalExerciseCollection.insertOne(data);
+
+    // ⏱ Auto delete after 30 days
+    await beforeProfessionalExerciseCollection.createIndex(
+      { createdAt: 1 },
+      { expireAfterSeconds: 30 * 24 * 60 * 60 },
+    );
+
+    res.status(201).json({
+      success: true,
+      id: result.insertedId,
+      message: "Exercise created successfully (auto-delete in 30 days)",
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
+const getAllExerciseBeforeProfessional = async (req, res) => {
+  try {
+    const result = await beforeProfessionalExerciseCollection.find().toArray();
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+const deleteExerciseBeforeProfessional = async (req, res) => {
+  try {
+    const { id } = req.params;
 
+    const result = await beforeProfessionalExerciseCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
+
+    if (result.deletedCount === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Exercise not found" });
+    }
+
+    res.json({
+      success: true,
+      message: "Exercise deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 // -----------------------------------------------------------------------------
 // Corporate Email
 // -----------------------------------------------------------------------------
@@ -202,15 +296,13 @@ const updateCorporateEmailField = async (req, res) => {
 
     const result = await corporateEmailFieldsCollection.updateOne(
       {},
-      { $set: updateData }
+      { $set: updateData },
     );
     if (result.matchedCount === 0)
-      return res
-        .status(404)
-        .json({
-          success: false,
-          message: "No corporate email field found to update",
-        });
+      return res.status(404).json({
+        success: false,
+        message: "No corporate email field found to update",
+      });
 
     res.json({
       success: true,
@@ -221,7 +313,6 @@ const updateCorporateEmailField = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
 // ✅ Get Corporate Email Fields
 const getCorporateEmailField = async (req, res) => {
   try {
@@ -231,45 +322,74 @@ const getCorporateEmailField = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
-// ✅ Create Exercise Corporate Email
-const createExerciseCorporateEmail = async (req, res) => {
-  try {
-    const data = { ...req.body, createdAt: new Date() };
-    const result = await corporateEmailExerciseCollection.insertOne(data);
-    await corporateEmailExerciseCollection.createIndex(
-      { createdAt: 1 },
-      { expireAfterSeconds: 30 * 24 * 60 * 60 }
-    );
-    res
-      .status(201)
-      .json({
-        success: true,
-        id: result.insertedId,
-        message: "Exercise created. Auto-delete after 30 days.",
-      });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
 // ✅ Create Corporate Email
 const createCorporateEmail = async (req, res) => {
   try {
     const data = { ...req.body, createdAt: new Date().toISOString() };
     const result = await corporateEmailCollection.insertOne(data);
-    res
-      .status(201)
-      .json({
-        success: true,
-        message: "Corporate Email created successfully",
-        data: result,
-      });
+    res.status(201).json({
+      success: true,
+      message: "Corporate Email created successfully",
+      data: result,
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+// ✅ Get All Corporate Emails
+const getAllCorporateEmail = async (req, res) => {
+  try {
+    const result = await corporateEmailCollection.find().toArray();
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+// ✅ Get Single Corporate Email
+const getSingleCorporateEmail = async (req, res) => {
+  try {
+    const { id } = req.params;
 
+    const result = await corporateEmailCollection.findOne({
+      _id: new ObjectId(id),
+    });
+
+    if (!result) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Corporate Email not found" });
+    }
+
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+// ✅ Update Corporate Email
+const updateCorporateEmail = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    const result = await corporateEmailCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updateData },
+    );
+
+    if (result.matchedCount === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Corporate Email not found" });
+    }
+
+    res.json({
+      success: true,
+      message: "Corporate Email updated successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 // ✅ Delete Corporate Email
 const deleteCorporateEmail = async (req, res) => {
   try {
@@ -282,14 +402,91 @@ const deleteCorporateEmail = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
-// ✅ Get All Corporate Emails
-const getAllCorporateEmail = async (req, res) => {
+// ✅ Create Exercise Corporate Email (with userInfo)
+const createExerciseCorporateEmail = async (req, res) => {
   try {
-    const result = await corporateEmailCollection.find().toArray();
-    res.status(200).json(result);
+    const {
+      name,
+      description,
+      userInfo, // 👈 frontend theke আসবে
+    } = req.body;
+
+    if (!name || !description) {
+      return res.status(400).json({
+        success: false,
+        message: "Name and description are required",
+      });
+    }
+
+    if (!userInfo?.email) {
+      return res.status(400).json({
+        success: false,
+        message: "User info is required",
+      });
+    }
+
+    const data = {
+      name,
+      description,
+      userInfo: {
+        userId: userInfo.userId,
+        name: userInfo.name,
+        email: userInfo.email,
+        role: userInfo.role || "student",
+      },
+      createdAt: new Date(),
+    };
+
+    const result = await corporateEmailExerciseCollection.insertOne(data);
+
+    // ⏱ Auto delete after 30 days
+    await corporateEmailExerciseCollection.createIndex(
+      { createdAt: 1 },
+      { expireAfterSeconds: 30 * 24 * 60 * 60 },
+    );
+
+    res.status(201).json({
+      success: true,
+      id: result.insertedId,
+      message: "Exercise created successfully (auto-delete in 30 days)",
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+// ✅ Get All Corporate Email Exercises
+const getAllExerciseCorporateEmail = async (req, res) => {
+  try {
+    const result = await corporateEmailExerciseCollection.find().toArray();
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+// ✅ Delete Corporate Email Exercise
+const deleteExerciseCorporateEmail = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await corporateEmailExerciseCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
+
+    if (result.deletedCount === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Exercise not found" });
+    }
+
+    res.json({
+      success: true,
+      message: "Exercise deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -329,7 +526,7 @@ const updateDevelopSkillsField = async (req, res) => {
 
     const result = await developSkillsFieldsCollection.updateOne(
       {},
-      { $set: updateData }
+      { $set: updateData },
     );
     res.json({
       success: true,
@@ -340,8 +537,6 @@ const updateDevelopSkillsField = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
-// ✅ Get Develop Skills Fields
 const getDevelopSkillsField = async (req, res) => {
   try {
     const result = await developSkillsFieldsCollection.find().toArray();
@@ -351,45 +546,20 @@ const getDevelopSkillsField = async (req, res) => {
   }
 };
 
-// ✅ Create Exercise Develop Skills
-const createExerciseDevelopSkills = async (req, res) => {
-  try {
-    const data = { ...req.body, createdAt: new Date() };
-    const result = await developSkillsExerciseCollection.insertOne(data);
-    await developSkillsExerciseCollection.createIndex(
-      { createdAt: 1 },
-      { expireAfterSeconds: 30 * 24 * 60 * 60 }
-    );
-    res
-      .status(201)
-      .json({
-        success: true,
-        id: result.insertedId,
-        message: "Exercise created. Auto-delete after 30 days.",
-      });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-// ✅ Create Develop Skills
+// ✅ Create Exercise Develop Skills CURD
 const createDevelopSkills = async (req, res) => {
   try {
     const data = { ...req.body, createdAt: new Date().toISOString() };
     const result = await developSkillsCollection.insertOne(data);
-    res
-      .status(201)
-      .json({
-        success: true,
-        message: "Develop Skills created successfully",
-        data: result,
-      });
+    res.status(201).json({
+      success: true,
+      message: "Develop Skills created successfully",
+      data: result,
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
-// ✅ Delete Develop Skills
 const deleteDevelopSkills = async (req, res) => {
   try {
     const { id } = req.params;
@@ -401,8 +571,6 @@ const deleteDevelopSkills = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
-// ✅ Get All Develop Skills
 const getAllDevelopSkills = async (req, res) => {
   try {
     const result = await developSkillsCollection.find().toArray();
@@ -411,7 +579,135 @@ const getAllDevelopSkills = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+const getSingleDevelopSkills = async (req, res) => {
+  try {
+    const { id } = req.params;
 
+    const result = await developSkillsCollection.findOne({
+      _id: new ObjectId(id),
+    });
+
+    if (!result) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Develop Skills not found" });
+    }
+
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+const updateDevelopSkills = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    const result = await developSkillsCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updateData },
+    );
+
+    if (result.matchedCount === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Develop Skills not found" });
+    }
+
+    res.json({
+      success: true,
+      message: "Develop Skills updated successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// ✅ Create Exercise Develop Skills
+const createExerciseDevelopSkills = async (req, res) => {
+  try {
+    const {
+      name,
+      description,
+      userInfo, // 👈 frontend theke আসবে
+    } = req.body;
+
+    if (!name || !description) {
+      return res.status(400).json({
+        success: false,
+        message: "Name and description are required",
+      });
+    }
+
+    if (!userInfo?.email) {
+      return res.status(400).json({
+        success: false,
+        message: "User info is required",
+      });
+    }
+
+    const data = {
+      name,
+      description,
+      userInfo: {
+        userId: userInfo.userId,
+        name: userInfo.name,
+        email: userInfo.email,
+        role: userInfo.role || "student",
+      },
+      createdAt: new Date(),
+    };
+
+    const result = await developSkillsExerciseCollection.insertOne(data);
+
+    // ⏱ Auto delete after 30 days
+    await developSkillsExerciseCollection.createIndex(
+      { createdAt: 1 },
+      { expireAfterSeconds: 30 * 24 * 60 * 60 },
+    );
+
+    res.status(201).json({
+      success: true,
+      id: result.insertedId,
+      message: "Exercise created successfully (auto-delete in 30 days)",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+const getAllExerciseDevelopSkills = async (req, res) => {
+  try {
+    const result = await developSkillsExerciseCollection.find().toArray();
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+const deleteExerciseDevelopSkills = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await developSkillsExerciseCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
+
+    if (result.deletedCount === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Exercise not found" });
+    }
+
+    res.json({
+      success: true,
+      message: "Exercise deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 // -----------------------------------------------------------------------------
 // Good Life Style
 // -----------------------------------------------------------------------------
@@ -448,7 +744,7 @@ const updateGoodLifeStyleField = async (req, res) => {
 
     const result = await goodLifeStyleFieldsCollection.updateOne(
       {},
-      { $set: updateData }
+      { $set: updateData },
     );
     res.json({
       success: true,
@@ -459,56 +755,30 @@ const updateGoodLifeStyleField = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
-// ✅ Get Good Life Style Fields
 const getGoodLifeStyleField = async (req, res) => {
   try {
     const result = await goodLifeStyleFieldsCollection.find().toArray();
+
     res.json({ success: true, data: result });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// ✅ Create Exercise Good Life Style
-const createExerciseGoodLifeStyle = async (req, res) => {
-  try {
-    const data = { ...req.body, createdAt: new Date() };
-    const result = await goodLifeStyleExerciseCollection.insertOne(data);
-    await goodLifeStyleExerciseCollection.createIndex(
-      { createdAt: 1 },
-      { expireAfterSeconds: 30 * 24 * 60 * 60 }
-    );
-    res
-      .status(201)
-      .json({
-        success: true,
-        id: result.insertedId,
-        message: "Exercise created. Auto-delete after 30 days.",
-      });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-// ✅ Create Good Life Style
+// ✅ Create Good Life Style CURD
 const createGoodLifeStyle = async (req, res) => {
   try {
     const data = { ...req.body, createdAt: new Date().toISOString() };
     const result = await goodLifeStyleCollection.insertOne(data);
-    res
-      .status(201)
-      .json({
-        success: true,
-        message: "Good Life Style created successfully",
-        data: result,
-      });
+    res.status(201).json({
+      success: true,
+      message: "Good Life Style created successfully",
+      data: result,
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
-// ✅ Delete Good Life Style
 const deleteGoodLifeStyle = async (req, res) => {
   try {
     const { id } = req.params;
@@ -520,14 +790,141 @@ const deleteGoodLifeStyle = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
-// ✅ Get All Good Life Styles
 const getAllGoodLifeStyle = async (req, res) => {
   try {
     const result = await goodLifeStyleCollection.find().toArray();
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+const getSingleGoodLifeStyle = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await goodLifeStyleCollection.findOne({
+      _id: new ObjectId(id),
+    });
+
+    if (!result) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Good Life Style not found" });
+    }
+
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+const updateGoodLifeStyle = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    const result = await goodLifeStyleCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updateData },
+    );
+
+    if (result.matchedCount === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Good Life Style not found" });
+    }
+
+    res.json({
+      success: true,
+      message: "Good Life Style updated successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// ✅ Create Exercise Good Life Style
+const createExerciseGoodLifeStyle = async (req, res) => {
+  try {
+    const {
+      name,
+      description,
+      userInfo, // 👈 frontend theke আসবে
+    } = req.body;
+
+    if (!name || !description) {
+      return res.status(400).json({
+        success: false,
+        message: "Name and description are required",
+      });
+    }
+
+    if (!userInfo?.email) {
+      return res.status(400).json({
+        success: false,
+        message: "User info is required",
+      });
+    }
+
+    const data = {
+      name,
+      description,
+      userInfo: {
+        userId: userInfo.userId,
+        name: userInfo.name,
+        email: userInfo.email,
+        role: userInfo.role || "student",
+      },
+      createdAt: new Date(),
+    };
+
+    const result = await goodLifeStyleExerciseCollection.insertOne(data);
+
+    // ⏱ Auto delete after 30 days
+    await goodLifeStyleExerciseCollection.createIndex(
+      { createdAt: 1 },
+      { expireAfterSeconds: 30 * 24 * 60 * 60 },
+    );
+
+    res.status(201).json({
+      success: true,
+      id: result.insertedId,
+      message: "Exercise created successfully (auto-delete in 30 days)",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+const getAllExerciseGoodLifeStyle = async (req, res) => {
+  try {
+    const result = await goodLifeStyleExerciseCollection.find().toArray();
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+const deleteExerciseGoodLifeStyle = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await goodLifeStyleExerciseCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
+
+    if (result.deletedCount === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Exercise not found" });
+    }
+
+    res.json({
+      success: true,
+      message: "Exercise deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -566,7 +963,7 @@ const updateIdeaSharesField = async (req, res) => {
 
     const result = await ideaSharesFieldsCollection.updateOne(
       {},
-      { $set: updateData }
+      { $set: updateData },
     );
     res.json({
       success: true,
@@ -577,8 +974,6 @@ const updateIdeaSharesField = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
-// ✅ Get Good Life Style Fields
 const getIdeaSharesField = async (req, res) => {
   try {
     const result = await ideaSharesFieldsCollection.find().toArray();
@@ -588,45 +983,20 @@ const getIdeaSharesField = async (req, res) => {
   }
 };
 
-// ✅ Create Exercise Good Life Style
-const createExerciseIdeaShares = async (req, res) => {
-  try {
-    const data = { ...req.body, createdAt: new Date() };
-    const result = await ideaSharesExerciseCollection.insertOne(data);
-    await ideaSharesExerciseCollection.createIndex(
-      { createdAt: 1 },
-      { expireAfterSeconds: 30 * 24 * 60 * 60 }
-    );
-    res
-      .status(201)
-      .json({
-        success: true,
-        id: result.insertedId,
-        message: "Exercise created. Auto-delete after 30 days.",
-      });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-// ✅ Create Good Life Style
+// ✅ Create Good Life Style CURD
 const createIdeaShares = async (req, res) => {
   try {
     const data = { ...req.body, createdAt: new Date().toISOString() };
     const result = await ideaSharesCollection.insertOne(data);
-    res
-      .status(201)
-      .json({
-        success: true,
-        message: "Good Life Style created successfully",
-        data: result,
-      });
+    res.status(201).json({
+      success: true,
+      message: "Good Life Style created successfully",
+      data: result,
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
-// ✅ Delete Good Life Style
 const deleteIdeaShares = async (req, res) => {
   try {
     const { id } = req.params;
@@ -638,14 +1008,141 @@ const deleteIdeaShares = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
-// ✅ Get All Good Life Styles
 const getAllIdeaShares = async (req, res) => {
   try {
     const result = await ideaSharesCollection.find().toArray();
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+const getSingleIdeaShares = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await ideaSharesCollection.findOne({
+      _id: new ObjectId(id),
+    });
+
+    if (!result) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Idea Shares not found" });
+    }
+
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+const updateIdeaShares = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    const result = await ideaSharesCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updateData },
+    );
+
+    if (result.matchedCount === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Idea Shares not found" });
+    }
+
+    res.json({
+      success: true,
+      message: "Idea Shares updated successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// ✅ Create Exercise Develop Skills
+const createExerciseIdeaShares = async (req, res) => {
+  try {
+    const {
+      name,
+      description,
+      userInfo, // 👈 frontend theke আসবে
+    } = req.body;
+
+    if (!name || !description) {
+      return res.status(400).json({
+        success: false,
+        message: "Name and description are required",
+      });
+    }
+
+    if (!userInfo?.email) {
+      return res.status(400).json({
+        success: false,
+        message: "User info is required",
+      });
+    }
+
+    const data = {
+      name,
+      description,
+      userInfo: {
+        userId: userInfo.userId,
+        name: userInfo.name,
+        email: userInfo.email,
+        role: userInfo.role || "student",
+      },
+      createdAt: new Date(),
+    };
+
+    const result = await ideaSharesExerciseCollection.insertOne(data);
+
+    // ⏱ Auto delete after 30 days
+    await ideaSharesExerciseCollection.createIndex(
+      { createdAt: 1 },
+      { expireAfterSeconds: 30 * 24 * 60 * 60 },
+    );
+
+    res.status(201).json({
+      success: true,
+      id: result.insertedId,
+      message: "Exercise created successfully (auto-delete in 30 days)",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+const getAllExerciseIdeaShares = async (req, res) => {
+  try {
+    const result = await ideaSharesExerciseCollection.find().toArray();
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+const deleteExerciseIdeaShares = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await ideaSharesExerciseCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
+
+    if (result.deletedCount === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Exercise not found" });
+    }
+
+    res.json({
+      success: true,
+      message: "Exercise deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -660,6 +1157,10 @@ module.exports = {
   createBeforeProfessional,
   deleteBeforeProfessional,
   getAllBeforeProfessional,
+  getSingleBeforeProfessional,
+  updateBeforeProfessional,
+  getAllExerciseBeforeProfessional,
+  deleteExerciseBeforeProfessional,
 
   // Corporate Email
   updateCorporateEmailField,
@@ -668,6 +1169,10 @@ module.exports = {
   createCorporateEmail,
   deleteCorporateEmail,
   getAllCorporateEmail,
+  getSingleCorporateEmail,
+  updateCorporateEmail,
+  getAllExerciseCorporateEmail,
+  deleteExerciseCorporateEmail,
 
   // Develop Your Skills
   updateDevelopSkillsField,
@@ -676,6 +1181,10 @@ module.exports = {
   createDevelopSkills,
   deleteDevelopSkills,
   getAllDevelopSkills,
+  getSingleDevelopSkills,
+  updateDevelopSkills,
+  getAllExerciseDevelopSkills,
+  deleteExerciseDevelopSkills,
 
   // Good Life Style
   updateGoodLifeStyleField,
@@ -684,6 +1193,10 @@ module.exports = {
   createGoodLifeStyle,
   deleteGoodLifeStyle,
   getAllGoodLifeStyle,
+  getSingleGoodLifeStyle,
+  updateGoodLifeStyle,
+  getAllExerciseGoodLifeStyle,
+  deleteExerciseGoodLifeStyle,
 
   // Idea Share
   updateIdeaSharesField,
@@ -692,4 +1205,8 @@ module.exports = {
   createIdeaShares,
   deleteIdeaShares,
   getAllIdeaShares,
+  getSingleIdeaShares,
+  getAllExerciseIdeaShares,
+  deleteExerciseIdeaShares,
+  updateIdeaShares,
 };

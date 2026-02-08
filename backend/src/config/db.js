@@ -1,14 +1,7 @@
 const { MongoClient, ServerApiVersion } = require("mongodb");
 require("dotenv").config();
 
-// const uri = `mongodb+srv://Network-Online-Service:3jMat0WHg0uF8lR7@Learning-Quiz-Platfrom.bfjpnvo.mongodb.net/Shapion-Quiz-Platform-Paid?retryWrites=true&w=majority`;
-
-
-
-// const uri = `mongodb+srv://Network-Online-Service:3jMat0WHg0uF8lR7@Learning-Quiz-Platfrom.bfjpnvo.mongodb.net/Shapion-Quiz-Platform-Paid?retryWrites=true&w=majority`;
 const uri = "mongodb+srv://Shapion:1WOvPQzOr1fdRSng@shapion-quiz-platform.wmwc3it.mongodb.net/?appName=Shapion-Quiz-Platform";
-// const uri =
-//   "mongodb+srv://Shapion:1WOvPQzOr1fdRSng@shapion-quiz-platform.wmwc3it.mongodb.net/?appName=Shapion-Quiz-Platform";
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -23,9 +16,6 @@ const connectDB = async () => {
   console.log("✅ MongoDB connected successfully.");
 };
 
-// const getUserCollection = () => {
-//   return client.db("Learning-Quiz-Platfrom").collection("users");
-// };
 const getUserCollection = () => {
   return client.db("Shapion-Quiz-Platform").collection("users");
 };
