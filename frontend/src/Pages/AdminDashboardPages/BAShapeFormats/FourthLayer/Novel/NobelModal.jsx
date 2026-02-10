@@ -7,17 +7,15 @@ import Swal from "sweetalert2";
 const formatFieldLabel = (fieldName) => {
   let words = fieldName
     .replace(/([a-z])([A-Z])/g, "$1 $2") // camelCase → separate words
-    .replace(/-/g, " ")                   // kebab-case → replace hyphen with space
+    .replace(/-/g, " ") // kebab-case → replace hyphen with space
     .split(" ");
 
-  words = words.map(
-    (word) => word.charAt(0).toUpperCase() + word.slice(1)
-  );
+  words = words.map((word) => word.charAt(0).toUpperCase() + word.slice(1));
 
   return words.join(" ");
 };
 
-const MoveModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
+const NobelModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
   const [value, setValue] = useState(currentValue || "");
   const queryClient = useQueryClient();
 
@@ -32,15 +30,15 @@ const MoveModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `http://localhost:5000/fourth-layer/goodMovieField/${vocabId}`,
+        `http://localhost:5000/fourth-layer/goodNobelField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ fieldName, value: newValue }),
-        }
+        },
       );
       const data = await res.json();
-      console.log(data)
+      console.log(data);
       if (!res.ok) {
         throw new Error(data.message || "Failed to update");
       }
@@ -51,9 +49,9 @@ const MoveModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
         icon: "success",
         title: "Updated!",
         text: `${formatFieldLabel(fieldName)} updated successfully.`,
-        confirmButtonColor: "#16a34a", 
+        confirmButtonColor: "#16a34a",
       });
-      queryClient.invalidateQueries(["vocabulary"]); 
+      queryClient.invalidateQueries(["nobel"]);
       onClose();
     },
     onError: (error) => {
@@ -61,7 +59,7 @@ const MoveModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
         icon: "error",
         title: "Oops...",
         text: error.message,
-        confirmButtonColor: "#dc2626", 
+        confirmButtonColor: "#dc2626",
       });
     },
   });
@@ -79,7 +77,8 @@ const MoveModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
         </button>
 
         <h2 className="text-lg font-semibold mb-4">
-          Edit Field: <span className="text-green-600">{formatFieldLabel(fieldName)}</span>
+          Edit Field:{" "}
+          <span className="text-green-600">{formatFieldLabel(fieldName)}</span>
         </h2>
 
         <textarea
@@ -108,4 +107,4 @@ const MoveModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
   );
 };
 
-export default MoveModal;
+export default NobelModal;

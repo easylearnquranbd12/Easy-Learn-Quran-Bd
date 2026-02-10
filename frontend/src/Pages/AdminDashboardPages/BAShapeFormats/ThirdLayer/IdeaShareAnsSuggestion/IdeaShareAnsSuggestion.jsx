@@ -59,7 +59,6 @@ const IdeaShareAnsSuggestion = () => {
     queryKey: ["ideashareFields"],
     queryFn: async () => {
       const res = await axiosPublic.get("/third-layer/ideaSharesField");
-      console.log(res.data.data);
       return res.data?.data || [];
     },
   });
@@ -199,7 +198,7 @@ const IdeaShareAnsSuggestion = () => {
   return (
     <>
       <Helmet>
-        <title>Admin | Create Good Life Style Management</title>
+        <title>Admin | Create Idea Share And Suggestion Management</title>
       </Helmet>
 
       <TittleAnimation

@@ -1,3 +1,4 @@
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Edit, Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -10,6 +11,7 @@ import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
 import RichTextField from "../../../../../shared/TextEditor/RichTextField";
 import MediaUpload from "../../../../../utils/MediaUpload";
 import AdminTravelingModal from "./AdminTravelingModal";
+import EditTravelingModal from "./EditTravelingModal";
 
 const AdminTraveling = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -19,6 +21,24 @@ const AdminTraveling = () => {
   const [resetSignal, setResetSignal] = useState(0);
   const axiosPublic = useAxiosPublic();
   const queryClient = useQueryClient();
+
+  const [editOpen, setEditOpen] = useState(false);
+  const [selectedIdea, setSelectedIdea] = useState(null);
+
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }) =>
+      axiosPublic.put(`/fourth-layer/traveling/${id}`, data),
+    onSuccess: () => {
+      Swal.fire("Updated!", "Traveling updated successfully", "success");
+      queryClient.invalidateQueries(["traveling"]);
+    },
+    onError: () => Swal.fire("Error!", "Failed to update Traveling", "error"),
+  });
+
+  const handleEdit = (idea) => {
+    setSelectedIdea(idea);
+    setEditOpen(true);
+  };
 
   // ✅ Form Setup
   const {
@@ -36,47 +56,47 @@ const AdminTraveling = () => {
   });
 
   // ✅ Fetch vocabulary fields
-  const { data: ideashareFields = [], isLoading: developLoading } = useQuery({
-    queryKey: ["ideashareFields"],
+  const { data: travelingField = [], isLoading: developLoading } = useQuery({
+    queryKey: ["travelingField"],
     queryFn: async () => {
-      const res = await axiosPublic.get("/third-layer/ideaSharesField");
+      const res = await axiosPublic.get("/fourth-layer/travelingField");
       return res.data?.data || [];
     },
   });
   // ✅ Create Song
   const createMutation = useMutation({
     mutationFn: (newData) =>
-      axiosPublic.post("/third-layer/ideaShares", newData),
+      axiosPublic.post("/fourth-layer/traveling", newData),
     onSuccess: () => {
-      queryClient.invalidateQueries(["ideashares"]);
+      queryClient.invalidateQueries(["traveling"]);
       Swal.fire(
         "✅ Success!",
-        "Develop Your Skill  added successfully.",
-        "success"
+        "Traveling  added successfully.",
+        "success",
       );
       resetForm();
     },
     onError: () => Swal.fire("❌ Error!", "Failed to add song.", "error"),
   });
   // ✅ Get all song fetch Data
-  const { data: ideashares = [], isLoading } = useQuery({
-    queryKey: ["ideashares"],
+  const { data: traveling = [], isLoading } = useQuery({
+    queryKey: ["traveling"],
     queryFn: async () => {
-      const res = await axiosPublic.get("/third-layer/ideaShares");
+      const res = await axiosPublic.get("/fourth-layer/traveling");
       return res.data || [];
     },
   });
-
+console.log("dfcdas",traveling)
   // ✅ Delete Song
   const deleteMutation = useMutation({
-    mutationFn: (id) => axiosPublic.delete(`/third-layer/ideaShares/${id}`),
+    mutationFn: (id) => axiosPublic.delete(`/fourth-layer/traveling/${id}`),
     onSuccess: (res) => {
       if (res.data?.deletedCount > 0) {
-        Swal.fire("Deleted!", "Idea Share  deleted successfully.", "success");
+        Swal.fire("Deleted!", "Traveling  deleted successfully.", "success");
       } else {
-        Swal.fire("Info", "Idea Share not found or already deleted.", "info");
+        Swal.fire("Info", "Traveling not found or already deleted.", "info");
       }
-      queryClient.invalidateQueries(["ideashares"]);
+      queryClient.invalidateQueries(["traveling"]);
     },
     onError: () => Swal.fire("Error!", "Failed to delete song.", "error"),
   });
@@ -94,10 +114,7 @@ const AdminTraveling = () => {
 
   // ✅ Submit Handler
   const onSubmit = async (data) => {
-    // if (!imageUrl) {
-    //   Swal.fire("Error!", "Please upload a song image.", "error");
-    //   return;
-    // }
+  
 
     createMutation.mutate(data);
   };
@@ -127,7 +144,7 @@ const AdminTraveling = () => {
   // ✅ Toggle Handler
   const toggleIsActiveMutation = useMutation({
     mutationFn: async (currentState) => {
-      const res = await axiosPublic.put(`/third-layer/ideaSharesField/toggle`, {
+      const res = await axiosPublic.put(`/fourth-layer/travelingField/toggle`, {
         fieldName: "isActive",
         currentValue: currentState,
       });
@@ -137,15 +154,15 @@ const AdminTraveling = () => {
       Swal.fire({
         icon: "success",
         title: "Updated!",
-        text: `Idea Share field is now ${data.updatedValue}`,
+        text: `Traveling field is now ${data.updatedValue}`,
       });
-      queryClient.invalidateQueries(["ideashareFields"]);
+      queryClient.invalidateQueries(["travelingField"]);
     },
     onError: (error) =>
       Swal.fire(
         "Error!",
         error.response?.data?.message || error.message,
-        "error"
+        "error",
       ),
   });
 
@@ -182,59 +199,55 @@ const AdminTraveling = () => {
   return (
     <>
       <Helmet>
-        <title>Admin | Create Good Life Style Management</title>
+        <title>Admin | Create Traveling Management</title>
       </Helmet>
 
       <TittleAnimation
-        tittle="Create Idea Share and Suggestion "
-        subtittle="Manage Idea Share and Suggestion Fields"
+        tittle="Create Traveling "
+        subtittle="Manage Traveling Fields"
       />
 
-      <div className="mt-10 max-w-7xl mx-auto px-2">
+      <div className="mt-10 max-w-[1400px] mx-auto px-2">
         <div className=" w-full bg-white shadow-md rounded-lg p-2 md:p-5">
-          {/* ✅ Vocabulary Fields Section */}
           <div className="text-center mb-6">
-            {ideashareFields && ideashareFields.length > 0 && (
+            {travelingField && travelingField.length > 0 && (
               <>
                 <div className="flex items-start justify-center gap-2 mb-2">
-                  {ideashareFields[0].title || "Title"}
+                  {travelingField[0].title || "Title"}
                   <Edit
                     onClick={() =>
                       handleEditClick(
                         "title",
-                        ideashareFields[0].title,
-                        ideashareFields[0]._id
+                        travelingField[0].title,
+                        travelingField[0]._id,
                       )
                     }
-                    className="w-5 h-5 min-h-5 min-w-5 text-green-600 cursor-pointer"
+                    className="min-h-5 min-w-5 w-5 h-5 text-green-600 cursor-pointer"
                   />
                 </div>
 
                 <div className="flex items-start justify-center gap-2">
                   <span className="text-base text-justify">
-                    {ideashareFields[0].description || "Description"}
+                    {travelingField[0].description || "Description"}
                   </span>
                   <Edit
                     onClick={() =>
                       handleEditClick(
                         "description",
-                        ideashareFields[0].description,
-                        ideashareFields[0]._id
+                        travelingField[0].description,
+                        travelingField[0]._id,
                       )
                     }
-                    className="w-5 h-5 min-h-5 min-w-5 text-green-600 cursor-pointer"
+                    className="w-5 h-5 min-h-5 min-w-5  text-green-600 cursor-pointer"
                   />
                 </div>
               </>
             )}
 
-            {ideashareFields.map((item) => (
-              <div
-                key={item._id}
-                className="flex items-center gap-2 justify-center mt-3"
-              >
+            {travelingField.map((item) => (
+              <div key={item._id} className="flex items-start gap-2  mt-3">
                 <span className="font-semibold">
-                  Toggle {item.title || "Song Field"}
+                  Toggle {item.title || "Develop Your Skills Field"}
                 </span>
                 <input
                   type="checkbox"
@@ -255,7 +268,7 @@ const AdminTraveling = () => {
               <div className="form-control w-full py-6">
                 <label className="label">
                   <span className="label-text text-base font-medium text-gray-700">
-                    Name:
+                    Tittle:
                   </span>
                 </label>
                 <Controller
@@ -274,7 +287,7 @@ const AdminTraveling = () => {
                 <MediaUpload
                   control={control}
                   name="ideaShareImage"
-                  label="Idea Share Image (Optinal)"
+                  label="Traveling Image (Optinal)"
                   type="image"
                   maxSizeMB={5}
                   resetSignal={resetSignal}
@@ -311,7 +324,7 @@ const AdminTraveling = () => {
                 className="w-full py-3 px-4 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-medium rounded-lg shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-teal-600 disabled:opacity-70 disabled:cursor-not-allowed"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Adding..." : "Add Idea Share "}
+                {isSubmitting ? "Adding..." : "Add Traveling "}
               </button>
             </form>
           </div>
@@ -340,20 +353,20 @@ const AdminTraveling = () => {
                         Loading...
                       </td>
                     </tr>
-                  ) : ideashares.length === 0 ? (
+                  ) : traveling.length === 0 ? (
                     <tr>
                       <td colSpan={3} className="text-center py-4">
                         No Develop Your Skill found.
                       </td>
                     </tr>
                   ) : (
-                    ideashares.map((item) => (
+                    traveling.map((item) => (
                       <tr key={item._id} className="hover:bg-gray-50 border-b">
                         <td className="px-4 py-2 text-center">
                           {item.ideaShareImage ? (
                             <img
                               src={item.ideaShareImage}
-                              alt="Idea Share"
+                              alt="Traveling"
                               className="w-12 h-12 object-cover rounded-md mx-auto"
                             />
                           ) : (
@@ -371,7 +384,15 @@ const AdminTraveling = () => {
                           }}
                         ></td>
                         <td className="px-4 py-2 text-center">{item.link}</td>
-                        <td className="px-4 py-2 text-center">
+                        <td className="px-4 py-2 text-center flex gap-3 justify-center mt-2">
+                          <button
+                            onClick={() => handleEdit(item)}
+                            className="text-green-600 hover:text-green-800"
+                            title="Edit"
+                          >
+                            <Edit size={18} />
+                          </button>
+
                           <button
                             onClick={() => handleDelete(item._id)}
                             className="text-red-600 hover:text-red-800"
@@ -398,6 +419,19 @@ const AdminTraveling = () => {
           fieldName={fieldName}
           currentValue={currentValue}
           vocabId={selectedVocabId}
+        />
+      )}
+      {editOpen && selectedIdea && (
+        <EditTravelingModal
+          isOpen={editOpen}
+          onClose={() => setEditOpen(false)}
+          idea={selectedIdea}
+          onUpdate={(data) =>
+            updateMutation.mutate({
+              id: selectedIdea._id,
+              data,
+            })
+          }
         />
       )}
     </>

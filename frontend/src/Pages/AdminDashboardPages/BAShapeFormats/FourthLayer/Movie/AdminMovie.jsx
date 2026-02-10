@@ -1,12 +1,17 @@
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Edit, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Controller, useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import AdminLoading from "../../../../../components/Loading/AdminLoading";
 import TittleAnimation from "../../../../../components/TittleAnimation/TittleAnimation";
 import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
+import RichTextField from "../../../../../shared/TextEditor/RichTextField";
 import MediaUpload from "../../../../../utils/MediaUpload";
+
+import EditgoodmovieModal from "./EditgoodmovieModal";
 import MoveModal from "./MoveModal";
 
 const AdminMovie = () => {
@@ -15,9 +20,26 @@ const AdminMovie = () => {
   const [selectedVocabId, setSelectedVocabId] = useState(null);
   const [currentValue, setCurrentValue] = useState("");
   const [resetSignal, setResetSignal] = useState(0);
-
   const axiosPublic = useAxiosPublic();
   const queryClient = useQueryClient();
+
+  const [editOpen, setEditOpen] = useState(false);
+  const [selectedIdea, setSelectedIdea] = useState(null);
+
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }) =>
+      axiosPublic.put(`/fourth-layer/goodMovie/${id}`, data),
+    onSuccess: () => {
+      Swal.fire("Updated!", "Good Movie updated successfully", "success");
+      queryClient.invalidateQueries(["goodMovie"]);
+    },
+    onError: () => Swal.fire("Error!", "Failed to update Good Movie", "error"),
+  });
+
+  const handleEdit = (idea) => {
+    setSelectedIdea(idea);
+    setEditOpen(true);
+  };
 
   // ✅ Form Setup
   const {
@@ -27,81 +49,75 @@ const AdminMovie = () => {
     formState: { isSubmitting },
   } = useForm({
     defaultValues: {
-      movieName: "",
-      movieImage: "",
-      movieLink: "",
+      name: "",
+      ideaShareImage: "",
+      description: "",
+      link: "",
     },
   });
 
   // ✅ Fetch vocabulary fields
-  const { data: movieFields = [] } = useQuery({
-    queryKey: ["movieFields"],
+  const { data: goodMovieField = [], isLoading: developLoading } = useQuery({
+    queryKey: ["goodMovieField"],
     queryFn: async () => {
       const res = await axiosPublic.get("/fourth-layer/goodMovieField");
       return res.data?.data || [];
     },
   });
-  // ✅ Create movie
+  // ✅ Create Song
   const createMutation = useMutation({
     mutationFn: (newData) =>
-      axiosPublic.post("/fourth-layer/goodMovies", newData),
+      axiosPublic.post("/fourth-layer/goodMovie", newData),
     onSuccess: () => {
-      queryClient.invalidateQueries(["movies"]);
-      Swal.fire("✅ Success!", "movie added successfully.", "success");
+      queryClient.invalidateQueries(["goodMovie"]);
+      Swal.fire(
+        "✅ Success!",
+        "Good Movie  added successfully.",
+        "success",
+      );
       resetForm();
     },
-    onError: () => Swal.fire("❌ Error!", "Failed to add movie.", "error"),
+    onError: () => Swal.fire("❌ Error!", "Failed to add Good Movie.", "error"),
   });
-  // ✅ Get all movie fetch Data
-  const { data: goodMovies = [], isLoading } = useQuery({
-    queryKey: ["goodMovies"],
+  // ✅ Get all song fetch Data
+  const { data: goodMovie = [], isLoading } = useQuery({
+    queryKey: ["goodMovie"],
     queryFn: async () => {
-      const res = await axiosPublic.get("/fourth-layer/goodMovies");
+      const res = await axiosPublic.get("/fourth-layer/goodMovie");
       return res.data || [];
     },
   });
-
-  // console.log(goodMovies);
-  // ✅ Delete movie
+console.log("dfcdas",goodMovie)
+  // ✅ Delete Song
   const deleteMutation = useMutation({
-    mutationFn: (id) => axiosPublic.delete(`/fourth-layer/goodMovies/${id}`),
+    mutationFn: (id) => axiosPublic.delete(`/fourth-layer/goodMovie/${id}`),
     onSuccess: (res) => {
       if (res.data?.deletedCount > 0) {
-        Swal.fire("Deleted!", "movie deleted successfully.", "success");
+        Swal.fire("Deleted!", "Good Movie  deleted successfully.", "success");
       } else {
-        Swal.fire("Info", "movie not found or already deleted.", "info");
+        Swal.fire("Info", "Good Movie not found or already deleted.", "info");
       }
-      queryClient.invalidateQueries(["movies"]);
+      queryClient.invalidateQueries(["goodMovie"]);
     },
-    onError: () => Swal.fire("Error!", "Failed to delete movie.", "error"),
+    onError: () => Swal.fire("Error!", "Failed to delete song.", "error"),
   });
 
   // ✅ Reset Form
   const resetForm = () => {
     reset({
-      movieName: "",
-      movieImage: "",
-      movieLink: "",
+      name: "",
+      ideaShareImage: "",
+      description: "",
+      link: "",
     });
     setResetSignal((prev) => prev + 1);
   };
 
   // ✅ Submit Handler
   const onSubmit = async (data) => {
-    const imageUrl = typeof data.movieImage === "string" ? data.movieImage : "";
+  
 
-    // if (!imageUrl) {
-    //   Swal.fire("Error!", "Please upload a movie image.", "error");
-    //   return;
-    // }
-
-    const finalData = {
-      movieName: data.movieName,
-      image: imageUrl,
-      movieLink: data.movieLink,
-    };
-
-    createMutation.mutate(finalData);
+    createMutation.mutate(data);
   };
 
   // ✅ Delete Handler
@@ -139,15 +155,15 @@ const AdminMovie = () => {
       Swal.fire({
         icon: "success",
         title: "Updated!",
-        text: `movie field is now ${data.updatedValue}`,
+        text: `Good Movie field is now ${data.updatedValue}`,
       });
-      queryClient.invalidateQueries(["movieFields"]);
+      queryClient.invalidateQueries(["goodMovieField"]);
     },
     onError: (error) =>
       Swal.fire(
         "Error!",
         error.response?.data?.message || error.message,
-        "error"
+        "error",
       ),
   });
 
@@ -169,63 +185,70 @@ const AdminMovie = () => {
       }
     });
   };
-
+  // ✅ Safe truncate function
+  const truncateHTML = (html = "", wordLimit = 10) => {
+    if (!html || typeof html !== "string") return "";
+    const text = html.replace(/<[^>]+>/g, " ");
+    const words = text.split(/\s+/).filter(Boolean).slice(0, wordLimit);
+    return (
+      words.join(" ") + (text.split(/\s+/).length > wordLimit ? "..." : "")
+    );
+  };
+  if (isLoading || developLoading) {
+    return <AdminLoading />;
+  }
   return (
     <>
       <Helmet>
-        <title>Admin | movies Management</title>
+        <title>Admin | Create Good Movie Management</title>
       </Helmet>
 
       <TittleAnimation
-        tittle="Create Good movies"
-        subtittle="Manage movies  Fields"
+        tittle="Create Good Movie "
+        subtittle="Manage Good Movie Fields"
       />
 
-      <div className="mt-10 max-w-7xl mx-auto">
-        <div className=" w-full bg-white shadow-md rounded-2xl p-3 md:p-5">
-          {/* ✅ Vocabulary Fields Section */}
+      <div className="mt-10 max-w-[1400px] mx-auto px-2">
+        <div className=" w-full bg-white shadow-md rounded-lg p-2 md:p-5">
           <div className="text-center mb-6">
-            {movieFields && movieFields.length > 0 && (
+            {goodMovieField && goodMovieField.length > 0 && (
               <>
                 <div className="flex items-start justify-center gap-2 mb-2">
-                  {movieFields[0].title || "Title"}
+                  {goodMovieField[0].title || "Title"}
                   <Edit
                     onClick={() =>
                       handleEditClick(
                         "title",
-                        movieFields[0].title,
-                        movieFields[0]._id
+                        goodMovieField[0].title,
+                        goodMovieField[0]._id,
                       )
                     }
-                    className="w-5 h-5 min-h-5 min-w-5 text-green-600 cursor-pointer"
+                    className="min-h-5 min-w-5 w-5 h-5 text-green-600 cursor-pointer"
                   />
                 </div>
 
                 <div className="flex items-start justify-center gap-2">
                   <span className="text-base text-justify">
-                    {movieFields[0].description || "Description"}
+                    {goodMovieField[0].description || "Description"}
                   </span>
                   <Edit
                     onClick={() =>
                       handleEditClick(
                         "description",
-                        movieFields[0].description,
-                        movieFields[0]._id
+                        goodMovieField[0].description,
+                        goodMovieField[0]._id,
                       )
                     }
-                    className="w-5 h-5 min-h-5 min-w-5 text-green-600 cursor-pointer"
+                    className="w-5 h-5 min-h-5 min-w-5  text-green-600 cursor-pointer"
                   />
                 </div>
               </>
             )}
 
-            {movieFields.map((item) => (
-              <div
-                key={item._id}
-                className="flex items-center gap-2 justify-center mt-3"
-              >
+            {goodMovieField.map((item) => (
+              <div key={item._id} className="flex items-start gap-2  mt-3">
                 <span className="font-semibold">
-                  Toggle {item.title || "movie Field"}
+                  Toggle {item.title || "Develop Your Skills Field"}
                 </span>
                 <input
                   type="checkbox"
@@ -239,71 +262,78 @@ const AdminMovie = () => {
             ))}
           </div>
 
-          {/* ✅ Create movie Form */}
+          {/* ✅ Create Song Form */}
           <div className="w-full  bg-white shadow-2xl rounded-xl border p-4 sm:p-6 mb-10">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-              {/* Image Upload */}
-              <MediaUpload
-                control={control}
-                name="movieImage"
-                label="movie Image"
-                type="image"
-                maxSizeMB={5}
-                resetSignal={resetSignal}
-              />
-
-              {/* movie Name */}
-              <div className="form-control w-full">
+              {/* Song Name */}
+              <div className="form-control w-full py-6">
                 <label className="label">
                   <span className="label-text text-base font-medium text-gray-700">
-                    movie Name:
+                    Tittle:
                   </span>
                 </label>
                 <Controller
-                  name="movieName"
+                  name="name"
                   control={control}
                   render={({ field }) => (
                     <input
                       {...field}
-                      placeholder="Enter movie name..."
+                      placeholder="Enter tittle..."
                       className="w-full px-4 py-3 border rounded-md text-gray-700 focus:outline-none focus:ring-1 focus:ring-teal-300"
                     />
                   )}
                 />
               </div>
-              <div className="form-control w-full">
+              <div>
+                <MediaUpload
+                  control={control}
+                  name="ideaShareImage"
+                  label="goodMovie Image (Optinal)"
+                  type="image"
+                  maxSizeMB={5}
+                  resetSignal={resetSignal}
+                />
+              </div>
+              <div className="form-control w-full py-6">
                 <label className="label">
                   <span className="label-text text-base font-medium text-gray-700">
-                    movie Link (Optional):
+                    Link (Optional):
                   </span>
                 </label>
                 <Controller
-                  name="movieLink"
+                  name="link"
                   control={control}
                   render={({ field }) => (
                     <input
                       {...field}
-                      placeholder="Enter movie link..."
+                      placeholder="Enter tittle..."
                       className="w-full px-4 py-3 border rounded-md text-gray-700 focus:outline-none focus:ring-1 focus:ring-teal-300"
                     />
                   )}
                 />
               </div>
-
+              <div className="w-full">
+                <RichTextField
+                  name="description"
+                  control={control}
+                  placeholder="Enter Your Description..."
+                  className="w-full " // ensure editor is full width
+                />
+              </div>
               <button
                 type="submit"
                 className="w-full py-3 px-4 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-medium rounded-lg shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-teal-600 disabled:opacity-70 disabled:cursor-not-allowed"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Adding..." : "Add movie"}
+                {isSubmitting ? "Adding..." : "Add goodMovie "}
               </button>
             </form>
           </div>
 
-          {/* ✅ movies List */}
-          <div className="w-full bg-white shadow-lg rounded-xl border p-4 sm:p-6">
+          {/* ✅ Songs List */}
+          <div className=" bg-white shadow-lg rounded-xl border p-4 sm:p-6 w-[450px] md:w-full">
             <h2 className="text-lg sm:text-xl font-semibold mb-4 text-teal-700">
-              movies List
+              List
             </h2>
 
             <div className="overflow-x-auto">
@@ -311,8 +341,9 @@ const AdminMovie = () => {
                 <thead className="bg-teal-600 text-white">
                   <tr>
                     <th className="px-4 py-2">Image</th>
-                    <th className="px-4 py-2">movie Name</th>
-                    <th className="px-4 py-2">movie Link</th>
+                    <th className="px-4 py-2">Name</th>
+                    <th className="px-4 py-2">Description</th>
+                    <th className="px-4 py-2">Link</th>
                     <th className="px-4 py-2">Actions</th>
                   </tr>
                 </thead>
@@ -323,45 +354,46 @@ const AdminMovie = () => {
                         Loading...
                       </td>
                     </tr>
-                  ) : goodMovies.length === 0 ? (
+                  ) : goodMovie.length === 0 ? (
                     <tr>
                       <td colSpan={3} className="text-center py-4">
-                        No movies found.
+                        No Good Movie found.
                       </td>
                     </tr>
                   ) : (
-                    goodMovies.map((item) => (
+                    goodMovie.map((item) => (
                       <tr key={item._id} className="hover:bg-gray-50 border-b">
                         <td className="px-4 py-2 text-center">
-                          {item.image ? (
+                          {item.ideaShareImage ? (
                             <img
-                              src={item.image}
-                              alt={item.movieName}
-                              className="w-16 h-16 object-cover rounded mx-auto"
+                              src={item.ideaShareImage}
+                              alt="goodMovie"
+                              className="w-12 h-12 object-cover rounded-md mx-auto"
                             />
                           ) : (
-                            "No Image"
-                          )}
-                        </td>
-                        <td className="px-4 py-2 text-center">
-                          {item.movieName}
-                        </td>
-                        <td className="px-4 py-2 text-center">
-                          {item.movieLink ? (
-                            <a
-                              href={item.movieLink}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-blue-600 hover:underline"
-                            >
-                              Listen
-                            </a>
-                          ) : (
-                            "—"
+                            <span className="text-gray-400 italic">
+                              No Image
+                            </span>
                           )}
                         </td>
 
-                        <td className="px-4 py-2 text-center">
+                        <td className="px-4 py-2 text-center">{item.name}</td>
+                        <td
+                          className="px-4 py-2 text-center"
+                          dangerouslySetInnerHTML={{
+                            __html: truncateHTML(item.description, 10),
+                          }}
+                        ></td>
+                        <td className="px-4 py-2 text-center">{item.link}</td>
+                        <td className="px-4 py-2 text-center flex gap-3 justify-center mt-2">
+                          <button
+                            onClick={() => handleEdit(item)}
+                            className="text-green-600 hover:text-green-800"
+                            title="Edit"
+                          >
+                            <Edit size={18} />
+                          </button>
+
                           <button
                             onClick={() => handleDelete(item._id)}
                             className="text-red-600 hover:text-red-800"
@@ -388,6 +420,19 @@ const AdminMovie = () => {
           fieldName={fieldName}
           currentValue={currentValue}
           vocabId={selectedVocabId}
+        />
+      )}
+      {editOpen && selectedIdea && (
+        <EditgoodmovieModal
+          isOpen={editOpen}
+          onClose={() => setEditOpen(false)}
+          idea={selectedIdea}
+          onUpdate={(data) =>
+            updateMutation.mutate({
+              id: selectedIdea._id,
+              data,
+            })
+          }
         />
       )}
     </>

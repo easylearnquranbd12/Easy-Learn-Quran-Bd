@@ -204,6 +204,20 @@ const getThirdLayerIdeaSharesExerciseCollection = () => {
 };
 
 // Four layer
+// Travelling
+const getFourthLayerTravelingFieldsCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("TravelingField");
+};
+const getFourthLayerTravelingCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("Traveling");
+};
+const getFourthLayerTravelingExerciseCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("createExerciseTraveling");
+};
+
+
 // Good Song
 const getFourthLayerGoodSongFieldsCollection = () => {
   return client.db("Shapion-Quiz-Platform").collection("GoodSongField");
@@ -227,6 +241,30 @@ const getFourthLayerGoodMovieExerciseCollection = () => {
   return client
     .db("Shapion-Quiz-Platform")
     .collection("createExerciseGoodMovie");
+};
+// Good Porem
+const getFourthLayerGoodPoremFieldsCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("GoodPoremField");
+};
+const getFourthLayerGoodPoremCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("GoodPorem");
+};
+const getFourthLayerGoodPoremExerciseCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("createExerciseGoodPorem");
+};
+// Good Nobel
+const getFourthLayerGoodNobelFieldsCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("GoodNobelField");
+};
+const getFourthLayerGoodNobelCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("GoodNobel");
+};
+const getFourthLayerGoodNobelExerciseCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("createExerciseGoodNobel");
 };
 
 // Five layer
@@ -396,4 +434,16 @@ module.exports = {
   getFiveLayerStoryWritingCollection,
   getFiveLayerStoryWritingFieldsCollection,
   getFiveLayerStoryWritingExerciseCollection,
+
+  getFourthLayerTravelingCollection,
+  getFourthLayerTravelingFieldsCollection,
+  getFourthLayerTravelingExerciseCollection,
+
+  getFourthLayerGoodPoremCollection,
+  getFourthLayerGoodPoremFieldsCollection,
+  getFourthLayerGoodPoremExerciseCollection,
+
+  getFourthLayerGoodNobelCollection,
+  getFourthLayerGoodNobelFieldsCollection,
+  getFourthLayerGoodNobelExerciseCollection,
 };

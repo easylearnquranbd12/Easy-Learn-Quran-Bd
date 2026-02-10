@@ -33,7 +33,7 @@ import Adminmcq from "../Pages/AdminDashboardPages/BAShapeFormats/FiveLayer/MCQ/
 import AdminOldGenaration from "../Pages/AdminDashboardPages/BAShapeFormats/FiveLayer/OldGenaration/AdminOldGenaration";
 import AdminStoryWritting from "../Pages/AdminDashboardPages/BAShapeFormats/FiveLayer/StoryWritting/AdminStoryWritting";
 import AdminMovie from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Movie/AdminMovie";
-import AdminNovel from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Novel/AdminNovel";
+import AdminNobel from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Novel/AdminNobel";
 import AdminSong from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Song/AdminSong";
 import AdminTraveling from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Traveling/AdminTraveling";
 import LayerManage from "../Pages/AdminDashboardPages/BAShapeFormats/LayerManage/LayerManage";
@@ -732,7 +732,7 @@ export const routes = createBrowserRouter([
         path: "create-novel",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
-            <AdminNovel />
+            <AdminNobel />
           </Suspense>
         ),
       },

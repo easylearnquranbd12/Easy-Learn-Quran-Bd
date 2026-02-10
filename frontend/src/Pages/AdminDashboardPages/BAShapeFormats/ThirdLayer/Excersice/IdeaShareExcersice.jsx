@@ -1,8 +1,4 @@
-import {
-    useMutation,
-    useQuery,
-    useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import Swal from "sweetalert2";
@@ -10,21 +6,21 @@ import Swal from "sweetalert2";
 import CustomLoading from "../../../../../components/Loading/CustomLoading";
 import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
 
-const IdeaShareExcersice = () => {
+const IdeaShareExercise = () => {
   const axiosPublic = useAxiosPublic();
   const queryClient = useQueryClient();
   const [showAll, setShowAll] = useState(false);
 
-  // 🔹 GET all Good Life Style Exercises
+  // 🔹 GET all Idea Share Exercises
   const {
     data: exercises = [],
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["exercise-good-life-style"],
+    queryKey: ["exercise-idea-share"],
     queryFn: async () => {
       const res = await axiosPublic.get(
-        "/third-layer/getAllExerciseGoodLifeStyle"
+        "/third-layer/getAllExerciseIdeaShares",
       );
       return res.data?.data || [];
     },
@@ -33,24 +29,18 @@ const IdeaShareExcersice = () => {
   // 🔹 DELETE exercise
   const { mutate: deleteExercise } = useMutation({
     mutationFn: (id) =>
-      axiosPublic.delete(
-        `/third-layer/deleteExerciseGoodLifeStyle/${id}`
-      ),
+      axiosPublic.delete(`/third-layer/deleteExerciseIdeaShares/${id}`),
     onSuccess: () => {
-      Swal.fire(
-        "Deleted!",
-        "Good Life Style exercise deleted successfully",
-        "success"
-      );
+      Swal.fire("Deleted!", "Exercise deleted successfully", "success");
       queryClient.invalidateQueries({
-        queryKey: ["exercise-good-life-style"],
+        queryKey: ["exercise-idea-share"],
       });
     },
     onError: (error) => {
       Swal.fire(
         "Error",
         error.response?.data?.message || "Delete failed",
-        "error"
+        "error",
       );
     },
   });
@@ -58,7 +48,7 @@ const IdeaShareExcersice = () => {
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "This Good Life Style exercise will be permanently deleted!",
+      text: "This exercise will be permanently deleted!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#0d9488",
@@ -71,40 +61,34 @@ const IdeaShareExcersice = () => {
     });
   };
 
-  const visibleExercises = showAll
-    ? exercises
-    : exercises.slice(0, 10);
+  const visibleExercises = showAll ? exercises : exercises.slice(0, 10);
 
   if (isLoading) return <CustomLoading />;
 
   if (isError) {
     return (
-      <p className="text-center text-red-500 py-10">
-        Failed to load Good Life Style exercises
-      </p>
+      <p className="text-center text-red-500 py-10">Failed to load exercises</p>
     );
   }
 
   return (
     <div className="max-w-[1400px] mx-auto space-y-6">
-          {/* 🔹 No Data State */}
-      {!isLoading && exercises.length === 0 && (
+      {/* 🔹 No Data State */}
+      {exercises.length === 0 && (
         <div className="flex justify-center items-center py-20">
           <button
             disabled
             className="px-6 py-3 rounded-full border border-dashed border-teal-400
                  text-teal-600 font-semibold bg-teal-50 cursor-not-allowed
-                 hover:bg-teal-50 flex items-center gap-2"
+                 flex items-center gap-2"
           >
-            🚫 No Good Life Style Exercise Found
+            🚫 No Exercise Found
           </button>
         </div>
       )}
+
       {visibleExercises.map((exercise) => (
-        <div
-          key={exercise._id}
-          className="bg-white rounded-lg shadow border"
-        >
+        <div key={exercise._id} className="bg-white rounded-lg shadow border">
           {/* 🔹 User Info + Delete */}
           <div className="flex justify-between items-center bg-gray-50 border-b px-4 py-3">
             <div>
@@ -116,7 +100,7 @@ const IdeaShareExcersice = () => {
                 Email: {exercise.userInfo?.email || "N/A"}
               </p>
               <p className="text-xs text-gray-500">
-                Role: {exercise.userInfo?.role}
+                Role: {exercise.userInfo?.role || "N/A"}
               </p>
             </div>
 
@@ -131,21 +115,58 @@ const IdeaShareExcersice = () => {
 
           {/* 🔹 Exercise Content */}
           <section className="px-4 py-6 space-y-4">
-            <h3 className="font-semibold text-2xl text-teal-600">
-              {exercise.name}
-            </h3>
+            <div className="group relative bg-white/70 backdrop-blur-md rounded-2xl overflow-hidden shadow-md hover:shadow-xl border border-gray-100 transition-all duration-300">
+              {/* Image */}
+              {exercise.ideaShareImage && (
+                <div className="h-56 w-full overflow-hidden">
+                  <img
+                    src={exercise.ideaShareImage}
+                    alt={exercise.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+              )}
 
-            {/* HTML description render */}
-            <div
-              className="prose max-w-none text-gray-700"
-              dangerouslySetInnerHTML={{
-                __html: exercise.description,
-              }}
-            />
+              {/* Content */}
+              <div className="p-5 space-y-3">
+                <h2 className="text-xl font-semibold text-teal-700">
+                  {exercise.name}
+                </h2>
 
-            <p className="text-xs text-gray-400 pt-4">
-              Submitted on:{" "}
-              {new Date(exercise.createdAt).toLocaleString()}
+                {/* Description */}
+                <div
+                  className="text-gray-700 text-sm leading-relaxed text-justify"
+                  dangerouslySetInnerHTML={{ __html: exercise.description }}
+                ></div>
+
+                {/* Footer */}
+                <div className="flex items-center justify-between pt-3 border-t mt-3">
+                  {exercise.link ? (
+                    <a
+                      href={exercise.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-teal-600 hover:text-teal-800 text-sm font-medium transition-colors"
+                    >
+                      🔗 Visit Link
+                    </a>
+                  ) : (
+                    <span className="text-xs text-gray-400">No link</span>
+                  )}
+
+                  <p className="text-xs text-gray-500">
+                    {new Date(exercise.createdAt).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <p className="text-xs text-gray-400 pt-2">
+              Submitted on: {new Date(exercise.createdAt).toLocaleString()}
             </p>
           </section>
         </div>
@@ -156,7 +177,7 @@ const IdeaShareExcersice = () => {
         <div className="text-center">
           <button
             onClick={() => setShowAll(!showAll)}
-            className="btn btn-outline btn-sm"
+            className="px-4 py-2 border rounded-md text-sm hover:bg-gray-100"
           >
             {showAll ? "Show Less" : "Show All"}
           </button>
@@ -166,4 +187,4 @@ const IdeaShareExcersice = () => {
   );
 };
 
-export default IdeaShareExcersice;
+export default IdeaShareExercise;

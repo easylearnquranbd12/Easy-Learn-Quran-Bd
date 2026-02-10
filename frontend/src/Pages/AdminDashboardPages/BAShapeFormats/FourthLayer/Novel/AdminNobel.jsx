@@ -10,10 +10,11 @@ import TittleAnimation from "../../../../../components/TittleAnimation/TittleAni
 import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
 import RichTextField from "../../../../../shared/TextEditor/RichTextField";
 import MediaUpload from "../../../../../utils/MediaUpload";
-import EditGoodSongModal from "./EditGoodSongModal";
-import SongModal from "./SongModal";
 
-const AdminSong = () => {
+import EditNobelModal from "./EditNobelModal";
+import NobelModal from "./NobelModal";
+
+const AdminNobel = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [fieldName, setFieldName] = useState("");
   const [selectedVocabId, setSelectedVocabId] = useState(null);
@@ -27,12 +28,12 @@ const AdminSong = () => {
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }) =>
-      axiosPublic.put(`/fourth-layer/goodSong/${id}`, data),
+      axiosPublic.put(`/fourth-layer/goodNobel/${id}`, data),
     onSuccess: () => {
-      Swal.fire("Updated!", "good Song updated successfully", "success");
-      queryClient.invalidateQueries(["goodSong"]);
+      Swal.fire("Updated!", "Good Nobel updated successfully", "success");
+      queryClient.invalidateQueries(["goodNobel"]);
     },
-    onError: () => Swal.fire("Error!", "Failed to update goodSong", "error"),
+    onError: () => Swal.fire("Error!", "Failed to update Good Nobel", "error"),
   });
 
   const handleEdit = (idea) => {
@@ -56,46 +57,47 @@ const AdminSong = () => {
   });
 
   // ✅ Fetch vocabulary fields
-  const { data: goodSongField = [], isLoading: developLoading } = useQuery({
-    queryKey: ["goodSongField"],
+  const { data: goodNobelField = [], isLoading: developLoading } = useQuery({
+    queryKey: ["goodNobelField"],
     queryFn: async () => {
-      const res = await axiosPublic.get("/fourth-layer/goodSongField");
+      const res = await axiosPublic.get("/fourth-layer/goodNobelField");
       return res.data?.data || [];
     },
   });
   // ✅ Create Song
   const createMutation = useMutation({
     mutationFn: (newData) =>
-      axiosPublic.post("/fourth-layer/goodSong", newData),
+      axiosPublic.post("/fourth-layer/goodNobel", newData),
     onSuccess: () => {
-      queryClient.invalidateQueries(["goodSong"]);
+      queryClient.invalidateQueries(["goodNobel"]);
       Swal.fire(
         "✅ Success!",
-        "good Song  added successfully.",
+        "Good Nobel  added successfully.",
         "success",
       );
       resetForm();
     },
-    onError: () => Swal.fire("❌ Error!", "Failed to add song.", "error"),
+    onError: () => Swal.fire("❌ Error!", "Failed to add Good Nobel.", "error"),
   });
   // ✅ Get all song fetch Data
-  const { data: goodSong = [], isLoading } = useQuery({
-    queryKey: ["goodSong"],
+  const { data: goodNobel = [], isLoading } = useQuery({
+    queryKey: ["goodNobel"],
     queryFn: async () => {
-      const res = await axiosPublic.get("/fourth-layer/goodSong");
+      const res = await axiosPublic.get("/fourth-layer/goodNobel");
       return res.data || [];
     },
   });
+console.log("dfcdas",goodNobel)
   // ✅ Delete Song
   const deleteMutation = useMutation({
-    mutationFn: (id) => axiosPublic.delete(`/fourth-layer/goodSong/${id}`),
+    mutationFn: (id) => axiosPublic.delete(`/fourth-layer/goodNobel/${id}`),
     onSuccess: (res) => {
       if (res.data?.deletedCount > 0) {
-        Swal.fire("Deleted!", "good Song  deleted successfully.", "success");
+        Swal.fire("Deleted!", "Good Nobel  deleted successfully.", "success");
       } else {
-        Swal.fire("Info", "good Song not found or already deleted.", "info");
+        Swal.fire("Info", "Good Nobel not found or already deleted.", "info");
       }
-      queryClient.invalidateQueries(["goodSong"]);
+      queryClient.invalidateQueries(["goodNobel"]);
     },
     onError: () => Swal.fire("Error!", "Failed to delete song.", "error"),
   });
@@ -143,7 +145,7 @@ const AdminSong = () => {
   // ✅ Toggle Handler
   const toggleIsActiveMutation = useMutation({
     mutationFn: async (currentState) => {
-      const res = await axiosPublic.put(`/fourth-layer/goodSongField/toggle`, {
+      const res = await axiosPublic.put(`/fourth-layer/goodNobelField/toggle`, {
         fieldName: "isActive",
         currentValue: currentState,
       });
@@ -153,9 +155,9 @@ const AdminSong = () => {
       Swal.fire({
         icon: "success",
         title: "Updated!",
-        text: `good Song field is now ${data.updatedValue}`,
+        text: `Good Nobel field is now ${data.updatedValue}`,
       });
-      queryClient.invalidateQueries(["goodSongField"]);
+      queryClient.invalidateQueries(["goodNobelField"]);
     },
     onError: (error) =>
       Swal.fire(
@@ -198,27 +200,27 @@ const AdminSong = () => {
   return (
     <>
       <Helmet>
-        <title>Admin | Create good Song Management</title>
+        <title>Admin | Create Good Nobel Management</title>
       </Helmet>
 
       <TittleAnimation
-        tittle="Create Good Song "
-        subtittle="Manage Good Song Fields"
+        tittle="Create Good Nobel "
+        subtittle="Manage Good Nobel Fields"
       />
 
       <div className="mt-10 max-w-[1400px] mx-auto px-2">
         <div className=" w-full bg-white shadow-md rounded-lg p-2 md:p-5">
           <div className="text-center mb-6">
-            {goodSongField && goodSongField.length > 0 && (
+            {goodNobelField && goodNobelField.length > 0 && (
               <>
                 <div className="flex items-start justify-center gap-2 mb-2">
-                  {goodSongField[0].title || "Title"}
+                  {goodNobelField[0].title || "Title"}
                   <Edit
                     onClick={() =>
                       handleEditClick(
                         "title",
-                        goodSongField[0].title,
-                        goodSongField[0]._id,
+                        goodNobelField[0].title,
+                        goodNobelField[0]._id,
                       )
                     }
                     className="min-h-5 min-w-5 w-5 h-5 text-green-600 cursor-pointer"
@@ -227,14 +229,14 @@ const AdminSong = () => {
 
                 <div className="flex items-start justify-center gap-2">
                   <span className="text-base text-justify">
-                    {goodSongField[0].description || "Description"}
+                    {goodNobelField[0].description || "Description"}
                   </span>
                   <Edit
                     onClick={() =>
                       handleEditClick(
                         "description",
-                        goodSongField[0].description,
-                        goodSongField[0]._id,
+                        goodNobelField[0].description,
+                        goodNobelField[0]._id,
                       )
                     }
                     className="w-5 h-5 min-h-5 min-w-5  text-green-600 cursor-pointer"
@@ -243,7 +245,7 @@ const AdminSong = () => {
               </>
             )}
 
-            {goodSongField.map((item) => (
+            {goodNobelField.map((item) => (
               <div key={item._id} className="flex items-start gap-2  mt-3">
                 <span className="font-semibold">
                   Toggle {item.title || "Develop Your Skills Field"}
@@ -286,7 +288,7 @@ const AdminSong = () => {
                 <MediaUpload
                   control={control}
                   name="ideaShareImage"
-                  label="goodSong Image (Optinal)"
+                  label="goodNobel Image (Optinal)"
                   type="image"
                   maxSizeMB={5}
                   resetSignal={resetSignal}
@@ -323,7 +325,7 @@ const AdminSong = () => {
                 className="w-full py-3 px-4 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-medium rounded-lg shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-teal-600 disabled:opacity-70 disabled:cursor-not-allowed"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Adding..." : "Add goodSong "}
+                {isSubmitting ? "Adding..." : "Add goodNobel "}
               </button>
             </form>
           </div>
@@ -352,20 +354,20 @@ const AdminSong = () => {
                         Loading...
                       </td>
                     </tr>
-                  ) : goodSong.length === 0 ? (
+                  ) : goodNobel.length === 0 ? (
                     <tr>
                       <td colSpan={3} className="text-center py-4">
-                        No Good Song found.
+                        No Good Nobel found.
                       </td>
                     </tr>
                   ) : (
-                    goodSong.map((item) => (
+                    goodNobel.map((item) => (
                       <tr key={item._id} className="hover:bg-gray-50 border-b">
                         <td className="px-4 py-2 text-center">
                           {item.ideaShareImage ? (
                             <img
                               src={item.ideaShareImage}
-                              alt="goodSong"
+                              alt="goodNobel"
                               className="w-12 h-12 object-cover rounded-md mx-auto"
                             />
                           ) : (
@@ -412,7 +414,7 @@ const AdminSong = () => {
 
       {/* ✅ Modal */}
       {modalOpen && (
-        <SongModal
+        <NobelModal
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
           fieldName={fieldName}
@@ -421,7 +423,7 @@ const AdminSong = () => {
         />
       )}
       {editOpen && selectedIdea && (
-        <EditGoodSongModal
+        <EditNobelModal
           isOpen={editOpen}
           onClose={() => setEditOpen(false)}
           idea={selectedIdea}
@@ -437,4 +439,4 @@ const AdminSong = () => {
   );
 };
 
-export default AdminSong;
+export default AdminNobel;
