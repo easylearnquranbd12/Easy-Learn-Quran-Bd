@@ -1,10 +1,10 @@
 import { Helmet } from "react-helmet-async";
 import TittleAnimation from "../../../components/TittleAnimation/TittleAnimation";
-import LetterWriting from "./LetterWriting";
-import NewSong from "./NewSong";
-import OldGeneration from "./OldGeneration";
-import StoryWriting from "./StoryWriting";
-import WritingExercises from "./WritingExercises";
+import GoodMovie from "./GoodMovie";
+import GoodNobel from "./GoodNobel";
+import GoodPorem from "./GoodPorem";
+import GoodSong from "./GoodSong";
+import Traveling from "./Traveling";
 
 const FourthLayer = () => {
   return (
@@ -19,11 +19,11 @@ const FourthLayer = () => {
           subtittle="This is the fourth layer"
         />
       </div>
-      <NewSong/>
-      <OldGeneration />
-      <StoryWriting />
-      <LetterWriting />
-      <WritingExercises />
+      <Traveling />
+      <GoodSong />
+      <GoodMovie />
+      <GoodPorem />
+      <GoodNobel />
     </div>
   );
 };

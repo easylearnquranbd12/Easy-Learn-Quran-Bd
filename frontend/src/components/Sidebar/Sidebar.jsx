@@ -678,7 +678,7 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
           description: "User Corporate Email Post",
           color: "text-indigo-600",
         },
-        
+
         {
           path: "/admin-dashboard/develop-your-skills-exercise",
           icon: BiEdit,
@@ -695,7 +695,51 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
         },
       ],
     },
+    {
+      path: "/admin-dashboard/fourth-layer/exercise",
+      icon: HiOutlineDocumentText,
+      label: "Fourth Layer Exercise",
+      description: "Fourth Layer Exercise Info",
+      color: "text-indigo-600",
+      subItems: [
+        {
+          path: "/admin-dashboard/traveling-exercise",
+          icon: BiEdit,
+          label: "Traveling Exercise",
+          description: "User Traveling Post",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/song-exercise",
+          icon: MdPayment,
+          label: "Good Song Exercise",
+          description: "User Good Song Post",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/poem-exercise",
+          icon: BiEdit,
+          label: "Good Poem Exercise",
+          description: "User Good Poem Post",
+          color: "text-indigo-600",
+        },
 
+        {
+          path: "/admin-dashboard/movie-exercise",
+          icon: BiEdit,
+          label: "Good Movie Exercise",
+          description: "User Good Movie Post",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/novel-exercise",
+          icon: BiEdit,
+          label: "Good Novel Exercise",
+          description: "User Good Novel Exercise",
+          color: "text-indigo-600",
+        },
+      ],
+    },
     {
       path: "/admin-dashboard/blog",
       icon: MdAppBlocking,

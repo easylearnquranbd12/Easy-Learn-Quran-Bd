@@ -288,7 +288,7 @@ console.log("dfcdas",goodMovie)
                 <MediaUpload
                   control={control}
                   name="ideaShareImage"
-                  label="goodMovie Image (Optinal)"
+                  label="goodMovie Image (Optional)"
                   type="image"
                   maxSizeMB={5}
                   resetSignal={resetSignal}

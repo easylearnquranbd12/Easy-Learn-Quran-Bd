@@ -32,6 +32,11 @@ import AdminLetterWritting from "../Pages/AdminDashboardPages/BAShapeFormats/Fiv
 import Adminmcq from "../Pages/AdminDashboardPages/BAShapeFormats/FiveLayer/MCQ/Adminmcq";
 import AdminOldGenaration from "../Pages/AdminDashboardPages/BAShapeFormats/FiveLayer/OldGenaration/AdminOldGenaration";
 import AdminStoryWritting from "../Pages/AdminDashboardPages/BAShapeFormats/FiveLayer/StoryWritting/AdminStoryWritting";
+import GoodMovieExercise from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Exercise/GoodMovieExercise";
+import GoodNovelExercise from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Exercise/GoodNovelExercise";
+import GoodPoemExercise from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Exercise/GoodPoemExercise";
+import GoodSongExercise from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Exercise/GoodSongExercise";
+import TravelingExercise from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Exercise/TravelingExercise";
 import AdminMovie from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Movie/AdminMovie";
 import AdminNobel from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Novel/AdminNobel";
 import AdminSong from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Song/AdminSong";
@@ -705,10 +710,27 @@ export const routes = createBrowserRouter([
         ),
       },
       {
+        path: "traveling-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <TravelingExercise />
+          </Suspense>
+        ),
+      },
+
+      {
         path: "create-song",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <AdminSong />
+          </Suspense>
+        ),
+      },
+      {
+        path: "song-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <GoodSongExercise />
           </Suspense>
         ),
       },
@@ -721,6 +743,14 @@ export const routes = createBrowserRouter([
         ),
       },
       {
+        path: "poem-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <GoodPoemExercise />
+          </Suspense>
+        ),
+      },
+      {
         path: "create-movie",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
@@ -729,10 +759,26 @@ export const routes = createBrowserRouter([
         ),
       },
       {
+        path: "movie-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <GoodMovieExercise />
+          </Suspense>
+        ),
+      },
+      {
         path: "create-novel",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <AdminNobel />
+          </Suspense>
+        ),
+      },
+      {
+        path: "novel-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <GoodNovelExercise />
           </Suspense>
         ),
       },

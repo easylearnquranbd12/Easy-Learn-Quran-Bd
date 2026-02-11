@@ -8,7 +8,7 @@ import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import RichTextField from "../../../shared/TextEditor/RichTextField";
 import MediaUpload from "../../../utils/MediaUpload";
 
-const IdeaShare = () => {
+const Traveling = () => {
   const axiosPublic = useAxiosPublic();
   const { user } = useAuth();
   const [resetSignal, setResetSignal] = useState(0);
@@ -27,26 +27,26 @@ const IdeaShare = () => {
     },
   });
 
-  // ✅ Fetch ideaShares fields
-  const { data: ideaSharesFields = [], isLoading: ideaSharesFieldsLoading } =
+  // ✅ Fetch traveling fields
+  const { data: travelingFields = [], isLoading: travelingFieldsLoading } =
     useQuery({
-      queryKey: ["ideaSharesFields"],
+      queryKey: ["travelingFields"],
       queryFn: async () => {
-        const res = await axiosPublic.get("/third-layer/ideaSharesField");
+        const res = await axiosPublic.get("/fourth-layer/travelingField");
         return res.data?.data || [];
       },
     });
 
-  // ✅ Fetch all idea shares
-  const { data: ideaSharess = [], isLoading: ideaSharessLoading } = useQuery({
-    queryKey: ["ideaSharess"],
+  // ✅ Fetch all Travelings
+  const { data: travelings = [], isLoading: travelingsLoading } = useQuery({
+    queryKey: ["travelings"],
     queryFn: async () => {
-      const res = await axiosPublic.get("/third-layer/ideaShares");
+      const res = await axiosPublic.get("/fourth-layer/traveling");
       return res.data || [];
     },
   });
 
-  if (ideaSharesFieldsLoading || ideaSharessLoading) {
+  if (travelingFieldsLoading || travelingsLoading) {
     return <CustomLoading />;
   }
   // ✅ Reset Form
@@ -76,7 +76,7 @@ const IdeaShare = () => {
 
     try {
       const res = await axiosPublic.post(
-        "/third-layer/createExerciseIdeaShares",
+        "/fourth-layer/createExercisetraveling",
         payload,
       );
 
@@ -97,17 +97,17 @@ const IdeaShare = () => {
     }
   };
 
-  const activeField = ideaSharesFields.find((item) => item.isActive === "ON");
+  const activeField = travelingFields.find((item) => item.isActive === "ON");
 
   return (
     <div className="max-w-[1400px] mx-auto  space-y-10 my-10">
-      {/* ✅ ideaShares Fields */}
+      {/* ✅ traveling Fields */}
       <section className="text-center">
-        {ideaSharesFields.length === 0 ? (
-          <p className="text-gray-500">No idea share fields found.</p>
+        {travelingFields.length === 0 ? (
+          <p className="text-gray-500">No Traveling found.</p>
         ) : (
           <div className="space-y-6">
-            {ideaSharesFields.map((field) => (
+            {travelingFields.map((field) => (
               <div
                 key={field._id}
                 className="p-6 bg-white/60 backdrop-blur-md shadow-lg rounded-2xl border border-gray-100"
@@ -124,25 +124,27 @@ const IdeaShare = () => {
         )}
       </section>
 
-      {/* ✅ Idea Shares Section */}
+      {/* ✅ Travelings Section */}
       <section>
-        {ideaSharess.length === 0 ? (
+        {travelings.length === 0 ? (
           <p className="text-gray-500 text-center">No ideas found.</p>
         ) : (
           <div className="grid grid-cols-1 gap-6">
-            {ideaSharess.map((item, index) => (
+            {travelings.map((item, index) => (
               <div
                 key={item._id}
                 className="group relative bg-white/70 backdrop-blur-md rounded-2xl overflow-hidden shadow-md hover:shadow-xl border border-gray-100  transition-all duration-300"
               >
                 {/* Image */}
-                <div className="h-56 w-full overflow-hidden">
-                  <img
-                    src={item.ideaShareImage}
-                    alt={item.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
+                {item.ideaShareImage && (
+                  <div className="h-56 w-full overflow-hidden">
+                    <img
+                      src={item.ideaShareImage}
+                      alt={item.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                )}
 
                 {/* Content */}
                 <div className="p-5 space-y-3">
@@ -158,20 +160,26 @@ const IdeaShare = () => {
 
                   {/* Footer */}
                   <div className="flex items-center justify-between pt-3 border-t mt-3">
-                    <a
-                      href={item.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-teal-600 hover:text-teal-800 text-sm font-medium transition-colors"
-                    >
-                      🔗 Visit Link
-                    </a>
+                    {item?.link ? (
+                      <a
+                        href={item.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-teal-600 hover:text-teal-800 text-sm font-medium transition-colors"
+                      >
+                        🔗 Visit Link
+                      </a>
+                    ) : (
+                      <span className=" text-sm"> 🔗 Link Not Avaiable</span>
+                    )}
+
                     <p className="text-xs text-gray-500">
-                      {new Date(item.createdAt).toLocaleDateString("en-GB", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })}
+                      {item?.createdAt &&
+                        new Date(item.createdAt).toLocaleDateString("en-GB", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        })}
                     </p>
                   </div>
                 </div>
@@ -211,7 +219,7 @@ const IdeaShare = () => {
               <MediaUpload
                 control={control}
                 name="ideaShareImage"
-                label="Idea Share Image (Optional)"
+                label="Traveling Image (Optional)"
                 type="image"
                 maxSizeMB={5}
                 resetSignal={resetSignal}
@@ -248,7 +256,7 @@ const IdeaShare = () => {
               disabled={isSubmitting}
               className="w-full py-3 px-4 bg-gradient-to-r from-teal-500 to-teal-600 text-white rounded-lg"
             >
-              {isSubmitting ? "Adding..." : "Add Idea Share Exercise"}
+              {isSubmitting ? "Adding..." : "Add Traveling Exercise"}
             </button>
           </form>
         </section>
@@ -257,4 +265,4 @@ const IdeaShare = () => {
   );
 };
 
-export default IdeaShare;
+export default Traveling;

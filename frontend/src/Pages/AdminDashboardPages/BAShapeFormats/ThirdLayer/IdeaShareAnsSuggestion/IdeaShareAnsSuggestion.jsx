@@ -286,7 +286,7 @@ const IdeaShareAnsSuggestion = () => {
                 <MediaUpload
                   control={control}
                   name="ideaShareImage"
-                  label="Idea Share Image (Optinal)"
+                  label="Idea Share Image (Optional)"
                   type="image"
                   maxSizeMB={5}
                   resetSignal={resetSignal}

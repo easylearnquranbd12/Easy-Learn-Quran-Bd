@@ -110,7 +110,7 @@ const Profile = () => {
         <title>Be The Shape | Profile Management</title>
       </Helmet>
       <div className="mx-auto">
-        <div className="bg-white rounded-lg max-w-7xl mx-auto  border border-primary shadow-xl hover:shadow-2xl overflow-hidden">
+        <div className="bg-white rounded-lg max-w-[1400px] mx-auto  border  shadow-xl hover:shadow-2xl overflow-hidden">
           <div className="p-5 md:p-8 lg:p-12">
             <div className="flex justify-between items-center mb-8">
               <h1 className="text-xl md:text-2xl font-bold text-primary">

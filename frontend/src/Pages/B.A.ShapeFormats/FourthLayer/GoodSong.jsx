@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { FaMusic } from "react-icons/fa";
 import Swal from "sweetalert2";
 import CustomLoading from "../../../components/Loading/CustomLoading";
 import useAuth from "../../../hooks/useAuth";
@@ -8,7 +9,7 @@ import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import RichTextField from "../../../shared/TextEditor/RichTextField";
 import MediaUpload from "../../../utils/MediaUpload";
 
-const IdeaShare = () => {
+const GoodSong = () => {
   const axiosPublic = useAxiosPublic();
   const { user } = useAuth();
   const [resetSignal, setResetSignal] = useState(0);
@@ -27,26 +28,26 @@ const IdeaShare = () => {
     },
   });
 
-  // ✅ Fetch ideaShares fields
-  const { data: ideaSharesFields = [], isLoading: ideaSharesFieldsLoading } =
+  // ✅ Fetch goodSong fields
+  const { data: goodSongFields = [], isLoading: goodSongFieldsLoading } =
     useQuery({
-      queryKey: ["ideaSharesFields"],
+      queryKey: ["goodSongFields"],
       queryFn: async () => {
-        const res = await axiosPublic.get("/third-layer/ideaSharesField");
+        const res = await axiosPublic.get("/fourth-layer/goodSongField");
         return res.data?.data || [];
       },
     });
 
-  // ✅ Fetch all idea shares
-  const { data: ideaSharess = [], isLoading: ideaSharessLoading } = useQuery({
-    queryKey: ["ideaSharess"],
+  // ✅ Fetch all goodSongs
+  const { data: goodSongs = [], isLoading: goodSongsLoading } = useQuery({
+    queryKey: ["goodSongs"],
     queryFn: async () => {
-      const res = await axiosPublic.get("/third-layer/ideaShares");
+      const res = await axiosPublic.get("/fourth-layer/goodSong");
       return res.data || [];
     },
   });
 
-  if (ideaSharesFieldsLoading || ideaSharessLoading) {
+  if (goodSongFieldsLoading || goodSongsLoading) {
     return <CustomLoading />;
   }
   // ✅ Reset Form
@@ -76,7 +77,7 @@ const IdeaShare = () => {
 
     try {
       const res = await axiosPublic.post(
-        "/third-layer/createExerciseIdeaShares",
+        "/fourth-layer/createExercisegoodSong",
         payload,
       );
 
@@ -97,17 +98,17 @@ const IdeaShare = () => {
     }
   };
 
-  const activeField = ideaSharesFields.find((item) => item.isActive === "ON");
+  const activeField = goodSongFields.find((item) => item.isActive === "ON");
 
   return (
     <div className="max-w-[1400px] mx-auto  space-y-10 my-10">
-      {/* ✅ ideaShares Fields */}
+      {/* ✅ goodSong Fields */}
       <section className="text-center">
-        {ideaSharesFields.length === 0 ? (
-          <p className="text-gray-500">No idea share fields found.</p>
+        {goodSongFields.length === 0 ? (
+          <p className="text-gray-500">No goodSong found.</p>
         ) : (
           <div className="space-y-6">
-            {ideaSharesFields.map((field) => (
+            {goodSongFields.map((field) => (
               <div
                 key={field._id}
                 className="p-6 bg-white/60 backdrop-blur-md shadow-lg rounded-2xl border border-gray-100"
@@ -124,54 +125,76 @@ const IdeaShare = () => {
         )}
       </section>
 
-      {/* ✅ Idea Shares Section */}
-      <section>
-        {ideaSharess.length === 0 ? (
+      {/* ✅ goodSongs Section */}
+      <section className="max-w-[1300px] ml-auto">
+        {goodSongs.length === 0 ? (
           <p className="text-gray-500 text-center">No ideas found.</p>
         ) : (
           <div className="grid grid-cols-1 gap-6">
-            {ideaSharess.map((item, index) => (
+            {goodSongs.map((item) => (
               <div
                 key={item._id}
-                className="group relative bg-white/70 backdrop-blur-md rounded-2xl overflow-hidden shadow-md hover:shadow-xl border border-gray-100  transition-all duration-300"
+                className="group relative bg-white/70 backdrop-blur-md rounded-2xl overflow-hidden shadow-md hover:shadow-xl border border-gray-100 transition-all duration-300"
               >
                 {/* Image */}
-                <div className="h-56 w-full overflow-hidden">
-                  <img
-                    src={item.ideaShareImage}
-                    alt={item.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
 
                 {/* Content */}
                 <div className="p-5 space-y-3">
-                  <h2 className="text-xl font-semibold text-teal-700">
-                    {item.name}
-                  </h2>
+                  {/* Song Name */}
+                  <div className="flex justify-start items-center gap-12">
+                    <div>
+                      <h2 className="text-xl font-semibold text-teal-700 flex items-center gap-2">
+                        <FaMusic className="text-orange-500 text-lg" />
+                        <span>{item.name}</span>
+                      </h2>
+                    </div>
+                    <div>
+                      {item?.ideaShareImage ? (
+                        <div className="h-12 w-full overflow-hidden">
+                          <img
+                            src={item.ideaShareImage}
+                            alt={item.name}
+                            className="w-full h-full object-cover rounded-md"
+                          />
+                        </div>
+                      ) : (
+                        <div className="h-12 w-12 bg-gray-200 rounded-md flex items-center justify-center text-xs text-gray-500">
+                          No Image
+                        </div>
+                      )}
+                    </div>
+                  </div>
 
-                  {/* Render HTML description safely */}
+                  {/* Description */}
                   <div
                     className="text-gray-700 text-sm leading-relaxed text-justify"
                     dangerouslySetInnerHTML={{ __html: item.description }}
-                  ></div>
+                  />
 
                   {/* Footer */}
                   <div className="flex items-center justify-between pt-3 border-t mt-3">
-                    <a
-                      href={item.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-teal-600 hover:text-teal-800 text-sm font-medium transition-colors"
-                    >
-                      🔗 Visit Link
-                    </a>
+                    {/* Link or Placeholder */}
+                    {item?.link ? (
+                      <a
+                        href={item.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-teal-600 hover:text-teal-800 text-sm font-medium transition-colors"
+                      >
+                        🔗 Visit Song
+                      </a>
+                    ) : (
+                      <span className="invisible text-sm">🔗 Visit Song</span>
+                    )}
+
+                    {/* Date (always right) */}
                     <p className="text-xs text-gray-500">
-                      {new Date(item.createdAt).toLocaleDateString("en-GB", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })}
+                      {item?.createdAt &&
+                        new Date(item.createdAt).toLocaleDateString("en-GB", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        })}
                     </p>
                   </div>
                 </div>
@@ -211,7 +234,7 @@ const IdeaShare = () => {
               <MediaUpload
                 control={control}
                 name="ideaShareImage"
-                label="Idea Share Image (Optional)"
+                label="goodSong Image (Optional)"
                 type="image"
                 maxSizeMB={5}
                 resetSignal={resetSignal}
@@ -248,7 +271,7 @@ const IdeaShare = () => {
               disabled={isSubmitting}
               className="w-full py-3 px-4 bg-gradient-to-r from-teal-500 to-teal-600 text-white rounded-lg"
             >
-              {isSubmitting ? "Adding..." : "Add Idea Share Exercise"}
+              {isSubmitting ? "Adding..." : "Add Good Song Exercise"}
             </button>
           </form>
         </section>
@@ -257,4 +280,4 @@ const IdeaShare = () => {
   );
 };
 
-export default IdeaShare;
+export default GoodSong;

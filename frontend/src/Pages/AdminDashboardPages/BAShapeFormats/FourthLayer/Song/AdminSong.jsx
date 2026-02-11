@@ -286,7 +286,7 @@ const AdminSong = () => {
                 <MediaUpload
                   control={control}
                   name="ideaShareImage"
-                  label="goodSong Image (Optinal)"
+                  label="goodSong Image (Optional)"
                   type="image"
                   maxSizeMB={5}
                   resetSignal={resetSignal}

@@ -288,7 +288,7 @@ console.log("dfcdas",goodNobel)
                 <MediaUpload
                   control={control}
                   name="ideaShareImage"
-                  label="goodNobel Image (Optinal)"
+                  label="goodNobel Image (Optional)"
                   type="image"
                   maxSizeMB={5}
                   resetSignal={resetSignal}

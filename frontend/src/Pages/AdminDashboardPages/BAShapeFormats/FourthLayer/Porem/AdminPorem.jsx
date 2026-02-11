@@ -288,7 +288,7 @@ console.log("dfcdas",goodPorem)
                 <MediaUpload
                   control={control}
                   name="ideaShareImage"
-                  label="goodPorem Image (Optinal)"
+                  label="goodPorem Image (Optional)"
                   type="image"
                   maxSizeMB={5}
                   resetSignal={resetSignal}

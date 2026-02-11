@@ -223,7 +223,7 @@ const AdminVocabulary = () => {
                     </div>
 
                     {/* description */}
-                    <div className="flex items-start justify-center gap-2">
+                    <div className="flex items-start text-justify gap-2">
                       <span className="text-base">
                         {vocabularyFields[0].description || "description"}
                       </span>

@@ -287,7 +287,7 @@ console.log("dfcdas",traveling)
                 <MediaUpload
                   control={control}
                   name="ideaShareImage"
-                  label="Traveling Image (Optinal)"
+                  label="Traveling Image (Optional)"
                   type="image"
                   maxSizeMB={5}
                   resetSignal={resetSignal}

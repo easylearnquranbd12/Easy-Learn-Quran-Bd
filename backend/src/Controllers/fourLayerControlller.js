@@ -99,7 +99,7 @@ const deleteTraveling = async (req, res) => {
 };
 const getAllTraveling = async (req, res) => {
   try {
-    const result = await travelingCollection.find().toArray();
+    const result = await travelingCollection.find().sort({ _id: -1 }).toArray();
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -218,7 +218,10 @@ const createExerciseTraveling = async (req, res) => {
 
 const getAllExerciseTraveling = async (req, res) => {
   try {
-    const result = await travelingExerciseCollection.find().toArray();
+    const result = await travelingExerciseCollection
+      .find()
+      .sort({ _id: -1 })
+      .toArray();
     res.json({ success: true, data: result });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -328,7 +331,7 @@ const deleteGoodSong = async (req, res) => {
 };
 const getAllGoodSong = async (req, res) => {
   try {
-    const result = await goodSongCollection.find().toArray();
+    const result = await goodSongCollection.find().sort({ _id: -1 }).toArray();
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -447,7 +450,10 @@ const createExerciseGoodSong = async (req, res) => {
 
 const getAllExerciseGoodSong = async (req, res) => {
   try {
-    const result = await goodSongExerciseCollection.find().toArray();
+    const result = await goodSongExerciseCollection
+      .find()
+      .sort({ _id: -1 })
+      .toArray();
     res.json({ success: true, data: result });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -557,7 +563,7 @@ const deleteGoodMovie = async (req, res) => {
 };
 const getAllGoodMovie = async (req, res) => {
   try {
-    const result = await goodMovieCollection.find().toArray();
+    const result = await goodMovieCollection.find().sort({ _id: -1 }).toArray();
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -676,7 +682,10 @@ const createExerciseGoodMovie = async (req, res) => {
 
 const getAllExerciseGoodMovie = async (req, res) => {
   try {
-    const result = await goodMovieExerciseCollection.find().toArray();
+    const result = await goodMovieExerciseCollection
+      .find()
+      .sort({ _id: -1 })
+      .toArray();
     res.json({ success: true, data: result });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -786,7 +795,7 @@ const deleteGoodPorem = async (req, res) => {
 };
 const getAllGoodPorem = async (req, res) => {
   try {
-    const result = await goodPoremCollection.find().toArray();
+    const result = await goodPoremCollection.find().sort({ _id: -1 }).toArray();
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -905,7 +914,10 @@ const createExerciseGoodPorem = async (req, res) => {
 
 const getAllExerciseGoodPorem = async (req, res) => {
   try {
-    const result = await goodPoremExerciseCollection.find().toArray();
+    const result = await goodPoremExerciseCollection
+      .find()
+      .sort({ _id: -1 })
+      .toArray();
     res.json({ success: true, data: result });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -1015,7 +1027,7 @@ const deleteGoodNobel = async (req, res) => {
 };
 const getAllGoodNobel = async (req, res) => {
   try {
-    const result = await goodNobelCollection.find().toArray();
+    const result = await goodNobelCollection.find().sort({ _id: -1 }).toArray();
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -1134,7 +1146,10 @@ const createExerciseGoodNobel = async (req, res) => {
 
 const getAllExerciseGoodNobel = async (req, res) => {
   try {
-    const result = await goodNobelExerciseCollection.find().toArray();
+    const result = await goodNobelExerciseCollection
+      .find()
+      .sort({ _id: -1 })
+      .toArray();
     res.json({ success: true, data: result });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
