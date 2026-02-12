@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Controller, useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import AdminLoading from "../../../../../components/Loading/AdminLoading";
 import TittleAnimation from "../../../../../components/TittleAnimation/TittleAnimation";
 import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
 import RichTextField from "../../../../../shared/TextEditor/RichTextField";
@@ -14,7 +15,7 @@ const AdminStoryWritting = () => {
   const [fieldName, setFieldName] = useState("");
   const [selectedVocabId, setSelectedVocabId] = useState(null);
   const [currentValue, setCurrentValue] = useState("");
-
+  const [editItem, setEditItem] = useState(null);
   const axiosPublic = useAxiosPublic();
   const queryClient = useQueryClient();
 
@@ -28,30 +29,36 @@ const AdminStoryWritting = () => {
     defaultValues: {
       name: "",
       description: "",
-      writtingBy: "",
     },
   });
 
   // ✅ Fetch vocabulary fields
-  const { data: storyWritingFields = [] } = useQuery({
+  const {
+    data: storyWritingFields = [],
+    isLoading: storyWritingFieldsLoading,
+  } = useQuery({
     queryKey: ["storyWritingFields"],
     queryFn: async () => {
       const res = await axiosPublic.get("/five-layer/storyWritingField");
       return res.data?.data || [];
     },
   });
-  // ✅ Create Song
+  // ✅ Create Story Writing
   const createMutation = useMutation({
     mutationFn: (newData) =>
       axiosPublic.post("/five-layer/storyWriting", newData),
     onSuccess: () => {
-      queryClient.invalidateQueries(["songs"]);
-      Swal.fire("✅ Success!", "Story Writting added successfully.", "success");
+      queryClient.invalidateQueries(["storyWriting"]);
+      Swal.fire(
+        "✅ Success!",
+        "Story Writing added successfully.",
+        "success",
+      );
       resetForm();
     },
-    onError: () => Swal.fire("❌ Error!", "Failed to add song.", "error"),
+    onError: () => Swal.fire("❌ Error!", "Failed to add Story Writing.", "error"),
   });
-  // ✅ Get all song fetch Data
+  // ✅ Get all Story Writing fetch Data
   const { data: storyWritings = [], isLoading } = useQuery({
     queryKey: ["storyWritings"],
     queryFn: async () => {
@@ -59,20 +66,36 @@ const AdminStoryWritting = () => {
       return res.data || [];
     },
   });
+  // ✅ Update Story Writing
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }) =>
+      axiosPublic.put(`/five-layer/storyWriting/${id}`, data),
+    onSuccess: () => {
+      Swal.fire(
+        "✅ Updated!",
+        "Story Writing updated successfully.",
+        "success",
+      );
+      queryClient.invalidateQueries(["storyWritings"]);
+      resetForm();
+      setEditItem(null);
+    },
+    onError: () =>
+      Swal.fire("❌ Error!", "Failed to update Story Writing.", "error"),
+  });
 
-  console.log(storyWritings);
-  // ✅ Delete Song
+  // ✅ Delete Story Writing
   const deleteMutation = useMutation({
     mutationFn: (id) => axiosPublic.delete(`/five-layer/storyWriting/${id}`),
     onSuccess: (res) => {
       if (res.data?.deletedCount > 0) {
-        Swal.fire("Deleted!", "Song deleted successfully.", "success");
+        Swal.fire("Deleted!", "Story Writing deleted successfully.", "success");
       } else {
-        Swal.fire("Info", "Song not found or already deleted.", "info");
+        Swal.fire("Info", "Story Writing not found or already deleted.", "info");
       }
-      queryClient.invalidateQueries(["songs"]);
+      queryClient.invalidateQueries(["storyWriting"]);
     },
-    onError: () => Swal.fire("Error!", "Failed to delete song.", "error"),
+    onError: () => Swal.fire("Error!", "Failed to delete Story Writing.", "error"),
   });
 
   // ✅ Reset Form
@@ -80,18 +103,19 @@ const AdminStoryWritting = () => {
     reset({
       name: "",
       description: "",
-      writtingBy: " ",
     });
+    setEditItem(null);
   };
 
-  // ✅ Submit Handler
   const onSubmit = async (data) => {
-    // if (!imageUrl) {
-    //   Swal.fire("Error!", "Please upload a song image.", "error");
-    //   return;
-    // }
-
-    createMutation.mutate(data);
+    if (editItem) {
+      updateMutation.mutate({
+        id: editItem._id,
+        data,
+      });
+    } else {
+      createMutation.mutate(data);
+    }
   };
 
   // ✅ Delete Handler
@@ -124,7 +148,7 @@ const AdminStoryWritting = () => {
         {
           fieldName: "isActive",
           currentValue: currentState,
-        }
+        },
       );
       return res.data;
     },
@@ -132,7 +156,7 @@ const AdminStoryWritting = () => {
       Swal.fire({
         icon: "success",
         title: "Updated!",
-        text: `Story field is now ${data.updatedValue}`,
+        text: `Story Writing field is now ${data.updatedValue}`,
       });
       queryClient.invalidateQueries(["storyWritingFields"]);
     },
@@ -140,7 +164,7 @@ const AdminStoryWritting = () => {
       Swal.fire(
         "Error!",
         error.response?.data?.message || error.message,
-        "error"
+        "error",
       ),
   });
 
@@ -162,7 +186,6 @@ const AdminStoryWritting = () => {
       }
     });
   };
-
   // ✅ Safe truncate function
   const truncateHTML = (html = "", wordLimit = 10) => {
     if (!html || typeof html !== "string") return "";
@@ -172,20 +195,23 @@ const AdminStoryWritting = () => {
       words.join(" ") + (text.split(/\s+/).length > wordLimit ? "..." : "")
     );
   };
+  if (storyWritingFieldsLoading || isLoading) {
+    return <AdminLoading />;
+  }
 
   return (
     <>
       <Helmet>
-        <title>Admin | Create Story Writting Management</title>
+        <title>Admin | Create Story Writing Management</title>
       </Helmet>
 
       <TittleAnimation
-        tittle="Create Story Writting"
-        subtittle="Manage Story Writting Fields"
+        tittle="Create Story Writing"
+        subtittle="Manage Story Writings "
       />
 
-      <div className="mt-10 max-w-7xl mx-auto">
-        <div className=" w-full bg-white shadow-md rounded-lg p-2 md:p-5">
+      <div className="mt-10 max-w-[1400px] mx-auto">
+        <div className=" w-full bg-white shadow-md rounded-xl p-2 md:p-5">
           {/* ✅ Vocabulary Fields Section */}
           <div className="text-center mb-6">
             {storyWritingFields && storyWritingFields.length > 0 && (
@@ -197,15 +223,15 @@ const AdminStoryWritting = () => {
                       handleEditClick(
                         "title",
                         storyWritingFields[0].title,
-                        storyWritingFields[0]._id
+                        storyWritingFields[0]._id,
                       )
                     }
-                    className="w-5 h-5 text-green-600 cursor-pointer"
+                    className="min-h-5 min-w-5 w-5 h-5 text-green-600 cursor-pointer"
                   />
                 </div>
 
                 <div className="flex items-start justify-center gap-2">
-                  <span className="text-base">
+                  <span className="text-base text-justify">
                     {storyWritingFields[0].description || "Description"}
                   </span>
                   <Edit
@@ -213,22 +239,19 @@ const AdminStoryWritting = () => {
                       handleEditClick(
                         "description",
                         storyWritingFields[0].description,
-                        storyWritingFields[0]._id
+                        storyWritingFields[0]._id,
                       )
                     }
-                    className="w-5 h-5 text-green-600 cursor-pointer"
+                    className="w-5 h-5 min-h-5 min-w-5  text-green-600 cursor-pointer"
                   />
                 </div>
               </>
             )}
 
             {storyWritingFields.map((item) => (
-              <div
-                key={item._id}
-                className="flex items-center gap-2 justify-center mt-3"
-              >
+              <div key={item._id} className="flex items-start gap-2  mt-3">
                 <span className="font-semibold">
-                  Toggle {item.title || "Song Field"}
+                  Toggle {item.title || "Story Writing Field"}
                 </span>
                 <input
                   type="checkbox"
@@ -242,13 +265,14 @@ const AdminStoryWritting = () => {
             ))}
           </div>
 
-          {/* ✅ Create Song Form */}
+          {/* ✅ Create Story Writing Form */}
           <div className="w-full  bg-white shadow-2xl rounded-xl border p-4 sm:p-6 mb-10">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+              {/* Story Writing Name */}
               <div className="form-control w-full py-6">
                 <label className="label">
                   <span className="label-text text-base font-medium text-gray-700">
-                    Story Name (Optional):
+                    Tittle:
                   </span>
                 </label>
                 <Controller
@@ -257,7 +281,7 @@ const AdminStoryWritting = () => {
                   render={({ field }) => (
                     <input
                       {...field}
-                      placeholder="Enter Story Name..."
+                      placeholder="Enter Your Tittle..."
                       className="w-full px-4 py-3 border rounded-md text-gray-700 focus:outline-none focus:ring-1 focus:ring-teal-300"
                     />
                   )}
@@ -268,25 +292,7 @@ const AdminStoryWritting = () => {
                   name="description"
                   control={control}
                   placeholder="Enter Your Description..."
-                  className="w-full min-h-[300px]" // ensure editor is full width
-                />
-              </div>
-              <div className="form-control w-full py-6">
-                <label className="label">
-                  <span className="label-text text-base font-medium text-gray-700">
-                    Writting By:
-                  </span>
-                </label>
-                <Controller
-                  name="writtingBy"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      placeholder="Enter Writting By..."
-                      className="w-full px-4 py-3 border rounded-md text-gray-700 focus:outline-none focus:ring-1 focus:ring-teal-300"
-                    />
-                  )}
+                  className="w-full " // ensure editor is full width
                 />
               </div>
               <button
@@ -294,14 +300,20 @@ const AdminStoryWritting = () => {
                 className="w-full py-3 px-4 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-medium rounded-lg shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-teal-600 disabled:opacity-70 disabled:cursor-not-allowed"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Adding..." : "Add Story"}
+                {isSubmitting
+                  ? editItem
+                    ? "Updating..."
+                    : "Adding..."
+                  : editItem
+                    ? "Update Story Writing"
+                    : "Add Story Writing"}
               </button>
             </form>
           </div>
 
-          {/* ✅ Songs List */}
+          {/* ✅ storyWriting List */}
           <div className="w-full bg-white shadow-lg rounded-xl border p-4 sm:p-6">
-            <h2 className="text-lg sm:text-xl font-semibold mb-4 text-indigo-700">
+            <h2 className="text-lg sm:text-xl font-semibold mb-4 text-teal-700">
               List
             </h2>
 
@@ -309,9 +321,8 @@ const AdminStoryWritting = () => {
               <table className="table-auto w-full text-sm sm:text-base">
                 <thead className="bg-teal-600 text-white">
                   <tr>
-                    <th className="px-4 py-2">Name</th>
+                    <th className="px-4 py-2">Tittle</th>
                     <th className="px-4 py-2">Description</th>
-                    <th className="px-4 py-2">Writting By</th>
                     <th className="px-4 py-2">Actions</th>
                   </tr>
                 </thead>
@@ -325,7 +336,7 @@ const AdminStoryWritting = () => {
                   ) : storyWritings.length === 0 ? (
                     <tr>
                       <td colSpan={3} className="text-center py-4">
-                        No songs found.
+                        No storyWriting found.
                       </td>
                     </tr>
                   ) : (
@@ -338,10 +349,24 @@ const AdminStoryWritting = () => {
                             __html: truncateHTML(item.description, 10),
                           }}
                         ></td>
-                        <td className="px-4 py-2 text-center">
-                          {item.writtingBy}
-                        </td>
-                        <td className="px-4 py-2 text-center">
+                        <td className="px-4 py-2 text-center flex justify-center gap-3">
+                          {/* Edit */}
+                          <button
+                            onClick={() => {
+                              setEditItem(item);
+                              reset({
+                                name: item.name,
+                                description: item.description,
+                              });
+                              window.scrollTo({ top: 0, behavior: "smooth" });
+                            }}
+                            className="text-green-600 hover:text-green-800"
+                            title="Edit"
+                          >
+                            <Edit size={18} />
+                          </button>
+
+                          {/* Delete */}
                           <button
                             onClick={() => handleDelete(item._id)}
                             className="text-red-600 hover:text-red-800"

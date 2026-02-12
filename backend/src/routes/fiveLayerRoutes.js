@@ -1,22 +1,17 @@
 const express = require("express");
 const {
-  // ✅ Old Generation
   updateOldGenerationField,
   getOldGenerationField,
   createExerciseOldGeneration,
   createOldGeneration,
   deleteOldGeneration,
   getAllOldGeneration,
-
-  // ✅ Story Writing
   updateStoryWritingField,
   getStoryWritingField,
   createExerciseStoryWriting,
   createStoryWriting,
   deleteStoryWriting,
   getAllStoryWriting,
-
-  // ✅ Letter Writing
   updateLetterWritingField,
   getLetterWritingField,
   createExerciseLetterWriting,
@@ -28,39 +23,73 @@ const {
   deleteMcq,
   getAllMcq,
   createMcq,
+  updateOldGeneration,
+  getSingleOldGeneration,
+  getAllExerciseOldGeneration,
+  deleteExerciseOldGeneration,
+  updateStoryWriting,
+  getSingleStoryWriting,
+  getAllExerciseStoryWriting,
+  deleteExerciseStoryWriting,
+  updateLetterWriting,
+  getSingleLetterWriting,
+  getAllExerciseLetterWriting,
+  deleteExerciseLetterWriting,
 } = require("../controllers/fiveLayerController");
 
 const router = express.Router();
 
 /* --------------------------------------------------------------------------
- ✅ OLD GENERATION ROUTES
+ ✅ Old Generation ROUTES
 -------------------------------------------------------------------------- */
+// Old Generation field
 router.put("/oldGenerationField/:id", updateOldGenerationField);
 router.get("/oldGenerationField", getOldGenerationField);
-router.post("/createExerciseOldGeneration", createExerciseOldGeneration);
-router.delete("/oldGeneration/:id", deleteOldGeneration);
-router.get("/oldGeneration", getAllOldGeneration);
+// Old Generation CRUD
 router.post("/oldGeneration", createOldGeneration);
+router.get("/oldGeneration", getAllOldGeneration);
+router.put("/oldGeneration/:id", updateOldGeneration);
+router.get("/oldGeneration/:id", getSingleOldGeneration);
+router.delete("/oldGeneration/:id", deleteOldGeneration);
+// Old Generation exercise
+router.post("/createExerciseOldGeneration", createExerciseOldGeneration);
+router.get("/getAllExerciseOldGeneration", getAllExerciseOldGeneration);
+router.delete("/deleteExerciseOldGeneration/:id", deleteExerciseOldGeneration);
 
 /* --------------------------------------------------------------------------
- ✅ STORY WRITING ROUTES
+ ✅ Story Writing ROUTES
 -------------------------------------------------------------------------- */
+// Story Writing field
 router.put("/storyWritingField/:id", updateStoryWritingField);
 router.get("/storyWritingField", getStoryWritingField);
-router.post("/createExerciseStoryWriting", createExerciseStoryWriting);
-router.delete("/storyWriting/:id", deleteStoryWriting);
-router.get("/storyWriting", getAllStoryWriting);
+// Story Writing CRUD
 router.post("/storyWriting", createStoryWriting);
+router.get("/storyWriting", getAllStoryWriting);
+router.put("/storyWriting/:id", updateStoryWriting);
+router.get("/storyWriting/:id", getSingleStoryWriting);
+router.delete("/storyWriting/:id", deleteStoryWriting);
+// Story Writing exercise
+router.post("/createExerciseStoryWriting", createExerciseStoryWriting);
+router.get("/getAllExerciseStoryWriting", getAllExerciseStoryWriting);
+router.delete("/deleteExerciseStoryWriting/:id", deleteExerciseStoryWriting);
 
 /* --------------------------------------------------------------------------
- ✅ LETTER WRITING ROUTES
+ ✅ Letter Writing ROUTES
 -------------------------------------------------------------------------- */
+// Letter Writing field
 router.put("/letterWritingField/:id", updateLetterWritingField);
 router.get("/letterWritingField", getLetterWritingField);
-router.post("/createExerciseLetterWriting", createExerciseLetterWriting);
-router.delete("/letterWriting/:id", deleteLetterWriting);
-router.get("/letterWriting", getAllLetterWriting);
+// Letter Writing CRUD
 router.post("/letterWriting", createLetterWriting);
+router.get("/letterWriting", getAllLetterWriting);
+router.put("/letterWriting/:id", updateLetterWriting);
+router.get("/letterWriting/:id", getSingleLetterWriting);
+router.delete("/letterWriting/:id", deleteLetterWriting);
+// Letter Writing exercise
+router.post("/createExerciseLetterWriting", createExerciseLetterWriting);
+router.get("/getAllExerciseLetterWriting", getAllExerciseLetterWriting);
+router.delete("/deleteExerciseLetterWriting/:id", deleteExerciseLetterWriting);
+
 /* --------------------------------------------------------------------------
  ✅ MCQ ROUTES
 -------------------------------------------------------------------------- */

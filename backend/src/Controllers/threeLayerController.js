@@ -92,7 +92,7 @@ const updateBeforeProfessionalField = async (req, res) => {
 };
 const getBeforeProfessionalField = async (req, res) => {
   try {
-    const result = await beforeProfessionalFieldsCollection.find().toArray();
+    const result = await beforeProfessionalFieldsCollection.find().sort({ createdAt: -1 }).toArray();
     res.json({ success: true, data: result });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -115,7 +115,7 @@ const createBeforeProfessional = async (req, res) => {
 };
 const getAllBeforeProfessional = async (req, res) => {
   try {
-    const result = await beforeProfessionalCollection.find().toArray();
+    const result = await beforeProfessionalCollection.find().sort({ createdAt: -1 }).toArray();
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -233,7 +233,7 @@ const createExerciseBeforeProfessional = async (req, res) => {
 };
 const getAllExerciseBeforeProfessional = async (req, res) => {
   try {
-    const result = await beforeProfessionalExerciseCollection.find().toArray();
+    const result = await beforeProfessionalExerciseCollection.find().sort({ createdAt: -1 }).toArray();
     res.json({ success: true, data: result });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -317,7 +317,7 @@ const updateCorporateEmailField = async (req, res) => {
 // ✅ Get Corporate Email Fields
 const getCorporateEmailField = async (req, res) => {
   try {
-    const result = await corporateEmailFieldsCollection.find().toArray();
+    const result = await corporateEmailFieldsCollection.find().sort({ createdAt: -1 }).toArray();
     res.json({ success: true, data: result });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -340,7 +340,7 @@ const createCorporateEmail = async (req, res) => {
 // ✅ Get All Corporate Emails
 const getAllCorporateEmail = async (req, res) => {
   try {
-    const result = await corporateEmailCollection.find().toArray();
+    const result = await corporateEmailCollection.find().sort({ createdAt: -1 }).toArray();
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -461,7 +461,7 @@ const createExerciseCorporateEmail = async (req, res) => {
 // ✅ Get All Corporate Email Exercises
 const getAllExerciseCorporateEmail = async (req, res) => {
   try {
-    const result = await corporateEmailExerciseCollection.find().toArray();
+    const result = await corporateEmailExerciseCollection.find().sort({ createdAt: -1 }).toArray();
     res.json({ success: true, data: result });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -540,7 +540,7 @@ const updateDevelopSkillsField = async (req, res) => {
 };
 const getDevelopSkillsField = async (req, res) => {
   try {
-    const result = await developSkillsFieldsCollection.find().toArray();
+    const result = await developSkillsFieldsCollection.find().sort({ createdAt: -1 }).toArray();
     res.json({ success: true, data: result });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -574,7 +574,7 @@ const deleteDevelopSkills = async (req, res) => {
 };
 const getAllDevelopSkills = async (req, res) => {
   try {
-    const result = await developSkillsCollection.find().toArray();
+    const result = await developSkillsCollection.find().sort({ createdAt: -1 }).toArray();
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -681,7 +681,7 @@ const createExerciseDevelopSkills = async (req, res) => {
 };
 const getAllExerciseDevelopSkills = async (req, res) => {
   try {
-    const result = await developSkillsExerciseCollection.find().toArray();
+    const result = await developSkillsExerciseCollection.find().sort({ createdAt: -1 }).toArray();
     res.json({ success: true, data: result });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -758,7 +758,7 @@ const updateGoodLifeStyleField = async (req, res) => {
 };
 const getGoodLifeStyleField = async (req, res) => {
   try {
-    const result = await goodLifeStyleFieldsCollection.find().toArray();
+    const result = await goodLifeStyleFieldsCollection.find().sort({ createdAt: -1 }).toArray();
 
     res.json({ success: true, data: result });
   } catch (error) {
@@ -793,7 +793,7 @@ const deleteGoodLifeStyle = async (req, res) => {
 };
 const getAllGoodLifeStyle = async (req, res) => {
   try {
-    const result = await goodLifeStyleCollection.find().toArray();
+    const result = await goodLifeStyleCollection.find().sort({ createdAt: -1 }).toArray();
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -900,7 +900,7 @@ const createExerciseGoodLifeStyle = async (req, res) => {
 };
 const getAllExerciseGoodLifeStyle = async (req, res) => {
   try {
-    const result = await goodLifeStyleExerciseCollection.find().toArray();
+    const result = await goodLifeStyleExerciseCollection.find().sort({ createdAt: -1 }).toArray();
     res.json({ success: true, data: result });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -977,7 +977,7 @@ const updateIdeaSharesField = async (req, res) => {
 };
 const getIdeaSharesField = async (req, res) => {
   try {
-    const result = await ideaSharesFieldsCollection.find().toArray();
+    const result = await ideaSharesFieldsCollection.find().sort({ createdAt: -1 }).toArray();
     res.json({ success: true, data: result });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -1011,7 +1011,7 @@ const deleteIdeaShares = async (req, res) => {
 };
 const getAllIdeaShares = async (req, res) => {
   try {
-    const result = await ideaSharesCollection.find().toArray();
+    const result = await ideaSharesCollection.find().sort({ createdAt: -1 }).toArray();
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -1131,7 +1131,7 @@ const createExerciseIdeaShares = async (req, res) => {
 
 const getAllExerciseIdeaShares = async (req, res) => {
   try {
-    const result = await ideaSharesExerciseCollection.find().toArray();
+    const result = await ideaSharesExerciseCollection.find().sort({ createdAt: -1 }).toArray();
     res.json({ success: true, data: result });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

@@ -199,7 +199,7 @@ const InstructorProfile = () => {
                 <div>
                   <input
                     {...field}
-                    placeholder="Mathematics \ Physics \ Chemesti "
+                    placeholder="Be The Shape \ Physics \ Chemesti "
                     className={`w-full px-4 py-3 border rounded-md text-gray-700 focus:outline-none focus:ring-1 ${
                       fieldState.error
                         ? "border-red-500 focus:ring-red-200"
@@ -606,7 +606,7 @@ export default InstructorProfile;
 //                 <div>
 //                   <input
 //                     {...field}
-//                     placeholder="Mathematics \ Physics \ Chemesti "
+//                     placeholder="Be The Shape \ Physics \ Chemesti "
 //                     className={`w-full px-4 py-3 border rounded-md text-gray-700 focus:outline-none focus:ring-1 ${
 //                       fieldState.error
 //                         ? "border-red-500 focus:ring-red-200"

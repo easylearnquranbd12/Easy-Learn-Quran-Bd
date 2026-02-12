@@ -8,7 +8,7 @@ import { FiLock, FiMail } from "react-icons/fi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import error from "../../lottie-animation/error.json";
 import success from "../../lottie-animation/success.json";
-import imageLogo from "../assets/logo.svg";
+import imageLogo from "../assets/logo.png";
 import auth from "../firebase/firebase.config";
 import useAuth from "../hooks/useAuth";
 import useAxiosPublic from "../hooks/useAxiosPublic";
@@ -69,18 +69,21 @@ const Login = () => {
   return (
     <div>
       <Helmet>
-        <title>Mathematics | Sign In</title>
+        <title>Be The Shape | Sign In</title>
       </Helmet>
       <div className="flex justify-center items-center min-h-[70vh]">
         <div className="w-full max-w-xl bg-white shadow-2xl rounded-xl overflow-hidden border border-gray-200">
           {/* Header */}
           <div className="text-center mt-8">
             <img
-              className="h-16 w-16 cursor-pointer mx-auto "
+              className="h-16 w-24 cursor-pointer mx-auto "
               src={imageLogo}
               alt="Logo"
             />
-            <p className=" mt-1">Sign in to continue your journey</p>
+           <p className="mt-2 text-gray-600 text-sm">
+  Welcome back! Log in to shape your success.
+</p>
+
           </div>
 
           {/* Form */}
@@ -304,7 +307,7 @@ const Login = () => {
 
               <h2
                 className={`text-xl font-bold ${
-                  modalType === "success" ? "text-indigo-700" : "text-red-600"
+                  modalType === "success" ? "text-teal-700" : "text-red-600"
                 }`}
               >
                 {modalType === "success" ? "Success!" : "Oops!"}
@@ -313,7 +316,7 @@ const Login = () => {
 
               {modalType === "success" ? (
                 <button
-                  className="mt-6 px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-base font-medium transition-colors shadow-md"
+                  className="mt-6 px-6 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-base font-medium transition-colors shadow-md"
                   onClick={() => navigate(from)}
                 >
                   Continue

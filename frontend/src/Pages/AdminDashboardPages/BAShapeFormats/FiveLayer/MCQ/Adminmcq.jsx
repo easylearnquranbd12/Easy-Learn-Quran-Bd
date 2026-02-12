@@ -191,7 +191,7 @@ const Adminmcq = () => {
         subtittle="Manage MCQ  Fields"
       />
 
-      <div className="mt-10 max-w-7xl mx-auto">
+      <div className="mt-10 max-w-[1400px] mx-auto">
         <div className=" w-full bg-white shadow-md rounded-lg p-2 md:p-5">
           {/* ✅ Vocabulary Fields Section */}
           <div className="text-center mb-6">
@@ -211,7 +211,7 @@ const Adminmcq = () => {
                   />
                 </div>
 
-                <div className="flex items-start justify-center gap-2">
+                <div className="flex items-start justify-center text-justify gap-2">
                   <span className="text-base">
                     {mcqFields[0].description || "Description"}
                   </span>
@@ -232,7 +232,7 @@ const Adminmcq = () => {
             {mcqFields.map((item) => (
               <div
                 key={item._id}
-                className="flex items-center gap-2 justify-center mt-3"
+                className="flex items-center gap-2 justify-start mt-3"
               >
                 <span className="font-semibold">
                   Toggle {item.title || "Song Field"}
@@ -250,7 +250,7 @@ const Adminmcq = () => {
           </div>
 
           {/* ✅ Create Song Form */}
-          <div className="w-full bg-white shadow-xl rounded-2xl border border-gray-200 p-6 sm:p-8 mb-10 transition-all duration-300 hover:shadow-teal-200">
+          <div className="w-full bg-white shadow-xl rounded-2xl border border-gray-200 p-6 sm:p-8 mb-10 transition-all duration-300 ">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               {/* ✅ MCQ Question (Required) */}
               <div className="form-control w-full">

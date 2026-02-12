@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { FaFacebook, FaPhoneAlt, FaYoutube } from "react-icons/fa";
 import { MdEmail, MdLocationOn } from "react-icons/md";
 import { Link } from "react-router-dom";
-import imageLogo from "../../assets/logo.svg";
+import imageLogo from "../../assets/logo.png";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -55,7 +55,7 @@ const Footer = () => {
       <div className="max-w-[1400px] mx-auto px-2 py-12 grid grid-cols-1 md:grid-cols-3 gap-10 relative z-10">
         {/* Logo & Contact Info */}
         <div>
-          <img src={imageLogo} alt="Mathematics Logo" className="h-12 mb-2" />
+          <img src={imageLogo} alt="Be The Shape Logo" className="h-16 w-24 mb-2" />
           <p className="mb-4 font-bold uppercase text-base">Office Address</p>
 
           <p className="flex items-center gap-2 mb-1">

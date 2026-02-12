@@ -43,7 +43,7 @@ const AdminGoodLifeStyle = () => {
       return res.data?.data || [];
     },
   });
-  console.log(goodLifeStyleFields);
+
   // ✅ Create Good Life Style
   const createMutation = useMutation({
     mutationFn: (newData) =>

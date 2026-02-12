@@ -4,17 +4,18 @@ import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Controller, useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import AdminLoading from "../../../../../components/Loading/AdminLoading";
 import TittleAnimation from "../../../../../components/TittleAnimation/TittleAnimation";
 import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
 import RichTextField from "../../../../../shared/TextEditor/RichTextField";
 import LetterWrittingModal from "./LetterWrittingModal";
 
-const AdminStoryWritting = () => {
+const AdminLetterWritting = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [fieldName, setFieldName] = useState("");
   const [selectedVocabId, setSelectedVocabId] = useState(null);
   const [currentValue, setCurrentValue] = useState("");
-
+  const [editItem, setEditItem] = useState(null);
   const axiosPublic = useAxiosPublic();
   const queryClient = useQueryClient();
 
@@ -28,34 +29,36 @@ const AdminStoryWritting = () => {
     defaultValues: {
       name: "",
       description: "",
-      wriwrittingBy : ""
     },
   });
 
   // ✅ Fetch vocabulary fields
-  const { data: letterWritingFields = [] } = useQuery({
+  const {
+    data: letterWritingFields = [],
+    isLoading: letterWritingFieldsLoading,
+  } = useQuery({
     queryKey: ["letterWritingFields"],
     queryFn: async () => {
       const res = await axiosPublic.get("/five-layer/letterWritingField");
       return res.data?.data || [];
     },
   });
-  // ✅ Create Letter
+  // ✅ Create Letter Writing
   const createMutation = useMutation({
     mutationFn: (newData) =>
       axiosPublic.post("/five-layer/letterWriting", newData),
     onSuccess: () => {
-      queryClient.invalidateQueries(["Letters"]);
+      queryClient.invalidateQueries(["letterWriting"]);
       Swal.fire(
         "✅ Success!",
-        "Letter Writting added successfully.",
-        "success"
+        "Letter Writing added successfully.",
+        "success",
       );
       resetForm();
     },
-    onError: () => Swal.fire("❌ Error!", "Failed to add Letter.", "error"),
+    onError: () => Swal.fire("❌ Error!", "Failed to add Letter Writing.", "error"),
   });
-  // ✅ Get all Letter fetch Data
+  // ✅ Get all Letter Writing fetch Data
   const { data: letterWritings = [], isLoading } = useQuery({
     queryKey: ["letterWritings"],
     queryFn: async () => {
@@ -63,20 +66,36 @@ const AdminStoryWritting = () => {
       return res.data || [];
     },
   });
+  // ✅ Update Letter Writing
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }) =>
+      axiosPublic.put(`/five-layer/letterWriting/${id}`, data),
+    onSuccess: () => {
+      Swal.fire(
+        "✅ Updated!",
+        "Letter Writing updated successfully.",
+        "success",
+      );
+      queryClient.invalidateQueries(["letterWritings"]);
+      resetForm();
+      setEditItem(null);
+    },
+    onError: () =>
+      Swal.fire("❌ Error!", "Failed to update Letter Writing.", "error"),
+  });
 
-  console.log(letterWritings);
-  // ✅ Delete Letter
+  // ✅ Delete Letter Writing
   const deleteMutation = useMutation({
     mutationFn: (id) => axiosPublic.delete(`/five-layer/letterWriting/${id}`),
     onSuccess: (res) => {
       if (res.data?.deletedCount > 0) {
-        Swal.fire("Deleted!", "Letter deleted successfully.", "success");
+        Swal.fire("Deleted!", "Letter Writing deleted successfully.", "success");
       } else {
-        Swal.fire("Info", "Letter not found or already deleted.", "info");
+        Swal.fire("Info", "Letter Writing not found or already deleted.", "info");
       }
-      queryClient.invalidateQueries(["Letters"]);
+      queryClient.invalidateQueries(["letterWriting"]);
     },
-    onError: () => Swal.fire("Error!", "Failed to delete Letter.", "error"),
+    onError: () => Swal.fire("Error!", "Failed to delete Letter Writing.", "error"),
   });
 
   // ✅ Reset Form
@@ -84,18 +103,19 @@ const AdminStoryWritting = () => {
     reset({
       name: "",
       description: "",
-      writtingBy:""
     });
+    setEditItem(null);
   };
 
-  // ✅ Submit Handler
   const onSubmit = async (data) => {
-    // if (!imageUrl) {
-    //   Swal.fire("Error!", "Please upload a Letter image.", "error");
-    //   return;
-    // }
-
-    createMutation.mutate(data);
+    if (editItem) {
+      updateMutation.mutate({
+        id: editItem._id,
+        data,
+      });
+    } else {
+      createMutation.mutate(data);
+    }
   };
 
   // ✅ Delete Handler
@@ -123,17 +143,20 @@ const AdminStoryWritting = () => {
   // ✅ Toggle Handler
   const toggleIsActiveMutation = useMutation({
     mutationFn: async (currentState) => {
-      const res = await axiosPublic.put(`/five-layer/letterWritingField/toggle`, {
-        fieldName: "isActive",
-        currentValue: currentState,
-      });
+      const res = await axiosPublic.put(
+        `/five-layer/letterWritingField/toggle`,
+        {
+          fieldName: "isActive",
+          currentValue: currentState,
+        },
+      );
       return res.data;
     },
     onSuccess: (data) => {
       Swal.fire({
         icon: "success",
         title: "Updated!",
-        text: `Letter field is now ${data.updatedValue}`,
+        text: `Letter Writing field is now ${data.updatedValue}`,
       });
       queryClient.invalidateQueries(["letterWritingFields"]);
     },
@@ -141,7 +164,7 @@ const AdminStoryWritting = () => {
       Swal.fire(
         "Error!",
         error.response?.data?.message || error.message,
-        "error"
+        "error",
       ),
   });
 
@@ -163,7 +186,6 @@ const AdminStoryWritting = () => {
       }
     });
   };
-
   // ✅ Safe truncate function
   const truncateHTML = (html = "", wordLimit = 10) => {
     if (!html || typeof html !== "string") return "";
@@ -173,20 +195,23 @@ const AdminStoryWritting = () => {
       words.join(" ") + (text.split(/\s+/).length > wordLimit ? "..." : "")
     );
   };
+  if (letterWritingFieldsLoading || isLoading) {
+    return <AdminLoading />;
+  }
 
   return (
     <>
       <Helmet>
-        <title>Admin | Create Letter Writting Management</title>
+        <title>Admin | Create Letter Writing Management</title>
       </Helmet>
 
       <TittleAnimation
-        tittle="Create Letter Writting"
-        subtittle="Manage Letters & Vocabulary Fields"
+        tittle="Create Letter Writing"
+        subtittle="Manage Letter Writings "
       />
 
-      <div className="mt-10 max-w-7xl mx-auto">
-        <div className=" w-full bg-white shadow-md rounded-lg p-3 md:p-5">
+      <div className="mt-10 max-w-[1400px] mx-auto">
+        <div className=" w-full bg-white shadow-md rounded-xl p-2 md:p-5">
           {/* ✅ Vocabulary Fields Section */}
           <div className="text-center mb-6">
             {letterWritingFields && letterWritingFields.length > 0 && (
@@ -198,15 +223,15 @@ const AdminStoryWritting = () => {
                       handleEditClick(
                         "title",
                         letterWritingFields[0].title,
-                        letterWritingFields[0]._id
+                        letterWritingFields[0]._id,
                       )
                     }
-                    className="w-5 h-5 text-green-600 cursor-pointer"
+                    className="min-h-5 min-w-5 w-5 h-5 text-green-600 cursor-pointer"
                   />
                 </div>
 
                 <div className="flex items-start justify-center gap-2">
-                  <span className="text-base">
+                  <span className="text-base text-justify">
                     {letterWritingFields[0].description || "Description"}
                   </span>
                   <Edit
@@ -214,22 +239,19 @@ const AdminStoryWritting = () => {
                       handleEditClick(
                         "description",
                         letterWritingFields[0].description,
-                        letterWritingFields[0]._id
+                        letterWritingFields[0]._id,
                       )
                     }
-                    className="w-5 h-5 text-green-600 cursor-pointer"
+                    className="w-5 h-5 min-h-5 min-w-5  text-green-600 cursor-pointer"
                   />
                 </div>
               </>
             )}
 
             {letterWritingFields.map((item) => (
-              <div
-                key={item._id}
-                className="flex items-center gap-2 justify-center mt-3"
-              >
+              <div key={item._id} className="flex items-start gap-2  mt-3">
                 <span className="font-semibold">
-                  Toggle {item.title || "Letter Field"}
+                  Toggle {item.title || "Letter Writing Field"}
                 </span>
                 <input
                   type="checkbox"
@@ -243,14 +265,14 @@ const AdminStoryWritting = () => {
             ))}
           </div>
 
-          {/* ✅ Create Letter Form */}
-          <div className="w-full  bg-white shadow-2xl rounded-xl border p-2 sm:p-6 mb-10">
+          {/* ✅ Create Letter Writing Form */}
+          <div className="w-full  bg-white shadow-2xl rounded-xl border p-4 sm:p-6 mb-10">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-              {/* Letter Name */}
+              {/* Letter Writing Name */}
               <div className="form-control w-full py-6">
                 <label className="label">
                   <span className="label-text text-base font-medium text-gray-700">
-                   Letter Name (Optional):
+                    Tittle:
                   </span>
                 </label>
                 <Controller
@@ -259,8 +281,8 @@ const AdminStoryWritting = () => {
                   render={({ field }) => (
                     <input
                       {...field}
-                      placeholder="Enter Letter name..."
-                      className="w-full px-4 py-3 border rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-300"
+                      placeholder="Enter Your Tittle..."
+                      className="w-full px-4 py-3 border rounded-md text-gray-700 focus:outline-none focus:ring-1 focus:ring-teal-300"
                     />
                   )}
                 />
@@ -273,35 +295,23 @@ const AdminStoryWritting = () => {
                   className="w-full " // ensure editor is full width
                 />
               </div>
-               <div className="form-control w-full py-6">
-                <label className="label">
-                  <span className="label-text text-base font-medium text-gray-700">
-                    Writting By:
-                  </span>
-                </label>
-                <Controller
-                  name="writtingBy"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      placeholder="Enter Writting  name..."
-                      className="w-full px-4 py-3 border rounded-md text-gray-700 focus:outline-none focus:ring-1 focus:ring-teal-300"
-                    />
-                  )}
-                />
-              </div>
               <button
                 type="submit"
-                className="w-full py-3 px-4 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-medium rounded-lg shadow-md transition-all focus:outline-none focus:ring-1 focus:ring-teal-600 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full py-3 px-4 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-medium rounded-lg shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-teal-600 disabled:opacity-70 disabled:cursor-not-allowed"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Adding..." : "Add Letter"}
+                {isSubmitting
+                  ? editItem
+                    ? "Updating..."
+                    : "Adding..."
+                  : editItem
+                    ? "Update Letter Writing"
+                    : "Add Letter Writing"}
               </button>
             </form>
           </div>
 
-          {/* ✅ Letters List */}
+          {/* ✅ letterWriting List */}
           <div className="w-full bg-white shadow-lg rounded-xl border p-4 sm:p-6">
             <h2 className="text-lg sm:text-xl font-semibold mb-4 text-teal-700">
               List
@@ -311,9 +321,8 @@ const AdminStoryWritting = () => {
               <table className="table-auto w-full text-sm sm:text-base">
                 <thead className="bg-teal-600 text-white">
                   <tr>
-                    <th className="px-4 py-2">Name</th>
+                    <th className="px-4 py-2">Tittle</th>
                     <th className="px-4 py-2">Description</th>
-                    <th className="px-4 py-2">Writting By</th>
                     <th className="px-4 py-2">Actions</th>
                   </tr>
                 </thead>
@@ -327,7 +336,7 @@ const AdminStoryWritting = () => {
                   ) : letterWritings.length === 0 ? (
                     <tr>
                       <td colSpan={3} className="text-center py-4">
-                        No Letters found.
+                        No letterWriting found.
                       </td>
                     </tr>
                   ) : (
@@ -340,8 +349,24 @@ const AdminStoryWritting = () => {
                             __html: truncateHTML(item.description, 10),
                           }}
                         ></td>
-                         <td className="px-4 py-2 text-center">{item.writtingBy}</td>
-                        <td className="px-4 py-2 text-center">
+                        <td className="px-4 py-2 text-center flex justify-center gap-3">
+                          {/* Edit */}
+                          <button
+                            onClick={() => {
+                              setEditItem(item);
+                              reset({
+                                name: item.name,
+                                description: item.description,
+                              });
+                              window.scrollTo({ top: 0, behavior: "smooth" });
+                            }}
+                            className="text-green-600 hover:text-green-800"
+                            title="Edit"
+                          >
+                            <Edit size={18} />
+                          </button>
+
+                          {/* Delete */}
                           <button
                             onClick={() => handleDelete(item._id)}
                             className="text-red-600 hover:text-red-800"
@@ -374,4 +399,4 @@ const AdminStoryWritting = () => {
   );
 };
 
-export default AdminStoryWritting;
+export default AdminLetterWritting;

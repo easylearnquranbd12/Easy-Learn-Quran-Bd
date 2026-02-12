@@ -5,7 +5,7 @@ import { CgClose } from "react-icons/cg";
 import { FaBars } from "react-icons/fa";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { Link, useLocation } from "react-router-dom";
-import imageLogo from "../../assets/logo.svg";
+import imageLogo from "../../assets/logo.png";
 import { useTranslation } from "../../context/TranslationContext";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
@@ -154,7 +154,7 @@ const Navbar = () => {
   return (
     <div className="fixed top-0 left-0 w-full bg-white shadow-2xl z-50 px-1 py-1.5">
       <div className="max-w-[1400px] mx-auto h-[70px] flex justify-between items-center">
-        <img className="h-8 w-16 cursor-pointer" src={imageLogo} alt="Logo" />
+        <img className="h-16 w-24 cursor-pointer" src={imageLogo} alt="Logo" />
         {/* {loading && (
           <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-30">
             <div className="p-5 bg-white rounded-md shadow-lg">
@@ -307,7 +307,7 @@ const Navbar = () => {
             >
               <div className="flex justify-between items-center mb-4 border-b min-h-24">
                 <img
-                  className="h-8 w-16 cursor-pointer"
+                  className="h-16 w-24 cursor-pointer"
                   src={imageLogo}
                   alt="Logo"
                 />

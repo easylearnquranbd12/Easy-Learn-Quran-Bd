@@ -7,7 +7,7 @@ import { FiLock, FiMail, FiPhone, FiUser } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import error from "../../lottie-animation/error.json";
 import success from "../../lottie-animation/success.json";
-import imageLogo from "../assets/logo.svg";
+import imageLogo from "../assets/logo.png";
 import useAuth from "../hooks/useAuth";
 import useAxiosPublic from "../hooks/useAxiosPublic";
 
@@ -100,17 +100,19 @@ const Register = () => {
   return (
     <div>
       <Helmet>
-        <title>Mathematics | Sign Up</title>
+        <title>Be The Shape | Sign Up</title>
       </Helmet>
       <div className="flex justify-center items-center min-h-[80vh] py-6">
         <div className="w-full max-w-xl bg-white shadow-2xl rounded-xl overflow-hidden border border-gray-200">
           <div className="text-center mt-8">
             <img
-              className="h-16 w-16 cursor-pointer mx-auto "
+              className="h-16 w-24 cursor-pointer mx-auto "
               src={imageLogo}
               alt="Logo"
             />
-            <p className=" mt-1">Join us and start your learning journey</p>
+            <p className="mt-2 text-gray-600 text-sm font-medium">
+              Join us and start your journey to success.
+            </p>
           </div>
 
           {/* Form */}
