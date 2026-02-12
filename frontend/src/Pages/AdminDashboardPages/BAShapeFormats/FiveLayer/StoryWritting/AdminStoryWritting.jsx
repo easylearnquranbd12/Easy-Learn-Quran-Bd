@@ -49,14 +49,11 @@ const AdminStoryWritting = () => {
       axiosPublic.post("/five-layer/storyWriting", newData),
     onSuccess: () => {
       queryClient.invalidateQueries(["storyWriting"]);
-      Swal.fire(
-        "✅ Success!",
-        "Story Writing added successfully.",
-        "success",
-      );
+      Swal.fire("✅ Success!", "Story Writing added successfully.", "success");
       resetForm();
     },
-    onError: () => Swal.fire("❌ Error!", "Failed to add Story Writing.", "error"),
+    onError: () =>
+      Swal.fire("❌ Error!", "Failed to add Story Writing.", "error"),
   });
   // ✅ Get all Story Writing fetch Data
   const { data: storyWritings = [], isLoading } = useQuery({
@@ -91,11 +88,16 @@ const AdminStoryWritting = () => {
       if (res.data?.deletedCount > 0) {
         Swal.fire("Deleted!", "Story Writing deleted successfully.", "success");
       } else {
-        Swal.fire("Info", "Story Writing not found or already deleted.", "info");
+        Swal.fire(
+          "Info",
+          "Story Writing not found or already deleted.",
+          "info",
+        );
       }
       queryClient.invalidateQueries(["storyWriting"]);
     },
-    onError: () => Swal.fire("Error!", "Failed to delete Story Writing.", "error"),
+    onError: () =>
+      Swal.fire("Error!", "Failed to delete Story Writing.", "error"),
   });
 
   // ✅ Reset Form
@@ -321,6 +323,7 @@ const AdminStoryWritting = () => {
               <table className="table-auto w-full text-sm sm:text-base">
                 <thead className="bg-teal-600 text-white">
                   <tr>
+                    <th className="px-4 py-2">Serial</th>
                     <th className="px-4 py-2">Tittle</th>
                     <th className="px-4 py-2">Description</th>
                     <th className="px-4 py-2">Actions</th>
@@ -340,8 +343,9 @@ const AdminStoryWritting = () => {
                       </td>
                     </tr>
                   ) : (
-                    storyWritings.map((item) => (
+                    storyWritings.map((item, index) => (
                       <tr key={item._id} className="hover:bg-gray-50 border-b">
+                        <td className="px-4 py-2 text-center">{index + 1}</td>
                         <td className="px-4 py-2 text-center">{item.name}</td>
                         <td
                           className="px-4 py-2 text-center"

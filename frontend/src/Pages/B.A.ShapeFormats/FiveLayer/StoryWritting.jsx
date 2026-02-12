@@ -1,146 +1,17 @@
-// import { useQuery } from "@tanstack/react-query";
-// import { useEffect, useRef, useState } from "react";
-// import { useReactToPrint } from "react-to-print";
-// import useAxiosPublic from "../../../hooks/useAxiosPublic";
-
-// const StoryWritting = () => {
-//   const axiosPublic = useAxiosPublic();
-//   const printRef = useRef();
-//   const [allPages, setAllPages] = useState([]);
-
-//   // ✅ Fetch story fields
-//   const { data: storyWritingFields = [], isLoading: fieldsLoading } = useQuery({
-//     queryKey: ["storyWritingFields"],
-//     queryFn: async () => {
-//       const res = await axiosPublic.get("/five-layer/storyWritingField");
-//       return res.data?.data || [];
-//     },
-//   });
-
-//   // ✅ Fetch story writings
-//   const { data: storyWriting = [], isLoading: storiesLoading } = useQuery({
-//     queryKey: ["storyWriting"],
-//     queryFn: async () => {
-//       const res = await axiosPublic.get("/five-layer/storyWriting");
-//       return res.data || [];
-//     },
-//   });
-
-//   const isLoading = fieldsLoading || storiesLoading;
-
-//   // ✅ Print handler (Download as PDF)
-//   const handlePrint = useReactToPrint({
-//     content: () => printRef.current,
-//     documentTitle: "Story_Writing_A4",
-//   });
-
-//   // ✅ Split long HTML text into multiple A4-sized chunks
-//   const splitIntoPages = (htmlString, chunkSize = 3500) => {
-//     const text = htmlString.replace(/<[^>]+>/g, ""); // strip HTML
-//     const chunks = [];
-//     for (let i = 0; i < text.length; i += chunkSize) {
-//       chunks.push(text.slice(i, i + chunkSize));
-//     }
-//     return chunks;
-//   };
-
-//   // ✅ Prepare all pages
-//   useEffect(() => {
-//     if (!fieldsLoading && !storiesLoading) {
-//       const pages = [];
-
-//       // Story Fields
-//       storyWritingFields.forEach((field) => {
-//         pages.push({
-//           type: "field",
-//           title: field.title,
-//           content: field.description,
-//           writtingBy: field.writtingBy || "0",
-//           createdAt: field.createdAt || "",
-//         });
-//       });
-
-//       // Story Writings
-//       storyWriting.forEach((story) => {
-//         const chunks = splitIntoPages(story.description);
-//         chunks.forEach((chunk, idx) => {
-//           pages.push({
-//             type: "story",
-//             title: 0, // name suppressed
-//             content: chunk,
-//             writtingBy: story.writtingBy || "0",
-//             createdAt: story.createdAt || "",
-//             pageNumber: idx + 1,
-//             total: chunks.length,
-//           });
-//         });
-//       });
-
-//       setAllPages(pages);
-//     }
-//   }, [storyWritingFields, storyWriting, fieldsLoading, storiesLoading]);
-
-//   if (isLoading) {
-//     return (
-//       <div className="text-center py-10 text-gray-500 text-lg">Loading...</div>
-//     );
-//   }
-
-//   return (
-//     <div className="min-h-screen bg-gray-100 py-10 ">
-
-//       {/* Printable Pages */}
-//       <div
-//         ref={printRef}
-//         className="flex flex-col items-center gap-8 print:gap-0"
-//       >
-//         {allPages.map((page, index) => (
-//           <div
-//             key={index}
-//             className="bg-white shadow-lg border border-gray-300 rounded-lg w-[125mm] md:w-[320mm] h-[397mm] md:h-[300mm] p-[12mm] md:p-[25mm] overflow-hidden print:shadow-none print:border-none relative"
-//           >
-//             {/* Header */}
-//             {page.type === "field" && (
-//               <header className="text-center border-b pb-3 mb-4">
-//                 <h1 className="text-3xl font-serif font-bold text-gray-900">
-//                   {page.title}
-//                 </h1>
-//               </header>
-//             )}
-
-//             {/* Page Content */}
-//             <article className="text-gray-800 text-justify leading-relaxed text-[15px] whitespace-pre-line h-[320mm] overflow-hidden">
-//               {page.content}
-//             </article>
-
-//             {/* Footer */}
-//             <footer className="absolute bottom-5 left-5 text-left text-xs text-gray-500">
-//               Written by: {page.writtingBy} | Date:{" "}
-//               {page.createdAt ? new Date(page.createdAt).toLocaleDateString() : ""}
-//             </footer>
-
-//             <div className="absolute bottom-5 right-5 text-xs text-gray-500 text-right">
-//               Page {index + 1} of {allPages.length}
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default StoryWritting;
-
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
+const PAGE_HEIGHT_MM = 220; // content area height
+const MM_TO_PX = 3.78; // approx conversion
+const PAGE_HEIGHT_PX = PAGE_HEIGHT_MM * MM_TO_PX;
+
 const StoryWritting = () => {
   const axiosPublic = useAxiosPublic();
-  const printRef = useRef();
+  const printRef = useRef(null);
+  const measureRef = useRef(null);
   const [allPages, setAllPages] = useState([]);
 
-  // ✅ Fetch story fields
   const { data: storyWritingFields = [], isLoading: fieldsLoading } = useQuery({
     queryKey: ["storyWritingFields"],
     queryFn: async () => {
@@ -149,8 +20,9 @@ const StoryWritting = () => {
     },
   });
 
-  // ✅ Fetch story writings
-  const { data: storyWriting = [], isLoading: storiesLoading } = useQuery({
+  /* ================= Fetch Data ================= */
+
+  const { data: storyWriting = [], isLoading } = useQuery({
     queryKey: ["storyWriting"],
     queryFn: async () => {
       const res = await axiosPublic.get("/five-layer/storyWriting");
@@ -158,71 +30,100 @@ const StoryWritting = () => {
     },
   });
 
-  const isLoading = fieldsLoading || storiesLoading;
+  /* ================= Dynamic Pagination ================= */
 
-  // ✅ Split long text into multiple A4 pages
-  const splitIntoPages = (htmlString, chunkSize = 3500) => {
-    const text = htmlString.replace(/<[^>]+>/g, ""); // strip HTML tags
-    const chunks = [];
-    for (let i = 0; i < text.length; i += chunkSize) {
-      chunks.push(text.slice(i, i + chunkSize));
+  const paginateContent = (htmlContent, title, writtingBy, createdAt) => {
+    if (!measureRef.current) return [];
+
+    const container = measureRef.current;
+    container.innerHTML = htmlContent;
+
+    const pages = [];
+    let currentPage = "";
+
+    const children = Array.from(container.childNodes);
+
+    container.innerHTML = "";
+
+    children.forEach((node) => {
+      container.appendChild(node.cloneNode(true));
+
+      if (container.scrollHeight > PAGE_HEIGHT_PX) {
+        container.removeChild(container.lastChild);
+
+        pages.push(currentPage);
+
+        currentPage = node.outerHTML || node.textContent;
+        container.innerHTML = node.outerHTML || node.textContent;
+      } else {
+        currentPage += node.outerHTML || node.textContent;
+      }
+    });
+
+    if (currentPage) {
+      pages.push(currentPage);
     }
-    return chunks;
+
+    return pages.map((content, index) => ({
+      title,
+      content,
+      writtingBy,
+      createdAt,
+      pageNumber: index + 1,
+    }));
   };
 
-  // ✅ Prepare pages
+  /* ================= Prepare Pages ================= */
+
   useEffect(() => {
-    if (!fieldsLoading && !storiesLoading) {
-      const pages = [];
+    if (!storyWriting.length) return;
 
-      // Story Fields (admin content)
-      storyWritingFields.forEach((field) => {
-        pages.push({
-          type: "field",
-          title: field.title,
-          content: field.description,
-          writtingBy: field.writtingBy || "Admin",
-          createdAt: field.createdAt || "",
-        });
-      });
+    const finalPages = [];
 
-      // Story Writings
-      storyWriting.forEach((story) => {
-        const chunks = splitIntoPages(story.description);
-        chunks.forEach((chunk, idx) => {
-          pages.push({
-            type: "story",
-            title: story.title || "",
-            content: chunk,
-            writtingBy: story.writtingBy || "Admin",
-            createdAt: story.createdAt || "",
-            pageNumber: idx + 1,
-            total: chunks.length,
-          });
-        });
-      });
+    storyWriting.forEach((story) => {
+      const pages = paginateContent(
+        story.description || "",
+        story.title || "",
+        story.writtingBy || "Admin",
+        story.createdAt || "",
+      );
 
-      setAllPages(pages);
-    }
-  }, [storyWritingFields, storyWriting, fieldsLoading, storiesLoading]);
+      finalPages.push(...pages);
+    });
+
+    setAllPages(finalPages);
+  }, [storyWriting]);
+
+  const formatDate = (date) => {
+    if (!date) return "";
+    return new Date(date).toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  };
 
   if (isLoading) {
     return (
-      <div className="text-center py-10 text-gray-500 text-lg">Loading...</div>
+      <div className="flex justify-center items-center min-h-screen text-gray-500 text-lg">
+        Loading story content...
+      </div>
     );
   }
-console.log(storyWriting)
+
   return (
-    <div className="min-h-screen py-10 max-w-[1400px] mx-auto">
-      <section className="text-center">
+    <div className="min-h-screen py-12 max-w-[1400px] mx-auto">
+      <section className="text-center mb-12">
         {storyWritingFields.length === 0 ? (
-          <p className="text-gray-500">No song fields found.</p>
+          <p className="text-gray-500">No story fields available.</p>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-8">
             {storyWritingFields.map((field) => (
-              <div key={field._id} className="p-4">
-                <h3 className="font-semibold text-3xl">{field.title}</h3>
-                <p className="text-gray-600 text-sm lg:text-base text-justify py-5">
+              <div key={field._id} className="px-4">
+                <h2 className="text-3xl font-serif font-bold text-gray-900">
+                  {field.title}
+                </h2>
+                <p className="text-gray-700 text-justify mt-5 leading-relaxed">
                   {field.description}
                 </p>
               </div>
@@ -230,41 +131,49 @@ console.log(storyWriting)
           </div>
         )}
       </section>
+      {/* Hidden Measuring Container */}
+      <div
+        ref={measureRef}
+        className="absolute invisible w-[170mm] p-0 text-[15px] leading-relaxed"
+        style={{ height: `${PAGE_HEIGHT_MM}mm` }}
+      />
 
       <div
         ref={printRef}
-        className="flex flex-col items-center gap-8 print:gap-0"
+        className="flex flex-col items-center gap-10 print:gap-0"
       >
         {allPages.map((page, index) => (
           <div
             key={index}
-            className="bg-white shadow-lg border border-gray-300 rounded-lg w-[125mm] md:w-[320mm] h-[397mm] md:h-[300mm] p-[12mm] md:p-[25mm] overflow-hidden   relative"
+            className="relative bg-white shadow-xl border border-gray-300
+                       w-[210mm] h-[297mm]
+                       p-[20mm]
+                       print:shadow-none print:border-none
+                       overflow-hidden"
           >
             {/* Header */}
-            {/* Header: show only if name is not empty */}
-            {page.name && page.name.trim() !== "" && (
-              <header className="text-center border-b pb-3 mb-4">
-                <h1 className="text-3xl font-serif font-bold text-gray-900">
-                  {page.name}
+            {page.title && (
+              <header className="text-center border-b pb-4 mb-6">
+                <h1 className="text-2xl font-serif font-bold text-gray-900">
+                  {page.title}
                 </h1>
               </header>
             )}
 
-            {/* Page Content */}
+            {/* Content */}
             <article
-              className="text-gray-800 text-justify leading-relaxed text-[15px] whitespace-pre-line h-[220mm] overflow-hidden"
+              className="text-gray-800 text-justify leading-relaxed text-[15px]
+                         h-[220mm] overflow-hidden"
               dangerouslySetInnerHTML={{ __html: page.content }}
             />
 
             {/* Footer */}
-            <footer className="absolute bottom-5 left-5 text-left text-xs text-gray-500">
-              Written by: {page.writtingBy} | Date:{" "}
-              {page.createdAt
-                ? new Date(page.createdAt).toLocaleDateString()
-                : ""}
+            <footer className="absolute bottom-6 left-6 text-xs text-gray-500">
+              Written by: {page.writtingBy} <br />
+              Date: {formatDate(page.createdAt)}
             </footer>
 
-            <div className="absolute bottom-5 right-5 text-xs text-gray-500 text-right">
+            <div className="absolute bottom-6 right-6 text-xs text-gray-500">
               Page {index + 1} of {allPages.length}
             </div>
           </div>

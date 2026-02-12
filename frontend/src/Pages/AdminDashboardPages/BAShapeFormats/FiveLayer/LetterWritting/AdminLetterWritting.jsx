@@ -321,6 +321,7 @@ const AdminLetterWritting = () => {
               <table className="table-auto w-full text-sm sm:text-base">
                 <thead className="bg-teal-600 text-white">
                   <tr>
+                    <th className="px-4 py-2">Serial</th>
                     <th className="px-4 py-2">Tittle</th>
                     <th className="px-4 py-2">Description</th>
                     <th className="px-4 py-2">Actions</th>
@@ -340,8 +341,9 @@ const AdminLetterWritting = () => {
                       </td>
                     </tr>
                   ) : (
-                    letterWritings.map((item) => (
+                    letterWritings.map((item,index) => (
                       <tr key={item._id} className="hover:bg-gray-50 border-b">
+                          <td className="px-4 py-2 text-center">{index + 1}</td>
                         <td className="px-4 py-2 text-center">{item.name}</td>
                         <td
                           className="px-4 py-2 text-center"

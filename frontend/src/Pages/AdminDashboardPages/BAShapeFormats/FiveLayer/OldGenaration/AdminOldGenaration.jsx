@@ -49,14 +49,11 @@ const AdminOldGenaration = () => {
       axiosPublic.post("/five-layer/oldGeneration", newData),
     onSuccess: () => {
       queryClient.invalidateQueries(["oldGeneration"]);
-      Swal.fire(
-        "✅ Success!",
-        "Old Generation added successfully.",
-        "success",
-      );
+      Swal.fire("✅ Success!", "Old Generation added successfully.", "success");
       resetForm();
     },
-    onError: () => Swal.fire("❌ Error!", "Failed to add Old Generation.", "error"),
+    onError: () =>
+      Swal.fire("❌ Error!", "Failed to add Old Generation.", "error"),
   });
   // ✅ Get all Old Generation fetch Data
   const { data: oldGenerations = [], isLoading } = useQuery({
@@ -89,13 +86,22 @@ const AdminOldGenaration = () => {
     mutationFn: (id) => axiosPublic.delete(`/five-layer/oldGeneration/${id}`),
     onSuccess: (res) => {
       if (res.data?.deletedCount > 0) {
-        Swal.fire("Deleted!", "Old Generation deleted successfully.", "success");
+        Swal.fire(
+          "Deleted!",
+          "Old Generation deleted successfully.",
+          "success",
+        );
       } else {
-        Swal.fire("Info", "Old Generation not found or already deleted.", "info");
+        Swal.fire(
+          "Info",
+          "Old Generation not found or already deleted.",
+          "info",
+        );
       }
       queryClient.invalidateQueries(["oldGeneration"]);
     },
-    onError: () => Swal.fire("Error!", "Failed to delete Old Generation.", "error"),
+    onError: () =>
+      Swal.fire("Error!", "Failed to delete Old Generation.", "error"),
   });
 
   // ✅ Reset Form
@@ -321,6 +327,7 @@ const AdminOldGenaration = () => {
               <table className="table-auto w-full text-sm sm:text-base">
                 <thead className="bg-teal-600 text-white">
                   <tr>
+                    <th className="px-4 py-2">Serial</th>
                     <th className="px-4 py-2">Tittle</th>
                     <th className="px-4 py-2">Description</th>
                     <th className="px-4 py-2">Actions</th>
@@ -340,8 +347,11 @@ const AdminOldGenaration = () => {
                       </td>
                     </tr>
                   ) : (
-                    oldGenerations.map((item) => (
+                    oldGenerations.map((item, index) => (
                       <tr key={item._id} className="hover:bg-gray-50 border-b">
+                        <td className="px-4 py-2 text-center font-medium">
+                          {index + 1}
+                        </td>
                         <td className="px-4 py-2 text-center">{item.name}</td>
                         <td
                           className="px-4 py-2 text-center"
