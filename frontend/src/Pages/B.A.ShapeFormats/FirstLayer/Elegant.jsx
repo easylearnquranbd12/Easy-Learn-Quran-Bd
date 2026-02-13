@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRef, useState } from "react";
+import { AlertCircle, RefreshCw } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import CustomLoading from "../../../components/Loading/CustomLoading";
@@ -8,45 +9,45 @@ import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const Elegant = () => {
   const axiosPublic = useAxiosPublic();
-  const [activeSection, setActiveSection] = useState("mainWord");
+  const [showAll, setShowAll] = useState(false);
   const { register, handleSubmit, reset, setValue } = useForm();
   const queryClient = useQueryClient();
   const { user } = useAuth();
 
-  const refs = {
-    mainWord: useRef(null),
-    banglaPronunciation: useRef(null),
-    banglaMeaning: useRef(null),
-    synonyms: useRef(null),
-    antonyms: useRef(null),
-    exampleEnglish: useRef(null),
-    exampleBangla: useRef(null),
-  };
-
-  // Fetch sentence fields
-  const { data: elegantFields = [], isLoading: fieldLoading } = useQuery({
+  // Fetch all elegant Fields
+  const {
+    data: elegantFields = [],
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
     queryKey: ["elegantFields"],
     queryFn: async () => {
       const res = await axiosPublic.get("/first-layer/elegantField");
-
       return res.data.data || [];
     },
   });
 
-  // Fetch elegant data
-  const { data: elegant = [], isLoading: elegantLoading } = useQuery({
+  // Fetch elegant
+  const {
+    data: elegant,
+    isLoading: elegantLoading,
+    isError: elegantError,
+    refetch: refetchelegant,
+    error,
+  } = useQuery({
     queryKey: ["elegant"],
     queryFn: async () => {
       const res = await axiosPublic.get("/first-layer/elegant");
-
-      return res.data.data || [];
+      return res.data.data;
     },
   });
 
-  const { mutateAsync: createElegantExercise } = useMutation({
+  // Create elegant
+  const { mutateAsync: createelegantExercise } = useMutation({
     mutationFn: async (newData) => {
       const res = await axiosPublic.post(
-        "/first-layer/createExerciseElegant",
+        "/first-layer/createExerciseelegant",
         newData,
       );
       return res.data;
@@ -57,45 +58,12 @@ const Elegant = () => {
       queryClient.invalidateQueries({ queryKey: ["elegant"] });
     },
     onError: (error) => {
-      Swal.fire(
-        "❌ Error",
-        error.message || "Failed to create elegant",
-        "error",
-      );
+      Swal.fire("❌ Error", error.message || "Failed to create elegant", "error");
     },
   });
 
-  if (fieldLoading || elegantLoading) return <CustomLoading />;
-
-  const elegantField = elegantFields[0] || {};
-  const data = elegant[0] || {};
-
-  if (!data) return <p className="text-center mt-10">No elegant data found.</p>;
-
-  // Dynamic tab generation
-  const tabs = [
-    { id: "mainWord", label: elegantField.mainWord },
-    { id: "banglaPronunciation", label: elegantField.banglaPronunciation },
-    { id: "banglaMeaning", label: elegantField.banglaMeaning },
-    { id: "synonyms", label: elegantField.synonyms },
-    { id: "antonyms", label: elegantField.antonyms },
-    { id: "exampleEnglish", label: elegantField.exampleEnglish },
-    { id: "exampleBangla", label: elegantField.exampleBangla },
-  ];
-
-  const handleSectionScroll = (section) => {
-    setActiveSection(section);
-
-    const yOffset = -120; // এখানে navbar + tabs এর height অনুযায়ী adjust করো
-    const element = refs[section].current;
-
-    if (element) {
-      const y =
-        element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-
-      window.scrollTo({ top: y, behavior: "smooth" });
-    }
-  };
+  // Toggle show all rows
+  const visibleelegant = showAll ? elegant || [] : (elegant || []).slice(0, 10);
 
   const onSubmit = async (data) => {
     const payload = {
@@ -154,17 +122,39 @@ const Elegant = () => {
     }
 
     // 🔥 এখন full payload পাঠাও
-    createElegantExercise(payload);
+    createelegantExercise(payload);
     reset();
   };
 
+  if (isLoading || elegantLoading) return <CustomLoading />;
+
+  if (isError || elegantError)
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center p-4">
+        <div className="bg-green-200 border border-red-700/50 p-6 rounded-xl text-center max-w-md w-full">
+          <AlertCircle size={40} className="text-red-600 mx-auto mb-4" />
+          <h2 className="text-xl text-red-500 mb-2">Unable to Load elegant</h2>
+          <p className="text-black mb-6">
+            {error?.message || "Error occurred"}
+          </p>
+          <button
+            onClick={refetchelegant}
+            className="flex items-center gap-2 mx-auto px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
+          >
+            <RefreshCw size={16} />
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+
   return (
     <div className="max-w-[1400px] mx-auto">
-      <div className="py-8 ">
+      <div className="bg-white shadow-md rounded-lg p-2 md:p-5 mt-10 space-y-3">
         <div className="flex flex-col items-center mb-3 space-y-2">
           {elegantFields?.map((item) => (
             <div key={item._id} className="text-center max-w-[1400px]">
-              <h2 className="text-3xl font-bold text-teal-700">
+              <h2 className="text-3xl font-bold text-teal-600">
                 {item?.title || "Title Missing"}
               </h2>
               <p className="text-justify py-5 text-gray-700">
@@ -174,49 +164,200 @@ const Elegant = () => {
           ))}
         </div>
 
-        {/* Tabs */}
-        <div className="bg-white rounded-lg shadow-lg mb-8 sticky top-20 z-999 w-full text-sm md:text-base">
-          <div className="flex flex-wrap p-2 border-b max-w-[1400px] mx-auto px-2">
-            {tabs.map(
-              (tab) =>
-                tab.label &&
-                tab.label !== "no" &&
-                tab.label !== "none" && (
-                  <button
-                    key={tab.id}
-                    onClick={() => handleSectionScroll(tab.id)}
-                    className={`px-2 md:px-6 py-2 m-1 rounded-lg font-semibold transition-all duration-300 ${
-                      activeSection === tab.id
-                        ? "bg-teal-800 text-white shadow-md"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
+        {/* elegant Table */}
+        <div className="overflow-x-auto rounded-xl shadow border border-gray-200">
+          <table className="table w-full">
+            {elegantFields?.map((item, index) => (
+              <thead key={item._id} className="bg-teal-600 text-white text-sm">
+                <tr>
+                  <th>Serial</th>
+
+                  {item &&
+                    item.mainWord !== "no" &&
+                    item.mainWord !== "none" && (
+                      <th className="w-72 md:w-96">{item?.mainWord}</th>
+                    )}
+                  {item &&
+                    item.banglaPronunciation !== "no" &&
+                    item.banglaPronunciation !== "none" && (
+                      <th className="w-72 md:w-96">
+                        {item?.banglaPronunciation}
+                      </th>
+                    )}
+                  {item &&
+                    item.banglaMeaning !== "no" &&
+                    item.banglaMeaning !== "none" && (
+                      <th className="w-72 md:w-96">{item?.banglaMeaning}</th>
+                    )}
+                  {item &&
+                    item.synonyms !== "no" &&
+                    item.synonyms !== "none" && (
+                      <th className="w-72 md:w-96">{item?.synonyms}</th>
+                    )}
+                  {item &&
+                    item.antonyms !== "no" &&
+                    item.antonyms !== "none" && (
+                      <th className="w-72 md:w-96">{item?.antonyms}</th>
+                    )}
+                  {item &&
+                    item.exampleEnglish !== "no" &&
+                    item.exampleEnglish !== "none" && (
+                      <th className="w-72 md:w-96">{item?.exampleEnglish}</th>
+                    )}
+                  {item &&
+                    item.exampleBangla !== "no" &&
+                    item.exampleBangla !== "none" && (
+                      <th className="w-72 md:w-96">{item?.exampleBangla}</th>
+                    )}
+                </tr>
+              </thead>
+            ))}
+            <tbody>
+              {visibleelegant.length > 0 ? (
+                visibleelegant.map((row, i) => (
+                  <tr
+                    key={i}
+                    className="hover:bg-gray-50 transition border-b text-sm"
                   >
-                    {tab.label}
-                  </button>
-                ),
-            )}
-          </div>
+                    <td className="font-semibold ">{i + 1}</td>
+
+                    {elegantFields?.[0]?.mainWord !== "no" &&
+                      elegantFields?.[0]?.mainWord !== "none" && (
+                        <td>
+                          <div
+                            className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words ql-editor"
+                            dangerouslySetInnerHTML={{ __html: row.mainWord }}
+                          />
+                        </td>
+                      )}
+
+                    {elegantFields?.[0]?.banglaPronunciation !== "no" &&
+                      elegantFields?.[0]?.banglaPronunciation !== "none" && (
+                        <td>
+                          <div
+                            className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words ql-editor"
+                            dangerouslySetInnerHTML={{
+                              __html: row.banglaPronunciation,
+                            }}
+                          />
+                        </td>
+                      )}
+                    {elegantFields?.[0]?.banglaMeaning !== "no" &&
+                      elegantFields?.[0]?.banglaMeaning !== "none" && (
+                        <td>
+                          <div
+                            className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words ql-editor"
+                            dangerouslySetInnerHTML={{
+                              __html: row.banglaMeaning,
+                            }}
+                          />
+                        </td>
+                      )}
+
+                    {elegantFields?.[0]?.synonyms !== "no" &&
+                      elegantFields?.[0]?.synonyms !== "none" && (
+                        <td>
+                          <div
+                            className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words ql-editor"
+                            dangerouslySetInnerHTML={{
+                              __html: row.synonyms,
+                            }}
+                          />
+                        </td>
+                      )}
+                    {elegantFields?.[0]?.antonyms !== "no" &&
+                      elegantFields?.[0]?.antonyms !== "none" && (
+                        <td>
+                          <div
+                            className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words ql-editor"
+                            dangerouslySetInnerHTML={{
+                              __html: row.antonyms,
+                            }}
+                          />
+                        </td>
+                      )}
+                    {elegantFields?.[0]?.exampleEnglish !== "no" &&
+                      elegantFields?.[0]?.exampleEnglish !== "none" && (
+                        <td>
+                          <div
+                            className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words ql-editor"
+                            dangerouslySetInnerHTML={{
+                              __html: row.exampleEnglish,
+                            }}
+                          />
+                        </td>
+                      )}
+                    {elegantFields?.[0]?.exampleBangla !== "no" &&
+                      elegantFields?.[0]?.exampleBangla !== "none" && (
+                        <td>
+                          <div
+                            className="w-72 md:w-96 min-h-20 max-h-96
+             border border-gray-300 rounded-md
+             p-2 text-sm bg-white
+             overflow-auto text-justify
+             whitespace-normal
+             break-words ql-editor"
+                            dangerouslySetInnerHTML={{
+                              __html: row.exampleBangla,
+                            }}
+                          />
+                        </td>
+                      )}
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="9" className="text-center py-6 text-gray-500">
+                    No elegant found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
 
-        {tabs.map(
-          (tab) =>
-            tab.label &&
-            tab.label !== "no" &&
-            tab.label !== "none" && (
-              <section key={tab.id} ref={refs[tab.id]} className="p-2 md:p-3">
-                <h2 className="text-xl font-bold mb-4 text-gray-800">
-                  {tab.label}
-                </h2>
-                <div
-                  className="prose max-w-none text-gray-700 text-justify"
-                  dangerouslySetInnerHTML={{
-                    __html: data?.[tab.id] || "<p>No content available.</p>",
-                  }}
-                />
-              </section>
-            ),
+        {elegant?.length > 10 && (
+          <div className="flex justify-center mt-4">
+            <button
+              onClick={() => setShowAll(!showAll)}
+              className="px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700"
+            >
+              {showAll ? "See Less" : "See More"}
+            </button>
+          </div>
         )}
       </div>
+      {/* elegant Fields Exercise */}
       <div>
         <form onSubmit={handleSubmit(onSubmit)}>
           {elegantFields?.map(

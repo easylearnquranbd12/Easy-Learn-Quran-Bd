@@ -12,7 +12,6 @@ import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
 import RichTextField from "../../../../../shared/TextEditor/RichTextField";
 import ElegantModal from "./ElegantModal";
 
-
 const AdminElegant = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [fieldName, setFieldName] = useState("");
@@ -22,7 +21,7 @@ const AdminElegant = () => {
   const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
   const queryClient = useQueryClient();
-  const { register, handleSubmit, reset, setValue,control } = useForm({
+  const { register, handleSubmit, reset, setValue, control } = useForm({
     defaultValues: {
       mainWord: "",
       banglaPronunciation: "",
@@ -60,7 +59,11 @@ const AdminElegant = () => {
       queryClient.invalidateQueries({ queryKey: ["elegant"] });
     },
     onError: (error) => {
-      Swal.fire("❌ Error", error.message || "Failed to create elegant", "error");
+      Swal.fire(
+        "❌ Error",
+        error.message || "Failed to create elegant",
+        "error",
+      );
     },
   });
   // Fetch all elegant
@@ -183,7 +186,7 @@ const AdminElegant = () => {
       Swal.fire(
         "Error",
         error.response?.data?.message || error.message,
-        "error"
+        "error",
       );
     },
   });
@@ -215,7 +218,7 @@ const AdminElegant = () => {
                           handleEditClick(
                             "title",
                             elegantFields[0].title,
-                            elegantFields[0].title
+                            elegantFields[0].title,
                           )
                         }
                         className="w-5 h-5 text-green-600 cursor-pointer"
@@ -223,7 +226,7 @@ const AdminElegant = () => {
                     </div>
 
                     {/* description */}
-                    <div className="flex items-start justify-center gap-2">
+                    <div className="flex items-start justify-center text-justify gap-2">
                       <span className="text-base">
                         {elegantFields[0].description || "description"}
                       </span>
@@ -232,7 +235,7 @@ const AdminElegant = () => {
                           handleEditClick(
                             "description",
                             elegantFields[0].description,
-                            elegantFields[0].description
+                            elegantFields[0].description,
                           )
                         }
                         className="min-w-5 min-h-5 w-5 h-5 text-green-600 cursor-pointer"
@@ -271,7 +274,7 @@ const AdminElegant = () => {
                             handleEditClick(
                               "mainWord",
                               item.mainWord,
-                              item.mainWord
+                              item.mainWord,
                             )
                           }
                           className="w-4 h-4 text-green-600 cursor-pointer"
@@ -296,7 +299,7 @@ const AdminElegant = () => {
                             handleEditClick(
                               "banglaPronunciation",
                               item.banglaPronunciation,
-                              item.banglaPronunciation
+                              item.banglaPronunciation,
                             )
                           }
                           className="w-4 h-4 text-green-600 cursor-pointer"
@@ -321,7 +324,7 @@ const AdminElegant = () => {
                             handleEditClick(
                               "banglaMeaning",
                               item.banglaMeaning,
-                              item.banglaMeaning
+                              item.banglaMeaning,
                             )
                           }
                           className="w-4 h-4 text-green-600 cursor-pointer"
@@ -346,7 +349,7 @@ const AdminElegant = () => {
                             handleEditClick(
                               "synonyms",
                               item.synonyms,
-                              item.synonyms
+                              item.synonyms,
                             )
                           }
                           className="w-4 h-4 text-green-600 cursor-pointer"
@@ -371,7 +374,7 @@ const AdminElegant = () => {
                             handleEditClick(
                               "antonyms",
                               item.antonyms,
-                              item.antonyms
+                              item.antonyms,
                             )
                           }
                           className="w-4 h-4 text-green-600 cursor-pointer"
@@ -396,7 +399,7 @@ const AdminElegant = () => {
                             handleEditClick(
                               "exampleEnglish",
                               item.exampleEnglish,
-                              item.exampleEnglish
+                              item.exampleEnglish,
                             )
                           }
                           className="w-4 h-4 text-green-600 cursor-pointer"
@@ -421,7 +424,7 @@ const AdminElegant = () => {
                             handleEditClick(
                               "exampleBangla",
                               item.exampleBangla,
-                              item.exampleBangla
+                              item.exampleBangla,
                             )
                           }
                           className="w-4 h-4 text-green-600 cursor-pointer"
@@ -476,7 +479,7 @@ const AdminElegant = () => {
                   className="bg-teal-600 text-white text-sm"
                 >
                   <tr>
-                    <th >Serial</th>
+                    <th>Serial</th>
                     <th className="min-w-96">{item?.mainWord}</th>
                     <th className="min-w-96">{item?.banglaPronunciation}</th>
                     <th className="min-w-96">{item?.banglaMeaning}</th>
@@ -503,7 +506,7 @@ const AdminElegant = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                           dangerouslySetInnerHTML={{
                             __html: row.mainWord,
                           }}
@@ -516,7 +519,7 @@ const AdminElegant = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                           dangerouslySetInnerHTML={{
                             __html: row.banglaPronunciation,
                           }}
@@ -529,7 +532,7 @@ const AdminElegant = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                           dangerouslySetInnerHTML={{
                             __html: row.banglaMeaning,
                           }}
@@ -542,7 +545,7 @@ const AdminElegant = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                           dangerouslySetInnerHTML={{
                             __html: row.synonyms,
                           }}
@@ -555,7 +558,7 @@ const AdminElegant = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                           dangerouslySetInnerHTML={{
                             __html: row.antonyms,
                           }}
@@ -568,7 +571,7 @@ const AdminElegant = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                           dangerouslySetInnerHTML={{
                             __html: row.exampleEnglish,
                           }}
@@ -581,7 +584,7 @@ const AdminElegant = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                           dangerouslySetInnerHTML={{
                             __html: row.exampleBangla,
                           }}
@@ -590,16 +593,16 @@ const AdminElegant = () => {
 
                       <td className="min-w-16 flex justify-center items-center gap-1">
                         <button
-                          onClick={() => handleDelete(row._id)}
-                          className="px-2 py-1 text-red-600 rounded-md hover:bg-red-100 flex items-center gap-1"
-                        >
-                          <Trash2 size={18} />
-                        </button>
-                        <button
                           onClick={() => handleEdit(row._id)}
                           className="px-2 py-1 text-green-600 rounded-md hover:bg-green-100 flex items-center gap-1"
                         >
                           <Edit2 size={18} />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(row._id)}
+                          className="px-2 py-1 text-red-600 rounded-md hover:bg-red-100 flex items-center gap-1"
+                        >
+                          <Trash2 size={18} />
                         </button>
                       </td>
                     </tr>
