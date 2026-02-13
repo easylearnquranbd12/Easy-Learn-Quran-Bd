@@ -16,7 +16,7 @@ const AdminSocialLinks = () => {
   useEffect(() => {
     const fetchLinks = async () => {
       try {
-        const { data } = await axios.get('https://api.betheshape.com/api/admin/social-links');
+        const { data } = await axios.get('http://localhost:5000/api/admin/social-links');
         setLinks(data);
       } catch (error) {
         console.error('Failed to fetch links:', error);
@@ -34,7 +34,7 @@ const AdminSocialLinks = () => {
 
   const handleSave = async (platform) => {
     try {
-      await axios.put('https://api.betheshape.com/api/admin/social-links', { platform, url: tempUrl });
+      await axios.put('http://localhost:5000/api/admin/social-links', { platform, url: tempUrl });
       setLinks(prev => ({ ...prev, [platform]: tempUrl }));
       setEditing(null);
     } catch (error) {

@@ -32,7 +32,7 @@ const MoveModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `https://api.betheshape.com/fourth-layer/goodMovieField/${vocabId}`,
+        `http://localhost:5000/fourth-layer/goodMovieField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

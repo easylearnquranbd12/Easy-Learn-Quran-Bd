@@ -13,6 +13,10 @@ const vocabulary = () => {
   const { register, handleSubmit, reset, setValue } = useForm();
   const queryClient = useQueryClient();
   const {user} = useAuth()
+  const [page, setPage] = useState(1);
+const limit = 10;
+
+
   // Fetch all vocabulary Fields
   const {
     data: vocabularyFields = [],
@@ -28,19 +32,36 @@ const vocabulary = () => {
   });
 
   // Fetch vocabulary
-  const {
-    data: vocabulary,
-    isLoading: vocabularyLoading,
-    isError: vocabularyError,
-    refetch: refetchvocabulary,
-    error,
-  } = useQuery({
-    queryKey: ["vocabulary"],
-    queryFn: async () => {
-      const res = await axiosPublic.get("/first-layer/vocabulary");
-      return res.data.data;
-    },
-  });
+  // const {
+  //   data: vocabulary,
+  //   isLoading: vocabularyLoading,
+  //   isError: vocabularyError,
+  //   refetch: refetchvocabulary,
+  //   error,
+  // } = useQuery({
+  //   queryKey: ["vocabulary"],
+  //   queryFn: async () => {
+  //     const res = await axiosPublic.get("/first-layer/vocabulary");
+  //     return res.data.data;
+  //   },
+  // });
+
+const {
+  data: vocabulary,
+  isLoading: vocabularyLoading,
+  isError: vocabularyError,
+  refetch: refetchvocabulary,
+} = useQuery({
+  queryKey: ["vocabulary", page],
+  queryFn: async () => {
+    const res = await axiosPublic.get(
+      `/first-layer/vocabulary?page=${page}&limit=${limit}`
+    );
+    return res.data;
+  },
+});
+
+
 
   // Create vocabulary
   const { mutateAsync: createvocabularyExercise } = useMutation({
@@ -63,7 +84,7 @@ const vocabulary = () => {
 
 
   // Toggle show all rows
-  const visiblevocabulary = showAll ? vocabulary || [] : (vocabulary || []).slice(0, 10);
+  const visiblevocabulary = vocabulary?.data || [];
 
 const onSubmit = async (data) => {
   const payload = {
@@ -220,7 +241,7 @@ const onSubmit = async (data) => {
                     key={i}
                     className="hover:bg-gray-50 transition border-b text-sm"
                   >
-                    <td className="font-semibold ">{i + 1}</td>
+                    <td>{(page - 1) * limit + i + 1}</td>
 
                     {vocabularyFields?.[0]?.mainWord !== "no" &&
                       vocabularyFields?.[0]?.mainWord !== "none" && (
@@ -231,7 +252,7 @@ const onSubmit = async (data) => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                             dangerouslySetInnerHTML={{ __html: row.mainWord }}
                           />
                         </td>
@@ -246,7 +267,7 @@ const onSubmit = async (data) => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                             dangerouslySetInnerHTML={{
                               __html: row.banglaPronunciation,
                             }}
@@ -262,7 +283,7 @@ const onSubmit = async (data) => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                             dangerouslySetInnerHTML={{
                               __html: row.banglaMeaning,
                             }}
@@ -279,7 +300,7 @@ const onSubmit = async (data) => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                             dangerouslySetInnerHTML={{
                               __html: row.synonyms,
                             }}
@@ -295,7 +316,7 @@ const onSubmit = async (data) => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                             dangerouslySetInnerHTML={{
                               __html: row.antonyms,
                             }}
@@ -311,7 +332,7 @@ const onSubmit = async (data) => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                             dangerouslySetInnerHTML={{
                               __html: row.exampleEnglish,
                             }}
@@ -327,7 +348,7 @@ const onSubmit = async (data) => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                             dangerouslySetInnerHTML={{
                               __html: row.exampleBangla,
                             }}
@@ -347,16 +368,26 @@ const onSubmit = async (data) => {
           </table>
         </div>
 
-        {vocabulary?.length > 10 && (
-          <div className="flex justify-center mt-4">
-            <button
-              onClick={() => setShowAll(!showAll)}
-              className="px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700"
-            >
-              {showAll ? "See Less" : "See More"}
-            </button>
-          </div>
-        )}
+       {/* Pagination */}
+    {vocabulary?.totalPages > 1 && (
+      <div className="flex justify-center gap-2 mt-4">
+        <button
+          disabled={page === 1}
+          onClick={() => setPage((prev) => prev - 1)}
+          className="px-2 py-1 md:px-4 md:py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50"
+        >
+          Prev
+        </button>
+        <span className="px-2 py-1 md:px-4 md:py-2">{`Page ${page} of ${vocabulary.totalPages}`}</span>
+        <button
+          disabled={page === vocabulary.totalPages}
+          onClick={() => setPage((prev) => prev + 1)}
+          className="px-2 py-1 md:px-4 md:py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50"
+        >
+          Next
+        </button>
+      </div>
+    )}
       </div>
       {/* vocabulary Fields Exercise */}
       <div>

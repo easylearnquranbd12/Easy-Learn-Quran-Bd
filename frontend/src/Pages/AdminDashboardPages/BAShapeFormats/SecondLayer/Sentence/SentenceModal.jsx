@@ -36,7 +36,7 @@ const SentenceModal = ({
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `https://api.betheshape.com/second-layer/sentenceField/${vocabId}`,
+        `http://localhost:5000/second-layer/sentenceField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

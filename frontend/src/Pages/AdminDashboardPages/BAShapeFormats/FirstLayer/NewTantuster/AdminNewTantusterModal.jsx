@@ -32,7 +32,7 @@ const AdminNewTantusterModal = ({ isOpen, onClose, fieldName, currentValue, voca
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `https://api.betheshape.com/first-layer/newtantusterField/${vocabId}`,
+        `http://localhost:5000/first-layer/newtantusterField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

@@ -37,7 +37,7 @@ const LayerManagementModal = ({
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `https://api.betheshape.com/layer-management/field/${vocabId}`,
+        `http://localhost:5000/layer-management/field/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

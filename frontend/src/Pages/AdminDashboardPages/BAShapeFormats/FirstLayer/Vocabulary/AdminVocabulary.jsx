@@ -1,4 +1,3 @@
-
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Edit, Edit2, Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -10,6 +9,7 @@ import AdminLoading from "../../../../../components/Loading/AdminLoading";
 import TittleAnimation from "../../../../../components/TittleAnimation/TittleAnimation";
 import useAuth from "../../../../../hooks/useAuth";
 import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
+import usePaginationScroll from "../../../../../hooks/usePaginationScroll";
 import RichTextField from "../../../../../shared/TextEditor/RichTextField";
 import VocabularyModal from "./VocabularyModal";
 
@@ -22,7 +22,10 @@ const AdminVocabulary = () => {
   const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
   const queryClient = useQueryClient();
-  const { register, handleSubmit, reset, setValue,control } = useForm({
+  const [page, setPage] = useState(1);
+  const limit = 10;
+
+  const { register, handleSubmit, reset, setValue, control } = useForm({
     defaultValues: {
       mainWord: "",
       banglaPronunciation: "",
@@ -60,22 +63,35 @@ const AdminVocabulary = () => {
       queryClient.invalidateQueries({ queryKey: ["vocabulary"] });
     },
     onError: (error) => {
-      Swal.fire("❌ Error", error.message || "Failed to create vocabulary", "error");
+      Swal.fire(
+        "❌ Error",
+        error.message || "Failed to create vocabulary",
+        "error",
+      );
     },
   });
   // Fetch all vocabulary
   const {
-    data: vocabulary = [],
+    data: vocabulary,
     isLoading: vocabularyLoading,
-    refetch: refetchvocabulary,
     isError: vocabularyError,
+    refetch: refetchvocabulary,
   } = useQuery({
-    queryKey: ["vocabulary"],
+    queryKey: ["vocabulary", page],
     queryFn: async () => {
-      const res = await axiosPublic.get("/first-layer/vocabulary");
-      return res.data.data || [];
+      const res = await axiosPublic.get(
+        `/first-layer/vocabulary?page=${page}&limit=${limit}`,
+      );
+      return res.data;
     },
   });
+  // ===== usePaginationScroll হুক ব্যবহার =====
+  const { paginationRef, isPageChanging, handlePageChange } =
+    usePaginationScroll(page, vocabularyLoading, {
+      offset: 100, // 100px অফসেট
+      behavior: "instant", // instant বা smooth
+      block: "center",
+    });
 
   // delete vocabulary
   const { mutateAsync: deletevocabulary } = useMutation({
@@ -109,9 +125,8 @@ const AdminVocabulary = () => {
       }
     });
   };
-  const [showAll, setShowAll] = useState(false);
-  // Toggle show all rows
-  const visiblevocabulary = showAll ? vocabulary : vocabulary.slice(0, 10);
+
+  const visiblevocabulary = vocabulary?.data || [];
   // form submit
   const onSubmit = async (data) => {
     createvocabulary(data);
@@ -183,7 +198,7 @@ const AdminVocabulary = () => {
       Swal.fire(
         "Error",
         error.response?.data?.message || error.message,
-        "error"
+        "error",
       );
     },
   });
@@ -193,7 +208,7 @@ const AdminVocabulary = () => {
   return (
     <div className="max-w-[1400px] mx-auto px-2">
       <Helmet>
-        <title>Quiz | vocabulary</title>
+        <title>Quiz | Vocabulary</title>
       </Helmet>
       <TittleAnimation
         tittle="Create vocabulary"
@@ -215,7 +230,7 @@ const AdminVocabulary = () => {
                           handleEditClick(
                             "title",
                             vocabularyFields[0].title,
-                            vocabularyFields[0].title
+                            vocabularyFields[0].title,
                           )
                         }
                         className="w-5 h-5 text-green-600 cursor-pointer"
@@ -232,7 +247,7 @@ const AdminVocabulary = () => {
                           handleEditClick(
                             "description",
                             vocabularyFields[0].description,
-                            vocabularyFields[0].description
+                            vocabularyFields[0].description,
                           )
                         }
                         className="min-w-5 min-h-5 w-5 h-5 text-green-600 cursor-pointer"
@@ -271,7 +286,7 @@ const AdminVocabulary = () => {
                             handleEditClick(
                               "mainWord",
                               item.mainWord,
-                              item.mainWord
+                              item.mainWord,
                             )
                           }
                           className="w-4 h-4 text-green-600 cursor-pointer"
@@ -296,7 +311,7 @@ const AdminVocabulary = () => {
                             handleEditClick(
                               "banglaPronunciation",
                               item.banglaPronunciation,
-                              item.banglaPronunciation
+                              item.banglaPronunciation,
                             )
                           }
                           className="w-4 h-4 text-green-600 cursor-pointer"
@@ -321,7 +336,7 @@ const AdminVocabulary = () => {
                             handleEditClick(
                               "banglaMeaning",
                               item.banglaMeaning,
-                              item.banglaMeaning
+                              item.banglaMeaning,
                             )
                           }
                           className="w-4 h-4 text-green-600 cursor-pointer"
@@ -346,7 +361,7 @@ const AdminVocabulary = () => {
                             handleEditClick(
                               "synonyms",
                               item.synonyms,
-                              item.synonyms
+                              item.synonyms,
                             )
                           }
                           className="w-4 h-4 text-green-600 cursor-pointer"
@@ -371,7 +386,7 @@ const AdminVocabulary = () => {
                             handleEditClick(
                               "antonyms",
                               item.antonyms,
-                              item.antonyms
+                              item.antonyms,
                             )
                           }
                           className="w-4 h-4 text-green-600 cursor-pointer"
@@ -396,7 +411,7 @@ const AdminVocabulary = () => {
                             handleEditClick(
                               "exampleEnglish",
                               item.exampleEnglish,
-                              item.exampleEnglish
+                              item.exampleEnglish,
                             )
                           }
                           className="w-4 h-4 text-green-600 cursor-pointer"
@@ -421,7 +436,7 @@ const AdminVocabulary = () => {
                             handleEditClick(
                               "exampleBangla",
                               item.exampleBangla,
-                              item.exampleBangla
+                              item.exampleBangla,
                             )
                           }
                           className="w-4 h-4 text-green-600 cursor-pointer"
@@ -455,8 +470,8 @@ const AdminVocabulary = () => {
       {/* History */}
       <div className="bg-white rounded-lg shadow-md p-5 mt-10 w-[450px] md:w-full">
         <h1 className="mb-5">
-          Total vocabulary Items:{" "}
-          <span className="text-3xl font-bold ">{vocabulary.length}</span>
+          Total Vocabulary Items:{" "}
+          <span className="text-3xl font-bold ">{vocabulary.total}</span>
         </h1>
 
         <div className="overflow-x-auto rounded-xl shadow border border-gray-200">
@@ -476,7 +491,7 @@ const AdminVocabulary = () => {
                   className="bg-teal-600 text-white text-sm"
                 >
                   <tr>
-                    <th >Serial</th>
+                    <th>Serial</th>
                     <th className="min-w-96">{item?.mainWord}</th>
                     <th className="min-w-96">{item?.banglaPronunciation}</th>
                     <th className="min-w-96">{item?.banglaMeaning}</th>
@@ -495,7 +510,7 @@ const AdminVocabulary = () => {
                       key={i}
                       className="hover:bg-gray-50 transition border-b text-sm"
                     >
-                      <td className="font-semibold min-w-10">{i + 1}</td>
+                      <td>{(page - 1) * limit + i + 1}</td>
                       <td>
                         <div
                           className="w-72 md:w-96 min-h-20 max-h-96
@@ -503,7 +518,7 @@ const AdminVocabulary = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                           dangerouslySetInnerHTML={{
                             __html: row.mainWord,
                           }}
@@ -516,7 +531,7 @@ const AdminVocabulary = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                           dangerouslySetInnerHTML={{
                             __html: row.banglaPronunciation,
                           }}
@@ -529,7 +544,7 @@ const AdminVocabulary = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                           dangerouslySetInnerHTML={{
                             __html: row.banglaMeaning,
                           }}
@@ -542,7 +557,7 @@ const AdminVocabulary = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                           dangerouslySetInnerHTML={{
                             __html: row.synonyms,
                           }}
@@ -555,7 +570,7 @@ const AdminVocabulary = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                           dangerouslySetInnerHTML={{
                             __html: row.antonyms,
                           }}
@@ -568,7 +583,7 @@ const AdminVocabulary = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                           dangerouslySetInnerHTML={{
                             __html: row.exampleEnglish,
                           }}
@@ -581,7 +596,7 @@ const AdminVocabulary = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                           dangerouslySetInnerHTML={{
                             __html: row.exampleBangla,
                           }}
@@ -590,16 +605,16 @@ const AdminVocabulary = () => {
 
                       <td className="min-w-16 flex justify-center items-center gap-1">
                         <button
-                          onClick={() => handleDelete(row._id)}
-                          className="px-2 py-1 text-red-600 rounded-md hover:bg-red-100 flex items-center gap-1"
-                        >
-                          <Trash2 size={18} />
-                        </button>
-                        <button
                           onClick={() => handleEdit(row._id)}
                           className="px-2 py-1 text-green-600 rounded-md hover:bg-green-100 flex items-center gap-1"
                         >
                           <Edit2 size={18} />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(row._id)}
+                          className="px-2 py-1 text-red-600 rounded-md hover:bg-red-100 flex items-center gap-1"
+                        >
+                          <Trash2 size={18} />
                         </button>
                       </td>
                     </tr>
@@ -615,13 +630,56 @@ const AdminVocabulary = () => {
             </table>
           )}
         </div>
-        {vocabulary.length > 10 && (
-          <div className="flex justify-center mt-4">
+        {/* {vocabulary?.totalPages > 1 && (
+          <div className="flex justify-center gap-2 mt-4">
             <button
-              onClick={() => setShowAll(!showAll)}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              disabled={page === 1}
+              onClick={() => setPage((prev) => prev - 1)}
+              className="px-2 py-1 md:px-4 md:py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50"
             >
-              {showAll ? "See Less" : "See More"}
+              Prev
+            </button>
+            <span className="px-2 py-1 md:px-4 md:py-2">{`Page ${page} of ${vocabulary.totalPages}`}</span>
+            <button
+              disabled={page === vocabulary.totalPages}
+              onClick={() => setPage((prev) => prev + 1)}
+              className="px-2 py-1 md:px-4 md:py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+        )} */}
+
+        {vocabulary?.totalPages > 1 && (
+          <div
+            ref={paginationRef}
+            className="flex justify-center gap-2 mt-4 pagination-container"
+          >
+            <button
+              disabled={page === 1 || isPageChanging}
+              onClick={() => handlePageChange(page - 1, setPage)}
+              className={`px-2 py-1 md:px-4 md:py-2 bg-gray-300 rounded hover:bg-gray-400 
+                ${page === 1 || isPageChanging ? "opacity-50 cursor-not-allowed" : ""}`}
+            >
+              {isPageChanging ? "Loading..." : "Prev"}
+            </button>
+            <span className="px-2 py-1 md:px-4 md:py-2 bg-gray-100 rounded">
+              {isPageChanging ? (
+                <span className="flex items-center gap-2">
+                  <span className="loading loading-spinner loading-xs"></span>
+                  Loading...
+                </span>
+              ) : (
+                `Page ${page} of ${vocabulary.totalPages}`
+              )}
+            </span>
+            <button
+              disabled={page === vocabulary.totalPages || isPageChanging}
+              onClick={() => handlePageChange(page + 1, setPage)}
+              className={`px-2 py-1 md:px-4 md:py-2 bg-gray-300 rounded hover:bg-gray-400 
+                ${page === vocabulary.totalPages || isPageChanging ? "opacity-50 cursor-not-allowed" : ""}`}
+            >
+              {isPageChanging ? "Loading..." : "Next"}
             </button>
           </div>
         )}
