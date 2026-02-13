@@ -1,9 +1,9 @@
 import {
-  AlertCircle,
-  CheckCircle2,
-  FileText,
-  Trash2,
-  Upload,
+    AlertCircle,
+    CheckCircle2,
+    FileText,
+    Trash2,
+    Upload,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -23,7 +23,7 @@ const fetchPdfs = async () => {
   if (!user?.email) return;
   setLoadingHistory(true);
   try {
-    const res = await fetch(`http://localhost:5000/pdf/user?email=${user.email}`);
+    const res = await fetch(`https://api.betheshape.com/pdf/user?email=${user.email}`);
     if (!res.ok) throw new Error("Failed to fetch PDFs");
     const data = await res.json();
     setPdfs(data); // ✅ update state
@@ -70,7 +70,7 @@ const fetchPdfs = async () => {
       formData.append("pdf", file);
       formData.append("email", user.email); // ✅ send email
 
-      const res = await fetch("http://localhost:5000/pdf/user/upload", {
+      const res = await fetch("https://api.betheshape.com/pdf/user/upload", {
         method: "POST",
         body: formData,
       });
@@ -103,7 +103,7 @@ const fetchPdfs = async () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const res = await fetch(`http://localhost:5000/pdf/user/${id}`, {
+          const res = await fetch(`https://api.betheshape.com/pdf/user/${id}`, {
             method: "DELETE",
           });
           const data = await res.json();

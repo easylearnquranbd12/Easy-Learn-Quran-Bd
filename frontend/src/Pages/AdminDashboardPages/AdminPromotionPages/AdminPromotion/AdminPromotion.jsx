@@ -73,7 +73,7 @@ const AdminPromotion = () => {
     console.log("Final Promotion Data:", promotionData);
 
     // === Backend এ পাঠাও ===
-    await axios.post("http://localhost:5000/api/promotions", promotionData);
+    await axios.post("https://api.betheshape.com/api/promotions", promotionData);
 
     toast.success("Promotion saved successfully!");
     setFormData({
