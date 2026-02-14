@@ -9,10 +9,12 @@ import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const Idiom = () => {
   const axiosPublic = useAxiosPublic();
-  const [showAll, setShowAll] = useState(false);
   const { register, handleSubmit, reset, setValue } = useForm();
   const queryClient = useQueryClient();
   const { user } = useAuth();
+const [page, setPage] = useState(1);
+const limit = 10;
+
 
   // Fetch all idiom Fields
   const {
@@ -28,26 +30,29 @@ const Idiom = () => {
     },
   });
 
-  // Fetch idiom
-  const {
-    data: idiom,
-    isLoading: idiomLoading,
-    isError: idiomError,
-    refetch: refetchidiom,
-    error,
-  } = useQuery({
-    queryKey: ["idiom"],
-    queryFn: async () => {
-      const res = await axiosPublic.get("/first-layer/idiom");
-      return res.data.data;
-    },
-  });
+
+const {
+  data: idiomData,
+  isLoading: idiomLoading,
+  isError: idiomError,
+  refetch: refetchidiom,
+} = useQuery({
+  queryKey: ["idiom", page],
+  queryFn: async () => {
+    const res = await axiosPublic.get(
+      `/first-layer/idiom?page=${page}&limit=${limit}`
+    );
+    return res.data;
+  },
+});
+
+
 
   // Create idiom
   const { mutateAsync: createidiomExercise } = useMutation({
     mutationFn: async (newData) => {
       const res = await axiosPublic.post(
-        "/first-layer/createExerciseIdiom",
+        "/first-layer/createExerciseidiom",
         newData,
       );
       return res.data;
@@ -63,7 +68,7 @@ const Idiom = () => {
   });
 
   // Toggle show all rows
-  const visibleidiom = showAll ? idiom || [] : (idiom || []).slice(0, 10);
+  const visibleidiom = idiomData?.data || [];
 
   const onSubmit = async (data) => {
     const payload = {
@@ -219,7 +224,7 @@ const Idiom = () => {
                     key={i}
                     className="hover:bg-gray-50 transition border-b text-sm"
                   >
-                    <td className="font-semibold ">{i + 1}</td>
+                     <td>{(page - 1) * limit + i + 1}</td>
 
                     {idiomFields?.[0]?.mainWord !== "no" &&
                       idiomFields?.[0]?.mainWord !== "none" && (
@@ -230,7 +235,7 @@ const Idiom = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                             dangerouslySetInnerHTML={{ __html: row.mainWord }}
                           />
                         </td>
@@ -245,7 +250,7 @@ const Idiom = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                             dangerouslySetInnerHTML={{
                               __html: row.banglaPronunciation,
                             }}
@@ -261,7 +266,7 @@ const Idiom = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                             dangerouslySetInnerHTML={{
                               __html: row.banglaMeaning,
                             }}
@@ -278,7 +283,7 @@ const Idiom = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                             dangerouslySetInnerHTML={{
                               __html: row.synonyms,
                             }}
@@ -294,7 +299,7 @@ const Idiom = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                             dangerouslySetInnerHTML={{
                               __html: row.antonyms,
                             }}
@@ -310,7 +315,7 @@ const Idiom = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                             dangerouslySetInnerHTML={{
                               __html: row.exampleEnglish,
                             }}
@@ -326,7 +331,7 @@ const Idiom = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                             dangerouslySetInnerHTML={{
                               __html: row.exampleBangla,
                             }}
@@ -346,16 +351,26 @@ const Idiom = () => {
           </table>
         </div>
 
-        {idiom?.length > 10 && (
-          <div className="flex justify-center mt-4">
-            <button
-              onClick={() => setShowAll(!showAll)}
-              className="px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700"
-            >
-              {showAll ? "See Less" : "See More"}
-            </button>
-          </div>
-        )}
+    {/* Pagination */}
+    {idiomData?.totalPages > 1 && (
+      <div className="flex justify-center gap-2 mt-4">
+        <button
+          disabled={page === 1}
+          onClick={() => setPage((prev) => prev - 1)}
+          className="px-2 py-1 md:px-4 md:py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50"
+        >
+          Prev
+        </button>
+        <span className="px-2 py-1 md:px-4 md:py-2">{`Page ${page} of ${idiomData.totalPages}`}</span>
+        <button
+          disabled={page === idiomData.totalPages}
+          onClick={() => setPage((prev) => prev + 1)}
+          className="px-2 py-1 md:px-4 md:py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50"
+        >
+          Next
+        </button>
+      </div>
+    )}
       </div>
       {/* idiom Fields Exercise */}
       <div>

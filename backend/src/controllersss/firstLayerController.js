@@ -16,7 +16,7 @@ const {
   getFirstLayerIdiomCollections,
   getFirstLayerIdiomExerciseCollections,
 } = require("../config/db");
-const { get } = require("../routes/firstLayerRoutes");
+
 
 const vocabularyCollection = getFirstLayerVocabularyCollection();
 const vocabulary = getFirstLayerVocabularyCollections();
@@ -58,8 +58,32 @@ const createIdiom = async (req, res) => {
 // ✅ Get All Idiom
 const getAllIdiom = async (req, res) => {
   try {
-    const result = await idiom.find().toArray();
-    res.json({ success: true, data: result });
+    let { page = 1, limit = 10 } = req.query;
+
+    page = parseInt(page);
+    limit = parseInt(limit);
+
+    if (isNaN(page) || page < 1) page = 1;
+    if (isNaN(limit) || limit < 1) limit = 10;
+
+    const skip = (page - 1) * limit;
+
+    const total = await idiom.countDocuments();
+    const result = await idiom
+      .find()
+      .sort({ _id: -1 })
+      .skip(skip)
+      .limit(limit)
+      .toArray();
+
+    res.json({
+      success: true,
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+      data: result,
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -300,15 +324,6 @@ const createVocabulary = async (req, res) => {
   }
 };
 
-// ✅ Get All Vocabulary
-// const getAllVocabulary = async (req, res) => {
-//   try {
-//     const result = await vocabulary.find().toArray();
-//     res.json({ success: true, data: result });
-//   } catch (error) {
-//     res.status(500).json({ success: false, message: error.message });
-//   }
-// };
 
 const getAllVocabulary = async (req, res) => {
   try {
@@ -323,7 +338,7 @@ const getAllVocabulary = async (req, res) => {
     const skip = (page - 1) * limit;
 
     const total = await vocabulary.countDocuments();
-    const result = await vocabulary.find().skip(skip).limit(limit).toArray();
+    const result = await vocabulary.find().sort({ _id: -1 }).skip(skip).limit(limit).toArray();
 
     res.json({
       success: true,
@@ -337,7 +352,6 @@ const getAllVocabulary = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
 
 // ✅ Delete Vocabulary
 const deleteVocabulary = async (req, res) => {
@@ -575,15 +589,6 @@ const createElegant = async (req, res) => {
   }
 };
 
-// ✅ Get All Elegant
-// const getAllElegant = async (req, res) => {
-//   try {
-//     const result = await elegant.find().toArray();
-//     res.json({ success: true, data: result });
-//   } catch (error) {
-//     res.status(500).json({ success: false, message: error.message });
-//   }
-// };
 
 // ✅ Get All Elegant with Pagination
 const getAllElegant = async (req, res) => {
@@ -599,7 +604,7 @@ const getAllElegant = async (req, res) => {
     const skip = (page - 1) * limit;
 
     const total = await elegant.countDocuments();
-    const result = await elegant.find().skip(skip).limit(limit).toArray();
+    const result = await elegant.find().sort({ _id: -1 }).skip(skip).limit(limit).toArray();
 
     res.json({
       success: true,
@@ -613,7 +618,6 @@ const getAllElegant = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
 
 // ✅ Delete Elegant
 const deleteElegant = async (req, res) => {

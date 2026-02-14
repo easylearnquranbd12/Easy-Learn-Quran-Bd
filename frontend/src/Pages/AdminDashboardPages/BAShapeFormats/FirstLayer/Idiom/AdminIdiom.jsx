@@ -9,6 +9,7 @@ import AdminLoading from "../../../../../components/Loading/AdminLoading";
 import TittleAnimation from "../../../../../components/TittleAnimation/TittleAnimation";
 import useAuth from "../../../../../hooks/useAuth";
 import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
+import usePaginationScroll from "../../../../../hooks/usePaginationScroll";
 import RichTextField from "../../../../../shared/TextEditor/RichTextField";
 import IdiomModal from "./IdiomModal";
 
@@ -21,7 +22,10 @@ const AdminIdiom = () => {
   const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
   const queryClient = useQueryClient();
-  const { register, handleSubmit, reset, setValue,control } = useForm({
+  const [page, setPage] = useState(1);
+  const limit = 10;
+
+  const { register, handleSubmit, reset, setValue, control } = useForm({
     defaultValues: {
       mainWord: "",
       banglaPronunciation: "",
@@ -62,19 +66,42 @@ const AdminIdiom = () => {
       Swal.fire("❌ Error", error.message || "Failed to create idiom", "error");
     },
   });
-  // Fetch all idiom
+  // // Fetch all idiom
+  // const {
+  //   data: idiom = [],
+  //   isLoading: idiomLoading,
+  //   refetch: refetchidiom,
+  //   isError: idiomError,
+  // } = useQuery({
+  //   queryKey: ["idiom"],
+  //   queryFn: async () => {
+  //     const res = await axiosPublic.get("/first-layer/idiom");
+  //     return res.data.data || [];
+  //   },
+  // });
+
+  // Fetch all vocabulary
   const {
-    data: idiom = [],
+    data: idiom,
     isLoading: idiomLoading,
-    refetch: refetchidiom,
     isError: idiomError,
+    refetch: refetchidiom,
   } = useQuery({
-    queryKey: ["idiom"],
+    queryKey: ["idiom", page],
     queryFn: async () => {
-      const res = await axiosPublic.get("/first-layer/idiom");
-      return res.data.data || [];
+      const res = await axiosPublic.get(
+        `/first-layer/idiom?page=${page}&limit=${limit}`,
+      );
+      return res.data;
     },
   });
+  // ===== usePaginationScroll হুক ব্যবহার =====
+  const { paginationRef, isPageChanging, handlePageChange } =
+    usePaginationScroll(page, idiomLoading, {
+      offset: 100, // 100px অফসেট
+      behavior: "instant", // instant বা smooth
+      block: "center",
+    });
 
   // delete idiom
   const { mutateAsync: deleteidiom } = useMutation({
@@ -108,9 +135,8 @@ const AdminIdiom = () => {
       }
     });
   };
-  const [showAll, setShowAll] = useState(false);
-  // Toggle show all rows
-  const visibleidiom = showAll ? idiom : idiom.slice(0, 10);
+
+  const visibleidiom = idiom?.data || [];
   // form submit
   const onSubmit = async (data) => {
     createidiom(data);
@@ -182,7 +208,7 @@ const AdminIdiom = () => {
       Swal.fire(
         "Error",
         error.response?.data?.message || error.message,
-        "error"
+        "error",
       );
     },
   });
@@ -192,7 +218,7 @@ const AdminIdiom = () => {
   return (
     <div className="max-w-[1400px] mx-auto px-2">
       <Helmet>
-        <title>Quiz | idiom</title>
+        <title>Admin | idiom</title>
       </Helmet>
       <TittleAnimation
         tittle="Create idiom"
@@ -214,7 +240,7 @@ const AdminIdiom = () => {
                           handleEditClick(
                             "title",
                             idiomFields[0].title,
-                            idiomFields[0].title
+                            idiomFields[0].title,
                           )
                         }
                         className="w-5 h-5 text-green-600 cursor-pointer"
@@ -231,7 +257,7 @@ const AdminIdiom = () => {
                           handleEditClick(
                             "description",
                             idiomFields[0].description,
-                            idiomFields[0].description
+                            idiomFields[0].description,
                           )
                         }
                         className="min-w-5 min-h-5 w-5 h-5 text-green-600 cursor-pointer"
@@ -270,7 +296,7 @@ const AdminIdiom = () => {
                             handleEditClick(
                               "mainWord",
                               item.mainWord,
-                              item.mainWord
+                              item.mainWord,
                             )
                           }
                           className="w-4 h-4 text-green-600 cursor-pointer"
@@ -295,7 +321,7 @@ const AdminIdiom = () => {
                             handleEditClick(
                               "banglaPronunciation",
                               item.banglaPronunciation,
-                              item.banglaPronunciation
+                              item.banglaPronunciation,
                             )
                           }
                           className="w-4 h-4 text-green-600 cursor-pointer"
@@ -320,7 +346,7 @@ const AdminIdiom = () => {
                             handleEditClick(
                               "banglaMeaning",
                               item.banglaMeaning,
-                              item.banglaMeaning
+                              item.banglaMeaning,
                             )
                           }
                           className="w-4 h-4 text-green-600 cursor-pointer"
@@ -345,7 +371,7 @@ const AdminIdiom = () => {
                             handleEditClick(
                               "synonyms",
                               item.synonyms,
-                              item.synonyms
+                              item.synonyms,
                             )
                           }
                           className="w-4 h-4 text-green-600 cursor-pointer"
@@ -370,7 +396,7 @@ const AdminIdiom = () => {
                             handleEditClick(
                               "antonyms",
                               item.antonyms,
-                              item.antonyms
+                              item.antonyms,
                             )
                           }
                           className="w-4 h-4 text-green-600 cursor-pointer"
@@ -395,7 +421,7 @@ const AdminIdiom = () => {
                             handleEditClick(
                               "exampleEnglish",
                               item.exampleEnglish,
-                              item.exampleEnglish
+                              item.exampleEnglish,
                             )
                           }
                           className="w-4 h-4 text-green-600 cursor-pointer"
@@ -420,7 +446,7 @@ const AdminIdiom = () => {
                             handleEditClick(
                               "exampleBangla",
                               item.exampleBangla,
-                              item.exampleBangla
+                              item.exampleBangla,
                             )
                           }
                           className="w-4 h-4 text-green-600 cursor-pointer"
@@ -455,7 +481,7 @@ const AdminIdiom = () => {
       <div className="bg-white rounded-lg shadow-md p-5 mt-10 w-[450px] md:w-full">
         <h1 className="mb-5">
           Total idiom Items:{" "}
-          <span className="text-3xl font-bold ">{idiom.length}</span>
+          <span className="text-3xl font-bold ">{idiom.total}</span>
         </h1>
 
         <div className="overflow-x-auto rounded-xl shadow border border-gray-200">
@@ -475,7 +501,7 @@ const AdminIdiom = () => {
                   className="bg-teal-600 text-white text-sm"
                 >
                   <tr>
-                    <th >Serial</th>
+                    <th>Serial</th>
                     <th className="min-w-96">{item?.mainWord}</th>
                     <th className="min-w-96">{item?.banglaPronunciation}</th>
                     <th className="min-w-96">{item?.banglaMeaning}</th>
@@ -494,7 +520,7 @@ const AdminIdiom = () => {
                       key={i}
                       className="hover:bg-gray-50 transition border-b text-sm"
                     >
-                      <td className="font-semibold min-w-10">{i + 1}</td>
+                      <td>{(page - 1) * limit + i + 1}</td>
                       <td>
                         <div
                           className="w-72 md:w-96 min-h-20 max-h-96
@@ -502,7 +528,7 @@ const AdminIdiom = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                           dangerouslySetInnerHTML={{
                             __html: row.mainWord,
                           }}
@@ -515,7 +541,7 @@ const AdminIdiom = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                           dangerouslySetInnerHTML={{
                             __html: row.banglaPronunciation,
                           }}
@@ -528,7 +554,7 @@ const AdminIdiom = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                           dangerouslySetInnerHTML={{
                             __html: row.banglaMeaning,
                           }}
@@ -541,7 +567,7 @@ const AdminIdiom = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                           dangerouslySetInnerHTML={{
                             __html: row.synonyms,
                           }}
@@ -554,7 +580,7 @@ const AdminIdiom = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                           dangerouslySetInnerHTML={{
                             __html: row.antonyms,
                           }}
@@ -567,7 +593,7 @@ const AdminIdiom = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                           dangerouslySetInnerHTML={{
                             __html: row.exampleEnglish,
                           }}
@@ -580,7 +606,7 @@ const AdminIdiom = () => {
              p-2 text-sm bg-white
              overflow-auto text-justify
              whitespace-normal
-             break-words"
+             break-words ql-editor"
                           dangerouslySetInnerHTML={{
                             __html: row.exampleBangla,
                           }}
@@ -589,16 +615,16 @@ const AdminIdiom = () => {
 
                       <td className="min-w-16 flex justify-center items-center gap-1">
                         <button
-                          onClick={() => handleDelete(row._id)}
-                          className="px-2 py-1 text-red-600 rounded-md hover:bg-red-100 flex items-center gap-1"
-                        >
-                          <Trash2 size={18} />
-                        </button>
-                        <button
                           onClick={() => handleEdit(row._id)}
                           className="px-2 py-1 text-green-600 rounded-md hover:bg-green-100 flex items-center gap-1"
                         >
                           <Edit2 size={18} />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(row._id)}
+                          className="px-2 py-1 text-red-600 rounded-md hover:bg-red-100 flex items-center gap-1"
+                        >
+                          <Trash2 size={18} />
                         </button>
                       </td>
                     </tr>
@@ -614,13 +640,36 @@ const AdminIdiom = () => {
             </table>
           )}
         </div>
-        {idiom.length > 10 && (
-          <div className="flex justify-center mt-4">
+        {idiom?.totalPages > 1 && (
+          <div
+            ref={paginationRef}
+            className="flex justify-center gap-2 mt-4 pagination-container"
+          >
             <button
-              onClick={() => setShowAll(!showAll)}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              disabled={page === 1 || isPageChanging}
+              onClick={() => handlePageChange(page - 1, setPage)}
+              className={`px-2 py-1 md:px-4 md:py-2 bg-gray-300 rounded hover:bg-gray-400 
+                ${page === 1 || isPageChanging ? "opacity-50 cursor-not-allowed" : ""}`}
             >
-              {showAll ? "See Less" : "See More"}
+              {isPageChanging ? "Loading..." : "Prev"}
+            </button>
+            <span className="px-2 py-1 md:px-4 md:py-2 bg-gray-100 rounded">
+              {isPageChanging ? (
+                <span className="flex items-center gap-2">
+                  <span className="loading loading-spinner loading-xs"></span>
+                  Loading...
+                </span>
+              ) : (
+                `Page ${page} of ${idiom.totalPages}`
+              )}
+            </span>
+            <button
+              disabled={page === idiom.totalPages || isPageChanging}
+              onClick={() => handlePageChange(page + 1, setPage)}
+              className={`px-2 py-1 md:px-4 md:py-2 bg-gray-300 rounded hover:bg-gray-400 
+                ${page === idiom.totalPages || isPageChanging ? "opacity-50 cursor-not-allowed" : ""}`}
+            >
+              {isPageChanging ? "Loading..." : "Next"}
             </button>
           </div>
         )}

@@ -9,7 +9,7 @@ import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const Elegant = () => {
   const axiosPublic = useAxiosPublic();
-  const [showAll, setShowAll] = useState(false);
+
   const { register, handleSubmit, reset, setValue } = useForm();
   const queryClient = useQueryClient();
   const { user } = useAuth();
@@ -30,22 +30,6 @@ const limit = 10;
       return res.data.data || [];
     },
   });
-
-  // Fetch elegant
-  // const {
-  //   data: elegant,
-  //   isLoading: elegantLoading,
-  //   isError: elegantError,
-  //   refetch: refetchelegant,
-  //   error,
-  // } = useQuery({
-  //   queryKey: ["elegant"],
-  //   queryFn: async () => {
-  //     const res = await axiosPublic.get("/first-layer/elegant");
-  //     return res.data.data;
-  //   },
-  // });
-
 
 
 const {

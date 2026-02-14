@@ -630,26 +630,6 @@ const AdminVocabulary = () => {
             </table>
           )}
         </div>
-        {/* {vocabulary?.totalPages > 1 && (
-          <div className="flex justify-center gap-2 mt-4">
-            <button
-              disabled={page === 1}
-              onClick={() => setPage((prev) => prev - 1)}
-              className="px-2 py-1 md:px-4 md:py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50"
-            >
-              Prev
-            </button>
-            <span className="px-2 py-1 md:px-4 md:py-2">{`Page ${page} of ${vocabulary.totalPages}`}</span>
-            <button
-              disabled={page === vocabulary.totalPages}
-              onClick={() => setPage((prev) => prev + 1)}
-              className="px-2 py-1 md:px-4 md:py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50"
-            >
-              Next
-            </button>
-          </div>
-        )} */}
-
         {vocabulary?.totalPages > 1 && (
           <div
             ref={paginationRef}
