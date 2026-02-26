@@ -1,3 +1,4 @@
+import Advertisement from "./Advertisement";
 import BetheshapeFAQ from "./BetheshapeFAQ";
 import BetheshapePricing from "./BetheshapePricing";
 import HometextCreateui from "./HometextCreateui";
@@ -12,8 +13,9 @@ const Home = () => {
       <HometextCreateui />
       <Trustedme />
       <BetheshapePricing />
-
+      <Advertisement />
       <BetheshapeFAQ />
+
       <OurSuccessstory />
     </div>
   );
