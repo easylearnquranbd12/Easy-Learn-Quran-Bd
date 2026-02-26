@@ -375,14 +375,14 @@ const AdminSong = () => {
                           )}
                         </td>
 
-                        <td className="px-4 py-2 text-center">{item.name}</td>
+                        <td className="px-4 py-2 text-start">{item.name}</td>
                         <td
-                          className="px-4 py-2 text-center"
+                          className="px-4 py-2 text-start"
                           dangerouslySetInnerHTML={{
                             __html: truncateHTML(item.description, 10),
                           }}
                         ></td>
-                        <td className="px-4 py-2 text-center">{item.link}</td>
+                        <td className="px-4 py-2 text-start">{item.link}</td>
                         <td className="px-4 py-2 text-center flex gap-3 justify-center mt-2">
                           <button
                             onClick={() => handleEdit(item)}

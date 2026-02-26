@@ -1,6 +1,15 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { FaFacebook, FaPhoneAlt, FaYoutube } from "react-icons/fa";
+import {
+  FaFacebook,
+  FaInstagram,
+  FaLinkedin,
+  FaPhoneAlt,
+  FaTiktok,
+  FaTwitter,
+  FaWhatsapp,
+  FaYoutube,
+} from "react-icons/fa";
 import { MdEmail, MdLocationOn } from "react-icons/md";
 import { Link } from "react-router-dom";
 import imageLogo from "../../assets/logo.png";
@@ -8,61 +17,64 @@ import imageLogo from "../../assets/logo.png";
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const [socialLinks, setSocialLinks] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  // 🔥 Platform Icon Map
+  const iconMap = {
+    facebook: <FaFacebook className="text-blue-600 text-2xl hover:text-blue-800 transition" />,
+    youtube: <FaYoutube className="text-red-600 text-2xl hover:text-red-800 transition" />,
+    instagram: <FaInstagram className="text-pink-500 text-2xl hover:text-pink-700 transition" />,
+    twitter: <FaTwitter className="text-sky-500 text-2xl hover:text-sky-700 transition" />,
+    linkedin: <FaLinkedin className="text-blue-700 text-2xl hover:text-blue-900 transition" />,
+    tiktok: <FaTiktok className="text-black text-2xl hover:text-gray-700 transition" />,
+    whatsapp: <FaWhatsapp className="text-green-500 text-2xl hover:text-green-700 transition" />,
+  };
+
+  // 🔥 Fetch Function
+  const fetchSocialLinks = async () => {
+    try {
+      const { data } = await axios.get(
+        "http://localhost:5000/api/admin/social-links"
+      );
+      setSocialLinks(data || {});
+    } catch (err) {
+      console.error("Failed to fetch social links:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchSocialLinks = async () => {
-      try {
-        const { data } = await axios.get(
-          "https://api.betheshape.com/api/admin/social-links"
-        );
-        setSocialLinks(data);
-      } catch (err) {
-        console.error("Failed to fetch social links:", err);
-      }
-    };
     fetchSocialLinks();
+
+    // ✅ Auto update every 5 seconds (no refresh needed)
+    const interval = setInterval(() => {
+      fetchSocialLinks();
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
+
+  const validLinks = Object.entries(socialLinks).filter(
+    ([_, value]) => value && value.trim() !== ""
+  );
 
   return (
     <footer className="relative overflow-hidden">
-      {/* Animated Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-green-100 via-yellow-50 to-green-50 animate-gradient-x"></div>
 
-      {/* Floating Shapes (Big) */}
-      <div className="absolute inset-0">
-        <span className="absolute w-32 h-32 bg-green-200 rounded-full opacity-30 animate-float top-10 left-5"></span>
-        <span className="absolute w-20 h-20 bg-yellow-200 rounded-full opacity-30 animate-float-slow bottom-10 right-10"></span>
-        <span className="absolute w-16 h-16 bg-green-300 rounded-full opacity-30 animate-float top-1/2 left-1/3"></span>
-      </div>
-
-      {/* Small Floating Icons/Dots */}
-      <div className="absolute inset-0 z-0">
-        {Array.from({ length: 12 }).map((_, i) => (
-          <span
-            key={i}
-            className="absolute text-green-500 opacity-40 text-lg animate-tiny"
-            style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-            }}
-          >
-            {i % 2 === 0 ? "?" : "+"}
-          </span>
-        ))}
-      </div>
-
       <div className="max-w-[1400px] mx-auto px-2 py-12 grid grid-cols-1 md:grid-cols-3 gap-10 relative z-10">
-        {/* Logo & Contact Info */}
+        
+        {/* Logo & Contact */}
         <div>
-          <img src={imageLogo} alt="Be The Shape Logo" className="h-16 w-24 mb-2" />
+          <img src={imageLogo} alt="Logo" className="h-16 w-24 mb-2" />
           <p className="mb-4 font-bold uppercase text-base">Office Address</p>
 
           <p className="flex items-center gap-2 mb-1">
-            <FaPhoneAlt /> 01331223469
+            <FaPhoneAlt /> 01XXXXXXXX
           </p>
           <p className="flex items-center gap-2 mb-1">
-            <MdEmail /> info@.com
+            <MdEmail /> info@betheshape.com
           </p>
           <p className="flex items-center gap-2">
             <MdLocationOn /> House 15, road 11, Uttara sector 3
@@ -72,55 +84,51 @@ const Footer = () => {
         {/* Useful Links */}
         <div className="text-base">
           <h2 className="footer-title mb-4 text-base">Useful Links</h2>
-          <Link to="/about-us-more-information" className="link link-hover block mb-2 md:text-left">
+          <Link to="/about-us-more-information" className="block mb-2">
             About Us
           </Link>
-          <Link to="/contact-us" className="link link-hover block mb-2 md:text-left">
+          <Link to="/contact-us" className="block mb-2">
             Contact
           </Link>
-          <Link to="/privacy-policy" className="link link-hover block mb-2 md:text-left">
+          <Link to="/privacy-policy" className="block mb-2">
             Privacy Policy
           </Link>
-          <Link to="/terms-and-conditions" className="link link-hover block mb-2 md:text-left">
+          <Link to="/terms-and-conditions" className="block mb-2">
             Terms & Conditions
           </Link>
-          <Link to="/refund-policy" className="link link-hover block md:text-left">
-            Refund Policy
-          </Link>
+          <Link to="/refund-policy">Refund Policy</Link>
         </div>
 
-        {/* Social Media Links */}
+        {/* 🔥 Dynamic Social Section */}
         <div>
           <h2 className="footer-title mb-4 text-base">Follow Us</h2>
-          <div className="flex gap-4">
-            {socialLinks.facebook && (
-              <a
-                href={socialLinks.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Facebook"
-                className="text-blue-600 text-2xl hover:text-blue-800 transition"
-              >
-                <FaFacebook />
-              </a>
-            )}
-            {socialLinks.youtube && (
-              <a
-                href={socialLinks.youtube}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="YouTube"
-                className="text-red-600 text-2xl hover:text-red-800 transition"
-              >
-                <FaYoutube />
-              </a>
-            )}
-          </div>
+
+          {loading ? (
+            <p className="text-gray-400">Loading...</p>
+          ) : validLinks.length > 0 ? (
+            <div className="flex flex-wrap gap-4">
+              {validLinks.map(([platform, url]) => (
+                iconMap[platform] && (
+                  <a
+                    key={platform}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={platform}
+                  >
+                    {iconMap[platform]}
+                  </a>
+                )
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500 italic">No Social Link</p>
+          )}
         </div>
       </div>
 
       {/* Copyright */}
-      <div className="border-t border-gray-300 text-center text-sm p-4 bg-white/80 backdrop-blur relative z-10">
+      <div className="border-t text-center text-sm p-4 bg-white/80 relative z-10">
         <p>
           &copy; {currentYear} Learning Quiz || Developed by{" "}
           <a
@@ -133,35 +141,6 @@ const Footer = () => {
           </a>
         </p>
       </div>
-
-      {/* Animation Styles */}
-      <style>{`
-        @keyframes gradient-x {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-        .animate-gradient-x {
-          background-size: 200% 200%;
-          animation: gradient-x 8s ease infinite;
-        }
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-        .animate-float-slow {
-          animation: float 10s ease-in-out infinite;
-        }
-        @keyframes tinyMove {
-          0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.4; }
-          50% { transform: translateY(-15px) rotate(20deg); opacity: 0.8; }
-        }
-        .animate-tiny {
-          animation: tinyMove 4s ease-in-out infinite;
-        }
-      `}</style>
     </footer>
   );
 };

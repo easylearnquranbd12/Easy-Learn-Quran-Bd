@@ -2,12 +2,9 @@ import { useState } from "react";
 import { FaBars } from "react-icons/fa";
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar/Sidebar";
-import useAuth from "../hooks/useAuth";
 
 const UserLayout = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const { logOut } = useAuth();
 
   const handleSidebarToggle = () => {
     setSidebarOpen(!isSidebarOpen);

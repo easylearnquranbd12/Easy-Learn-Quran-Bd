@@ -1,9 +1,10 @@
 // const { ObjectId } = require("mongodb");
 
 const { ObjectId, isValidObjectId } = require("mongodb");
-const { getBannersCollection } = require("../config/db");
+const { getBannersCollection, getSuccessStoriesCollection } = require("../config/db");
 
 const bannersCollection = getBannersCollection();
+const successStoriesCollection = getSuccessStoriesCollection();
 
 // Create a banner
 const createBanner = async (req, res) => {
@@ -63,18 +64,22 @@ const updateBanner = async (req, res) => {
     const { id } = req.params;
     const updatedData = req.body;
 
-    // Jodi status active kora hoy
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid banner ID." });
+    }
+
+    const bannerId = new ObjectId(id);
+
+    // If making active → deactivate others
     if (updatedData.status === "active") {
-      // Prothome baki sob banner ke inactive kore dao
       await bannersCollection.updateMany(
-        { _id: { $ne: new ObjectId(id) }, status: "active" },
+        { _id: { $ne: bannerId }, status: "active" },
         { $set: { status: "inactive" } }
       );
     }
 
-    // Tarpor ei banner update koro
     const result = await bannersCollection.updateOne(
-      { _id: new ObjectId(id) },
+      { _id: bannerId },
       { $set: updatedData }
     );
 
@@ -82,13 +87,18 @@ const updateBanner = async (req, res) => {
       return res.status(404).json({ message: "Banner not found" });
     }
 
-    res.status(200).json({ message: "Banner updated successfully" });
+    // ✅ IMPORTANT: return full result
+    res.status(200).json({
+      acknowledged: result.acknowledged,
+      matchedCount: result.matchedCount,
+      modifiedCount: result.modifiedCount,
+    });
+
   } catch (error) {
     console.error("Update banner error:", error);
     res.status(500).json({ message: "Failed to update banner." });
   }
 };
-
 // Delete a banner
 
 const deleteBanner = async (req, res) => {
@@ -113,7 +123,53 @@ const deleteBanner = async (req, res) => {
   }
 };
 
+const getAllStoriesVideo = async (req, res) => {
+  try {
+    const stories = await successStoriesCollection.find().toArray();
+    res.status(200).json(stories);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch stories", error: error.message });
+  }
+};
 
+const createStoriesVideo = async (req, res) => {
+  try {
+    const { title, video, status } = req.body;
+
+    if (!video) {
+      return res.status(400).json({ success: false, message: "Video is required" });
+    }
+
+    const count = await successStoriesCollection.countDocuments();
+    if (count >= 5) {
+      return res.status(400).json({ success: false, message: "You can create a maximum of 5 stories only." });
+    }
+
+    const newStory = { 
+      title: title || null,   // optional, default null if not provided
+      video, 
+      status: status || "inactive", 
+      createdAt: new Date() 
+    };
+
+    const result = await successStoriesCollection.insertOne(newStory);
+
+    res.status(201).json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to create story", error: error.message });
+  }
+};
+
+
+const deleteStoriesVideo = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await successStoriesCollection.deleteOne({ _id: new ObjectId(id) });
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete story", error: error.message });
+  }
+};
 
 module.exports = {
   createBanner,
@@ -121,4 +177,7 @@ module.exports = {
   getBannerById,
   updateBanner,
   deleteBanner,
+  getAllStoriesVideo,
+  createStoriesVideo,
+  deleteStoriesVideo,
 };

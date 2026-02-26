@@ -46,6 +46,7 @@
 .custom-quill .ql-editor {
   padding-left: 1em !important;
   margin-left: 0 !important;
+  white-space: pre-wrap !important;
 }
 
 /* অর্ডারড লিস্ট (1,2,3) - গ্যাপ আরও কম */

@@ -122,8 +122,8 @@ const HometextCreate = () => {
       </Helmet>
 
       <div className="flex flex-col items-center min-h-[80vh] py-6 space-y-8 px-4">
-        <div className="w-full max-w-6xl bg-white shadow-2xl rounded-xl border p-6">
-          <h1 className="text-center text-2xl font-semibold mt-2 my-10 text-primary">Create Home text</h1>
+        <div className="w-full max-w-[1400px] bg-white shadow-2xl rounded-xl border p-6">
+          <h1 className="text-center text-2xl font-semibold mt-2 my-10 text-teal-600">Create Home text</h1>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <Controller
@@ -186,7 +186,7 @@ const HometextCreate = () => {
             />
             <button
               type="submit"
-              className="w-full py-3 bg-primary hover:bg-hoverPrimary text-white font-medium rounded-lg"
+              className="w-full py-3 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-medium rounded-lg"
               disabled={createMutation.isLoading || updateMutation.isLoading}
             >
               {editingId
@@ -200,8 +200,8 @@ const HometextCreate = () => {
           </form>
         </div>
 
-        <div className="w-full max-w-6xl bg-white shadow-lg rounded-xl border p-6">
-          <h2 className="text-lg font-semibold mb-4 text-indigo-700">
+        <div className="w-full max-w-[1400px] bg-white shadow-lg rounded-xl border p-6">
+          <h2 className="text-lg font-semibold mb-4 text-teal-700">
             Text History
           </h2>
           <div className="overflow-x-auto">

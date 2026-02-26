@@ -36,7 +36,7 @@ const StoryWrittingModal = ({
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `https://api.betheshape.com/five-layer/storyWritingField/${vocabId}`,
+        `http://localhost:5000/five-layer/storyWritingField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

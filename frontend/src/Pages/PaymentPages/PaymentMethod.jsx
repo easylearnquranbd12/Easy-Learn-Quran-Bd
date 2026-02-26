@@ -44,7 +44,7 @@ const PaymentMethod = () => {
   } = useQuery({
     queryKey: ["paymentMethods"],
     queryFn: async () => {
-      const res = await axios.get("https://api.betheshape.com/payment");
+      const res = await axios.get("http://localhost:5000/payment");
       const methods = {};
       res.data.forEach((item) => {
         if (
@@ -134,7 +134,7 @@ const PaymentMethod = () => {
     );
 
   return (
-    <div className="max-w-5xl mx-auto px-2 md:px-4 py-8">
+    <div className="max-w-5xl mx-auto px-2 md:px-4 py-auto">
       <div className="bg-[#f0f1f1] backdrop-blur-sm rounded-xl p-4 md:p-6 border border-gray-300 shadow-lg hover:shadow-2xl transition-shadow duration-300">
         <h2 className="text-xl font-bold text-teal-600 mb-6 flex items-center gap-3">
           <div className="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center">

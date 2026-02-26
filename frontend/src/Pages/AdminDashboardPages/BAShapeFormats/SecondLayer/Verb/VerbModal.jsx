@@ -32,7 +32,7 @@ const VerbModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `https://api.betheshape.com/second-layer/verbField/${vocabId}`,
+        `http://localhost:5000/second-layer/verbField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

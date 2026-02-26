@@ -344,9 +344,9 @@ const AdminDevelopYourSkills = () => {
                   ) : (
                     developSkillss.map((item) => (
                       <tr key={item._id} className="hover:bg-gray-50 border-b">
-                        <td className="px-4 py-2 text-center">{item.name}</td>
+                        <td className="px-4 py-2 text-start">{item.name}</td>
                         <td
-                          className="px-4 py-2 text-center"
+                          className="px-4 py-2 text-start"
                           dangerouslySetInnerHTML={{
                             __html: truncateHTML(item.description, 10),
                           }}

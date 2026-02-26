@@ -11,7 +11,7 @@ import TittleAnimation from "../../../../../components/TittleAnimation/TittleAni
 import useAuth from "../../../../../hooks/useAuth";
 import useAxiosPublic from "../../../../../hooks/useAxiosPublic";
 import RichTextField from "../../../../../shared/TextEditor/RichTextField";
-import SentenceModal from "./sentenceModal";
+import SentenceModal from "./SentenceModal";
 
 const AdminSentence = () => {
   const [modalOpen, setModalOpen] = useState(false);

@@ -14,7 +14,7 @@ const UserUploadPdfManage = () => {
   const fetchPdfs = async () => {
     setLoadingHistory(true);
     try {
-      const res = await fetch("https://api.betheshape.com/pdf/user");
+      const res = await fetch("http://localhost:5000/pdf/user");
       const data = await res.json();
       if (res.ok) setPdfs(data);
     } catch (err) {
@@ -53,7 +53,7 @@ const UserUploadPdfManage = () => {
       const formData = new FormData();
       formData.append("pdf", file);
 
-      const res = await fetch("https://api.betheshape.com/pdf/user/upload", {
+      const res = await fetch("http://localhost:5000/pdf/user/upload", {
         method: "POST",
         body: formData,
       });
@@ -86,7 +86,7 @@ const UserUploadPdfManage = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const res = await fetch(`https://api.betheshape.com/pdf/user/${id}`, {
+          const res = await fetch(`http://localhost:5000/pdf/user/${id}`, {
             method: "DELETE",
           });
           const data = await res.json();
@@ -106,7 +106,7 @@ const UserUploadPdfManage = () => {
   // Update status (accept/reject) - admin action
   const handleStatusUpdate = async (id, newStatus) => {
     try {
-      const res = await fetch(`https://api.betheshape.com/pdf/user/status/${id}`, {
+      const res = await fetch(`http://localhost:5000/pdf/user/status/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus }),
@@ -126,7 +126,7 @@ const UserUploadPdfManage = () => {
   // Download PDF
   const handleDownload = async (pdf) => {
     try {
-      const res = await fetch(`https://api.betheshape.com/pdf/user/download/${pdf._id}`);
+      const res = await fetch(`http://localhost:5000/pdf/user/download/${pdf._id}`);
       if (!res.ok) throw new Error("Failed to download PDF");
 
       const blob = await res.blob();
@@ -144,13 +144,13 @@ const UserUploadPdfManage = () => {
   };
 
   return (
-    <div className="p-6 min-h-screen bg-gradient-to-br from-gray-50 to-gray-200 flex flex-col items-center justify-start">
+    < >
       <Helmet>
-        <title>User | PDF Upload</title>
+        <title>User PDF Management | PDF Upload</title>
       </Helmet>
 
       {/* PDF History */}
-      <div className="w-full max-w-md mt-8 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
+      <div className="w-full max-w-[1400px] mx-auto mt-8 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
         <h2 className="text-lg font-bold text-gray-800 mb-4">Uploaded PDFs</h2>
 
         {loadingHistory ? (
@@ -226,7 +226,7 @@ const UserUploadPdfManage = () => {
           </ul>
         )}
       </div>
-    </div>
+    </>
   );
 };
 

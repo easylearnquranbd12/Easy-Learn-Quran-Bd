@@ -1,222 +1,295 @@
-
-
-import axios from "axios";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Edit, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { useForm } from "react-hook-form";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import { toast } from "react-toastify";
+import { Controller, useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+import AdminLoading from "../../../components/Loading/AdminLoading";
+import TittleAnimation from "../../../components/TittleAnimation/TittleAnimation";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
-import "./QuillCustom.css";
+import RichTextField from "../../../shared/TextEditor/RichTextField";
+import MediaUpload from "../../../utils/MediaUpload";
+import AdminEditBlog from "./AdminEditBlog";
 
 const AdminBlogCreate = () => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
-
-  const [image, setImage] = useState(null);
-  const [editorContent, setEditorContent] = useState("");
-  const [loading, setLoading] = useState(false);
-
+  const [resetSignal, setResetSignal] = useState(0);
   const axiosPublic = useAxiosPublic();
+  const queryClient = useQueryClient();
+  const [editOpen, setEditOpen] = useState(false);
+  const [selectedIdea, setSelectedIdea] = useState(null);
   const { user } = useAuth();
 
-  const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }) => axiosPublic.put(`/blog/blog/${id}`, data),
+    onSuccess: () => {
+      Swal.fire("Updated!", "Blog updated successfully", "success");
+      queryClient.invalidateQueries(["blog"]);
+    },
+    onError: () => Swal.fire("Error!", "Failed to update Blog", "error"),
+  });
+
+  const handleEdit = (idea) => {
+    setSelectedIdea(idea);
+    setEditOpen(true);
   };
 
-  const onSubmit = async (data) => {
-    setLoading(true);
+  // ✅ Form Setup
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting },
+  } = useForm({
+    defaultValues: {
+      name: "",
+      ideaShareImage: "",
+      description: "",
+    },
+  });
 
-    if (!editorContent || editorContent === "<p><br></p>") {
-      toast.error("Blog content cannot be empty.");
-      setLoading(false);
-      return;
-    }
+  // ✅ Create Song
+  const createMutation = useMutation({
+    mutationFn: (newData) => axiosPublic.post("/blog/blog", newData),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["blog"]);
+      Swal.fire("✅ Success!", "Blog  added successfully.", "success");
+      resetForm();
+    },
+    onError: () => Swal.fire("❌ Error!", "Failed to add song.", "error"),
+  });
+  // ✅ Get all song fetch Data
+  const { data: blog = [], isLoading } = useQuery({
+    queryKey: ["blog"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/blog/blog");
+      return res.data || [];
+    },
+  });
 
-    try {
-      let imageUrl = "";
-
-      if (image) {
-        const formData = new FormData();
-        formData.append("image", image);
-        const imgbbApiKey = "a616b7cb4177b6d22010843ec1f12500";
-
-        const imgbbResponse = await axios.post(
-          `https://api.imgbb.com/1/upload?key=${imgbbApiKey}`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-            withCredentials: false, // 🔥 This disables sending cookies
-          }
-        );
-
-        if (imgbbResponse.data && imgbbResponse.data.data.url) {
-          imageUrl = imgbbResponse.data.data.url;
-        } else {
-          toast.error("Image upload failed! Try again.");
-          return;
-        }
-      }
-
-      const blogData = {
-        title: data.title,
-        name: data.name,
-        content: editorContent,
-        imageUrl,
-        createdAt: new Date().toISOString(),
-        authorName: user.displayName,
-        authorEmail: user.email,
-        authorRole: user.role,
-        authorUrl: user.photoURL,
-      };
-    
-      const res = await axiosPublic.post("/blog/blog", blogData);
-      if (res.status === 200 || res.status === 201) {
-        toast.success("Blog post created successfully!");
-        reset();
-        setImage(null);
-        setEditorContent("");
+  // ✅ Delete Song
+  const deleteMutation = useMutation({
+    mutationFn: (id) => axiosPublic.delete(`/blog/blog/${id}`),
+    onSuccess: (res) => {
+      if (res.data?.deletedCount > 0) {
+        Swal.fire("Deleted!", "Blog  deleted successfully.", "success");
       } else {
-        toast.error("Failed to create blog post.");
+        Swal.fire("Info", "Blog not found or already deleted.", "info");
       }
-    } catch (error) {
-   
-      toast.error("Something went wrong!");
-    } finally {
-      setLoading(false);
-    }
+      queryClient.invalidateQueries(["blog"]);
+    },
+    onError: () => Swal.fire("Error!", "Failed to delete song.", "error"),
+  });
+
+  // ✅ Reset Form
+  const resetForm = () => {
+    reset({
+      name: "",
+      ideaShareImage: "",
+      description: "",
+      link: "",
+    });
+    setResetSignal((prev) => prev + 1);
   };
 
-  const quillModules = {
-    toolbar: [
-      [{ font: [] }],
-      [{ size: ["small", false, "large", "huge"] }],
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-      ["bold", "italic", "underline", "strike"],
-      [{ color: [] }, { background: [] }],
-      [{ script: "sub" }, { script: "super" }],
-      [{ list: "ordered" }, { list: "bullet" }],
-      [{ indent: "-1" }, { indent: "+1" }],
-      [{ direction: "rtl" }],
-      [{ align: [] }],
-      ["blockquote", "code-block"],
-      ["link", "clean"],
-    ],
+  // ✅ Submit Handler
+  const onSubmit = async (data) => {
+    const payload = {
+      ...data,
+      user: {
+        _id: user?._id,
+        name: user?.displayName,
+        email: user?.email,
+        role: user?.role,
+        photoURL:user?.photoURL
+      },
+    };
+
+    createMutation.mutate(payload);
   };
 
+  // ✅ Delete Handler
+  const handleDelete = async (id) => {
+    const confirm = await Swal.fire({
+      title: "Are you sure?",
+      text: "This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    });
+    if (confirm.isConfirmed) deleteMutation.mutate(id);
+  };
+
+  // ✅ Safe truncate function
+  const truncateHTML = (html = "", wordLimit = 10) => {
+    if (!html || typeof html !== "string") return "";
+    const text = html.replace(/<[^>]+>/g, " ");
+    const words = text.split(/\s+/).filter(Boolean).slice(0, wordLimit);
+    return (
+      words.join(" ") + (text.split(/\s+/).length > wordLimit ? "..." : "")
+    );
+  };
+  if (isLoading) {
+    return <AdminLoading />;
+  }
   return (
-    <div className="flex justify-center items-center min-h-screen ">
+    <>
       <Helmet>
         <title>Admin | Create Blog</title>
       </Helmet>
 
-      <div className="w-full max-w-7xl bg-white rounded-xl shadow-2xl border border-borderColor overflow-hidden">
-        {/* Header */}
-        <div className="bg-primary px-4 md:px-6  py-6  text-white">
-          <h2 className="text-3xl font-bold">Create Blog Post</h2>
-          <p className="text-indigo-200 text-sm mt-1">
-            Publish your article with image and content
-          </p>
-        </div>
+      <TittleAnimation tittle="Create Blogs " subtittle="Manage Blogs" />
 
-        {/* Form Body */}
-        <div className=" p-4 md:p-8 lg:px-20 lg:py-12">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-            {/* Title */}
-            <div>
-              <label className="text-base mb-1 font-medium text-gray-700 block">
-                Blog Title :
-              </label>
-              <input
-                type="text"
-                {...register("title", { required: "Title is required." })}
-                placeholder="Enter blog title"
-                className={`w-full px-4 py-3 border rounded-md text-gray-700 focus:outline-none focus:ring-1 focus:ring-green-200 ${errors.title ? "border-red-500" : "border-gray-300"
-                  }`}
-              />
-              {errors.title && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.title.message}
-                </p>
-              )}
-            </div>
-
-            {/* Name */}
-            <div>
-              <label className="text-base mb-1 font-medium text-gray-700 block">
-                Blog Name :
-              </label>
-              <input
-                type="text"
-                {...register("name", { required: "Name is required." })}
-                placeholder="Enter blog name"
-                className={`w-full px-4 py-3 border rounded-md text-gray-700 focus:outline-none focus:ring-1 focus:ring-green-200 ${errors.name ? "border-red-500" : "border-gray-300"
-                  }`}
-              />
-              {errors.name && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.name.message}
-                </p>
-              )}
-            </div>
-
-            {/* Quill Editor */}
-            <div>
-              <label className="block mb-1 text-gray-700 font-semibold">
-                Content :
-              </label>
-              <ReactQuill
-                value={editorContent}
-                onChange={setEditorContent}
-                modules={quillModules}
-                theme="snow"
-                className="bg-white rounded-lg border border-indigo-300"
-              />
-            </div>
-
-            {/* Image Upload */}
-            <div>
-              <label className="block mb-1 text-gray-700 font-semibold">
-                Upload Image :
-              </label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="file:bg-primary file:text-white file:rounded-md file:px-5 file:py-2 file:border-0 text-sm mt-1 "
-              />
-              {image && (
-                <img
-                  src={URL.createObjectURL(image)}
-                  alt="Preview"
-                  className="mt-4 w-40 h-40 object-cover rounded-md shadow "
+      <div className="mt-10 max-w-[1400px] mx-auto px-2">
+        <div className=" w-full bg-white shadow-md rounded-lg p-2 md:p-5">
+          {/* ✅ Create Song Form */}
+          <div className="w-full  bg-white shadow-2xl rounded-xl border p-4 sm:p-6 mb-10">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+              {/* Song Name */}
+              <div className="form-control w-full py-6">
+                <label className="label">
+                  <span className="label-text text-base font-medium text-gray-700">
+                    Tittle:
+                  </span>
+                </label>
+                <Controller
+                  name="name"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      {...field}
+                      placeholder="Enter tittle..."
+                      className="w-full px-4 py-3 border rounded-md text-gray-700 focus:outline-none focus:ring-1 focus:ring-teal-300"
+                    />
+                  )}
                 />
-              )}
-            </div>
+              </div>
+              <div>
+                <MediaUpload
+                  control={control}
+                  name="ideaShareImage"
+                  label="Blog Image (Optional)"
+                  type="image"
+                  maxSizeMB={5}
+                  resetSignal={resetSignal}
+                />
+              </div>
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={loading}
-              className={`w-full py-1.5 md:py-2 rounded-lg text-white font-semibold transition text-lg ${loading
-                ? "bg-indigo-300 cursor-not-allowed"
-                : "bg-primary hover:bg-hoverPrimary"
-                }`}
-            >
-              {loading ? "Posting..." : "Publish Blog"}
-            </button>
-          </form>
+              <div className="w-full">
+                <RichTextField
+                  name="description"
+                  control={control}
+                  placeholder="Enter Your Description..."
+                  className="w-full " // ensure editor is full width
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full py-3 px-4 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-medium rounded-lg shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-teal-600 disabled:opacity-70 disabled:cursor-not-allowed"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Adding..." : "Add Blog "}
+              </button>
+            </form>
+          </div>
+
+          {/* ✅ Songs List */}
+          <div className=" bg-white shadow-lg rounded-xl border p-4 sm:p-6 w-[450px] md:w-full">
+            <h2 className="text-lg sm:text-xl font-semibold mb-4 text-teal-700">
+              List
+            </h2>
+
+            <div className="overflow-x-auto">
+              <table className="table-auto w-full text-sm sm:text-base">
+                <thead className="bg-teal-600 text-white">
+                  <tr>
+                    <th className="px-4 py-2">Image</th>
+                    <th className="px-4 py-2">Name</th>
+                    <th className="px-4 py-2">Description</th>
+                    <th className="px-4 py-2">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {isLoading ? (
+                    <tr>
+                      <td colSpan={3} className="text-center py-4">
+                        Loading...
+                      </td>
+                    </tr>
+                  ) : blog.length === 0 ? (
+                    <tr>
+                      <td colSpan={3} className="text-center py-4">
+                        No Blog found.
+                      </td>
+                    </tr>
+                  ) : (
+                    blog.map((item) => (
+                      <tr key={item._id} className="hover:bg-gray-50 border-b">
+                        <td className="px-4 py-2 text-center">
+                          {item.ideaShareImage ? (
+                            <img
+                              src={item.ideaShareImage}
+                              alt="Blog"
+                              className="w-12 h-12 object-cover rounded-md mx-auto"
+                            />
+                          ) : (
+                            <span className="text-gray-400 italic">
+                              No Image
+                            </span>
+                          )}
+                        </td>
+
+                        <td className="px-4 py-2 text-start">{item.name}</td>
+                        <td
+                          className="px-4 py-2 text-start"
+                          dangerouslySetInnerHTML={{
+                            __html: truncateHTML(item.description, 10),
+                          }}
+                        ></td>
+
+                        <td className="px-4 py-2 text-center flex gap-3 justify-center mt-2">
+                          <button
+                            onClick={() => handleEdit(item)}
+                            className="text-green-600 hover:text-green-800"
+                            title="Edit"
+                          >
+                            <Edit size={18} />
+                          </button>
+
+                          <button
+                            onClick={() => handleDelete(item._id)}
+                            className="text-red-600 hover:text-red-800"
+                            title="Delete"
+                          >
+                            <Trash2 size={18} />
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+
+      {editOpen && selectedIdea && (
+        <AdminEditBlog
+          isOpen={editOpen}
+          onClose={() => setEditOpen(false)}
+          idea={selectedIdea}
+          onUpdate={(data) =>
+            updateMutation.mutate({
+              id: selectedIdea._id,
+              data,
+            })
+          }
+        />
+      )}
+    </>
   );
 };
 

@@ -72,8 +72,8 @@ const ChangePassword = () => {
   return (
     <>
       <div className="flex justify-center items-center min-h-[calc(100vh-9.5rem)]">
-        <div className="w-full max-w-lg bg-white rounded-2xl border border-indigo-100 shadow-xl overflow-hidden">
-          <div className="bg-primary py-6 px-8 text-white">
+        <div className="w-full max-w-2xl bg-white rounded-2xl border border-indigo-100 shadow-xl overflow-hidden">
+          <div className="bg-teal-600 py-6 px-8 text-white">
             <h2 className="text-2xl font-bold">Change Password</h2>
             <p className="mt-1 text-indigo-200">Enter your current and new password</p>
           </div>
@@ -209,7 +209,7 @@ const ChangePassword = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 bg-primary hover:bg-hoverPrimary text-white rounded-lg font-semibold transition disabled:opacity-60"
+                className="w-full py-3 bg-teal-600 hover:bg-hoverteal-800 text-white rounded-lg font-semibold transition disabled:opacity-60"
               >
                 {loading ? "Processing..." : "Change Password"}
               </button>
@@ -231,7 +231,7 @@ const ChangePassword = () => {
             </div>
             <h3
               className={`text-xl font-bold mb-2 ${
-                modalType === "success" ? "text-indigo-700" : "text-red-600"
+                modalType === "success" ? "text-teal-700" : "text-red-600"
               }`}
             >
               {modalType === "success" ? "Success" : "Error"}
@@ -239,7 +239,7 @@ const ChangePassword = () => {
             <p className="mb-6 text-gray-700">{modalMessage}</p>
             <button
               onClick={() => setModalVisible(false)}
-              className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition"
+              className="px-6 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg font-semibold transition"
             >
               Close
             </button>

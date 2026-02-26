@@ -11,7 +11,7 @@ const paymentOptions = {
 };
 
 const fetchPaymentMethods = async () => {
-  const res = await axios.get("https://api.betheshape.com/payment");
+  const res = await axios.get("http://localhost:5000/payment");
   return res.data;
 };
 
@@ -64,7 +64,7 @@ const AddPaymentMethod = () => {
 
     try {
       setLoading(true);
-      await axios.post("https://api.betheshape.com/payment", {
+      await axios.post("http://localhost:5000/payment", {
         ...data,
         methodCategory: category,
       });
@@ -104,7 +104,7 @@ const AddPaymentMethod = () => {
     if (!result.isConfirmed) return;
 
     try {
-      await axios.delete(`https://api.betheshape.com/payment/${id}`);
+      await axios.delete(`http://localhost:5000/payment/${id}`);
       queryClient.invalidateQueries(["paymentMethods"]);
       Swal.fire({
         icon: "success",
@@ -124,7 +124,7 @@ const AddPaymentMethod = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto bg-white shadow-lg rounded-xl p-6 mt-10">
+    <div className="max-w-[1400px] mx-auto bg-white shadow-lg rounded-xl p-6 mt-10">
       <h2 className="text-xl font-bold mb-4 text-center text-gray-700">
         Add Payment Method
       </h2>
@@ -132,28 +132,7 @@ const AddPaymentMethod = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Payment Category */}
         {/* Payment Amount */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Payment Amount
-          </label>
-          <input
-            type="number"
-            placeholder="Enter Payment Amount"
-            {...register("amount", {
-              required: "Payment amount is required",
-              min: {
-                value: 1,
-                message: "Amount must be at least 1 taka",
-              },
-              validate: (value) =>
-                !isNaN(value) || "Please enter a valid numeric amount",
-            })}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2"
-          />
-          {errors.amount && (
-            <p className="text-red-500 text-sm">{errors.amount.message}</p>
-          )}
-        </div>
+      
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -218,7 +197,28 @@ const AddPaymentMethod = () => {
             <p className="text-red-500 text-sm">Account type is required</p>
           )}
         </div>
-
+  <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Payment Amount
+          </label>
+          <input
+            type="number"
+            placeholder="Enter Payment Amount"
+            {...register("amount", {
+              required: "Payment amount is required",
+              min: {
+                value: 1,
+                message: "Amount must be at least 1 taka",
+              },
+              validate: (value) =>
+                !isNaN(value) || "Please enter a valid numeric amount",
+            })}
+            className="w-full border border-gray-300 rounded-lg px-3 py-2"
+          />
+          {errors.amount && (
+            <p className="text-red-500 text-sm">{errors.amount.message}</p>
+          )}
+        </div>
         {/* Phone/Account Number */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -246,7 +246,7 @@ const AddPaymentMethod = () => {
 
         <button
           type="submit"
-          className="w-full bg-primary text-white py-2 rounded-lg hover:bg-hoverPrimary transition"
+          className="w-full  bg-teal-600 text-white py-2 rounded-lg hover:bg-hoverPrimary transition"
           disabled={loading}
         >
           {loading ? "Adding..." : "Add Payment Method"}
@@ -262,7 +262,7 @@ const AddPaymentMethod = () => {
               onClick={() => setFilter(type)}
               className={`px-4 py-1 rounded ${
                 filter === type
-                  ? "bg-primary text-white"
+                  ? "bg-teal-600 text-white"
                   : "bg-gray-200 text-gray-700"
               }`}
             >

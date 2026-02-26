@@ -1,7 +1,8 @@
 const { MongoClient, ServerApiVersion } = require("mongodb");
 require("dotenv").config();
 
-const uri = "mongodb+srv://Shapion:1WOvPQzOr1fdRSng@shapion-quiz-platform.wmwc3it.mongodb.net/?appName=Shapion-Quiz-Platform";
+const uri =
+  "mongodb+srv://Shapion:1WOvPQzOr1fdRSng@shapion-quiz-platform.wmwc3it.mongodb.net/?appName=Shapion-Quiz-Platform";
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -217,7 +218,6 @@ const getFourthLayerTravelingExerciseCollection = () => {
     .collection("createExerciseTraveling");
 };
 
-
 // Good Song
 const getFourthLayerGoodSongFieldsCollection = () => {
   return client.db("Shapion-Quiz-Platform").collection("GoodSongField");
@@ -333,6 +333,9 @@ const getSocialLinksCollection = () => {
 const getBannersCollection = () => {
   return client.db("Shapion-Quiz-Platform").collection("banner");
 };
+const getSuccessStoriesCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("SuccessStories");
+};
 module.exports = {
   connectDB,
   getUserCollection,
@@ -446,4 +449,6 @@ module.exports = {
   getFourthLayerGoodNobelCollection,
   getFourthLayerGoodNobelFieldsCollection,
   getFourthLayerGoodNobelExerciseCollection,
+
+  getSuccessStoriesCollection,
 };

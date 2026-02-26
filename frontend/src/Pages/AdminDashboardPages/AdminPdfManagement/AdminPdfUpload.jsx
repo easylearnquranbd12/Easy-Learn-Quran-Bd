@@ -14,7 +14,7 @@ const AdminPdfUpload = () => {
   const fetchPdfs = async () => {
     setLoadingHistory(true);
     try {
-      const res = await fetch("https://api.betheshape.com/pdf");
+      const res = await fetch("http://localhost:5000/pdf");
       const data = await res.json();
       if (res.ok) setPdfs(data);
     } catch (err) {
@@ -41,37 +41,91 @@ const AdminPdfUpload = () => {
   };
 
   // Upload handler
+  // const handleUpload = async () => {
+  //   if (!file) {
+  //     setMessage({ type: "error", text: "Please choose a PDF file first." });
+  //     return;
+  //   }
+  //   setUploading(true);
+  //   setMessage({ type: "", text: "" });
+
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("pdf", file);
+
+  //     const res = await fetch("http://localhost:5000/pdf/upload", {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+  //     const data = await res.json();
+
+  //     if (res.ok) {
+  //       setMessage({ type: "success", text: data.message });
+  //       setFile(null);
+  //       fetchPdfs(); // Refresh history
+  //     } else {
+  //       setMessage({ type: "error", text: data.message || "Upload failed" });
+  //     }
+  //   } catch (error) {
+  //     setMessage({ type: "error", text: "Server error, please try again." });
+  //   } finally {
+  //     setUploading(false);
+  //   }
+  // };
+
   const handleUpload = async () => {
-    if (!file) {
-      setMessage({ type: "error", text: "Please choose a PDF file first." });
-      return;
-    }
-    setUploading(true);
-    setMessage({ type: "", text: "" });
+  if (!file) {
+    Swal.fire({
+      icon: "warning",
+      title: "No File Selected",
+      text: "Please choose a PDF file first.",
+      confirmButtonColor: "#0d9488",
+    });
+    return;
+  }
 
-    try {
-      const formData = new FormData();
-      formData.append("pdf", file);
+  setUploading(true);
 
-      const res = await fetch("https://api.betheshape.com/pdf/upload", {
-        method: "POST",
-        body: formData,
+  try {
+    const formData = new FormData();
+    formData.append("pdf", file);
+
+    const res = await fetch("http://localhost:5000/pdf/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      Swal.fire({
+        icon: "success",
+        title: "Upload Successful 🎉",
+        text: data.message || "PDF uploaded successfully!",
+        confirmButtonColor: "#0d9488",
       });
-      const data = await res.json();
 
-      if (res.ok) {
-        setMessage({ type: "success", text: data.message });
-        setFile(null);
-        fetchPdfs(); // Refresh history
-      } else {
-        setMessage({ type: "error", text: data.message || "Upload failed" });
-      }
-    } catch (error) {
-      setMessage({ type: "error", text: "Server error, please try again." });
-    } finally {
-      setUploading(false);
+      setFile(null);
+      fetchPdfs();
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Upload Failed",
+        text: data.message || "Something went wrong!",
+        confirmButtonColor: "#dc2626",
+      });
     }
-  };
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Server Error",
+      text: "Please try again later.",
+      confirmButtonColor: "#dc2626",
+    });
+  } finally {
+    setUploading(false);
+  }
+};
 
   // Delete handler
   const handleDelete = (id, name) => {
@@ -86,7 +140,7 @@ const AdminPdfUpload = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const res = await fetch(`https://api.betheshape.com/pdf/${id}`, {
+          const res = await fetch(`http://localhost:5000/pdf/${id}`, {
             method: "DELETE",
           });
           const data = await res.json();
@@ -104,25 +158,25 @@ const AdminPdfUpload = () => {
   };
 
   return (
-    <div className="p-6 min-h-screen bg-gradient-to-br from-gray-50 to-gray-200 flex flex-col items-center justify-start">
+    <div >
       <Helmet>
         <title>Admin | PDF Upload</title>
       </Helmet>
 
       {/* Upload Box */}
-      <div className="w-full max-w-md mt-10 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
+      <div className="w-full max-w-[1400px] mx-auto mt-10 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
         <div className="flex items-center justify-center mb-4">
-          <FileText className="text-red-600 w-7 h-7 mr-2" />
+          <FileText className="text-teal-600 w-7 h-7 mr-2" />
           <h1 className="text-xl font-bold text-gray-800">Upload PDF File</h1>
         </div>
 
         <label
           htmlFor="pdf-upload"
-          className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-400 rounded-xl cursor-pointer hover:border-red-500 transition-all bg-white/50"
+          className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-400 rounded-xl cursor-pointer hover:border-teal-500 transition-all bg-white/50"
         >
           {file ? (
             <>
-              <FileText className="text-red-500 w-10 h-10 mb-2" />
+              <FileText className="text-teal-500 w-10 h-10 mb-2" />
               <p className="text-gray-700 text-sm">{file.name}</p>
               <p className="text-gray-500 text-xs">{(file.size / 1024).toFixed(2)} KB</p>
             </>
@@ -144,7 +198,7 @@ const AdminPdfUpload = () => {
         {message.text && (
           <div
             className={`flex items-center gap-2 mt-4 text-sm p-2 rounded-md ${
-              message.type === "success" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+              message.type === "success" ? "bg-green-100 text-green-700" : "bg-teal-100 text-teal-700"
             }`}
           >
             {message.type === "success" ? <CheckCircle2 className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
@@ -156,7 +210,7 @@ const AdminPdfUpload = () => {
           onClick={handleUpload}
           disabled={uploading}
           className={`mt-6 w-full py-2 rounded-lg font-semibold text-white transition-all flex items-center justify-center gap-2 ${
-            uploading ? "bg-gray-400 cursor-not-allowed" : "bg-red-600 hover:bg-red-700"
+            uploading ? "bg-gray-400 cursor-not-allowed" : "bg-teal-600 hover:bg-teal-700"
           }`}
         >
           {uploading ? (
@@ -176,7 +230,7 @@ const AdminPdfUpload = () => {
       </div>
 
       {/* PDF History */}
-      <div className="w-full max-w-md mt-8 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
+      <div className="w-full max-w-[1400px] mx-auto mt-8 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
         <h2 className="text-lg font-bold text-gray-800 mb-4">Uploaded PDFs</h2>
 
         {loadingHistory ? (
@@ -191,7 +245,7 @@ const AdminPdfUpload = () => {
                 className="flex items-center justify-between bg-white/50 p-3 rounded-lg border border-gray-200 hover:bg-gray-100 transition"
               >
                 <div className="flex items-center gap-3">
-                  <FileText className="w-5 h-5 text-red-600" />
+                  <FileText className="w-5 h-5 text-teal-600" />
                   <div>
                     <p className="text-gray-700 text-sm">{pdf.originalName}</p>
                     <p className="text-gray-500 text-xs">{new Date(pdf.createdAt).toLocaleString()}</p>
@@ -199,7 +253,7 @@ const AdminPdfUpload = () => {
                 </div>
                 <button
                   onClick={() => handleDelete(pdf._id, pdf.originalName)}
-                  className="text-red-600 hover:text-red-800"
+                  className="text-red-600 hover:text-teal-800"
                 >
                   <Trash2 className="w-5 h-5" />
                 </button>

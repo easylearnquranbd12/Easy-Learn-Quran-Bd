@@ -303,7 +303,7 @@ const AdminGoodLifeStyle = () => {
                   name="description"
                   control={control}
                   placeholder="Enter Your Description..."
-                  className="w-full " // ensure editor is full width
+                  className="w-full ql-editor " // ensure editor is full width
                 />
               </div>
               <button
@@ -353,9 +353,9 @@ const AdminGoodLifeStyle = () => {
                   ) : (
                     goodLifeStyles.map((item) => (
                       <tr key={item._id} className="hover:bg-gray-50 border-b">
-                        <td className="px-4 py-2 text-center">{item.name}</td>
+                        <td className="px-4 py-2 text-start">{item.name}</td>
                         <td
-                          className="px-4 py-2 text-center"
+                          className="px-4 py-2 text-start"
                           dangerouslySetInnerHTML={{
                             __html: truncateHTML(item.description, 10),
                           }}

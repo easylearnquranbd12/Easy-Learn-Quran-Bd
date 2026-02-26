@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const axiosSecure = axios.create({
-  baseURL: 'https://api.betheshape.com',
+  baseURL: 'http://localhost:5000',
   withCredentials: true,
 });
 

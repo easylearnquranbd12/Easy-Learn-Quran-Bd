@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { CreditCard, Eye } from "lucide-react";
+import { CreditCard, CreditCardIcon, Eye } from "lucide-react";
 import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
 
 const fetchUserPayments = async (email) => {
-  const res = await axios.get(`https://api.betheshape.com/payment/user/${email}`);
+  const res = await axios.get(`http://localhost:5000/payment/user/${email}`);
   return res.data;
 };
 
@@ -27,8 +27,26 @@ const UserPaymentHistory = () => {
     return <p className="text-center py-10 text-gray-500">Loading your payments...</p>;
   if (isError)
     return <p className="text-center text-red-500">Failed to load payments.</p>;
-  if (!payments.length)
-    return <p className="text-center py-10 text-gray-500">No payments found.</p>;
+if (!payments.length)
+  return (
+    <div className="p-4 md:p-8 max-w-7xl mx-auto mt-32">
+      <div className="bg-white border rounded-2xl shadow-md p-10 text-center flex flex-col items-center justify-center">
+        
+        <div className="bg-blue-50 p-6 rounded-full mb-4">
+          <CreditCardIcon className="w-12 h-12 text-blue-500" />
+        </div>
+
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">
+          No Payments Yet
+        </h2>
+
+        <p className="text-gray-500 max-w-md">
+          You haven’t made any payments yet. Once you complete a payment,
+          it will appear here in your payment history.
+        </p>
+      </div>
+    </div>
+  );
 
   // Summary Data
   const total = payments.length;
@@ -40,7 +58,7 @@ const UserPaymentHistory = () => {
     .reduce((sum, p) => sum + (Number(p.amount) || 0), 0);
 
   return (
-    <div className="p-4 md:p-8 max-w-7xl mx-auto min-h-screen border ">
+    <div className="p-4 md:p-8 max-w-7xl mx-auto  border bg-white mt-32 rounded-md ">
       <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">My Payment History</h2>
 
       {/* Summary Cards */}

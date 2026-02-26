@@ -11,7 +11,7 @@ import {
   FaPhone,
   FaUser,
 } from "react-icons/fa";
-import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 import TittleAnimation from "../../components/TittleAnimation/TittleAnimation";
 import useAuth from "../../hooks/useAuth";
 import useAxioPublic from "../../hooks/useAxiosPublic";
@@ -50,49 +50,74 @@ const Profile = () => {
   const handleEditClick = () => setIsEditing(!isEditing);
 
   const handleProfileUpdate = async (data) => {
-    setLoading(true);
-    try {
-      let imageUrl = userData?.imageUrl || null;
-      if (image) {
-        const formData = new FormData();
-        formData.append("image", image);
-        const imgbbApiKey = "a616b7cb4177b6d22010843ec1f12500";
-        const imgbbResponse = await axiosPublic.post(
-          `https://api.imgbb.com/1/upload?key=${imgbbApiKey}`,
-          formData
-        );
-        if (imgbbResponse.data && imgbbResponse.data.data.url) {
-          imageUrl = imgbbResponse.data.data.url;
-        } else {
-          toast.error("Image upload failed! Please try again.");
-          return;
+  setLoading(true);
+  try {
+    let imageUrl = userData?.imageUrl || null;
+
+    if (image) {
+      // ✅ Cloudinary Upload
+      const formData = new FormData();
+      formData.append("file", image);
+      formData.append("upload_preset", "Betheshape-images"); 
+      const cloudinaryRes = await fetch(
+        `https://api.cloudinary.com/v1_1/damrv9kir/image/upload`,
+        {
+          method: "POST",
+          body: formData,
         }
-      }
-      const updatedData = {
-        name: data.name,
-        address: data.address,
-        phone: data.phone,
-        email: data.email,
-        imageUrl,
-      };
-      const response = await axiosPublic.patch(
-        `/users/update/${userEmail}`,
-        updatedData
-      );
-      if (response.status === 200) {
-        refetch();
-        setIsEditing(false);
-        toast.success("Profile updated successfully!");
-        reset(data);
+      ).then(res => res.json());
+
+      if (cloudinaryRes.secure_url) {
+        imageUrl = cloudinaryRes.secure_url;
       } else {
-        toast.error("Failed to update profile. Please try again.");
+        Swal.fire({
+          icon: "error",
+          title: "Upload Failed",
+          text: "Image upload failed! Please try again.",
+        });
+        setLoading(false);
+        return;
       }
-    } catch (error) {
-      toast.error("An error occurred while updating your profile.");
-    } finally {
-      setLoading(false);
     }
-  };
+
+    const updatedData = {
+      name: data.name,
+      address: data.address,
+      phone: data.phone,
+      email: data.email,
+      imageUrl,
+    };
+
+    const response = await axiosPublic.patch(`/users/update/${userEmail}`, updatedData);
+
+    if (response.status === 200) {
+      refetch();
+      setIsEditing(false);
+      reset(data);
+      setImage(null);
+
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Profile updated successfully!",
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Failed",
+        text: "Failed to update profile. Please try again.",
+      });
+    }
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: error.response?.data?.message || "An error occurred while updating your profile.",
+    });
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleImageChange = (e) => setImage(e.target.files[0]);
 

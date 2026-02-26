@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { ImageOff, Link2Off } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { MdMenuBook } from "react-icons/md";
@@ -144,7 +145,7 @@ const GoodNobel = () => {
                   <div className="flex justify-start items-center gap-12">
                     <div>
                       <h2 className="text-xl font-semibold text-teal-700 flex items-center gap-2">
-                        <MdMenuBook  className="text-orange-600 text-2xl" />
+                        <MdMenuBook className="text-orange-600 text-2xl" />
                         <span>{item.name}</span>
                       </h2>
                     </div>
@@ -158,8 +159,11 @@ const GoodNobel = () => {
                           />
                         </div>
                       ) : (
-                        <div className="h-12 w-12 bg-gray-200 rounded-md flex items-center justify-center text-xs text-gray-500">
-                          No Image
+                        <div className="flex flex-col items-center justify-center text-gray-400">
+                          <ImageOff size={48} strokeWidth={1.5} />
+                          <p className="text-sm mt-2 font-medium">
+                            No Nobel Image Available
+                          </p>
                         </div>
                       )}
                     </div>
@@ -184,7 +188,10 @@ const GoodNobel = () => {
                         🔗 Visit Nobel
                       </a>
                     ) : (
-                      <span className="invisible text-sm">🔗 Visit Nobel</span>
+                      <div className="flex items-center gap-2 text-gray-400 text-sm">
+                        <Link2Off size={16} />
+                        <span>No Link Available</span>
+                      </div>
                     )}
 
                     {/* Date (always right) */}

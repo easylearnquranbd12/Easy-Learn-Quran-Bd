@@ -25,14 +25,15 @@ const GoodLifeStyle = () => {
   });
 
   // ✅ Fetch corporate email fields
-  const { data: goodLifeStyleFields = [], isLoading: fieldsLoading } =
-    useQuery({
+  const { data: goodLifeStyleFields = [], isLoading: fieldsLoading } = useQuery(
+    {
       queryKey: ["goodLifeStyleFields"],
       queryFn: async () => {
         const res = await axiosPublic.get("/third-layer/goodLifeStyleField");
         return res.data?.data || [];
       },
-    });
+    },
+  );
 
   // ✅ Fetch corporate emails
   const { data: goodLifeStyle = [], isLoading: goodLifeStyleLoading } =
@@ -68,7 +69,7 @@ const GoodLifeStyle = () => {
         "/third-layer/createExercisegoodLifeStyle",
         payload,
       );
-    
+
       if (res.data.success) {
         Swal.fire({
           icon: "success",
@@ -101,7 +102,7 @@ const GoodLifeStyle = () => {
   );
 
   return (
-    <div className="max-w-[1400px] mx-auto p-6 space-y-10 bg-white rounded-2xl shadow-md my-10">
+    <div className="max-w-[1400px] mx-auto p-2 md:p-6  space-y-10 bg-white rounded-2xl shadow-md my-10">
       {/* ✅ Title & Description */}
       <section className="text-center">
         {goodLifeStyleFields.map((field) => (
@@ -129,7 +130,7 @@ const GoodLifeStyle = () => {
               >
                 <button
                   onClick={() => handleToggle(index)}
-                  className="w-full flex justify-between items-center px-4 py-3 font-semibold bg-gray-100 hover:bg-gray-200 transition"
+                  className="w-full flex justify-between items-center gap-5 px-4 py-3 font-semibold bg-gray-100 hover:bg-gray-200 transition text-justify"
                 >
                   <span>
                     {index + 1}. {item.name}
@@ -147,7 +148,7 @@ const GoodLifeStyle = () => {
                   }`}
                 >
                   <div
-                    className="px-4 py-3 text-gray-700 text-sm lg:text-base"
+                    className="px-4 py-3 text-gray-700 text-sm lg:text-base ql-editor"
                     dangerouslySetInnerHTML={{
                       __html: item.description,
                     }}

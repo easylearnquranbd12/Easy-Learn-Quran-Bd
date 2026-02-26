@@ -1,16 +1,12 @@
 "use client";
 
-import {
-  CircleFadingArrowUp,
-  CloudUpload,
-  FileText,
-  Kanban,
-} from "lucide-react";
+import { CircleFadingArrowUp, CloudUpload, Kanban } from "lucide-react";
 import { useEffect, useState } from "react";
 import { BiEdit } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import {
   FaChartLine,
+  FaFilePdf,
   FaHome,
   FaIdeal,
   FaKey,
@@ -491,7 +487,7 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
     },
     {
       path: "/admin-dashboard/pdf-management",
-      icon: FileText,
+      icon: FaFilePdf,
       label: "PDF Management",
       description: "Manage PDF documents",
       color: "text-indigo-600",
@@ -754,13 +750,6 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
           description: "Create New Blog",
           color: "text-indigo-600",
         },
-        {
-          path: "/admin-dashboard/admin-blog-history",
-          icon: MdPayment,
-          label: "Blog History",
-          description: "Blog History",
-          color: "text-indigo-600",
-        },
       ],
     },
     {
@@ -777,32 +766,12 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
           description: "Text & Banner Create",
           color: "text-indigo-600",
         },
+        
         {
-          path: "/admin-dashboard/instructor-profile-update",
+          path: "/admin-dashboard/success-video-player",
           icon: MdPayment,
-          label: "instructor Profile",
-          description: "instructor Profile Update",
-          color: "text-indigo-600",
-        },
-        {
-          path: "/admin-dashboard/video-player-and-image",
-          icon: MdPayment,
-          label: "Add video Player ",
-          description: "Video Player Create",
-          color: "text-indigo-400",
-        },
-        {
-          path: "/admin-dashboard/change-banner-image-and-text",
-          icon: MdPayment,
-          label: "Image & Text Update",
-          description: "Image & Text Update",
-          color: "text-indigo-400",
-        },
-        {
-          path: "/admin-dashboard/section-text-address-description",
-          icon: MdPayment,
-          label: "Add Section Text",
-          description: "Section Text Create",
+          label: "Success video Player ",
+          description: "Success Video Player Create",
           color: "text-indigo-400",
         },
         {

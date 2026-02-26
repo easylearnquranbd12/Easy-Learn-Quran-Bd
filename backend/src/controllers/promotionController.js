@@ -13,21 +13,73 @@ const getAllPromotions = async (req, res) => {
   }
 };
 // create promotion
+// const createPromotion = async (req, res) => {
+//   try {
+//     const promotionData = req.body;
+
+//     // endDate + endTime merge করে expireAt বানাচ্ছি
+//     const expireAt = new Date(`${promotionData.endDate}T${promotionData.endTime}`);
+
+//     promotionData.expireAt = expireAt;
+//     promotionData.createdAt = new Date();
+
+//     const result = await db.insertOne(promotionData);
+
+//     res.status(201).json({ success: true, data: result });
+//   } catch (error) {
+//     res.status(500).json({ message: "Failed to create promotion", error: error.message });
+//   }
+// };
+
+
 const createPromotion = async (req, res) => {
   try {
-    const promotionData = req.body;
+    const {
+      title,
+      description,
+      startAt,
+      expireAt,
+      position,
+      imageUrl,
+      pdfUrl,
+      link,
+      status
+    } = req.body;
 
-    // endDate + endTime merge করে expireAt বানাচ্ছি
-    const expireAt = new Date(`${promotionData.endDate}T${promotionData.endTime}`);
+    // Validate ISO date
+    const startDateObj = new Date(startAt);
+    const expireDateObj = new Date(expireAt);
 
-    promotionData.expireAt = expireAt;
-    promotionData.createdAt = new Date();
+    if (isNaN(startDateObj.getTime()) || isNaN(expireDateObj.getTime())) {
+      return res.status(400).json({ message: "Invalid date format" });
+    }
+
+    if (expireDateObj <= startDateObj) {
+      return res.status(400).json({ message: "Expire date must be after start date" });
+    }
+
+    const promotionData = {
+      title,
+      description,
+      startAt: startDateObj,
+      expireAt: expireDateObj,
+      position,
+      imageUrl,
+      pdfUrl: pdfUrl || "",
+      link: link || "",
+      status: status || "active",
+      createdAt: new Date(),
+    };
 
     const result = await db.insertOne(promotionData);
 
     res.status(201).json({ success: true, data: result });
+
   } catch (error) {
-    res.status(500).json({ message: "Failed to create promotion", error: error.message });
+    res.status(500).json({
+      message: "Failed to create promotion",
+      error: error.message,
+    });
   }
 };
 

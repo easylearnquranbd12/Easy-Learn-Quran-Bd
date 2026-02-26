@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import CustomLoading from "../../../components/Loading/CustomLoading";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import IdeaCard from "../../../shared/IdeaCard/IdeaCard";
 import RichTextField from "../../../shared/TextEditor/RichTextField";
 import MediaUpload from "../../../utils/MediaUpload";
 
@@ -125,69 +126,17 @@ const Traveling = () => {
       </section>
 
       {/* ✅ Travelings Section */}
-      <section>
-        {travelings.length === 0 ? (
-          <p className="text-gray-500 text-center">No ideas found.</p>
-        ) : (
-          <div className="grid grid-cols-1 gap-6">
-            {travelings.map((item, index) => (
-              <div
-                key={item._id}
-                className="group relative bg-white/70 backdrop-blur-md rounded-2xl overflow-hidden shadow-md hover:shadow-xl border border-gray-100  transition-all duration-300"
-              >
-                {/* Image */}
-                {item.ideaShareImage && (
-                  <div className="h-56 w-full overflow-hidden">
-                    <img
-                      src={item.ideaShareImage}
-                      alt={item.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                )}
-
-                {/* Content */}
-                <div className="p-5 space-y-3">
-                  <h2 className="text-xl font-semibold text-teal-700">
-                    {item.name}
-                  </h2>
-
-                  {/* Render HTML description safely */}
-                  <div
-                    className="text-gray-700 text-sm leading-relaxed text-justify"
-                    dangerouslySetInnerHTML={{ __html: item.description }}
-                  ></div>
-
-                  {/* Footer */}
-                  <div className="flex items-center justify-between pt-3 border-t mt-3">
-                    {item?.link ? (
-                      <a
-                        href={item.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-teal-600 hover:text-teal-800 text-sm font-medium transition-colors"
-                      >
-                        🔗 Visit Link
-                      </a>
-                    ) : (
-                      <span className=" text-sm"> 🔗 Link Not Avaiable</span>
-                    )}
-
-                    <p className="text-xs text-gray-500">
-                      {item?.createdAt &&
-                        new Date(item.createdAt).toLocaleDateString("en-GB", {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        })}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
+     <section>
+  {travelings.length === 0 ? (
+    <p className="text-gray-500 text-center">No ideas found.</p>
+  ) : (
+    <div className="grid grid-cols-1 gap-6">
+      {travelings.map((item) => (
+        <IdeaCard key={item._id} item={item} />
+      ))}
+    </div>
+  )}
+</section>
 
       {/* ✅ Learning Your Exercise (ONLY if Active) */}
       {activeField && (

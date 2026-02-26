@@ -1,9 +1,10 @@
 import {
-    AlertCircle,
-    CheckCircle2,
-    FileText,
-    Trash2,
-    Upload,
+  AlertCircle,
+  CheckCircle2,
+  FileText,
+  FileTextIcon,
+  Trash2,
+  Upload,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -19,21 +20,22 @@ const UserUploadPdf = () => {
   const [loadingHistory, setLoadingHistory] = useState(false);
 
   // ✅ Load PDF history (user-specific)
-const fetchPdfs = async () => {
-  if (!user?.email) return;
-  setLoadingHistory(true);
-  try {
-    const res = await fetch(`https://api.betheshape.com/pdf/user?email=${user.email}`);
-    if (!res.ok) throw new Error("Failed to fetch PDFs");
-    const data = await res.json();
-    setPdfs(data); // ✅ update state
-  } catch (err) {
-    console.error(err);
-  } finally {
-    setLoadingHistory(false);
-  }
-};
-
+  const fetchPdfs = async () => {
+    if (!user?.email) return;
+    setLoadingHistory(true);
+    try {
+      const res = await fetch(
+        `http://localhost:5000/pdf/user?email=${user.email}`,
+      );
+      if (!res.ok) throw new Error("Failed to fetch PDFs");
+      const data = await res.json();
+      setPdfs(data); // ✅ update state
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoadingHistory(false);
+    }
+  };
 
   useEffect(() => {
     fetchPdfs();
@@ -70,7 +72,7 @@ const fetchPdfs = async () => {
       formData.append("pdf", file);
       formData.append("email", user.email); // ✅ send email
 
-      const res = await fetch("https://api.betheshape.com/pdf/user/upload", {
+      const res = await fetch("http://localhost:5000/pdf/user/upload", {
         method: "POST",
         body: formData,
       });
@@ -103,7 +105,7 @@ const fetchPdfs = async () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const res = await fetch(`https://api.betheshape.com/pdf/user/${id}`, {
+          const res = await fetch(`http://localhost:5000/pdf/user/${id}`, {
             method: "DELETE",
           });
           const data = await res.json();
@@ -127,7 +129,7 @@ const fetchPdfs = async () => {
       </Helmet>
 
       {/* Upload Box */}
-      <div className="w-full max-w-md mt-10 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
+      <div className="w-full max-w-7xl mt-10 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
         <div className="flex items-center justify-center mb-4">
           <FileText className="text-red-600 w-7 h-7 mr-2" />
           <h1 className="text-xl font-bold text-gray-800">Upload PDF File</h1>
@@ -185,7 +187,7 @@ const fetchPdfs = async () => {
           className={`mt-6 w-full py-2 rounded-lg font-semibold text-white transition-all flex items-center justify-center gap-2 ${
             uploading
               ? "bg-gray-400 cursor-not-allowed"
-              : "bg-red-600 hover:bg-red-700"
+              : "bg-teal-600 hover:bg-teal-700"
           }`}
         >
           {uploading ? (
@@ -221,13 +223,26 @@ const fetchPdfs = async () => {
       </div>
 
       {/* PDF History */}
-      <div className="w-full max-w-md mt-8 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
+      <div className="w-full max-w-7xl mt-8 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
         <h2 className="text-lg font-bold text-gray-800 mb-4">Uploaded PDFs</h2>
 
         {loadingHistory ? (
           <p className="text-gray-600 text-sm">Loading...</p>
         ) : pdfs.length === 0 ? (
-          <p className="text-gray-600 text-sm">No PDFs uploaded yet.</p>
+          <div className="flex flex-col items-center justify-center py-12 text-center bg-white/60 rounded-xl border border-dashed border-gray-300">
+            <div className="bg-red-50 p-5 rounded-full mb-4">
+              <FileTextIcon className="w-12 h-12 text-red-500" />
+            </div>
+
+            <h3 className="text-xl font-bold text-gray-800 mb-2">
+              No PDF Uploaded Yet
+            </h3>
+
+            <p className="text-gray-500 max-w-md text-sm">
+              You haven’t uploaded any PDF files yet. Once you upload a file, it
+              will appear here in your history.
+            </p>
+          </div>
         ) : (
           <ul className="flex flex-col gap-3">
             {pdfs.map((pdf) => (
@@ -236,7 +251,7 @@ const fetchPdfs = async () => {
                 className="flex items-center justify-between bg-white/50 p-3 rounded-lg border border-gray-200 hover:bg-gray-100 transition"
               >
                 <div className="flex items-center gap-3">
-                  <FileText className="w-5 h-5 text-red-600" />
+                  <FileText className="w-5 h-5 text-teal-600" />
                   <div>
                     <p className="text-gray-700 text-sm">{pdf.originalName}</p>
                     <p className="text-gray-500 text-xs">
@@ -249,8 +264,8 @@ const fetchPdfs = async () => {
                           pdf.status === "pending"
                             ? "text-yellow-600"
                             : pdf.status === "accepted"
-                            ? "text-green-600"
-                            : "text-red-600"
+                              ? "text-green-600"
+                              : "text-red-600"
                         }`}
                       >
                         {pdf.status}

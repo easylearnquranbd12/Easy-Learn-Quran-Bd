@@ -101,7 +101,7 @@ const OldGeneration = () => {
   );
 
   return (
-    <div className="max-w-[1400px] mx-auto p-6 space-y-10 bg-white rounded-2xl shadow-md my-10">
+    <div className="max-w-[1400px] mx-auto p-2 md:p-6 space-y-10 bg-white rounded-2xl shadow-md my-10">
       {/* ✅ Title & Description */}
       <section className="text-center">
         {oldGenerationFields.map((field) => (
@@ -129,7 +129,7 @@ const OldGeneration = () => {
               >
                 <button
                   onClick={() => handleToggle(index)}
-                  className="w-full flex justify-between items-center px-4 py-3 font-semibold bg-gray-100 hover:bg-gray-200 transition"
+                  className="w-full flex justify-between items-center gap-5 text-justify px-4 py-3 font-semibold bg-gray-100 hover:bg-gray-200 transition"
                 >
                   <span>
                     {index + 1}. {item.name}
@@ -142,7 +142,7 @@ const OldGeneration = () => {
                 </button>
 
                 <div
-                  className={`overflow-hidden transition-[max-height] duration-500 ${
+                  className={`overflow-hidden transition-[max-height] duration-500 text-justify ${
                     openIndex === index ? "max-h-[1500px]" : "max-h-0"
                   }`}
                 >

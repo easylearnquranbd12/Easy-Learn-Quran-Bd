@@ -10,7 +10,86 @@ import { useTranslation } from "../../context/TranslationContext";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 
+// const getNavigationLinks = (user, setLanguage, field = [], isLoading) => {
+//   const dynamicLayers = isLoading
+//     ? [
+//         {
+//           title: "Loading...",
+//           link: "#",
+//           disabled: true,
+//         },
+//       ]
+//     : field.map((layer) => ({
+//         title: layer.layerName || layer.fieldName,
+//         link: `/b-a-shape-formats/${layer.fieldName}`,
+//         // disabled: layer.isActive !== "ON"
+//       }));
+
+//   // 🏠 Base Menu Links
+//   const baseLinks = [
+//     { title: "Home", link: "/" },
+//     { title: "About Us", link: "/about-us-more-information" },
+//     {
+//       title: "B.A. Shape Formats",
+//       subLinks: dynamicLayers,
+//     },
+//   ];
+
+//   // 👤 If user logged in, add Dashboard link
+//   if (user) {
+//     baseLinks.splice(3, 0, { title: "Dashboard", link: "/dashboard" });
+//   }
+
+//   // 🌐 Other Static Menu Links
+//   baseLinks.push(
+//     {
+//       title: "Contribute",
+//       subLinks: [
+//         { title: "Blank Format", link: "/contribute/blank-format" },
+//         { title: "Upload PDF", link: "/contribute/upload-pdf" },
+//       ],
+//     },
+//     { title: "PDF Download", link: "/pdf-download" },
+//     { title: "Blog", link: "/blog-us" },
+//     // {
+//     //   title: "Language",
+//     //   subLinks: [
+//     //     { title: "বাংলা", action: () => setLanguage("bn") },
+//     //     { title: "English", action: () => setLanguage("en") },
+//     //   ],
+//     // }
+//   );
+
+//   return baseLinks;
+// };
+
+
+
 const getNavigationLinks = (user, setLanguage, field = [], isLoading) => {
+  // ✅ Serial Map
+  const numberMap = {
+    First: 1,
+    Second: 2,
+    Third: 3,
+    Fourth: 4,
+    Fifth: 5,
+    Sixth: 6,
+    Seventh: 7,
+    Eighth: 8,
+    Ninth: 9,
+    Tenth: 10,
+  };
+
+  // ✅ Sort Layers Serial Wise
+  const sortedLayers = [...field].sort((a, b) => {
+    const getNumber = (name) => {
+      const word = name?.split(" ")[0];
+      return numberMap[word] || 999;
+    };
+
+    return getNumber(a.layerName) - getNumber(b.layerName);
+  });
+
   const dynamicLayers = isLoading
     ? [
         {
@@ -19,10 +98,9 @@ const getNavigationLinks = (user, setLanguage, field = [], isLoading) => {
           disabled: true,
         },
       ]
-    : field.map((layer) => ({
+    : sortedLayers.map((layer) => ({
         title: layer.layerName || layer.fieldName,
         link: `/b-a-shape-formats/${layer.fieldName}`,
-        // disabled: layer.isActive !== "ON"
       }));
 
   // 🏠 Base Menu Links
@@ -35,12 +113,11 @@ const getNavigationLinks = (user, setLanguage, field = [], isLoading) => {
     },
   ];
 
-  // 👤 If user logged in, add Dashboard link
+  // 👤 Dashboard If Logged In
   if (user) {
     baseLinks.splice(3, 0, { title: "Dashboard", link: "/dashboard" });
   }
 
-  // 🌐 Other Static Menu Links
   baseLinks.push(
     {
       title: "Contribute",
@@ -50,18 +127,12 @@ const getNavigationLinks = (user, setLanguage, field = [], isLoading) => {
       ],
     },
     { title: "PDF Download", link: "/pdf-download" },
-    { title: "Blog", link: "/blog-us" },
-    // {
-    //   title: "Language",
-    //   subLinks: [
-    //     { title: "বাংলা", action: () => setLanguage("bn") },
-    //     { title: "English", action: () => setLanguage("en") },
-    //   ],
-    // }
+    { title: "Blog", link: "/blog-us" }
   );
 
   return baseLinks;
 };
+
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -155,13 +226,7 @@ const Navbar = () => {
     <div className="fixed top-0 left-0 w-full bg-white shadow-2xl z-50 px-1 py-1.5">
       <div className="max-w-[1400px] mx-auto h-[70px] flex justify-between items-center">
         <img className="h-16 w-24 cursor-pointer" src={imageLogo} alt="Logo" />
-        {/* {loading && (
-          <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-30">
-            <div className="p-5 bg-white rounded-md shadow-lg">
-              Translating...
-            </div>
-          </div>
-        )} */}
+       
         {/* Desktop Menu */}
         <div className="hidden md:flex flex-1 justify-end gap-2 items-center font-semibold text-xl">
           {navigationLinks.map((item, index) => (
@@ -174,7 +239,7 @@ const Navbar = () => {
               {item.subLinks ? (
                 <div className="flex items-center cursor-pointer">
                   <motion.span
-                    // data-translate={item.title} // 👈 Translation tag
+              
                     whileHover={{ y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     className={`inline-block rounded-md text-xl font-semibold transition duration-200 cursor-pointer ${
@@ -194,7 +259,7 @@ const Navbar = () => {
               ) : (
                 <Link to={item.link}>
                   <motion.span
-                    // data-translate={item.title} // 👈 Translation tag
+                  
                     whileHover={{ y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     className={`inline-block rounded-md text-base md:text-lg font-semibold transition duration-200 ${
@@ -216,11 +281,11 @@ const Navbar = () => {
                     animate="visible"
                     exit="exit"
                     variants={desktopSubMenuVariants}
-                    className="absolute left-0 top-full mt-1 bg-white shadow-lg rounded-md z-50 min-w-[200px] py-2 border border-gray-100"
+                    className="absolute left-0 top-full mt-1 bg-white shadow-lg rounded-md z-50 min-w-[300px] py-2 border border-gray-100"
                   >
                     {item.subLinks.map((subItem) => (
                       <motion.div
-                        //  data-translate={subItem.title} // 👈 Translation tag
+                       
                         key={subItem.title}
                         variants={subMenuItemVariants}
                       >
