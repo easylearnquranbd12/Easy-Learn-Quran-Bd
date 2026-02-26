@@ -367,6 +367,13 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
           color: "text-indigo-600",
         },
         {
+          path: "/admin-dashboard/interviews-qustions",
+          icon: BiEdit,
+          label: "Create Interviews Qustions",
+          description: "Create & History",
+          color: "text-indigo-600",
+        },
+        {
           path: "/admin-dashboard/professional-life-style",
           icon: BiEdit,
           label: "Create Professional Life Style",
@@ -658,6 +665,13 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
           icon: BiEdit,
           label: "Good Life Style Exercise",
           description: "User Good Life Style Post",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/interviews-qustions-exercise",
+          icon: BiEdit,
+          label: "Interviews Qustions Exercise",
+          description: "User Interviws Qustions Post",
           color: "text-indigo-600",
         },
         {

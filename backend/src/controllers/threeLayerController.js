@@ -23,6 +23,9 @@ const {
   getThirdLayerIdeaSharesFieldsCollection,
   getThirdLayerIdeaSharesCollection,
   getThirdLayerIdeaSharesExerciseCollection,
+  getThirdLayerInterviewQuestionsFieldsCollection,
+  getThirdLayerInterviewQuestionsCollection,
+  getThirdLayerInterviewQuestionsExerciseCollection,
 } = require("../config/db");
 
 // -----------------------------------------------------------------------------
@@ -709,6 +712,11 @@ const deleteExerciseDevelopSkills = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+
+
+
+
 // -----------------------------------------------------------------------------
 // Good Life Style
 // -----------------------------------------------------------------------------
@@ -911,6 +919,226 @@ const deleteExerciseGoodLifeStyle = async (req, res) => {
     const { id } = req.params;
 
     const result = await goodLifeStyleExerciseCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
+
+    if (result.deletedCount === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Exercise not found" });
+    }
+
+    res.json({
+      success: true,
+      message: "Exercise deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// -----------------------------------------------------------------------------
+// Interview Qustions
+// -----------------------------------------------------------------------------
+const interviewQuestionsFieldsCollection =
+  getThirdLayerInterviewQuestionsFieldsCollection();
+const interviewQuestionsCollection = getThirdLayerInterviewQuestionsCollection();
+const interviewQuestionsExerciseCollection =
+  getThirdLayerInterviewQuestionsExerciseCollection();
+
+// ✅ Update Interview Questions Field
+const updateInterviewQuestionsField = async (req, res) => {
+  try {
+    const { fieldName, value } = req.body;
+    if (!fieldName)
+      return res
+        .status(400)
+        .json({ success: false, message: "fieldName is required" });
+
+    let updateData = {};
+    if (fieldName === "isActive") {
+      const doc = await interviewQuestionsFieldsCollection.findOne({});
+      if (!doc)
+        return res
+          .status(404)
+          .json({ success: false, message: "No interview questions field found" });
+      updateData[fieldName] = doc.isActive === "ON" ? "OFF" : "ON";
+    } else {
+      if (!value)
+        return res
+          .status(400)
+          .json({ success: false, message: "value is required" });
+      updateData[fieldName] = value;
+    }
+
+    const result = await interviewQuestionsFieldsCollection.updateOne(
+      {},
+      { $set: updateData },
+    );
+    res.json({
+      success: true,
+      message: `${fieldName} updated successfully`,
+      updatedValue: updateData[fieldName],
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+const getInterviewQuestionsField = async (req, res) => {
+  try {
+    const result = await interviewQuestionsFieldsCollection.find().sort({ createdAt: -1 }).toArray();
+
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// ✅ Create Interview Questions CURD
+const createInterviewQuestions = async (req, res) => {
+  try {
+    const data = { ...req.body, createdAt: new Date().toISOString() };
+    const result = await interviewQuestionsCollection.insertOne(data);
+    res.status(201).json({
+      success: true,
+      message: "Interview Questions created successfully",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+const deleteInterviewQuestions = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await interviewQuestionsCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+const getAllInterviewQuestions = async (req, res) => {
+  try {
+    const result = await interviewQuestionsCollection.find().sort({ createdAt: -1 }).toArray();
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+const getSingleInterviewQuestions = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await interviewQuestionsCollection.findOne({
+      _id: new ObjectId(id),
+    });
+
+    if (!result) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Interview Questions not found" });
+    }
+
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+const updateInterviewQuestions = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    const result = await interviewQuestionsCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updateData },
+    );
+
+    if (result.matchedCount === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Interview Questions not found" });
+    }
+
+    res.json({
+      success: true,
+      message: "Interview Questions updated successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// ✅ Create Exercise Good Life Style
+const createExerciseInterviewQuestions = async (req, res) => {
+  try {
+    const {
+      name,
+      description,
+      userInfo, // 👈 frontend theke আসবে
+    } = req.body;
+
+    if (!name || !description) {
+      return res.status(400).json({
+        success: false,
+        message: "Name and description are required",
+      });
+    }
+
+    if (!userInfo?.email) {
+      return res.status(400).json({
+        success: false,
+        message: "User info is required",
+      });
+    }
+
+    const data = {
+      name,
+      description,
+      userInfo: {
+        userId: userInfo.userId,
+        name: userInfo.name,
+        email: userInfo.email,
+        role: userInfo.role || "student",
+      },
+      createdAt: new Date(),
+    };
+
+    const result = await interviewQuestionsExerciseCollection.insertOne(data);
+
+    // ⏱ Auto delete after 30 days
+    await interviewQuestionsExerciseCollection.createIndex(
+      { createdAt: 1 },
+      { expireAfterSeconds: 30 * 24 * 60 * 60 },
+    );
+
+    res.status(201).json({
+      success: true,
+      id: result.insertedId,
+      message: "Exercise created successfully (auto-delete in 30 days)",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+const getAllExerciseInterviewQuestions = async (req, res) => {
+  try {
+    const result = await interviewQuestionsExerciseCollection.find().sort({ createdAt: -1 }).toArray();
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+const deleteExerciseInterviewQuestions = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await interviewQuestionsExerciseCollection.deleteOne({
       _id: new ObjectId(id),
     });
 
@@ -1223,4 +1451,16 @@ module.exports = {
   getAllExerciseIdeaShares,
   deleteExerciseIdeaShares,
   updateIdeaShares,
+
+  // Interview Questions
+  updateInterviewQuestionsField,
+  getInterviewQuestionsField,
+  createExerciseInterviewQuestions,
+  createInterviewQuestions,
+  deleteInterviewQuestions,
+  getAllInterviewQuestions,
+  getSingleInterviewQuestions,
+  updateInterviewQuestions,
+  getAllExerciseInterviewQuestions,
+  deleteExerciseInterviewQuestions,
 };

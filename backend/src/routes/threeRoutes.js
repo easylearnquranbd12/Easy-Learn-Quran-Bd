@@ -57,6 +57,16 @@ const {
   updateIdeaShares,
   getAllExerciseIdeaShares,
   deleteExerciseIdeaShares,
+  updateInterviewQuestionsField,
+  getInterviewQuestionsField,
+  createInterviewQuestions,
+  getAllInterviewQuestions,
+  deleteInterviewQuestions,
+  getSingleInterviewQuestions,
+  updateInterviewQuestions,
+  createExerciseInterviewQuestions,
+  deleteExerciseInterviewQuestions,
+  getAllExerciseInterviewQuestions,
 } = require("../controllers/threeLayerController");
 
 const router = express.Router();
@@ -74,9 +84,25 @@ router.delete("/goodLifeStyle/:id", deleteGoodLifeStyle);
 router.get("/goodLifeStyle/:id", getSingleGoodLifeStyle);
 router.put("/goodLifeStyle/:id", updateGoodLifeStyle);
 // Good life style exercise
-router.post("/createExerciseGoodLifeStyleField", createExerciseGoodLifeStyle);
-router.get("/deleteExerciseGoodLifeStyle/:id", deleteExerciseGoodLifeStyle);
+router.post("/createExerciseGoodLifeStyle", createExerciseGoodLifeStyle);
+router.delete("/deleteExerciseGoodLifeStyle/:id", deleteExerciseGoodLifeStyle);
 router.get("/getAllExerciseGoodLifeStyle", getAllExerciseGoodLifeStyle);
+/* --------------------------------------------------------------------------
+ ✅ Interview Questions ROUTES
+-------------------------------------------------------------------------- */
+// Interview Questions field
+router.put("/interviewQuestionsField/:id", updateInterviewQuestionsField);
+router.get("/interviewQuestionsField", getInterviewQuestionsField);
+// Interview Questions CRUD
+router.post("/interviewQuestions", createInterviewQuestions);
+router.get("/interviewQuestions", getAllInterviewQuestions);
+router.delete("/interviewQuestions/:id", deleteInterviewQuestions);
+router.get("/interviewQuestions/:id", getSingleInterviewQuestions);
+router.put("/interviewQuestions/:id", updateInterviewQuestions);
+// Interview Questions exercise
+router.post("/createExerciseInterviewQuestions", createExerciseInterviewQuestions);
+router.delete("/deleteExerciseInterviewQuestions/:id", deleteExerciseInterviewQuestions);
+router.get("/getAllExerciseInterviewQuestions", getAllExerciseInterviewQuestions);
 
 /* ---------------------------------------------------------------------oks-----
  ✅ BEFORE PROFESSIONAL ROUTES
@@ -95,7 +121,7 @@ router.post(
   "/createExerciseBeforeProfessional",
   createExerciseBeforeProfessional,
 );
-router.get(
+router.delete(
   "/deleteExerciseBeforeProfessional/:id",
   deleteExerciseBeforeProfessional,
 );

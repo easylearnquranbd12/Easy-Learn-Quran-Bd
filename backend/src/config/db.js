@@ -150,6 +150,18 @@ const getThirdLayerGoodLifeStyleExerciseCollection = () => {
     .db("Shapion-Quiz-Platform")
     .collection("createExerciseGoodLifeStyle");
 };
+// ✅ Interviews Qustions
+const getThirdLayerInterviewQuestionsFieldsCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("InterviewQuestionsField");
+};
+const getThirdLayerInterviewQuestionsCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("InterviewQuestions");
+};
+const getThirdLayerInterviewQuestionsExerciseCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("createExerciseInterviewQuestions");
+};
 
 // ✅ Before Professional
 const getThirdLayerBeforeProfessionalFieldsCollection = () => {
@@ -406,6 +418,10 @@ module.exports = {
   getThirdLayerGoodLifeStyleFieldsCollection,
   getThirdLayerGoodLifeStyleCollection,
   getThirdLayerGoodLifeStyleExerciseCollection,
+
+  getThirdLayerInterviewQuestionsFieldsCollection,
+  getThirdLayerInterviewQuestionsCollection,
+  getThirdLayerInterviewQuestionsExerciseCollection,
 
   getThirdLayerBeforeProfessionalFieldsCollection,
   getThirdLayerBeforeProfessionalCollection,

@@ -61,8 +61,10 @@ import CorporateEmailExcersice from "../Pages/AdminDashboardPages/BAShapeFormats
 import DevelopYourSkillsExcersice from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/Excersice/DevelopYourSkillsExcersice";
 import GoodLifeStyleExcersice from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/Excersice/GoodLifeStyleExcersice";
 import IdeaShareExcersice from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/Excersice/IdeaShareExcersice";
+import InterviewsQustionsExcersice from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/Excersice/InterviewsQustionsExcersice";
 import AdminGoodLifeStyle from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/GoodLifeStyle/AdminGoodLifeStyle";
 import IdeaShareAnsSuggestion from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/IdeaShareAnsSuggestion/IdeaShareAnsSuggestion";
+import InterviewsQustions from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/InterviewsQustion/InterviewsQustions";
 import BlankFormat from "../Pages/ContributePages/BlankFormat/BlankFormat";
 import UploadPDF from "../Pages/ContributePages/UploadPDF/UploadPDF";
 import DashboardRedirect from "../Pages/DashboardRedirect";
@@ -603,6 +605,22 @@ export const routes = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <GoodLifeStyleExcersice />
+          </Suspense>
+        ),
+      },
+      {
+        path: "interviews-qustions",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <InterviewsQustions />
+          </Suspense>
+        ),
+      },
+      {
+        path: "interviews-qustions-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <InterviewsQustionsExcersice />
           </Suspense>
         ),
       },
