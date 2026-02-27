@@ -35,7 +35,7 @@
 // // Delete helper
 // const deleteFromCloudinary = async (publicId, type) => {
 //   try {
-//     await fetch(`http://localhost:5000/delete-media/${type}`, {
+//     await fetch(`https://api.betheshape.com/delete-media/${type}`, {
 //       method: "POST",
 //       headers: { "Content-Type": "application/json" },
 //       body: JSON.stringify({ publicId }),
@@ -219,7 +219,7 @@ const MediaUpload = ({ control, name, label, type = "image", maxSizeMB = 5 }) =>
 
     if (media?.public_id) {
       try {
-        await axios.post(`http://localhost:5000/delete-media/${type}`, {
+        await axios.post(`https://api.betheshape.com/delete-media/${type}`, {
           publicId: media.public_id,
         });
       } catch (error) {

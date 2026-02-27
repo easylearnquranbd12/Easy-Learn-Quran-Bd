@@ -73,7 +73,7 @@
 //     console.log("Final Promotion Data:", promotionData);
 
 //     // === Backend এ পাঠাও ===
-//     await axios.post("http://localhost:5000/api/promotions", promotionData);
+//     await axios.post("https://api.betheshape.com/api/promotions", promotionData);
 
 //     toast.success("Promotion saved successfully!");
 //     setFormData({
@@ -391,7 +391,7 @@
 
 //       console.log("Final Promotion Data:", promotionData);
 
-//       await axios.post("http://localhost:5000/api/promotions", promotionData);
+//       await axios.post("https://api.betheshape.com/api/promotions", promotionData);
 
 //       toast.success("Promotion saved successfully!");
 
@@ -421,7 +421,7 @@
 //   const fetchPromotions = async () => {
 //     setLoading(true);
 //     try {
-//       const response = await axios.get("http://localhost:5000/api/promotions");
+//       const response = await axios.get("https://api.betheshape.com/api/promotions");
 //       setPromotions(response.data);
 //     } catch (error) {
 //       console.error(error);
@@ -449,7 +449,7 @@
 //     if (result.isConfirmed) {
 //       setDeletingId(id);
 //       try {
-//         await axios.delete(`http://localhost:5000/api/promotions/${id}`);
+//         await axios.delete(`https://api.betheshape.com/api/promotions/${id}`);
 //         setPromotions(promotions.filter((promo) => promo._id !== id));
 //         Swal.fire("Deleted!", "Promotion has been deleted.", "success");
 //       } catch (error) {
@@ -974,7 +974,7 @@ const AdminPromotion = () => {
         createdAt: new Date().toISOString(),
       };
 
-      await axios.post("http://localhost:5000/api/promotions", promotionData);
+      await axios.post("https://api.betheshape.com/api/promotions", promotionData);
 
       toast.success("Promotion saved successfully!");
 
@@ -1011,7 +1011,7 @@ const AdminPromotion = () => {
   const fetchPromotions = async () => {
     setFetchLoading(true);
     try {
-      const response = await axios.get("http://localhost:5000/api/promotions");
+      const response = await axios.get("https://api.betheshape.com/api/promotions");
       setPromotions(response.data);
     } catch (error) {
       console.error(error);
@@ -1039,7 +1039,7 @@ const AdminPromotion = () => {
     if (result.isConfirmed) {
       setDeletingId(id);
       try {
-        await axios.delete(`http://localhost:5000/api/promotions/${id}`);
+        await axios.delete(`https://api.betheshape.com/api/promotions/${id}`);
         setPromotions(promotions.filter((promo) => promo._id !== id));
         Swal.fire("Deleted!", "Promotion has been deleted.", "success");
       } catch (error) {
@@ -1616,7 +1616,7 @@ export default AdminPromotion;
 //         createdAt: new Date().toISOString(),
 //       };
 
-//       await axios.post("http://localhost:5000/api/promotions", promotionData);
+//       await axios.post("https://api.betheshape.com/api/promotions", promotionData);
 
 //       toast.success("Promotion saved successfully!");
 
@@ -1653,7 +1653,7 @@ export default AdminPromotion;
 //   const fetchPromotions = async () => {
 //     setFetchLoading(true);
 //     try {
-//       const response = await axios.get("http://localhost:5000/api/promotions");
+//       const response = await axios.get("https://api.betheshape.com/api/promotions");
 //       setPromotions(response.data);
 //     } catch (error) {
 //       console.error(error);
@@ -1681,7 +1681,7 @@ export default AdminPromotion;
 //     if (result.isConfirmed) {
 //       setDeletingId(id);
 //       try {
-//         await axios.delete(`http://localhost:5000/api/promotions/${id}`);
+//         await axios.delete(`https://api.betheshape.com/api/promotions/${id}`);
 //         setPromotions(promotions.filter((promo) => promo._id !== id));
 //         Swal.fire("Deleted!", "Promotion has been deleted.", "success");
 //       } catch (error) {
