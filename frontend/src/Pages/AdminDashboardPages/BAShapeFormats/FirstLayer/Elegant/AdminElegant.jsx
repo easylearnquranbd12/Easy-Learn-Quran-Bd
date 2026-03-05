@@ -520,7 +520,7 @@ const AdminElegant = () => {
       </div>
 
       {/* History */}
-      <div className="bg-white rounded-lg shadow-md p-5 mt-10 w-[450px] md:w-[750px] lg:w-full">
+      <div className="bg-white rounded-lg shadow-md p-5 mt-10 w-[350px] md:w-[750px] lg:w-full">
         <h1 className="mb-5">
           Total Elegant Items:{" "}
           <span className="text-3xl font-bold ">{elegantData?.total || 0}</span>

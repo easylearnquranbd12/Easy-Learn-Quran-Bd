@@ -555,6 +555,13 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
           description: "Manage existing PDF documents",
           color: "text-indigo-600",
         },
+        {
+          path: "/admin-dashboard/blank-pdf",
+          icon: CircleFadingArrowUp,
+          label: "Upload Blank PDF",
+          description: "Blank PDF documents",
+          color: "text-indigo-600",
+        },
       ],
     },
     {

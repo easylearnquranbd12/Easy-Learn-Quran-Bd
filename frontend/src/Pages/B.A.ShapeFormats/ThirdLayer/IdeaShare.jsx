@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { BookOpenCheck } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Swal from "sweetalert2";
@@ -111,7 +112,7 @@ const IdeaShare = () => {
             {ideaSharesFields.map((field) => (
               <div
                 key={field._id}
-                className="p-6 bg-white/60 backdrop-blur-md shadow-lg rounded-2xl border border-gray-100"
+                className="bg-gradient-to-br from-teal-50 via-white to-emerald-50 p-3 md:p-8 rounded-lg shadow-md border-l-4 border-teal-500 relative overflow-hidden mb-8"
               >
                 <h3 className="font-semibold text-3xl text-teal-700 mb-4">
                   {field.title}
@@ -141,9 +142,12 @@ const IdeaShare = () => {
       {/* ✅ Learning Your Exercise (ONLY if Active) */}
       {activeField && (
         <section className="card bg-white shadow-2xl rounded-2xl p-4 md:p-6 mt-10 space-y-5">
-          <h3 className="text-xl font-semibold text-teal-600">
-            📖 Learning Your Exercise
-          </h3>
+  <h3 className="text-base md:text-xl font-semibold text-teal-600 flex items-center gap-2">
+  <BookOpenCheck className="w-6 h-6 text-teal-600" />
+  {activeField?.title
+    ? `${activeField.title} Practice Exercise`
+    : "Practice Exercise"}
+</h3>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div className="form-control w-full py-6">

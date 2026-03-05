@@ -266,7 +266,7 @@ const AdminCorporateEmail = () => {
           </div>
 
           {/* ✅ Create Corporate Email Form */}
-          <div className="w-full  bg-white shadow-2xl rounded-xl border p-4 sm:p-6 mb-10">
+          <div className="w-full  bg-white shadow-2xl rounded-xl border p-3 sm:p-6 mb-10">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
               {/* Corporate Email Name */}
               <div className="form-control w-full py-6">
@@ -312,7 +312,7 @@ const AdminCorporateEmail = () => {
           </div>
 
           {/* ✅ corporateEmail List */}
-          <div className="w-full bg-white shadow-lg rounded-xl border p-4 sm:p-6">
+          <div className="w-full bg-white shadow-lg rounded-xl border p-3 sm:p-6">
             <h2 className="text-lg sm:text-xl font-semibold mb-4 text-teal-700">
               List
             </h2>

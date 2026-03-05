@@ -31,10 +31,10 @@ const EditTravelingModal = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white w-full max-w-2xl rounded-xl p-6 space-y-4">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3">
+      <div className="bg-white w-full max-w-2xl rounded-xl p-6 space-y-4 max-h-[80vh] overflow-y-auto">
         <h3 className="text-xl font-semibold text-teal-600">
-          Edit Idea Share
+          Edit Traveling Section
         </h3>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

@@ -1,137 +1,106 @@
+import { useQuery } from "@tanstack/react-query";
 import { Download, FileText } from "lucide-react";
-import { useState } from "react";
 import { Helmet } from "react-helmet-async";
+import CustomLoading from "../../../components/Loading/CustomLoading";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const BlankFormat = () => {
-  const [downloading, setDownloading] = useState(null);
+  const axiosPublic = useAxiosPublic();
 
-  const pdfFiles = [
-    "MCQ-Question-Set.pdf",
-    "Assignment-Form.pdf",
-    "Student-Progress-Report.pdf",
-    "Instructor-Evaluation.pdf",
-    "Quiz-Template.pdf",
-    "Final-Exam-AnswerSheet.pdf",
-    "Course-Feedback-Form.pdf",
-    "Result-Analysis.pdf",
-    "Certification-Checklist.pdf",
-    "Training-Attendance-Form.pdf",
-  ];
+  const { data: pdfs = [], isLoading } = useQuery({
+    queryKey: ["blankPDFs"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/pdf/blank");
+      return res.data || [];
+    },
+  });
 
-  const handleDownload = async (e, fileName) => {
-    e.preventDefault();
-    if (downloading === fileName) return;
-
-    try {
-      setDownloading(fileName);
-      const { jsPDF } = await import("jspdf");
-
-      const doc = new jsPDF({
-        orientation: "portrait",
-        unit: "mm",
-        format: "a4",
-      });
-
-      // ===== Header =====
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(20);
-      doc.text("Learning Quiz Platform", 105, 20, { align: "center" });
-
-      doc.setFontSize(14);
-      doc.text(fileName.replace(".pdf", "").replaceAll("-", " "), 105, 30, {
-        align: "center",
-      });
-
-      // Line separator
-      doc.setLineWidth(0.4);
-      doc.line(20, 35, 190, 35);
-
-      doc.setFontSize(12);
-      doc.text("Blank Table Format:", 20, 45);
-
-      // ===== Table =====
-      const startY = 55;
-      const rowHeight = 10;
-      const colWidths = [20, 60, 60, 40];
-      const tableHeader = [
-        "SL",
-        "Question / Description",
-        "Details / Answer",
-        "Remarks",
-      ];
-
-      let x = 20;
-      tableHeader.forEach((text, i) => {
-        doc.setFont("helvetica", "bold");
-        doc.rect(x, startY, colWidths[i], rowHeight);
-        doc.text(text, x + 2, startY + 7);
-        x += colWidths[i];
-      });
-
-      // 15 blank rows
-      for (let r = 1; r <= 15; r++) {
-        x = 20;
-        const y = startY + rowHeight * r;
-        for (let i = 0; i < colWidths.length; i++) {
-          doc.rect(x, y, colWidths[i], rowHeight);
-          if (i === 0) doc.text(String(r), x + 2, y + 7);
-          x += colWidths[i];
-        }
-      }
-
-      // ✅ Download without reload
-      const blob = doc.output("blob");
-      const blobUrl = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = blobUrl;
-      a.download = fileName;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
-    } catch (error) {
-      console.error("PDF generation error:", error);
-      alert("PDF generate korte somossa hocche!");
-    } finally {
-      setDownloading(null);
-    }
+  const handleDownload = (id) => {
+    window.location.href = `http://localhost:5000/pdf/blank/download/${id}`;
   };
 
+  if (isLoading) return <CustomLoading />;
+
   return (
-    <div className="p-8 min-h-screen  flex flex-col items-center">
+    <div className="min-h-screen py-5">
       <Helmet>
-        <title>Learning Quiz Platform | Blank Formats</title>
+        <title>Blank Document Formats</title>
       </Helmet>
 
-      <h1 className="text-2xl md:text-3xl font-bold text-black mb-6 flex items-center gap-2">
-        <FileText className="w-8 h-8 text-black" /> Learning Quiz Platform -
-        Blank PDFs
-      </h1>
+      <div className="max-w-7xl mx-auto px-3 md:px-6">
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-[1400px] mx-auto">
-        {pdfFiles.map((fileName, index) => (
-          <div
-            key={index}
-            className="bg-white shadow-md border border-gray-200 rounded-xl p-5 flex flex-col justify-between hover:shadow-lg hover:scale-[1.02] transition-all"
-          >
-            <div className="flex items-center gap-2">
-              <FileText className="text-indigo-600 w-5 h-5" />
-              <p className="text-gray-800 font-semibold text-sm">{fileName}</p>
-            </div>
-            <button
-              onClick={(e) => handleDownload(e, fileName)}
-              disabled={downloading === fileName}
-              className={`mt-4 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-medium transition text-white ${
-                downloading === fileName
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-bgButton hover:bg-hoverBgButton"
-              }`}
-            >
-              <Download className="w-4 h-4" />
-              {downloading === fileName ? "Generating..." : "Download"}
-            </button>
+        {/* ===== Header ===== */}
+        <div className="text-center mb-16">
+
+          <div className="w-20 h-20 mx-auto rounded-full border-4 border-teal-700 flex items-center justify-center text-teal-700 text-xl font-serif font-bold mb-6">
+            PDF
           </div>
-        ))}
+
+          <h1 className="text-4xl md:text-5xl font-serif font-semibold text-gray-900">
+            Official Blank Document Formats
+          </h1>
+
+          <p className="mt-6 text-gray-600 max-w-2xl mx-auto leading-relaxed text-lg">
+            These blank document formats are provided for applicants and contributors
+            to properly prepare and submit their documents according to the official
+            submission guidelines of the platform.
+          </p>
+
+          <div className="w-28 h-[2px] bg-teal-700 mx-auto mt-8"></div>
+        </div>
+
+        {/* ===== Content ===== */}
+        {pdfs.length === 0 ? (
+          <div className="text-center py-20 border-t border-b border-gray-300">
+            <FileText className="w-14 h-14 mx-auto text-gray-300 mb-4" />
+
+            <h3 className="text-2xl font-serif text-gray-800">
+              No Blank Formats Available
+            </h3>
+
+            <p className="text-gray-500 mt-4">
+              Blank document formats will appear here once they are uploaded by the administrator.
+            </p>
+          </div>
+        ) : (
+          <div className="divide-y divide-gray-300">
+            {pdfs.map((pdf) => (
+              <div
+                key={pdf._id}
+                className="py-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6"
+              >
+                {/* Left */}
+                <div className="flex items-start gap-4">
+                  <FileText className="w-8 h-8 text-teal-700 mt-1" />
+
+                  <div>
+                    <h3 className="text-xl font-serif text-gray-900">
+                      {pdf.originalName}
+                    </h3>
+
+                    <p className="text-sm text-gray-500 mt-1">
+                      Uploaded on{" "}
+                      {new Date(pdf.createdAt).toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Download */}
+                <button
+                  onClick={() => handleDownload(pdf._id)}
+                  className="flex items-center justify-center gap-2 border border-teal-700 text-teal-700 hover:bg-teal-700 hover:text-white transition-all duration-300 px-6 py-3 font-medium tracking-wide rounded-sm"
+                >
+                  <Download className="w-5 h-5" />
+                  Download Blank Format
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

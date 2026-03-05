@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { BookOpenCheck } from "lucide-react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
@@ -163,7 +164,7 @@ const Verb = () => {
       <div className="py-8 ">
         <div className="flex flex-col items-center mb-3 space-y-2">
           {verbFields?.map((item) => (
-            <div key={item._id} className="text-center max-w-[1400px]">
+            <div key={item._id} className="text-center max-w-[1400px] bg-gradient-to-br from-teal-50 via-white to-emerald-50 p-3 md:p-8 rounded-lg shadow-md border-l-4 border-teal-500 relative overflow-hidden mb-8">
               <h2 className="text-3xl font-bold text-teal-700">
                 {item?.title || "Title Missing"}
               </h2>
@@ -224,9 +225,10 @@ const Verb = () => {
               item.isActive === "ON" && (
                 <div key={item._id}>
                   <div className="card bg-white shadow-md rounded-2xl p-2 md:p-5 mt-10 space-y-3 ">
-                    <h3 className="text-xl font-semibold text-teal-600">
-                      📖 Learning Your Exercise
-                    </h3>
+                    <h3 className="text-base md:text-xl font-semibold text-teal-600 flex items-center gap-2">
+  <BookOpenCheck className="w-6 h-6 text-teal-600" />
+  {item?.title ? `${item.title} Practice Exercise` : "Practice Exercise"}
+</h3>
                     <div className="overflow-x-auto rounded-xl shadow border border-gray-200">
                       <table className="table w-full">
                         <thead className="bg-teal-600 text-white text-sm">

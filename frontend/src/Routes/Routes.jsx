@@ -15,6 +15,7 @@ import AdminPorem from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/
 import ManageUserNobel from "../Pages/AdminDashboardPages/AdminContributePages/ManageUserNobel";
 import SuccessVideoStorie from "../Pages/AdminDashboardPages/AdminHomePagesEdit/SuccessVideoStorie";
 import AllUserPayment from "../Pages/AdminDashboardPages/AdminPaymentPages/AllUserPayment";
+import AdminBlankPdfUpload from "../Pages/AdminDashboardPages/AdminPdfManagement/AdminBlankPdfUpload";
 import AdminPdfUpload from "../Pages/AdminDashboardPages/AdminPdfManagement/AdminPdfUpload";
 import UserUploadPdfManage from "../Pages/AdminDashboardPages/AdminPdfManagement/UserUploadPdfManage";
 import AdminElegantEdit from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Elegant/AdminElegantEdit";
@@ -853,6 +854,14 @@ export const routes = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <UserUploadPdfManage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "blank-pdf",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminBlankPdfUpload />
           </Suspense>
         ),
       },

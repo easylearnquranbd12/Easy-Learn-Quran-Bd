@@ -323,6 +323,8 @@ const getAdminPdfUploadCollection = () =>
   client.db("Shapion-Quiz-Platform").collection("PdfUploads");
 const getUserPdfUploadCollection = () =>
   client.db("Shapion-Quiz-Platform").collection("UserPdfUploads");
+const getBlankPdfUploadCollection = () =>
+  client.db("Shapion-Quiz-Platform").collection("BlankPdfUploads");
 
 const getAddPaymentMethodCollection = () => {
   return client.db("Shapion-Quiz-Platform").collection("AddPaymentMethod");
@@ -370,6 +372,7 @@ module.exports = {
   // PDF Upload Admin Panel
   getAdminPdfUploadCollection,
   getUserPdfUploadCollection,
+  getBlankPdfUploadCollection,
 
   getFirstLayerVocabularyCollection,
   getFirstLayerVocabularyCollections,

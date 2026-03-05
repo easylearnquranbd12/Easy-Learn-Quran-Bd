@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { AlertCircle, RefreshCw } from "lucide-react";
+import { AlertCircle, BookOpenCheck, RefreshCw } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
@@ -7,7 +7,7 @@ import CustomLoading from "../../../components/Loading/CustomLoading";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
-const vocabulary = () => {
+const Vocabulary = () => {
   const axiosPublic = useAxiosPublic();
   const [showAll, setShowAll] = useState(false);
   const { register, handleSubmit, reset, setValue } = useForm();
@@ -31,21 +31,6 @@ const limit = 10;
     },
   });
 
-  // Fetch vocabulary
-  // const {
-  //   data: vocabulary,
-  //   isLoading: vocabularyLoading,
-  //   isError: vocabularyError,
-  //   refetch: refetchvocabulary,
-  //   error,
-  // } = useQuery({
-  //   queryKey: ["vocabulary"],
-  //   queryFn: async () => {
-  //     const res = await axiosPublic.get("/first-layer/vocabulary");
-  //     return res.data.data;
-  //   },
-  // });
-
 const {
   data: vocabulary,
   isLoading: vocabularyLoading,
@@ -67,7 +52,7 @@ const {
   const { mutateAsync: createvocabularyExercise } = useMutation({
     mutationFn: async (newData) => {
       const res = await axiosPublic.post(
-        "/first-layer/createExercisevocabulary",
+        "/first-layer/createExerciseVocabulary",
         newData,
       );
       return res.data;
@@ -86,67 +71,128 @@ const {
   // Toggle show all rows
   const visiblevocabulary = vocabulary?.data || [];
 
-const onSubmit = async (data) => {
-  const payload = {
-    user: {
-      uid: user?.uid,
-      email: user?.email,
-      name: user?.displayName,
-    },
-    rows: [
-      {
-        mainWord: data.mainWord,
-        banglaPronunciation: data.banglaPronunciation,
-        banglaMeaning: data.banglaMeaning,
-        synonyms: data.synonyms,
-        antonyms: data.antonyms,
-        exampleEnglish: data.exampleEnglish,
-        exampleBangla: data.exampleBangla,
+// const onSubmit = async (data) => {
+//   const payload = {
+//     user: {
+//       uid: user?.uid,
+//       email: user?.email,
+//       name: user?.displayName,
+//     },
+//     rows: [
+//       {
+//         mainWord: data.mainWord,
+//         banglaPronunciation: data.banglaPronunciation,
+//         banglaMeaning: data.banglaMeaning,
+//         synonyms: data.synonyms,
+//         antonyms: data.antonyms,
+//         exampleEnglish: data.exampleEnglish,
+//         exampleBangla: data.exampleBangla,
+//       },
+//       {
+//         mainWord2: data.mainWord2,
+//         banglaPronunciation2: data.banglaPronunciation2,
+//         banglaMeaning2: data.banglaMeaning2,
+//         synonyms2: data.synonyms2,
+//         antonyms2: data.antonyms2,
+//         exampleEnglish2: data.exampleEnglish2,
+//         exampleBangla2: data.exampleBangla2,
+//       },
+//       {
+//         mainWord3: data.mainWord3,
+//         banglaPronunciation3: data.banglaPronunciation3,
+//         banglaMeaning3: data.banglaMeaning3,
+//         synonyms3: data.synonyms3,
+//         antonyms3: data.antonyms3,
+//         exampleEnglish3: data.exampleEnglish3,
+//         exampleBangla3: data.exampleBangla3,
+//       },
+//     ],
+//     createdAt: new Date(),
+//   };
+
+//   // ✅ validation (আগের logic রাখছি)
+//   const countFilled = (row) =>
+//     Object.values(row).filter((v) => v && v.trim() !== "").length;
+
+//   const r1 = countFilled(payload.rows[0]);
+//   const r2 = countFilled(payload.rows[1]);
+//   const r3 = countFilled(payload.rows[2]);
+
+//   if (r1 < 3 && r2 < 3 && r3 < 3) {
+//     Swal.fire(
+//       "At least one row must have a minimum of 3 completed fields!",
+//       "",
+//       "warning",
+//     );
+//     return;
+//   }
+
+//   // 🔥 এখন full payload পাঠাও
+//   createvocabularyExercise(payload);
+//   reset();
+// };
+
+
+ const onSubmit = async (data) => {
+    const payload = {
+      user: {
+        uid: user?.uid,
+        email: user?.email,
+        name: user?.displayName,
       },
-      {
-        mainWord2: data.mainWord2,
-        banglaPronunciation2: data.banglaPronunciation2,
-        banglaMeaning2: data.banglaMeaning2,
-        synonyms2: data.synonyms2,
-        antonyms2: data.antonyms2,
-        exampleEnglish2: data.exampleEnglish2,
-        exampleBangla2: data.exampleBangla2,
-      },
-      {
-        mainWord3: data.mainWord3,
-        banglaPronunciation3: data.banglaPronunciation3,
-        banglaMeaning3: data.banglaMeaning3,
-        synonyms3: data.synonyms3,
-        antonyms3: data.antonyms3,
-        exampleEnglish3: data.exampleEnglish3,
-        exampleBangla3: data.exampleBangla3,
-      },
-    ],
-    createdAt: new Date(),
+      rows: [
+        {
+          mainWord: data.mainWord,
+          banglaPronunciation: data.banglaPronunciation,
+          banglaMeaning: data.banglaMeaning,
+          synonyms: data.synonyms,
+          antonyms: data.antonyms,
+          exampleEnglish: data.exampleEnglish,
+          exampleBangla: data.exampleBangla,
+        },
+        {
+          mainWord2: data.mainWord2,
+          banglaPronunciation2: data.banglaPronunciation2,
+          banglaMeaning2: data.banglaMeaning2,
+          synonyms2: data.synonyms2,
+          antonyms2: data.antonyms2,
+          exampleEnglish2: data.exampleEnglish2,
+          exampleBangla2: data.exampleBangla2,
+        },
+        {
+          mainWord3: data.mainWord3,
+          banglaPronunciation3: data.banglaPronunciation3,
+          banglaMeaning3: data.banglaMeaning3,
+          synonyms3: data.synonyms3,
+          antonyms3: data.antonyms3,
+          exampleEnglish3: data.exampleEnglish3,
+          exampleBangla3: data.exampleBangla3,
+        },
+      ],
+      createdAt: new Date(),
+    };
+
+    // ✅ validation (আগের logic রাখছি)
+    const countFilled = (row) =>
+      Object.values(row).filter((v) => v && v.trim() !== "").length;
+
+    const r1 = countFilled(payload.rows[0]);
+    const r2 = countFilled(payload.rows[1]);
+    const r3 = countFilled(payload.rows[2]);
+
+    if (r1 < 3 && r2 < 3 && r3 < 3) {
+      Swal.fire(
+        "At least one row must have a minimum of 3 completed fields!",
+        "",
+        "warning",
+      );
+      return;
+    }
+
+    // 🔥 এখন full payload পাঠাও
+    createvocabularyExercise(payload);
+    reset();
   };
-
-  // ✅ validation (আগের logic রাখছি)
-  const countFilled = (row) =>
-    Object.values(row).filter((v) => v && v.trim() !== "").length;
-
-  const r1 = countFilled(payload.rows[0]);
-  const r2 = countFilled(payload.rows[1]);
-  const r3 = countFilled(payload.rows[2]);
-
-  if (r1 < 3 && r2 < 3 && r3 < 3) {
-    Swal.fire(
-      "At least one row must have a minimum of 3 completed fields!",
-      "",
-      "warning",
-    );
-    return;
-  }
-
-  // 🔥 এখন full payload পাঠাও
-  createvocabularyExercise(payload);
-  reset();
-};
-
 
   if (isLoading || vocabularyLoading) return <CustomLoading />;
 
@@ -175,7 +221,7 @@ const onSubmit = async (data) => {
       <div className="bg-white shadow-md rounded-lg p-2 md:p-5 mt-10 space-y-3">
         <div className="flex flex-col items-center mb-3 space-y-2">
           {vocabularyFields?.map((item) => (
-            <div key={item._id} className="text-center max-w-[1400px] bg-gradient-to-br from-teal-50 via-white to-emerald-50 p-6 md:p-8 rounded-lg shadow-md border-l-4 border-teal-500 relative overflow-hidden mb-8">
+            <div key={item._id} className="text-center max-w-[1400px] bg-gradient-to-br from-teal-50 via-white to-emerald-50 p-3 md:p-8 rounded-lg shadow-md border-l-4 border-teal-500 relative overflow-hidden mb-8">
               <h2 className="text-3xl font-bold text-teal-600">
                 {item?.title || "Title Missing"}
               </h2>
@@ -397,9 +443,10 @@ const onSubmit = async (data) => {
               item.isActive === "ON" && (
                 <div key={item._id}>
                   <div className="card bg-white shadow-md rounded-2xl p-2 md:p-5 mt-10 space-y-3 ">
-                    <h3 className="text-xl font-semibold text-teal-600">
-                      📖 Learning Your Exercise
-                    </h3>
+                   <h3 className="text-base md:text-xl font-semibold text-teal-600 flex items-center gap-2">
+  <BookOpenCheck className="w-6 h-6 text-teal-600" />
+  {item?.title ? `${item.title} Practice Exercise` : "Practice Exercise"}
+</h3>
                     <div className="overflow-x-auto rounded-xl shadow border border-gray-200">
                       <table className="table w-full">
                         <thead className="bg-teal-600 text-white text-sm">
@@ -707,4 +754,4 @@ const onSubmit = async (data) => {
   );
 };
 
-export default vocabulary;
+export default Vocabulary;

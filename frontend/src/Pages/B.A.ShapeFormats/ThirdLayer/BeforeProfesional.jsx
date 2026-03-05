@@ -1,6 +1,6 @@
 
 import { useQuery } from "@tanstack/react-query";
-import { ChevronDown } from "lucide-react";
+import { BookOpenCheck, ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Swal from "sweetalert2";
@@ -105,7 +105,7 @@ const BeforeProfesional = () => {
       {/* ✅ Title & Description */}
       <section className="text-center">
         {beforeProfessionalFields.map((field) => (
-          <div key={field._id} className="p-4">
+          <div key={field._id} className="bg-gradient-to-br from-teal-50 via-white to-emerald-50 p-3 md:p-8 rounded-lg shadow-md border-l-4 border-teal-500 relative overflow-hidden mb-8">
             <h3 className="font-semibold text-3xl text-teal-600">
               {field.title}
             </h3>
@@ -162,9 +162,12 @@ const BeforeProfesional = () => {
       {/* ✅ Learning Your Exercise (ONLY if Active) */}
       {activeField && (
         <section className="card bg-white shadow-2xl rounded-2xl p-4 md:p-6 mt-10 space-y-5">
-          <h3 className="text-xl font-semibold text-teal-600">
-            📖 Learning Your Exercise
-          </h3>
+   <h3 className="text-base md:text-xl font-semibold text-teal-600 flex items-center gap-2">
+  <BookOpenCheck className="w-6 h-6 text-teal-600" />
+  {activeField?.title
+    ? `${activeField.title} Practice Exercise`
+    : "Practice Exercise"}
+</h3>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div className="form-control w-full mb-5">

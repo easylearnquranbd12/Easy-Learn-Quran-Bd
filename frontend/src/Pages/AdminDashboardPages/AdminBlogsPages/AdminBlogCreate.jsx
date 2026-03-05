@@ -196,7 +196,7 @@ const AdminBlogCreate = () => {
           </div>
 
           {/* ✅ Songs List */}
-          <div className=" bg-white shadow-lg rounded-xl border p-4 sm:p-6 w-[450px] md:w-full">
+          <div className=" bg-white shadow-lg rounded-xl border p-4 sm:p-6 w-[350px] md:w-full">
             <h2 className="text-lg sm:text-xl font-semibold mb-4 text-teal-700">
               List
             </h2>

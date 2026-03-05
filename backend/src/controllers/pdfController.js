@@ -5,10 +5,12 @@ const multer = require("multer");
 const {
   getAdminPdfUploadCollection,
   getUserPdfUploadCollection,
+  getBlankPdfUploadCollection,
 } = require("../config/db");
 
 const adminPdfs = getAdminPdfUploadCollection();
 const userPdfs = getUserPdfUploadCollection();
+const blankPdfs = getBlankPdfUploadCollection();
 
 // Multer setup
 const storage = multer.diskStorage({
@@ -233,7 +235,70 @@ const userDownloadPdf = async (req, res) => {
   }
 };
 
+// ================= Blank Pdf Format =================
 
+// Admin Upload
+const uploadBlankPdf = async (req, res) => {
+  try {
+    const file = req.file;
+    if (!file) return res.status(400).json({ message: "No file uploaded" });
+
+    const pdfData = {
+      originalName: file.originalname,
+      filename: file.filename,
+      path: file.path,
+      size: file.size,
+      createdAt: new Date().toISOString(),
+    };
+
+    const result = await blankPdfs.insertOne(pdfData);
+    res.status(201).json({ message: "PDF uploaded successfully", result });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to upload PDF." });
+  }
+};
+
+// Get All Admin PDFs
+const getAllBlankPdfs = async (req, res) => {
+  try {
+    const pdfs = await blankPdfs.find().sort({ createdAt: -1 }).toArray();
+    res.status(200).json(pdfs);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to fetch PDFs." });
+  }
+};
+
+// Delete Admin PDF
+const deleteBlankPdf = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const pdf = await blankPdfs.findOne({ _id: new ObjectId(id) });
+    if (!pdf) return res.status(404).json({ message: "PDF not found" });
+
+    if (fs.existsSync(pdf.path)) fs.unlinkSync(pdf.path);
+    await blankPdfs.deleteOne({ _id: new ObjectId(id) });
+    res.status(200).json({ message: "PDF deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to delete PDF." });
+  }
+};
+
+// Download PDF
+const downloadBlankPdf = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const pdf = await blankPdfs.findOne({ _id: new ObjectId(id) });
+    if (!pdf) return res.status(404).json({ message: "PDF not found" });
+
+    res.download(path.resolve(pdf.path), pdf.originalName);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to download PDF" });
+  }
+};
 
 module.exports = {
   upload,
@@ -246,5 +311,9 @@ module.exports = {
   userDeletePdf,
   updatePdfStatus,
   userDownloadPdf,
+  uploadBlankPdf,
+  getAllBlankPdfs,
+  deleteBlankPdf,
+  downloadBlankPdf,
 
 };

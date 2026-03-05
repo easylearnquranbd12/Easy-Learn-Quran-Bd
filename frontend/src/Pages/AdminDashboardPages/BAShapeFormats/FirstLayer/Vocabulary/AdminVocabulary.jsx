@@ -468,7 +468,7 @@ const AdminVocabulary = () => {
       </div>
 
       {/* History */}
-      <div className="bg-white rounded-lg shadow-md p-2 md:p-5 mt-10 w-[355px] md:w-full">
+      <div className="bg-white rounded-lg shadow-md p-2 md:p-5 mt-10 w-[350px] md:w-full">
         <h1 className="mb-5">
           Total Vocabulary Items:{" "}
           <span className="text-3xl font-bold ">{vocabulary.total}</span>

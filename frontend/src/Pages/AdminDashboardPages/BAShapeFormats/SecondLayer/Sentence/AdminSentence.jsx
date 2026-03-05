@@ -454,7 +454,7 @@ const AdminSentence = () => {
       </div>
 
       {/* History */}
-      <div className="bg-white rounded-lg shadow-md p-5 mt-10 w-[450px] md:w-full">
+      <div className="bg-white rounded-lg shadow-md p-5 mt-10 w-[350px] md:w-full">
         <h1 className="mb-5">
           Total sentence Items:{" "}
           <span className="text-3xl font-bold ">{sentence.length}</span>

@@ -12,7 +12,10 @@ const {
   userDeletePdf,
   updatePdfStatus,
   userDownloadPdf,
-  downloadPdfUniversal,
+  uploadBlankPdf,
+  getAllBlankPdfs,
+  deleteBlankPdf,
+  downloadBlankPdf,
 } = require("../controllers/pdfController");
 const router = express.Router();
 
@@ -28,5 +31,10 @@ router.get("/user", userGetAllPdfs);
 router.delete("/user/:id", userDeletePdf);
 router.put("/user/status/:id", updatePdfStatus);
 router.get("/user/download/:id", userDownloadPdf);
+// ===== Blank Pdf Format Routes =====
+router.post("/blank/upload", upload.single("pdf"), uploadBlankPdf);
+router.get("/blank", getAllBlankPdfs);
+router.delete("/blank/:id", deleteBlankPdf);
+router.get("/blank/download/:id", downloadBlankPdf);
 
 module.exports = router;
