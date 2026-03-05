@@ -8,7 +8,7 @@ import useAuth from "../hooks/useAuth";
 const AdminLayout = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const { logOut, user } = useAuth();
+  const { logout, user } = useAuth();
   const location = useLocation();
 
   // Close dropdown when clicking outside
@@ -53,27 +53,27 @@ const AdminLayout = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-h-screen lg:ml-64 bg-[#edf7f4]">
         {/* ✅ Top Navbar */}
-        <nav className="fixed top-0 left-0 lg:left-64 right-0 h-16 bg-white border-b border-gray-300 z-[100] shadow-xl flex justify-between items-center px-4">
-          <div className="flex items-center gap-3">
+        <nav className="fixed top-0 left-0 lg:left-64 right-0 h-16 bg-white border-b border-gray-300 z-[100] shadow-xl flex justify-between items-center px-2 md:px-4">
+          <div className="flex items-center gap-1">
             <button
-              className="lg:hidden text-indigo-800 transition-colors hover:bg-indigo-100 rounded-md px-3 py-2 cursor-pointer"
+              className="lg:hidden text-indigo-800 transition-colors hover:bg-indigo-100 rounded-md px-1 py-2 cursor-pointer"
               onClick={handleSidebarToggle}
               aria-label="Toggle sidebar"
             >
               <FaBars className="w-6 h-6 text-[#1f4e43]" />
             </button>
-            <h1 className="text-lg font-semibold text-gray-800">
+            <p className="text-xs md:text-base  text-gray-800">
               Admin Dashboard
-            </h1>
+            </p>
           </div>
 
           <div className="flex items-center gap-3">
             <span className="text-gray-600 text-sm">{user?.displayName}</span>
             <button
-              onClick={logOut}
+              onClick={logout}
               className="bg-indigo-600 text-white px-3 py-1.5 rounded-md text-sm hover:bg-indigo-700 transition"
             >
-              Logout
+              LogOut
             </button>
           </div>
         </nav>

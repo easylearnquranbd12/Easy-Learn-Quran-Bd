@@ -132,9 +132,17 @@ const userUploadPdf = async (req, res) => {
 // Get All User PDFs (by email)
 const userGetAllPdfs = async (req, res) => {
   try {
-    const { email } = req.query;
-    const query = email ? { email } : {};
-    const pdfs = await userPdfs.find(query).sort({ createdAt: -1 }).toArray();
+    const { email, status } = req.query;
+
+    const query = {};
+    if (email) query.email = email;
+    if (status) query.status = status;
+
+    const pdfs = await userPdfs
+      .find(query)
+      .sort({ createdAt: -1 })
+      .toArray();
+
     res.status(200).json(pdfs);
   } catch (error) {
     console.error(error);
@@ -179,11 +187,44 @@ const updatePdfStatus = async (req, res) => {
   }
 };
 // Download PDF
+// const userDownloadPdf = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     if (!ObjectId.isValid(id)) {
+//       return res.status(400).json({ message: "Invalid PDF ID" });
+//     }
+
+//     const pdf = await userPdfs.findOne({ _id: new ObjectId(id) });
+//     if (!pdf) return res.status(404).json({ message: "PDF not found" });
+
+//     if (!fs.existsSync(pdf.path)) {
+//       return res.status(404).json({ message: "File not found on server" });
+//     }
+
+//     res.download(path.resolve(pdf.path), pdf.originalName);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Failed to download PDF" });
+//   }
+// };
+
 const userDownloadPdf = async (req, res) => {
   try {
     const { id } = req.params;
+
+    // ID validate
+    if (!ObjectId.isValid(id))
+      return res.status(400).json({ message: "Invalid PDF ID" });
+
+    // এখানে userPdfs collection ব্যবহার
     const pdf = await userPdfs.findOne({ _id: new ObjectId(id) });
     if (!pdf) return res.status(404).json({ message: "PDF not found" });
+
+    // ফাইল server এ আছে কি না চেক
+    if (!fs.existsSync(pdf.path)) {
+      return res.status(404).json({ message: "File not found on server" });
+    }
 
     res.download(path.resolve(pdf.path), pdf.originalName);
   } catch (error) {
@@ -191,6 +232,9 @@ const userDownloadPdf = async (req, res) => {
     res.status(500).json({ message: "Failed to download PDF" });
   }
 };
+
+
+
 module.exports = {
   upload,
   uploadPdf,
@@ -202,4 +246,5 @@ module.exports = {
   userDeletePdf,
   updatePdfStatus,
   userDownloadPdf,
+
 };

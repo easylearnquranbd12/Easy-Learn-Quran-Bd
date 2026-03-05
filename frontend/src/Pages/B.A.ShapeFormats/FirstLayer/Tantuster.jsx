@@ -165,7 +165,7 @@ const Tantuster = () => {
       <div className="py-8 ">
         <div className="flex flex-col items-center mb-3 space-y-2">
           {tantusterFields?.map((item) => (
-            <div key={item._id} className="text-center max-w-[1400px]">
+            <div key={item._id} className="text-center max-w-[1400px] bg-gradient-to-br from-teal-50 via-white to-emerald-50 p-6 md:p-8 rounded-lg shadow-md border-l-4 border-teal-500 relative overflow-hidden mb-8">
               <h2 className="text-3xl font-bold text-teal-700">
                 {item?.title || "Title Missing"}
               </h2>

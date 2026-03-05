@@ -25,6 +25,7 @@ const fiveLayerRoutes = require("./routes/fiveLayerRoutes");
 const layerManagementRoutes = require("./routes/layerManagementRoutes");
 const pdfRoutes = require("./routes/pdfRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
+const userNobelRoutes = require("./routes/userNobelRoutes");
 
 dotenv.config();
 
@@ -38,7 +39,7 @@ app.use(
       callback(null, origin); // reflect the request origin
     },
     credentials: true,
-  })
+  }),
 );
 
 app.use(express.json({ limit: "50mb" }));
@@ -68,6 +69,7 @@ app.use("/five-layer", fiveLayerRoutes);
 app.use("/layer-management", layerManagementRoutes);
 app.use("/pdf", pdfRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/userNobel", userNobelRoutes);
 // Root route
 app.get("/", (req, res) => {
   res.send("Learning Quiz Platfrom Server Running");

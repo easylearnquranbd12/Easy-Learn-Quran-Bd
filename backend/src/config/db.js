@@ -330,6 +330,9 @@ const getAddPaymentMethodCollection = () => {
 const getUserPaymentCollection = () => {
   return client.db("Shapion-Quiz-Platform").collection("UserPayment");
 };
+const getUserNobelCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("UserNobel");
+};
 const getPromotionCollection = () => {
   return client.db("Shapion-Quiz-Platform").collection("Promotions");
 };
@@ -361,6 +364,7 @@ module.exports = {
   getAuthorTextCollection,
   getSocialLinksCollection,
   getPromotionCollection,
+  getUserNobelCollection,
   // Layers Management Colllections
   getLayerManagementFieldsCollection,
   // PDF Upload Admin Panel

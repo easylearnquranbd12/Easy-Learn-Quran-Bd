@@ -114,7 +114,7 @@ const Quiz = () => {
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
   const { text: gradeText, color: gradeColor } = getScoreGrade(
     result.correct,
-    questions.length
+    questions.length,
   );
 
   // 🆕 Step 6: অপশন কালার নির্ধারণের ফাংশন (পরিবর্তন নেই, শুধু submitted এর বদলে isReviewing দিয়ে নিয়ন্ত্রণ হবে)
@@ -189,7 +189,10 @@ const Quiz = () => {
   return (
     <div className="max-w-[1400px] mx-auto bg-white shadow-lg rounded-2xl p-6 my-10">
       {mcqFields.map((mcqField, index) => (
-        <div key={index}>
+        <div
+          key={index}
+          className="bg-gradient-to-br from-teal-50 via-white to-emerald-50 p-2 md:p-5 rounded-lg shadow-md border-l-4 border-teal-500 mb-10"
+        >
           <h2 className="text-2xl font-bold text-center text-teal-600 mb-6">
             {mcqField.title}
           </h2>
@@ -341,7 +344,7 @@ const Quiz = () => {
                   <label
                     key={i}
                     className={`block p-3 rounded-md border transition-colors ${getOptionClasses(
-                      option
+                      option,
                     )} ${isReviewing ? "cursor-default" : "cursor-pointer"}`}
                   >
                     <input
@@ -403,7 +406,6 @@ const Quiz = () => {
               <button
                 type="button"
                 onClick={handleNextQuestion}
-                // যদি কুইজ সাবমিট না হয়, তবে উত্তর সিলেক্ট না করলে Next বাটন ডিজেবল থাকবে। রিভিউ মোডে সবসময় এনাবেল থাকবে।
                 disabled={!isReviewing && !isAnswerSelected}
                 className={`px-6 py-3 rounded-lg font-semibold transition ${
                   !isReviewing && !isAnswerSelected

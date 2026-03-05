@@ -15,7 +15,6 @@ const Home = () => {
       <BetheshapePricing />
       <Advertisement />
       <BetheshapeFAQ />
-
       <OurSuccessstory />
     </div>
   );

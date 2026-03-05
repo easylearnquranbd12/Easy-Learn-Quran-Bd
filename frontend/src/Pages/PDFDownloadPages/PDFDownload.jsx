@@ -1,3 +1,5 @@
+
+
 import { Download, FileText } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -6,11 +8,10 @@ const PDFDownload = () => {
   const [pdfs, setPdfs] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Fetch all PDFs
   const fetchPdfs = async () => {
     setLoading(true);
     try {
-      const res = await fetch("https://api.betheshape.com/pdf");
+      const res = await fetch("http://localhost:5000/pdf");
       const data = await res.json();
       if (res.ok) setPdfs(data);
     } catch (err) {
@@ -24,67 +25,110 @@ const PDFDownload = () => {
     fetchPdfs();
   }, []);
 
-  // Download PDF
-  const handleDownload = async (pdf) => {
-    try {
-      const res = await fetch(`https://api.betheshape.com/pdf/download/${pdf._id}`);
-      if (!res.ok) throw new Error("Failed to download PDF");
+// const handleDownload = async (id, filename, isUser = false) => {
+//   try {
+//     const url = isUser
+//       ? `http://localhost:5000/pdf/user/download/${id}`
+//       : `http://localhost:5000/pdf/download/${id}`;
 
-      const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = pdf.originalName; // original file name
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-    } catch (err) {
-      console.error(err);
-      alert("Download failed!");
-    }
-  };
+//     const res = await fetch(url, { credentials: "include" });
+//     if (!res.ok) throw new Error("Download failed");
 
+//     const blob = await res.blob();
+//     const downloadUrl = window.URL.createObjectURL(blob);
+//     const link = document.createElement("a");
+//     link.href = downloadUrl;
+//     link.download = filename || "document.pdf";
+//     document.body.appendChild(link);
+//     link.click();
+//     link.remove();
+//   } catch (err) {
+//     console.error(err);
+//     alert("Download failed!");
+//   }
+// };
+const handleDownload = (id) => {
+  console.log(id)
+  window.location.href = `http://localhost:5000/pdf/download/${id}`;
+};
   return (
-    <div className="p-6 min-h-screen bg-gradient-to-br from-gray-50 to-gray-200 flex flex-col items-center justify-start">
+    <div className=" min-h-screen py-20">
       <Helmet>
-        <title>Download PDFs</title>
+        <title>Official Document Archive</title>
       </Helmet>
 
-      <div className="w-full max-w-[1400px] mx-auto mt-10 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
-        <h1 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-          <FileText className="w-6 h-6 text-red-600" />
-          Download PDFs
-        </h1>
+      <div className="max-w-5xl mx-auto px-6">
 
+        {/* ===== Header ===== */}
+        <div className="text-center mb-16">
+          <div className="w-20 h-20 mx-auto rounded-full border-4 border-yellow-700 flex items-center justify-center text-yellow-700 font-serif text-xl font-bold mb-6">
+            PDF
+          </div>
+
+          <h1 className="text-4xl md:text-5xl font-serif font-semibold text-gray-900">
+            Official Document Archive
+          </h1>
+
+          <p className="mt-6 text-gray-600 max-w-2xl mx-auto leading-relaxed text-lg">
+            The following documents are preserved within the official archive.
+            Each file has been formally recorded and is available for
+            scholarly and institutional reference.
+          </p>
+
+          <div className="w-28 h-[2px] bg-yellow-700 mx-auto mt-8"></div>
+        </div>
+
+        {/* ===== Content ===== */}
         {loading ? (
-          <p className="text-gray-600 text-sm">Loading PDFs...</p>
+          <div className="text-center py-20 text-gray-600">
+            Loading archived documents...
+          </div>
         ) : pdfs.length === 0 ? (
-          <p className="text-gray-600 text-sm">No PDFs available.</p>
+          <div className="text-center py-20 border-t border-b border-gray-300">
+            <FileText className="w-14 h-14 mx-auto text-gray-300 mb-4" />
+            <h3 className="text-2xl font-serif text-gray-800">
+              No Documents Available
+            </h3>
+            <p className="text-gray-500 mt-4">
+              Official documents will appear here once recorded.
+            </p>
+          </div>
         ) : (
-          <ul className="flex flex-col gap-3">
+          <div className="divide-y divide-gray-300">
             {pdfs.map((pdf) => (
-              <li
+              <div
                 key={pdf._id}
-                className="flex items-center justify-between bg-white/50 p-3 rounded-lg border border-gray-200 hover:bg-gray-100 transition"
+                className="py-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6"
               >
-                <div className="flex items-center gap-3">
-                  <FileText className="w-5 h-5 text-red-600" />
+                {/* Left Side */}
+                <div className="flex items-start gap-4">
+                  <FileText className="w-8 h-8 text-yellow-700 mt-1" />
                   <div>
-                    <p className="text-gray-700 text-sm">{pdf.originalName}</p>
-                    <p className="text-gray-500 text-xs">
-                      {new Date(pdf.createdAt).toLocaleString()}
+                    <h3 className="text-xl font-serif text-gray-900">
+                      {pdf.originalName}
+                    </h3>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Recorded on{" "}
+                      {new Date(pdf.createdAt).toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "long",
+                        year: "numeric",
+                      })}
                     </p>
                   </div>
                 </div>
+
+                {/* Download Button */}
                 <button
-                  onClick={() => handleDownload(pdf)}
-                  className="flex items-center gap-1 text-white bg-bgButton hover:bg-hoverBgButton px-3 py-1 rounded-md transition"
+                onClick={() => handleDownload(pdf._id, pdf.originalName, true)}
+                  className="flex items-center justify-center gap-2 border border-yellow-700 text-yellow-700 hover:bg-yellow-700 hover:text-white transition-all duration-300 px-6 py-3 font-medium tracking-wide"
                 >
-                  <Download className="w-4 h-4" /> Download
+                  <Download className="w-5 h-5" />
+                  Download Official Copy
                 </button>
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
       </div>
     </div>

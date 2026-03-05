@@ -1,16 +1,16 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import {
-  BookOpen,
-  Calendar,
-  CheckCircle,
-  CreditCard,
-  Eye,
-  GraduationCap,
-  Mail,
-  Trash2,
-  Users,
-  XCircle,
+    BookOpen,
+    Calendar,
+    CheckCircle,
+    CreditCard,
+    Eye,
+    GraduationCap,
+    Mail,
+    Trash2,
+    Users,
+    XCircle,
 } from "lucide-react";
 import { useState } from "react";
 import Swal from "sweetalert2";
@@ -18,7 +18,7 @@ import useAuth from "../../../hooks/useAuth";
 import useRole from "../../../hooks/useRole";
 
 const fetchPayments = async () => {
-  const res = await axios.get("https://api.betheshape.com/payment/admin");
+  const res = await axios.get("http://localhost:5000/payment/admin");
   return res.data;
 };
 
@@ -57,7 +57,7 @@ const AllUserPayment = () => {
     if (!confirm.isConfirmed) return;
 
     try {
-      await axios.patch(`https://api.betheshape.com/payment/status/${id}`, {
+      await axios.patch(`http://localhost:5000/payment/status/${id}`, {
         status,
       });
       Swal.fire(
@@ -86,7 +86,7 @@ const AllUserPayment = () => {
     if (!confirm.isConfirmed) return;
 
     try {
-      await axios.delete(`https://api.betheshape.com/payment/admin/${id}`);
+      await axios.delete(`http://localhost:5000/payment/admin/${id}`);
       Swal.fire("Deleted!", "Payment has been deleted.", "success");
       queryClient.invalidateQueries(["allPayments"]);
     } catch {

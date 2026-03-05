@@ -1,122 +1,30 @@
-// import { useQuery } from "@tanstack/react-query";
-// import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
-// const LetterWritting = () => {
-//   const axiosPublic = useAxiosPublic();
-  
-//   // ✅ Fetch song fields
-//   const { data: letterWritingFields = [], isLoading: fieldsLoading } = useQuery({
-//     queryKey: ["letterWritingFields"],
-//     queryFn: async () => {
-//       const res = await axiosPublic.get("/five-layer/letterWritingField");
-//       return res.data?.data || [];
-//     },
-//   });
-
-//   // ✅ Fetch all good songs
-//   const { data: letterWriting = [], isLoading: songsLoading } = useQuery({
-//     queryKey: ["letterWriting"],
-//     queryFn: async () => {
-//       const res = await axiosPublic.get("/five-layer/letterWriting");
-//       return res.data || [];
-//     },
-//   });
-
-//   const isLoading = fieldsLoading || songsLoading;
-
-//   // ✅ Loading state
-//   if (isLoading) {
-//     return (
-//       <div className="text-center py-10 text-gray-500 text-lg">Loading...</div>
-//     );
-//   }
-
-
-//   return (
-//     <div className="max-w-[1400px] mx-auto p-6 space-y-10 bg-white rounded-2xl shadow-md my-10">
-//       {/* ✅ Song Fields */}
-//       <section className="text-center">
-//         {letterWritingFields.length === 0 ? (
-//           <p className="text-gray-500">No song fields found.</p>
-//         ) : (
-//           <div className="space-y-6">
-//             {letterWritingFields.map((field) => (
-//               <div key={field._id} className="p-4">
-//                 <h3 className="font-semibold text-3xl">{field.title}</h3>
-//                 <p className="text-gray-600 text-sm lg:text-base text-justify py-5">
-//                   {field.description}
-//                 </p>
-//               </div>
-//             ))}
-//           </div>
-//         )}
-//       </section>
-
-//       {/* ✅ Good Life Style Section (Collapsible) */}
-//       <section>
-//         {letterWriting.length === 0 ? (
-//           <p className="text-gray-500 text-center">No items found.</p>
-//         ) : (
-//           <div className="space-y-3">
-//             {letterWriting.map((song, index) => (
-//               <div
-//                 key={song._id}
-//                 className="border rounded-xl overflow-hidden transition-all duration-300"
-//               >
-//                 <h1 className="text-center text-3xl py-5">{song.name}</h1>
-//                 <div
-//                   className="px-4 py-3 text-gray-700 text-sm lg:text-base"
-//                   dangerouslySetInnerHTML={{ __html: song.description }}
-//                 />
-//               </div>
-//             ))}
-//           </div>
-//         )}
-//       </section>
-//     </div>
-//   );
-// };
-
-// export default LetterWritting;
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const LetterWritting = () => {
   const axiosPublic = useAxiosPublic();
 
-  /* ================================
-     Fetch Letter Writing Fields
-  ================================= */
   const { data: letterWritingFields = [], isLoading: fieldsLoading } =
     useQuery({
       queryKey: ["letterWritingFields"],
       queryFn: async () => {
-        const res = await axiosPublic.get(
-          "/five-layer/letterWritingField"
-        );
+        const res = await axiosPublic.get("/five-layer/letterWritingField");
         return res.data?.data || [];
       },
     });
 
-  /* ================================
-     Fetch Letters
-  ================================= */
   const { data: letterWriting = [], isLoading: lettersLoading } =
     useQuery({
       queryKey: ["letterWriting"],
       queryFn: async () => {
-        const res = await axiosPublic.get(
-          "/five-layer/letterWriting"
-        );
+        const res = await axiosPublic.get("/five-layer/letterWriting");
         return res.data || [];
       },
     });
 
   const isLoading = fieldsLoading || lettersLoading;
 
-  /* ================================
-     Loading State
-  ================================= */
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-[300px] text-gray-500 text-lg">
@@ -124,70 +32,107 @@ const LetterWritting = () => {
       </div>
     );
   }
-
-  /* ================================
-     Render
-  ================================= */
+console.log("letterWriting",letterWriting)
   return (
-    <div className="max-w-[1400px] mx-auto my-12 px-6 lg:px-10">
+    <div className="min-h-screen py-12 px-3 md:px-10 bg-gray-100">
 
-      {/* ================= Letter Field Section ================= */}
-      <section className="mb-14 text-center">
-        {letterWritingFields.length === 0 ? (
-          <p className="text-gray-500 text-lg">
-            No letter writing guidelines available.
-          </p>
-        ) : (
-          <div className="space-y-8">
-            {letterWritingFields.map((field) => (
-              <div key={field._id} className="space-y-4">
-                <h2 className="text-3xl lg:text-4xl font-serif font-bold text-gray-900">
-                  {field.title}
-                </h2>
+      {/* ================= Field Section ================= */}
+      <section className="mb-16 max-w-[1400px] mx-auto text-center space-y-8">
+        {letterWritingFields.map((field) => (
+          <div
+            key={field._id}
+            className="bg-gradient-to-br from-teal-50 via-white to-emerald-50 p-6 md:p-8 rounded-lg shadow-md border-l-4 border-teal-500 relative overflow-hidden"
+          >
+            {/* Background Decorative Shape */}
+            <div className="absolute top-0 left-0 w-40 h-40 bg-teal-300 opacity-10 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+            <div className="absolute bottom-0 right-0 w-56 h-56 bg-blue-300 opacity-10 rounded-full translate-x-1/4 translate-y-1/4"></div>
 
-                <div
-                  className="text-gray-700 text-justify leading-relaxed text-base lg:text-lg"
-                  dangerouslySetInnerHTML={{
-                    __html: field.description,
-                  }}
-                />
-              </div>
-            ))}
+            <h2 className="text-2xl md:text-4xl font-serif font-bold text-gray-800 relative z-10">
+              {field.title}
+            </h2>
+            <div
+              className="mt-4 text-gray-600 text-justify leading-relaxed relative z-10"
+              dangerouslySetInnerHTML={{ __html: field.description }}
+            />
           </div>
-        )}
+        ))}
       </section>
 
-      {/* ================= Letter List Section ================= */}
-      <section>
-        {letterWriting.length === 0 ? (
-          <p className="text-gray-500 text-center text-lg">
-            No letters found.
-          </p>
-        ) : (
-          <div className="space-y-8">
-            {letterWriting.map((letter, index) => (
-              <article
-                key={letter._id}
-                className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 lg:p-10 transition hover:shadow-md"
-              >
-                {/* Letter Title */}
-                <header className="mb-6 text-center">
-                  <h3 className="text-2xl lg:text-3xl font-serif font-semibold text-gray-900">
-                    {letter.name}
-                  </h3>
-                </header>
+      {/* ================= Letter Section ================= */}
+      <section className="flex flex-col items-center gap-14">
+        {letterWriting.map((letter) => (
+          <article
+            key={letter._id}
+            className="relative w-full max-w-[900px] bg-white rounded-lg shadow-2xl overflow-hidden"
+          >
+            {/* Decorative Shapes */}
+            <div className="absolute top-0 right-0 w-40 h-40 bg-blue-600 opacity-10 rounded-bl-full"></div>
+            <div className="absolute bottom-0 left-0 w-52 h-52 bg-purple-600 opacity-10 rounded-tr-full"></div>
 
-                {/* Letter Content */}
-                <div
-                  className="text-gray-800 text-justify leading-relaxed text-sm lg:text-base"
-                  dangerouslySetInnerHTML={{
-                    __html: letter.description,
-                  }}
-                />
-              </article>
-            ))}
-          </div>
-        )}
+            {/* Watermark */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <h1 className="text-[60px] md:text-[120px] font-bold text-gray-300 opacity-40 rotate-[-30deg] select-none tracking-widest">
+                OFFICIAL
+              </h1>
+            </div>
+
+            {/* Content Wrapper */}
+            <div className="relative z-10 px-6 py-12 md:px-20 md:py-20">
+
+              {/* Letter Header */}
+              <header className="mb-8 text-center">
+                <h3 className="text-xl md:text-3xl font-serif font-bold text-gray-900">
+                  {letter.name}
+                </h3>
+                <div className="w-24 h-[2px] bg-blue-600 mx-auto mt-3"></div>
+              </header>
+
+              {/* Letter Content */}
+              {/* <div
+                className="text-[14px] md:text-[17px] leading-7 md:leading-8 text-gray-800 text-justify"
+                dangerouslySetInnerHTML={{ __html: letter.description }}
+              /> */}
+
+           <div className="relative pl-6 overflow-hidden">
+
+  {/* Vertical Accent Line */}
+  <div className="absolute left-0 top-0 h-full w-0.5 bg-gradient-to-b from-teal-200 to-purple-200 rounded"></div>
+
+  {/* Small Subtle Shapes */}
+
+  {/* Small Circle */}
+  <div className="absolute top-6 right-8 w-3 h-3 bg-teal-300 opacity-40 rounded-full"></div>
+
+  {/* Small Square */}
+  <div className="absolute top-24 right-16 w-3 h-3 bg-purple-300 opacity-40 rotate-12"></div>
+
+  {/* Small Triangle */}
+  <div className="absolute bottom-16 left-10 w-0 h-0 
+      border-l-[6px] border-l-transparent
+      border-r-[6px] border-r-transparent
+      border-b-[10px] border-b-blue-300
+      opacity-40">
+  </div>
+
+  {/* Small Dot Pattern */}
+  <div className="absolute bottom-6 right-10 w-2 h-2 bg-gray-300 opacity-40 rounded-full"></div>
+  <div className="absolute bottom-10 right-14 w-2 h-2 bg-gray-300 opacity-30 rounded-full"></div>
+  <div className="absolute bottom-14 right-18 w-2 h-2 bg-gray-300 opacity-20 rounded-full"></div>
+
+  {/* Content */}
+  <div
+    className="relative z-10 text-[14px] md:text-[17px] leading-7 md:leading-8 text-gray-800 text-justify"
+    dangerouslySetInnerHTML={{ __html: letter.description }}
+  />
+</div>
+              {/* Signature */}
+              <div className="mt-14 text-right text-sm md:text-base text-gray-700 italic">
+                — {letter.writtingBy || "Authorized Person"}
+              </div>
+
+            </div>
+          </article>
+        ))}
       </section>
     </div>
   );

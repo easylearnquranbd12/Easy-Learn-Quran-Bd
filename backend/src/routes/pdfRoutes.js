@@ -1,14 +1,4 @@
-// const express = require("express");
-// const { uploadPdf, upload, getAllPdfs, deletePdf, downloadPdf } = require("../controllers/pdfController");
 
-// const router = express.Router();
-
-// router.post("/upload", upload.single("pdf"), uploadPdf);
-// router.get("/", getAllPdfs);
-// router.delete("/:id", deletePdf);
-// router.get("/download/:id", downloadPdf);
-
-// module.exports = router;
 
 const express = require("express");
 const {
@@ -22,6 +12,7 @@ const {
   userDeletePdf,
   updatePdfStatus,
   userDownloadPdf,
+  downloadPdfUniversal,
 } = require("../controllers/pdfController");
 const router = express.Router();
 

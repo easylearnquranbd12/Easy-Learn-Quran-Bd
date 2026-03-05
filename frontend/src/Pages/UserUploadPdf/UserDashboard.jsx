@@ -1,23 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Cell,
-  Legend,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis, YAxis
+    Bar,
+    BarChart,
+    CartesianGrid,
+    Cell,
+    Legend,
+    Pie,
+    PieChart,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis, YAxis
 } from "recharts";
 import useAuth from "../../hooks/useAuth";
 
 const COLORS = ["#FFBB28", "#0088FE", "#00C49F", "#FF8042", "#A28BFF"];
 
 const fetchUserDashboard = async (email) => {
-  const res = await axios.get(`https://api.betheshape.com/api/dashboard/summary/${email}`);
+  const res = await axios.get(`http://localhost:5000/api/dashboard/summary/${email}`);
   return res.data;
 };
 

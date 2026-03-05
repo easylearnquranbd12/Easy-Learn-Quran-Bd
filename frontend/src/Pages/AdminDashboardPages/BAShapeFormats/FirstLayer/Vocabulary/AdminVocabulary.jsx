@@ -206,7 +206,7 @@ const AdminVocabulary = () => {
     return <AdminLoading />;
   }
   return (
-    <div className="max-w-[1400px] mx-auto px-2">
+    <div className="max-w-[1400px] mx-auto ">
       <Helmet>
         <title>Quiz | Vocabulary</title>
       </Helmet>
@@ -468,7 +468,7 @@ const AdminVocabulary = () => {
       </div>
 
       {/* History */}
-      <div className="bg-white rounded-lg shadow-md p-5 mt-10 w-[450px] md:w-full">
+      <div className="bg-white rounded-lg shadow-md p-2 md:p-5 mt-10 w-[355px] md:w-full">
         <h1 className="mb-5">
           Total Vocabulary Items:{" "}
           <span className="text-3xl font-bold ">{vocabulary.total}</span>

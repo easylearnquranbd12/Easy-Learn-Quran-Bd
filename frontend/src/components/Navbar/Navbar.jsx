@@ -124,6 +124,7 @@ const getNavigationLinks = (user, setLanguage, field = [], isLoading) => {
       subLinks: [
         { title: "Blank Format", link: "/contribute/blank-format" },
         { title: "Upload PDF", link: "/contribute/upload-pdf" },
+        { title: "User Nobel", link: "/contribute/accept-user-nobels" },
       ],
     },
     { title: "PDF Download", link: "/pdf-download" },

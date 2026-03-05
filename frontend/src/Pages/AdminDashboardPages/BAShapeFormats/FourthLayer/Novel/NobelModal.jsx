@@ -30,7 +30,7 @@ const NobelModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `https://api.betheshape.com/fourth-layer/goodNobelField/${vocabId}`,
+        `http://localhost:5000/fourth-layer/goodNobelField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

@@ -12,6 +12,7 @@ import AdminVerb from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/V
 
 import AdminPorem from "../Pages/AdminDashboardPages/BAShapeFormats/FourthLayer/Porem/AdminPorem";
 
+import ManageUserNobel from "../Pages/AdminDashboardPages/AdminContributePages/ManageUserNobel";
 import SuccessVideoStorie from "../Pages/AdminDashboardPages/AdminHomePagesEdit/SuccessVideoStorie";
 import AllUserPayment from "../Pages/AdminDashboardPages/AdminPaymentPages/AllUserPayment";
 import AdminPdfUpload from "../Pages/AdminDashboardPages/AdminPdfManagement/AdminPdfUpload";
@@ -67,11 +68,13 @@ import IdeaShareAnsSuggestion from "../Pages/AdminDashboardPages/BAShapeFormats/
 import InterviewsQustions from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/InterviewsQustion/InterviewsQustions";
 import BlankFormat from "../Pages/ContributePages/BlankFormat/BlankFormat";
 import UploadPDF from "../Pages/ContributePages/UploadPDF/UploadPDF";
+import UserAcceptsNobel from "../Pages/ContributePages/UserNobel/UserAcceptsNobel";
 import DashboardRedirect from "../Pages/DashboardRedirect";
 import PaymentHome from "../Pages/PaymentPages/PaymentHome";
 import PaymentMethod from "../Pages/PaymentPages/PaymentMethod";
 import SuccessPayment from "../Pages/PaymentPages/SuccessPayment";
 import PDFDownload from "../Pages/PDFDownloadPages/PDFDownload";
+import UserNobel from "../Pages/UserNovel/UserNobel";
 import UserDashboard from "../Pages/UserUploadPdf/UserDashboard";
 import UserPaymentHistory from "../Pages/UserUploadPdf/UserPaymentHistory";
 import UserUploadPdf from "../Pages/UserUploadPdf/UserUploadPdf";
@@ -211,6 +214,14 @@ export const routes = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <UploadPDF />
+          </Suspense>
+        ),
+      },
+      {
+        path: "contribute/accept-user-nobels",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <UserAcceptsNobel />
           </Suspense>
         ),
       },
@@ -830,6 +841,14 @@ export const routes = createBrowserRouter([
         ),
       },
       {
+        path: "manage-user-nobel",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <ManageUserNobel />
+          </Suspense>
+        ),
+      },
+      {
         path: "manage-pdf",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
@@ -1042,6 +1061,14 @@ export const routes = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <UserUploadPdf />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-user-nobel",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <UserNobel />
           </Suspense>
         ),
       },

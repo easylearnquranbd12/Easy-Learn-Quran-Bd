@@ -1,6 +1,11 @@
 "use client";
 
-import { CircleFadingArrowUp, CloudUpload, Kanban } from "lucide-react";
+import {
+  CircleFadingArrowUp,
+  CloudUpload,
+  Kanban,
+  Notebook,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { BiEdit } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
@@ -484,6 +489,43 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
         },
       ],
     },
+    {
+      path: "/admin-dashboard/contribute",
+      icon: HiOutlineDocumentText,
+      label: "Contribute",
+      description: "Contribute All Info",
+      color: "text-indigo-600",
+      subItems: [
+        {
+          path: "/admin-dashboard/manage-user-nobel",
+          icon: BiEdit,
+          label: "Manage user-nobel",
+          description: "Accept Ans Delete",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/create-story-writting",
+          icon: BiEdit,
+          label: "Create Story",
+          description: "Create & History",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/create-letter-writting",
+          icon: BiEdit,
+          label: "Create Letter",
+          description: "Create & History",
+          color: "text-indigo-600",
+        },
+        {
+          path: "/admin-dashboard/create-mcq",
+          icon: BiEdit,
+          label: "Create Mcq",
+          description: "Create & History",
+          color: "text-indigo-600",
+        },
+      ],
+    },
 
     {
       path: "/admin-dashboard/layer-manage",
@@ -780,7 +822,7 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
           description: "Text & Banner Create",
           color: "text-indigo-600",
         },
-        
+
         {
           path: "/admin-dashboard/success-video-player",
           icon: MdPayment,
@@ -813,6 +855,13 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
       label: "Pdf Upload",
       description: "Pdf Management",
       color: "text-blue-600",
+    },
+    {
+      path: "/user-dashboard/create-user-nobel",
+      icon: Notebook,
+      label: "Create  user-nobel",
+      description: "Accept Ans Delete",
+      color: "text-indigo-600",
     },
     {
       path: "/user-dashboard/payment-history",

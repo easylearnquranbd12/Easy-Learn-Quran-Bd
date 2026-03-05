@@ -1,14 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import {
-  FaFacebook,
-  FaInstagram,
-  FaLinkedin,
-  FaPhoneAlt,
-  FaTiktok,
-  FaTwitter,
-  FaWhatsapp,
-  FaYoutube,
+    FaFacebook,
+    FaInstagram,
+    FaLinkedin,
+    FaPhoneAlt,
+    FaTiktok,
+    FaTwitter,
+    FaWhatsapp,
+    FaYoutube,
 } from "react-icons/fa";
 import { MdEmail, MdLocationOn } from "react-icons/md";
 import { Link } from "react-router-dom";
@@ -34,7 +34,7 @@ const Footer = () => {
   const fetchSocialLinks = async () => {
     try {
       const { data } = await axios.get(
-        "https://api.betheshape.com/api/admin/social-links"
+        "http://localhost:5000/api/admin/social-links"
       );
       setSocialLinks(data || {});
     } catch (err) {

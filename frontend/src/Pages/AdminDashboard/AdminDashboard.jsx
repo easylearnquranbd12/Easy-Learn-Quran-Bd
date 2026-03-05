@@ -2,17 +2,17 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Cell, Legend,
-  Line,
-  LineChart,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis, YAxis
+    Bar,
+    BarChart,
+    CartesianGrid,
+    Cell, Legend,
+    Line,
+    LineChart,
+    Pie,
+    PieChart,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis, YAxis
 } from "recharts";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#A28BFF"];
@@ -24,7 +24,7 @@ export default function AdminDashboard() {
   const [topCollections, setTopCollections] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const base = "https://api.betheshape.com/api/dashboard";
+  const base = "http://localhost:5000/api/dashboard";
 
   const fetchAll = async () => {
     try {
