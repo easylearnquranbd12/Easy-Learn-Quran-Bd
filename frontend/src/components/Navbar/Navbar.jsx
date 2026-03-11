@@ -63,8 +63,6 @@ import useAxiosPublic from "../../hooks/useAxiosPublic";
 //   return baseLinks;
 // };
 
-
-
 const getNavigationLinks = (user, setLanguage, field = [], isLoading) => {
   // ✅ Serial Map
   const numberMap = {
@@ -120,20 +118,26 @@ const getNavigationLinks = (user, setLanguage, field = [], isLoading) => {
 
   baseLinks.push(
     {
-      title: "Contribute",
+      title: "Contributor Corner",
       subLinks: [
-        { title: "Blank Format", link: "/contribute/blank-format" },
-        { title: "Upload PDF", link: "/contribute/upload-pdf" },
+        { title: "User PDF", link: "/contribute/upload-pdf" },
         { title: "User Nobel", link: "/contribute/accept-user-nobels" },
+        { title: "Blank Format", link: "/contribute/blank-format" },
       ],
     },
-    { title: "PDF Download", link: "/pdf-download" },
-    { title: "Blog", link: "/blog-us" }
+    { title: "PDF Library - Download", link: "/pdf-download" },
+     {
+      title: "Explore",
+      subLinks: [
+        { title: "Other", link: "explore/other" },
+        { title: "For Next", link: "/explore/for-next" },
+      ],
+    },
+    { title: "Blog", link: "/blog-us" },
   );
 
   return baseLinks;
 };
-
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -164,7 +168,7 @@ const Navbar = () => {
     user,
     setLanguage,
     field,
-    isLoading
+    isLoading,
   );
 
   const toggleSubMenu = (index) =>
@@ -227,7 +231,7 @@ const Navbar = () => {
     <div className="fixed top-0 left-0 w-full bg-white shadow-2xl z-50 px-1 py-1.5">
       <div className="max-w-[1400px] mx-auto h-[70px] flex justify-between items-center">
         <img className="h-16 w-24 cursor-pointer" src={imageLogo} alt="Logo" />
-       
+
         {/* Desktop Menu */}
         <div className="hidden md:flex flex-1 justify-end gap-2 items-center font-semibold text-xl">
           {navigationLinks.map((item, index) => (
@@ -240,7 +244,6 @@ const Navbar = () => {
               {item.subLinks ? (
                 <div className="flex items-center cursor-pointer">
                   <motion.span
-              
                     whileHover={{ y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     className={`inline-block rounded-md text-xl font-semibold transition duration-200 cursor-pointer ${
@@ -260,7 +263,6 @@ const Navbar = () => {
               ) : (
                 <Link to={item.link}>
                   <motion.span
-                  
                     whileHover={{ y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     className={`inline-block rounded-md text-base md:text-lg font-semibold transition duration-200 ${
@@ -286,7 +288,6 @@ const Navbar = () => {
                   >
                     {item.subLinks.map((subItem) => (
                       <motion.div
-                       
                         key={subItem.title}
                         variants={subMenuItemVariants}
                       >
@@ -473,7 +474,7 @@ const Navbar = () => {
                                     {subItem.title}
                                   </Link>
                                 </motion.div>
-                              )
+                              ),
                             )}
                           </motion.div>
                         )}

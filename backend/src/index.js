@@ -22,10 +22,12 @@ const secondLayerRoutes = require("./routes/secondLayerRoutes");
 const fourLayerRoutes = require("./routes/fourLayerRoutes");
 const threeLayerRoutes = require("./routes/threeRoutes");
 const fiveLayerRoutes = require("./routes/fiveLayerRoutes");
+const sixLayerRoutes = require("./routes/sixLayerRoutes");
 const layerManagementRoutes = require("./routes/layerManagementRoutes");
 const pdfRoutes = require("./routes/pdfRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const userNobelRoutes = require("./routes/userNobelRoutes");
+const otherRoutes = require("./routes/otherRoutes");
 
 dotenv.config();
 
@@ -66,6 +68,8 @@ app.use("/second-layer", secondLayerRoutes);
 app.use("/third-layer", threeLayerRoutes);
 app.use("/fourth-layer", fourLayerRoutes);
 app.use("/five-layer", fiveLayerRoutes);
+app.use("/six-layer", sixLayerRoutes);
+app.use("/other", otherRoutes);
 app.use("/layer-management", layerManagementRoutes);
 app.use("/pdf", pdfRoutes);
 app.use("/api/dashboard", dashboardRoutes);

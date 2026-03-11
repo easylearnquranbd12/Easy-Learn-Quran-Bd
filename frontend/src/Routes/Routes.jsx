@@ -55,6 +55,21 @@ import AdminPrepositionEdit from "../Pages/AdminDashboardPages/BAShapeFormats/Se
 import AdminSentenceEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Sentence/AdminSentenceEdit";
 import AdminTenseEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Tense/AdminTenseEdit";
 import AdminVerbEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Verb/AdminVerbEdit";
+import AdminElegantFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/ElegantFormat/AdminElegantFormat";
+import AdminElegantFormatEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/ElegantFormat/AdminElegantFormatEdit";
+import ElegantFormatExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/ExerciseFormat/ElegantFormatExercise";
+import IdiomFormatExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/ExerciseFormat/IdiomFormatExercise";
+import NewTantusterFormatExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/ExerciseFormat/NewTantusterFormatExercise";
+import TantusterFormatExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/ExerciseFormat/TantusterFormatExercise";
+import VocabularyFormatExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/ExerciseFormat/VocabularyFormatExercise";
+import AdminIdiomFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/IdiomFormat/AdminIdiomFormat";
+import AdminIdiomFormatEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/IdiomFormat/AdminIdiomFormatEdit";
+import AdminNewTantusterFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/NewTantusterFormat/AdminNewTantusterFormat";
+import AdminNewTantusterFormatEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/NewTantusterFormat/AdminNewTantusterFormatEdit";
+import AdminTantusterFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/TantusterFormat/AdminTantusterFormat";
+import AdminTantusterFormatEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/TantusterFormat/AdminTantusterFormatEdit";
+import AdminVocabularyFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/VocabularyFormat/AdminVocabularyFormat";
+import AdminVocabularyFormatEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/VocabularyFormat/AdminVocabularyFormatEdit";
 import AdminBeforeProfessional from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/BeforeProfessional/AdminBeforeProfessional";
 import AdminCorporateEmail from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/CorporateEmail/AdminCorporateEmail";
 import AdminDevelopYourSkills from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/DevelopYourSkills/AdminDevelopYourSkills";
@@ -67,10 +82,12 @@ import InterviewsQustionsExcersice from "../Pages/AdminDashboardPages/BAShapeFor
 import AdminGoodLifeStyle from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/GoodLifeStyle/AdminGoodLifeStyle";
 import IdeaShareAnsSuggestion from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/IdeaShareAnsSuggestion/IdeaShareAnsSuggestion";
 import InterviewsQustions from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/InterviewsQustion/InterviewsQustions";
+import AdminOtherPages from "../Pages/AdminDashboardPages/OtherPages/AdminOtherPages";
 import BlankFormat from "../Pages/ContributePages/BlankFormat/BlankFormat";
 import UploadPDF from "../Pages/ContributePages/UploadPDF/UploadPDF";
 import UserAcceptsNobel from "../Pages/ContributePages/UserNobel/UserAcceptsNobel";
 import DashboardRedirect from "../Pages/DashboardRedirect";
+import Other from "../Pages/OtherPagesUi/Other";
 import PaymentHome from "../Pages/PaymentPages/PaymentHome";
 import PaymentMethod from "../Pages/PaymentPages/PaymentMethod";
 import SuccessPayment from "../Pages/PaymentPages/SuccessPayment";
@@ -276,6 +293,14 @@ export const routes = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <PDFDownload />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/explore/other",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <Other />
           </Suspense>
         ),
       },
@@ -817,6 +842,127 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
+       // Six Layer
+      {
+        path: "create-vocabulary-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminVocabularyFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-vocabulary-format/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminVocabularyFormatEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "vocabulary-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <VocabularyFormatExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-elegant-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminElegantFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-elegant-format/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminElegantFormatEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "elegant-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <ElegantFormatExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-idiom-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminIdiomFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-idiom-format/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminIdiomFormatEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "idiom-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <IdiomFormatExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-tantuster-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminTantusterFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-tantuster-format/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminTantusterFormatEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "tantuster-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <TantusterFormatExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "new-tantuster-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminNewTantusterFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-newtantuster-format/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminNewTantusterFormatEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "newtantuster-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <NewTantusterFormatExercise />
+          </Suspense>
+        ),
+      },
       {
         path: "create-a-new-promotion",
         element: (
@@ -862,6 +1008,14 @@ export const routes = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <AdminBlankPdfUpload />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-a-new-other",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminOtherPages />
           </Suspense>
         ),
       },

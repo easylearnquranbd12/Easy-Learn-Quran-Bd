@@ -7,7 +7,7 @@ const BetheshapePricing = () => {
       {/* Section Header */}
       <div className="text-center mb-16 px-4">
         <h2 className="text-4xl md:text-5xl font-bold mb-4 text-teal-700">
-          Betheshape English Learning Plans
+          Be the Shape Learning Plans <span className="text-2xl">(Upgrade Your English and Elevate Your Knowledge.)</span>
         </h2>
         <p className="text-gray-600 max-w-2xl mx-auto">
           ইংরেজি শেখা এখন আরও সহজ। আপনার প্রয়োজন অনুযায়ী প্ল্যান বেছে নিন এবং

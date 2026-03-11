@@ -17,7 +17,6 @@ const {
   getFirstLayerIdiomExerciseCollections,
 } = require("../config/db");
 
-
 const vocabularyCollection = getFirstLayerVocabularyCollection();
 const vocabulary = getFirstLayerVocabularyCollections();
 const vocabularyExercise = getFirstLayerVocabularyExerciseCollections();
@@ -324,7 +323,6 @@ const createVocabulary = async (req, res) => {
   }
 };
 
-
 const getAllVocabulary = async (req, res) => {
   try {
     let { page = 1, limit = 10 } = req.query;
@@ -338,7 +336,12 @@ const getAllVocabulary = async (req, res) => {
     const skip = (page - 1) * limit;
 
     const total = await vocabulary.countDocuments();
-    const result = await vocabulary.find().sort({ _id: -1 }).skip(skip).limit(limit).toArray();
+    const result = await vocabulary
+      .find()
+      .sort({ _id: -1 })
+      .skip(skip)
+      .limit(limit)
+      .toArray();
 
     res.json({
       success: true,
@@ -526,6 +529,7 @@ const createExerciseVocabulary = async (req, res) => {
     });
   }
 };
+
 // ✅ Get All Exercise Vocabulary
 const getAllExerciseVocabulary = async (req, res) => {
   try {
@@ -589,7 +593,6 @@ const createElegant = async (req, res) => {
   }
 };
 
-
 // ✅ Get All Elegant with Pagination
 const getAllElegant = async (req, res) => {
   try {
@@ -604,7 +607,12 @@ const getAllElegant = async (req, res) => {
     const skip = (page - 1) * limit;
 
     const total = await elegant.countDocuments();
-    const result = await elegant.find().sort({ _id: -1 }).skip(skip).limit(limit).toArray();
+    const result = await elegant
+      .find()
+      .sort({ _id: -1 })
+      .skip(skip)
+      .limit(limit)
+      .toArray();
 
     res.json({
       success: true,

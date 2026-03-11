@@ -23,6 +23,7 @@ const getUserCollection = () => {
 const getBlogsCollection = () => {
   return client.db("Shapion-Quiz-Platform").collection("blog");
 };
+
 // First Layer
 // vocabulary
 const getFirstLayerVocabularyCollection = () => {
@@ -32,7 +33,7 @@ const getFirstLayerVocabularyCollections = () => {
   return client.db("Shapion-Quiz-Platform").collection("Vocabulary");
 };
 const getFirstLayerVocabularyExerciseCollections = () => {
-  return client.db("Shapion-Quiz-Platform").collection("createExercise");
+  return client.db("Shapion-Quiz-Platform").collection("CreateExercise");
 };
 // idiom
 const getFirstLayerIdiomCollection = () => {
@@ -152,7 +153,9 @@ const getThirdLayerGoodLifeStyleExerciseCollection = () => {
 };
 // ✅ Interviews Qustions
 const getThirdLayerInterviewQuestionsFieldsCollection = () => {
-  return client.db("Shapion-Quiz-Platform").collection("InterviewQuestionsField");
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("InterviewQuestionsField");
 };
 const getThirdLayerInterviewQuestionsCollection = () => {
   return client.db("Shapion-Quiz-Platform").collection("InterviewQuestions");
@@ -316,6 +319,71 @@ const getFiveLayerMcqFieldsCollection = () =>
 const getFiveLayerMcqCollection = () =>
   client.db("Shapion-Quiz-Platform").collection("Mcq");
 
+// Six Layer
+// vocabularyFormat
+const getSixLayerVocabularyFormatField = () => {
+  return client.db("Shapion-Quiz-Platform").collection("VocabularyFormatField");
+};
+const getSixLayerVocabularyFormatCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("VocabularyFormat");
+};
+const getSixLayerVocabularyFormatExerciseCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("CreateExerciseFormat");
+};
+// idiom
+const getSixLayerIdiomFormatField = () => {
+  return client.db("Shapion-Quiz-Platform").collection("IdiomFormatField");
+};
+const getSixLayerIdiomFormatCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("IdiomFormat");
+};
+const getSixLayerIdiomFormatExerciseCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("CreateExerciseIdiomFormat");
+};
+
+// elegant
+const getSixLayerElegantFormatFieldsCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("ElegantFormatField");
+};
+const getSixLayerElegantFormatCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("ElegantFormat");
+};
+const getSixLayerElegantFormatExerciseCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("CreateExerciseElegantFormat");
+};
+// Tantuster
+const getSixLayerTantusterFormatFieldsCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("TantusterFormatField");
+};
+const getSixLayerTantusterFormatCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("TantusterFormat");
+};
+const getSixLayerTantusterFormatExerciseCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("CreateExerciseTantusterFormat");
+};
+//new Tantuster
+const getSixLayerNewTantusterFormatFieldsCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("NewTantusterFormatField");
+};
+const getSixLayerNewTantusterFormatCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("NewTantusterFormat");
+};
+const getSixLayerNewTantusterFormatExerciseCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("CreateExerciseNewTantusterFormat");
+};
+
+const getOthersCollection = () =>
+  client.db("Shapion-Quiz-Platform").collection("Others");
 const getLayerManagementFieldsCollection = () =>
   client.db("Shapion-Quiz-Platform").collection("LevelManagementField");
 // pdf Upload admin panel
@@ -331,6 +399,9 @@ const getAddPaymentMethodCollection = () => {
 };
 const getUserPaymentCollection = () => {
   return client.db("Shapion-Quiz-Platform").collection("UserPayment");
+};
+const getUserPdfPaymentMethodCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("UserPdfPaymentMethod");
 };
 const getUserNobelCollection = () => {
   return client.db("Shapion-Quiz-Platform").collection("UserNobel");
@@ -421,6 +492,7 @@ module.exports = {
   getFirstLayerIdiomCollection,
   getFirstLayerIdiomCollections,
   getFirstLayerIdiomExerciseCollections,
+  getUserPdfPaymentMethodCollection,
 
   getThirdLayerGoodLifeStyleFieldsCollection,
   getThirdLayerGoodLifeStyleCollection,
@@ -474,4 +546,22 @@ module.exports = {
   getFourthLayerGoodNobelExerciseCollection,
 
   getSuccessStoriesCollection,
+  getOthersCollection,
+
+  // Six Layer
+  getSixLayerVocabularyFormatField,
+  getSixLayerVocabularyFormatCollection,
+  getSixLayerVocabularyFormatExerciseCollection,
+  getSixLayerIdiomFormatField,
+  getSixLayerIdiomFormatCollection,
+  getSixLayerIdiomFormatExerciseCollection,
+  getSixLayerElegantFormatFieldsCollection,
+  getSixLayerElegantFormatCollection,
+  getSixLayerElegantFormatExerciseCollection,
+  getSixLayerTantusterFormatFieldsCollection,
+  getSixLayerTantusterFormatCollection,
+  getSixLayerTantusterFormatExerciseCollection,
+  getSixLayerNewTantusterFormatFieldsCollection,
+  getSixLayerNewTantusterFormatCollection,
+  getSixLayerNewTantusterFormatExerciseCollection,
 };
