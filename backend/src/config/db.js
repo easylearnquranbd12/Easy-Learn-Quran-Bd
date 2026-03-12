@@ -384,6 +384,9 @@ const getSixLayerNewTantusterFormatExerciseCollection = () => {
 
 const getOthersCollection = () =>
   client.db("Shapion-Quiz-Platform").collection("Others");
+const getForNextCollection = () =>
+  client.db("Shapion-Quiz-Platform").collection("ForNext");
+
 const getLayerManagementFieldsCollection = () =>
   client.db("Shapion-Quiz-Platform").collection("LevelManagementField");
 // pdf Upload admin panel
@@ -547,7 +550,7 @@ module.exports = {
 
   getSuccessStoriesCollection,
   getOthersCollection,
-
+  getForNextCollection,
   // Six Layer
   getSixLayerVocabularyFormatField,
   getSixLayerVocabularyFormatCollection,

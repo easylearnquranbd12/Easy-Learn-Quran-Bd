@@ -82,11 +82,13 @@ import InterviewsQustionsExcersice from "../Pages/AdminDashboardPages/BAShapeFor
 import AdminGoodLifeStyle from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/GoodLifeStyle/AdminGoodLifeStyle";
 import IdeaShareAnsSuggestion from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/IdeaShareAnsSuggestion/IdeaShareAnsSuggestion";
 import InterviewsQustions from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/InterviewsQustion/InterviewsQustions";
+import AdminForNextPages from "../Pages/AdminDashboardPages/OtherPages/AdminForNextPages";
 import AdminOtherPages from "../Pages/AdminDashboardPages/OtherPages/AdminOtherPages";
 import BlankFormat from "../Pages/ContributePages/BlankFormat/BlankFormat";
 import UploadPDF from "../Pages/ContributePages/UploadPDF/UploadPDF";
 import UserAcceptsNobel from "../Pages/ContributePages/UserNobel/UserAcceptsNobel";
 import DashboardRedirect from "../Pages/DashboardRedirect";
+import ForNext from "../Pages/OtherPagesUi/ForNext";
 import Other from "../Pages/OtherPagesUi/Other";
 import PaymentHome from "../Pages/PaymentPages/PaymentHome";
 import PaymentMethod from "../Pages/PaymentPages/PaymentMethod";
@@ -301,6 +303,14 @@ export const routes = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <Other />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/explore/for-next",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <ForNext />
           </Suspense>
         ),
       },
@@ -1016,6 +1026,14 @@ export const routes = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <AdminOtherPages />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-a-for-next",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminForNextPages />
           </Suspense>
         ),
       },

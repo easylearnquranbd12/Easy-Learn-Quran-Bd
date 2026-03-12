@@ -1,15 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import { ExternalLink, PlayCircle, Sparkles } from "lucide-react";
+import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 
-const Other = () => {
+const ForNext = () => {
+  const [loading, setLoading] = useState(false);
   const axiosPublic = useAxiosPublic();
 
   const { data: ideas = [], isLoading } = useQuery({
-    queryKey: ["others"],
+    queryKey: ["forNext"],
     queryFn: async () => {
-      const res = await axiosPublic.get("/other");
+      const res = await axiosPublic.get("/other/fornext");
       return res.data;
     },
   });
@@ -17,7 +19,7 @@ const Other = () => {
   return (
     <div className="min-h-screen py-10 ">
       <Helmet>
-        <title>AI Tools Archive</title>
+        <title>For Next</title>
       </Helmet>
 
       <div className="max-w-[1400px] mx-auto px-2 md:px-6">
@@ -29,12 +31,14 @@ const Other = () => {
           </div>
 
           <h1 className="text-4xl font-semibold text-gray-900">
-            AI Tools & Learning Resources
+            Resources for Your Next Learning Step
           </h1>
 
           <p className="mt-6 text-gray-600 max-w-2xl mx-auto text-lg">
-            Explore powerful AI tools with tutorials and official websites.
-            Learn how to use them effectively for productivity and development.
+            Discover useful platforms, tools, and tutorials that will help you
+            continue your learning journey. These resources are selected to
+            guide you toward the next level of skills, knowledge, and practical
+            experience.
           </p>
 
           <div className="w-28 h-[2px] bg-green-600 mx-auto mt-8"></div>
@@ -42,7 +46,7 @@ const Other = () => {
 
         {/* ===== Loading ===== */}
 
-        {isLoading ? (
+        {loading ? (
           <div className="text-center py-20 text-gray-600">
             Loading resources...
           </div>
@@ -140,4 +144,4 @@ const Other = () => {
   );
 };
 
-export default Other;
+export default ForNext;

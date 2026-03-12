@@ -650,7 +650,7 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
           color: "text-indigo-600",
         },
         {
-          path: "/admin-dashboard/for-next",
+          path: "/admin-dashboard/create-a-for-next",
           icon: BiEdit,
           label: "Create For Next",
           description: "Create & History",
