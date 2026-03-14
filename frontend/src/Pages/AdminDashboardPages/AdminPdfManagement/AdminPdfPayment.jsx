@@ -40,7 +40,7 @@ const AdminPdfPayment = () => {
         status: status
       });
 
-      console.log("Update response:", response.data);
+  
 
       await Swal.fire({
         title: 'Success!',
@@ -87,7 +87,7 @@ const AdminPdfPayment = () => {
 
       const response = await axios.delete(`http://localhost:5000/pdf/payments/${id}`);
 
-      console.log("Delete response:", response.data);
+     
 
       await Swal.fire({
         title: 'Deleted!',

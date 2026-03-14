@@ -102,7 +102,7 @@ const PDFDownload = () => {
         const data = await res.json();
 
         if (res.ok) {
-          console.log("Fetched paid PDFs with purchase status:", data);
+     
 
           // ডাটা সেট করুন
           setPaidPdfs(data);
@@ -143,7 +143,6 @@ const PDFDownload = () => {
       // ইন্টারভ্যাল সেটআপ - ১০ সেকেন্ড (আগে ৫ ছিল)
       stopAutoRefresh(); // আগের ইন্টারভ্যাল ক্লিয়ার করুন
       intervalRef.current = setInterval(() => {
-        console.log("Auto-refreshing paid PDFs...");
         fetchAllPaidData(false); // লোডিং ছাড়া রিফ্রেশ
       }, 10000); // ১০ সেকেন্ড
 
