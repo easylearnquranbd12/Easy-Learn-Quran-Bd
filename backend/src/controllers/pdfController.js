@@ -40,96 +40,41 @@ const upload = multer({
   },
 });
 
-// ================= Admin =================
-
-// // Admin Upload
-// const uploadPdf = async (req, res) => {
-//   try {
-//     const file = req.file;
-//     if (!file) return res.status(400).json({ message: "No file uploaded" });
-
-//     const pdfData = {
-//       originalName: file.originalname,
-//       filename: file.filename,
-//       path: file.path,
-//       size: file.size,
-//       createdAt: new Date().toISOString(),
-//     };
-
-//     const result = await adminPdfs.insertOne(pdfData);
-//     res.status(201).json({ message: "PDF uploaded successfully", result });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: "Failed to upload PDF." });
-//   }
-// };
-
-// // Get All Admin PDFs
-// const getAllPdfs = async (req, res) => {
-//   try {
-//     const pdfs = await adminPdfs.find().sort({ createdAt: -1 }).toArray();
-//     res.status(200).json(pdfs);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: "Failed to fetch PDFs." });
-//   }
-// };
-
-// // Delete Admin PDF
-// const deletePdf = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const pdf = await adminPdfs.findOne({ _id: new ObjectId(id) });
-//     if (!pdf) return res.status(404).json({ message: "PDF not found" });
-
-//     if (fs.existsSync(pdf.path)) fs.unlinkSync(pdf.path);
-//     await adminPdfs.deleteOne({ _id: new ObjectId(id) });
-//     res.status(200).json({ message: "PDF deleted successfully" });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: "Failed to delete PDF." });
-//   }
-// };
-
-// // Download PDF
-// const downloadPdf = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const pdf = await adminPdfs.findOne({ _id: new ObjectId(id) });
-//     if (!pdf) return res.status(404).json({ message: "PDF not found" });
-
-//     res.download(path.resolve(pdf.path), pdf.originalName);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: "Failed to download PDF" });
-//   }
-// };
-
-
-// ================= Admin =================
-
-// Admin Upload - Updated with type and price
+// ================= Admin PDF Upload =================
 const uploadPdf = async (req, res) => {
   try {
     const file = req.file;
     if (!file) return res.status(400).json({ message: "No file uploaded" });
 
-    const { type, price } = req.body;
+    const { type, price, tittle, description } = req.body;
+
+    let PdfThumbnil = null;
+    if (req.body.PdfThumbnil) {
+      PdfThumbnil = req.body.PdfThumbnil;
+    }
 
     const pdfData = {
+      tittle: tittle || file.originalname,
+      PdfThumbnil: PdfThumbnil || null,
+      description: description || "",
       originalName: file.originalname,
       filename: file.filename,
       path: file.path,
       size: file.size,
-      type: type || "free", // default to free if not specified
+      type: type || "free",
       price: type === "paid" ? parseFloat(price) || 0 : 0,
       createdAt: new Date().toISOString(),
     };
 
     const result = await adminPdfs.insertOne(pdfData);
-    res.status(201).json({ message: "PDF uploaded successfully", result });
+
+    res.status(201).json({
+      message: "PDF uploaded successfully",
+      result,
+      data: pdfData,
+    });
   } catch (error) {
-    console.error(error);
+    console.error("Upload error:", error);
     res.status(500).json({ message: "Failed to upload PDF." });
   }
 };
@@ -163,17 +108,17 @@ const updatePdfType = async (req, res) => {
 
     const result = await adminPdfs.updateOne(
       { _id: new ObjectId(id) },
-      { $set: updateData }
+      { $set: updateData },
     );
 
     if (result.matchedCount === 0) {
       return res.status(404).json({ message: "PDF not found" });
     }
 
-    res.status(200).json({ 
+    res.status(200).json({
       message: `PDF updated to ${type} successfully`,
       type,
-      price: updateData.price
+      price: updateData.price,
     });
   } catch (error) {
     console.error(error);
@@ -188,7 +133,10 @@ const deletePdf = async (req, res) => {
     const pdf = await adminPdfs.findOne({ _id: new ObjectId(id) });
     if (!pdf) return res.status(404).json({ message: "PDF not found" });
 
-    if (fs.existsSync(pdf.path)) fs.unlinkSync(pdf.path);
+    if (fs.existsSync(pdf.path)) {
+      fs.unlinkSync(pdf.path);
+    }
+
     await adminPdfs.deleteOne({ _id: new ObjectId(id) });
     res.status(200).json({ message: "PDF deleted successfully" });
   } catch (error) {
@@ -196,41 +144,73 @@ const deletePdf = async (req, res) => {
     res.status(500).json({ message: "Failed to delete PDF." });
   }
 };
-
-// Download PDF - Check if user has access (for paid PDFs)
+// Download PDF - ফিক্সড ভার্সন
 const downloadPdf = async (req, res) => {
   try {
     const { id } = req.params;
-    const { userId } = req.query; // Assuming userId is passed as query param
+    const { email } = req.query;
 
-    const pdf = await adminPdfs.findOne({ _id: new ObjectId(id) });
-    if (!pdf) return res.status(404).json({ message: "PDF not found" });
-
-    // Check if PDF is paid and user has access
-    if (pdf.type === "paid") {
-      // Check if user has purchased this PDF
-      const userAccess = await userPdfs.findOne({ 
-        pdfId: id,
-        userId: userId,
-        paymentStatus: "completed"
-      });
-
-      if (!userAccess) {
-        return res.status(403).json({ 
-          message: "This is a paid PDF. Please purchase to download.",
-          price: pdf.price
-        });
-      }
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid PDF ID" });
     }
 
-    res.download(path.resolve(pdf.path), pdf.originalName);
+    const pdf = await adminPdfs.findOne({ _id: new ObjectId(id) });
+
+    if (!pdf) {
+      return res.status(404).json({ message: "PDF not found" });
+    }
+
+    // Check if file exists
+    if (!fs.existsSync(pdf.path)) {
+      console.error(`File not found: ${pdf.path}`);
+      return res.status(404).json({ message: "PDF file not found on server" });
+    }
+
+    // ফ্রি PDF - সরাসরি ডাউনলোড দিন
+    if (pdf.type === "free") {
+      return res.download(pdf.path, pdf.originalName);
+    }
+
+    // পেইড PDF - চেক করুন ইউজার কিনেছে কিনা
+    if (pdf.type === "paid") {
+      // যদি email না থাকে
+      if (!email) {
+        return res.status(401).json({
+          message: "Please login to download paid PDFs",
+        });
+      }
+
+      // চেক করুন ইউজার এই PDF টি কিনেছে কিনা (paymentStatus accepted হতে হবে)
+      const purchase = await userPdfs.findOne({
+        pdfId: id, // স্ট্রিং হিসেবেই রাখুন
+        userEmail: email,
+        paymentStatus: "accepted", // শুধু accepted স্ট্যাটাস যাদের
+      });
+
+      if (!purchase) {
+        return res.status(403).json({
+          message:
+            "You haven't purchased this PDF yet. Please complete payment first.",
+          price: pdf.price,
+        });
+      }
+
+      // ডাউনলোড কাউন্ট আপডেট করুন
+      await userPdfs.updateOne(
+        { _id: purchase._id },
+        { $inc: { downloadCount: 1 } },
+      );
+
+      // PDF ডাউনলোড করান
+      return res.download(pdf.path, pdf.originalName);
+    }
   } catch (error) {
-    console.error(error);
+    console.error("Download error:", error);
     res.status(500).json({ message: "Failed to download PDF" });
   }
 };
 
-// Get Free PDFs only (for public access)
+// Get Free PDFs
 const getFreePdfs = async (req, res) => {
   try {
     const pdfs = await adminPdfs
@@ -244,214 +224,421 @@ const getFreePdfs = async (req, res) => {
   }
 };
 
-// Get Paid PDFs (with purchase info for specific user)
+// পেমেন্ট রেকর্ড করা
+const recordPdfPurchase = async (req, res) => {
+  try {
+    const body = req.body || {};
+    const {
+      pdfId,
+      userEmail,
+      userName,
+      amount,
+      paymentMethod,
+      senderNumber,
+      transactionId,
+      receiverNumber,
+      paymentType,
+    } = body;
+
+    if (!pdfId) {
+      return res.status(400).json({ message: "pdfId required" });
+    }
+
+    const pdf = await adminPdfs.findOne({
+      _id: new ObjectId(pdfId),
+    });
+
+    if (!pdf) {
+      return res.status(404).json({ message: "PDF not found" });
+    }
+
+    const purchaseData = {
+      pdfId,
+      pdfName: pdf.tittle || pdf.originalName,
+      userEmail,
+      userName,
+      amount: parseFloat(amount) || pdf.price,
+      paymentMethod,
+      senderNumber,
+      transactionId,
+      receiverNumber,
+      paymentType,
+      paymentStatus: "pending",
+      purchasedAt: new Date().toISOString(),
+      createdAt: new Date(),
+    };
+
+    const result = await userPdfs.insertOne(purchaseData);
+
+    res.status(201).json({
+      message: "Purchase recorded successfully",
+      purchaseId: result.insertedId,
+      paymentStatus: "pending",
+    });
+  } catch (error) {
+    console.error("Purchase error:", error);
+    res.status(500).json({
+      message: "Failed to record purchase",
+      error: error.message,
+    });
+  }
+};
+
+// পেন্ডিং পেমেন্ট গেট করা
+const getPendingPayments = async (req, res) => {
+  try {
+    const payments = await userPdfs
+      .find({})
+      .sort({ purchasedAt: -1 })
+      .toArray();
+
+    res.status(200).json(payments);
+  } catch (error) {
+    console.error("Get payments error:", error);
+    res.status(500).json({
+      message: "Failed to fetch payments",
+    });
+  }
+};
+
+// পেমেন্ট ভেরিফাই করা (Accept/Reject)
+const verifyPayment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    // আইডি ভ্যালিড কিনা চেক করুন
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({
+        message: "Invalid payment ID format",
+      });
+    }
+
+    // স্টেটাস ভ্যালিড কিনা চেক করুন
+    if (!["accepted", "rejected"].includes(status)) {
+      return res.status(400).json({
+        message: "Invalid status. Must be 'accepted' or 'rejected'",
+      });
+    }
+
+    // পেমেন্ট আপডেট করুন
+    const result = await userPdfs.updateOne(
+      { _id: new ObjectId(id) },
+      {
+        $set: {
+          paymentStatus: status,
+          verifiedAt: new Date(),
+          updatedAt: new Date(),
+        },
+      },
+    );
+
+    if (!result.matchedCount) {
+      return res.status(404).json({
+        message: "Payment not found with this ID",
+      });
+    }
+
+    // আপডেট হওয়া ডাটা ফেরত দিন
+    const updatedPayment = await userPdfs.findOne({
+      _id: new ObjectId(id),
+    });
+
+    res.status(200).json({
+      message: `Payment ${status} successfully`,
+      payment: updatedPayment,
+      status: status,
+    });
+  } catch (error) {
+    console.error("Verify payment error:", error);
+    res.status(500).json({
+      message: "Failed to verify payment",
+      error: error.message,
+    });
+  }
+};
+// Get Paid PDFs
+// Get Paid PDFs - ডিবাগ ভার্সন
 const getPaidPdfs = async (req, res) => {
   try {
-    const { userId } = req.query;
-    
+    const { email } = req.query;
+
     const pdfs = await adminPdfs
       .find({ type: "paid" })
       .sort({ createdAt: -1 })
       .toArray();
 
-    // If userId is provided, check which PDFs the user has purchased
-    if (userId) {
-      const userPurchases = await userPdfs
-        .find({ 
-          userId: userId,
-          paymentStatus: "completed" 
-        })
-        .toArray();
-
-      const purchasedPdfIds = userPurchases.map(p => p.pdfId);
-
-      // Add purchase status to each PDF
-      const pdfsWithStatus = pdfs.map(pdf => ({
-        ...pdf,
-        isPurchased: purchasedPdfIds.includes(pdf._id.toString())
-      }));
-
-      return res.status(200).json(pdfsWithStatus);
+    // If no email, return PDFs without purchase status
+    if (!email) {
+      return res.status(200).json(pdfs);
     }
 
-    res.status(200).json(pdfs);
+    // Find user's purchased PDFs with "accepted" status
+    const userPurchases = await userPdfs
+      .find({
+        userEmail: email,
+        paymentStatus: "accepted",
+      })
+      .toArray();
+
+    // Create a Set of purchased PDF IDs for faster lookup
+    const purchasedPdfIds = new Set(userPurchases.map((p) => p.pdfId));
+
+    // Add isPurchased flag to each PDF
+    const pdfsWithStatus = pdfs.map((pdf) => {
+      const pdfIdStr = pdf._id.toString();
+      const isPurchased = purchasedPdfIds.has(pdfIdStr);
+
+      return {
+        ...pdf,
+        isPurchased: isPurchased,
+      };
+    });
+
+    res.status(200).json(pdfsWithStatus);
   } catch (error) {
-    console.error(error);
+    console.error("Error in getPaidPdfs:", error);
     res.status(500).json({ message: "Failed to fetch paid PDFs." });
   }
 };
+// controllers/pdfPaymentController.js এ যোগ করুন
 
-// Record PDF Purchase (when user buys a paid PDF)
-const recordPdfPurchase = async (req, res) => {
+// Delete payment record
+const deletePayment = async (req, res) => {
   try {
-    const { pdfId, userId, paymentDetails } = req.body;
+    const { id } = req.params;
 
-    const pdf = await adminPdfs.findOne({ _id: new ObjectId(pdfId) });
-    if (!pdf) {
-      return res.status(404).json({ message: "PDF not found" });
-    }
-
-    if (pdf.type !== "paid") {
-      return res.status(400).json({ message: "This PDF is not a paid item" });
-    }
-
-    const purchaseData = {
-      pdfId,
-      userId,
-      pdfName: pdf.originalName,
-      price: pdf.price,
-      paymentStatus: "completed",
-      paymentDetails,
-      purchasedAt: new Date().toISOString()
-    };
-
-    const result = await userPdfs.insertOne(purchaseData);
-
-    res.status(201).json({ 
-      message: "Purchase recorded successfully", 
-      result 
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Failed to record purchase." });
-  }
-};
-
-// Check if user has access to a specific PDF
-const checkPdfAccess = async (req, res) => {
-  try {
-    const { pdfId, userId } = req.query;
-
-    const pdf = await adminPdfs.findOne({ _id: new ObjectId(pdfId) });
-    if (!pdf) {
-      return res.status(404).json({ message: "PDF not found" });
-    }
-
-    // Free PDFs are always accessible
-    if (pdf.type === "free") {
-      return res.status(200).json({ 
-        hasAccess: true, 
-        type: "free" 
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({
+        message: "Invalid payment ID format",
       });
     }
 
-    // Check if user has purchased the paid PDF
-    const purchase = await userPdfs.findOne({ 
-      pdfId: pdfId,
-      userId: userId,
-      paymentStatus: "completed"
-    });
+    const result = await userPdfs.deleteOne({ _id: new ObjectId(id) });
 
-    res.status(200).json({ 
-      hasAccess: !!purchase,
-      type: "paid",
-      price: pdf.price
+    if (!result.deletedCount) {
+      return res.status(404).json({
+        message: "Payment not found",
+      });
+    }
+
+    res.status(200).json({
+      message: "Payment deleted successfully",
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Failed to check PDF access." });
+    console.error("Delete payment error:", error);
+    res.status(500).json({
+      message: "Failed to delete payment",
+      error: error.message,
+    });
   }
 };
+// Record PDF Purchase
 
-// Get user's purchased PDFs
+// PDF এক্সেস চেক করা
+const checkPdfAccess = async (req, res) => {
+  try {
+    const { pdfId, email } = req.query;
+
+    if (!pdfId || !email) {
+      return res.status(400).json({
+        message: "pdfId and email are required",
+      });
+    }
+
+    const pdf = await adminPdfs.findOne({
+      _id: new ObjectId(pdfId),
+    });
+
+    if (!pdf) {
+      return res.status(404).json({
+        message: "PDF not found",
+      });
+    }
+
+    // ফ্রি PDF হলে এক্সেস দিন
+    if (pdf.type === "free") {
+      return res.json({
+        hasAccess: true,
+        isFree: true,
+      });
+    }
+
+    // পেইড PDF হলে পেমেন্ট স্টেটাস চেক করুন
+    const purchase = await userPdfs.findOne({
+      pdfId: pdfId,
+      userEmail: email,
+      paymentStatus: "accepted",
+    });
+
+    res.json({
+      hasAccess: !!purchase,
+      price: pdf.price,
+      paymentStatus: purchase?.paymentStatus || null,
+    });
+  } catch (error) {
+    console.error("Check access error:", error);
+    res.status(500).json({
+      message: "Failed to check access",
+      error: error.message,
+    });
+  }
+};
+// Get user's purchased PDFs (করেক্টেড ভার্সন)
 const getUserPurchasedPdfs = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const { email } = req.params;
 
+    // email চেক করুন
+    if (!email) {
+      return res.status(400).json({
+        message: "Email is required",
+      });
+    }
+
+    // শুধু accepted স্ট্যাটাসের পেমেন্টগুলো নিন (completed না)
     const purchases = await userPdfs
-      .find({ userId, paymentStatus: "completed" })
+      .find({
+        userEmail: email,
+        paymentStatus: "accepted", // <<< এখানে "accepted" ব্যবহার করুন
+      })
       .sort({ purchasedAt: -1 })
       .toArray();
 
-    // Get full PDF details for each purchase
+    // যদি কোনো purchase না থাকে
+    if (purchases.length === 0) {
+      return res.status(200).json([]);
+    }
+
+    // purchase এর সাথে PDF ডিটেইলস যোগ করুন
     const purchasedPdfs = await Promise.all(
       purchases.map(async (purchase) => {
-        const pdf = await adminPdfs.findOne({ 
-          _id: new ObjectId(purchase.pdfId) 
-        });
-        return {
-          ...pdf,
-          purchaseDate: purchase.purchasedAt,
-          price: purchase.price
-        };
-      })
+        try {
+          // pdfId ভ্যালিড কিনা চেক করুন
+          if (!ObjectId.isValid(purchase.pdfId)) {
+            return null;
+          }
+
+          const pdf = await adminPdfs.findOne({
+            _id: new ObjectId(purchase.pdfId),
+          });
+
+          if (!pdf) {
+            return null;
+          }
+
+          // সম্পূর্ণ ডাটা ফরম্যাট করুন
+          return {
+            _id: pdf._id,
+            title: pdf.tittle || pdf.originalName,
+            originalName: pdf.originalName,
+            description: pdf.description,
+            price: purchase.amount || pdf.price,
+            type: pdf.type,
+            thumbnail: pdf.thumbnail || pdf.PdfThumbnil,
+            isPurchased: true,
+            purchaseDate: purchase.purchasedAt,
+            transactionId: purchase.transactionId,
+            paymentMethod: purchase.paymentMethod,
+            downloadUrl: `/pdf/download/${pdf._id}?email=${email}`,
+          };
+        } catch (err) {
+          console.error(`Error processing purchase:`, err);
+          return null;
+        }
+      }),
     );
 
-    res.status(200).json(purchasedPdfs);
+    // null ভ্যালুগুলো ফিল্টার আউট করুন
+    const validPdfs = purchasedPdfs.filter((pdf) => pdf !== null);
+
+    res.status(200).json(validPdfs);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Failed to fetch purchased PDFs." });
+    console.error("Get user purchased PDFs error:", error);
+    res.status(500).json({
+      message: "Failed to fetch purchased PDFs.",
+      error: error.message,
+    });
   }
 };
 
-// Get payment methods
+// Get payment methods - FIXED VERSION
 const getPaymentMethods = async (req, res) => {
   try {
-    // We'll always have only one document for payment methods
-    let methods = await paymentMethods.findOne({});
-    
-    // If no payment methods exist, return default empty structure
-    if (!methods) {
-      methods = {
-        bkash: { enabled: false, number: "", type: "Personal" },
-        nagad: { enabled: false, number: "", type: "Personal" },
-        rocket: { enabled: false, number: "", type: "Personal" },
-        bank: {
-          enabled: false,
-          accountName: "",
-          accountNumber: "",
-          bankName: "",
-          branchName: "",
-          routingNumber: ""
-        }
-      };
+    // Find all payment methods (should be one document)
+    const methods = await paymentMethods.find({}).toArray();
+
+    if (methods.length > 0) {
+      // Return the first document
+      return res.status(200).json(methods[0]);
     }
-    
-    res.status(200).json(methods);
+
+    // If no methods exist, return default empty structure
+    const defaultMethods = {
+      bkash: { enabled: false, number: "", type: "Personal" },
+      nagad: { enabled: false, number: "", type: "Personal" },
+      rocket: { enabled: false, number: "", type: "Personal" },
+      bank: {
+        enabled: false,
+        accountName: "",
+        accountNumber: "",
+        bankName: "",
+        branchName: "",
+        routingNumber: "",
+      },
+    };
+
+    res.status(200).json(defaultMethods);
   } catch (error) {
     console.error("Error fetching payment methods:", error);
-    res.status(500).json({ message: "Failed to fetch payment methods" });
+    res.status(500).json({
+      message: "Failed to fetch payment methods",
+      error: error.message,
+    });
   }
 };
 
-// Save/Update payment methods
+// Save/Update payment methods - FIXED VERSION
 const savePaymentMethods = async (req, res) => {
   try {
     const methods = req.body;
-    
-    // Validate the data structure
+
+    // Validation optional
     if (!methods.bkash || !methods.nagad || !methods.rocket || !methods.bank) {
-      return res.status(400).json({ message: "Invalid payment methods data structure" });
+      return res
+        .status(400)
+        .json({ message: "Invalid payment methods structure" });
     }
-    
-    // Check if a document already exists
+
     const existing = await paymentMethods.findOne({});
-    
+
     let result;
     if (existing) {
-      // Update existing document
+      // Strip _id before updating
+      const { _id, ...methodsToUpdate } = methods;
+
       result = await paymentMethods.updateOne(
-        {},
-        { $set: methods }
+        { _id: new ObjectId(existing._id) },
+        { $set: methodsToUpdate },
       );
     } else {
-      // Insert new document
       result = await paymentMethods.insertOne(methods);
     }
-    
-    res.status(200).json({ 
-      message: "Payment methods saved successfully",
-      result 
-    });
+
+    const updated = await paymentMethods.findOne({});
+    res
+      .status(200)
+      .json({ message: "Payment methods saved successfully", data: updated });
   } catch (error) {
     console.error("Error saving payment methods:", error);
-    res.status(500).json({ message: "Failed to save payment methods" });
+    res
+      .status(500)
+      .json({
+        message: "Failed to save payment methods",
+        error: error.message,
+      });
   }
 };
-
-
-
-
 
 // ================= User =================
 
@@ -490,10 +677,7 @@ const userGetAllPdfs = async (req, res) => {
     if (email) query.email = email;
     if (status) query.status = status;
 
-    const pdfs = await userPdfs
-      .find(query)
-      .sort({ createdAt: -1 })
-      .toArray();
+    const pdfs = await userPdfs.find(query).sort({ createdAt: -1 }).toArray();
 
     res.status(200).json(pdfs);
   } catch (error) {
@@ -526,7 +710,7 @@ const updatePdfStatus = async (req, res) => {
 
     const result = await userPdfs.updateOne(
       { _id: new ObjectId(id) },
-      { $set: { status } }
+      { $set: { status } },
     );
 
     if (result.matchedCount === 0)
@@ -538,7 +722,6 @@ const updatePdfStatus = async (req, res) => {
     res.status(500).json({ message: "Failed to update PDF status." });
   }
 };
-
 
 const userDownloadPdf = async (req, res) => {
   try {
@@ -645,9 +828,6 @@ module.exports = {
   deleteBlankPdf,
   downloadBlankPdf,
 
-
-
-  
   uploadPdf,
   getAllPdfs,
   updatePdfType,
@@ -659,6 +839,8 @@ module.exports = {
   checkPdfAccess,
   getUserPurchasedPdfs,
   getPaymentMethods,
-  savePaymentMethods
-
+  savePaymentMethods,
+  verifyPayment,
+  getPendingPayments,
+  deletePayment,
 };

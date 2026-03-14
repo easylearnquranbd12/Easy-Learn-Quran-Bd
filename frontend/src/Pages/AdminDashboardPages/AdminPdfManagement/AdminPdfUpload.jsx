@@ -1,222 +1,344 @@
-// import { AlertCircle, CheckCircle2, FileText, Trash2, Upload } from "lucide-react";
-// import { useEffect, useState } from "react";
+// import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+// import {
+//   AlertCircle,
+//   CheckCircle2,
+//   FileText,
+//   Lock,
+//   Trash2,
+//   Unlock,
+//   Upload,
+// } from "lucide-react";
+// import { useState } from "react";
 // import { Helmet } from "react-helmet-async";
+// import { Controller, useForm } from "react-hook-form";
 // import Swal from "sweetalert2";
+// import TittleAnimation from "../../../components/TittleAnimation/TittleAnimation";
+// import RichTextField from "../../../shared/TextEditor/RichTextField";
+// import MediaUpload from "../../../utils/MediaUpload";
 
 // const AdminPdfUpload = () => {
+//   const queryClient = useQueryClient();
+
 //   const [file, setFile] = useState(null);
+//   const [pdfType, setPdfType] = useState("free");
+//   const [price, setPrice] = useState("");
+//   const [resetSignal, setResetSignal] = useState(false);
 //   const [uploading, setUploading] = useState(false);
-//   const [message, setMessage] = useState({ type: "", text: "" });
-//   const [pdfs, setPdfs] = useState([]);
-//   const [loadingHistory, setLoadingHistory] = useState(false);
+//   const [message, setMessage] = useState({ text: "", type: "" });
 
-//   // Load PDF history
-//   const fetchPdfs = async () => {
-//     setLoadingHistory(true);
-//     try {
+//   const { control, handleSubmit, reset, getValues } = useForm({
+//     defaultValues: {
+//       tittle: "",
+//       description: "",
+//       PdfThumbnil: null,
+//     },
+//   });
+
+//   /* ---------------- FETCH PDF LIST ---------------- */
+//   const { data: pdfs = [], isLoading } = useQuery({
+//     queryKey: ["pdfs"],
+//     queryFn: async () => {
 //       const res = await fetch("http://localhost:5000/pdf");
-//       const data = await res.json();
-//       if (res.ok) setPdfs(data);
-//     } catch (err) {
-//       console.error(err);
-//     } finally {
-//       setLoadingHistory(false);
-//     }
-//   };
+//       return res.json();
+//     },
+//   });
 
-//   useEffect(() => {
-//     fetchPdfs();
-//   }, []);
-
-//   // File select handler
-//   const handleFileChange = (e) => {
-//     const selected = e.target.files[0];
-//     if (selected && selected.type === "application/pdf") {
-//       setFile(selected);
-//       setMessage({ type: "", text: "" });
-//     } else {
-//       setFile(null);
-//       setMessage({ type: "error", text: "Please select a valid PDF file." });
-//     }
-//   };
-
-//   // const handleUpload = async () => {
-//   //   if (!file) {
-//   //     setMessage({ type: "error", text: "Please choose a PDF file first." });
-//   //     return;
-//   //   }
-//   //   setUploading(true);
-//   //   setMessage({ type: "", text: "" });
-
-//   //   try {
-//   //     const formData = new FormData();
-//   //     formData.append("pdf", file);
-
-//   //     const res = await fetch("http://localhost:5000/pdf/upload", {
-//   //       method: "POST",
-//   //       body: formData,
-//   //     });
-//   //     const data = await res.json();
-
-//   //     if (res.ok) {
-//   //       setMessage({ type: "success", text: data.message });
-//   //       setFile(null);
-//   //       fetchPdfs(); // Refresh history
-//   //     } else {
-//   //       setMessage({ type: "error", text: data.message || "Upload failed" });
-//   //     }
-//   //   } catch (error) {
-//   //     setMessage({ type: "error", text: "Server error, please try again." });
-//   //   } finally {
-//   //     setUploading(false);
-//   //   }
-//   // };
-
-//   const handleUpload = async () => {
-//   if (!file) {
-//     Swal.fire({
-//       icon: "warning",
-//       title: "No File Selected",
-//       text: "Please choose a PDF file first.",
-//       confirmButtonColor: "#0d9488",
-//     });
-//     return;
-//   }
-
-//   setUploading(true);
-
-//   try {
-//     const formData = new FormData();
-//     formData.append("pdf", file);
-
+//   /* ---------------- UPLOAD MUTATION ---------------- */
+//  const uploadMutation = useMutation({
+//   mutationFn: async (formData) => {
+//     setUploading(true);
 //     const res = await fetch("http://localhost:5000/pdf/upload", {
 //       method: "POST",
 //       body: formData,
 //     });
+//     return res.json();
+//   },
+//   onSuccess: () => {
+//     setUploading(false);
+//     queryClient.invalidateQueries(["pdfs"]);
 
-//     const data = await res.json();
+//     setFile(null);
+//     setPrice("");
+//     setPdfType("free");
+//     reset();
+//     setResetSignal((prev) => !prev);
 
-//     if (res.ok) {
-//       Swal.fire({
-//         icon: "success",
-//         title: "Upload Successful 🎉",
-//         text: data.message || "PDF uploaded successfully!",
-//         confirmButtonColor: "#0d9488",
-//       });
+//     // ---------------- SWEETALERT SUCCESS ----------------
+//     Swal.fire({
+//       icon: "success",
+//       title: "Upload Successful",
+//       text: "PDF uploaded successfully!",
+//       confirmButtonColor: "#10b981", // Tailwind teal-500
+//     });
+//   },
+//   onError: (error) => {
+//     setUploading(false);
 
-//       setFile(null);
-//       fetchPdfs();
-//     } else {
-//       Swal.fire({
-//         icon: "error",
-//         title: "Upload Failed",
-//         text: data.message || "Something went wrong!",
-//         confirmButtonColor: "#dc2626",
-//       });
-//     }
-//   } catch (error) {
+//     // ---------------- SWEETALERT ERROR ----------------
 //     Swal.fire({
 //       icon: "error",
-//       title: "Server Error",
-//       text: "Please try again later.",
-//       confirmButtonColor: "#dc2626",
+//       title: "Upload Failed",
+//       text:
+//         error?.message ||
+//         "Something went wrong while uploading the PDF. Please try again.",
+//       confirmButtonColor: "#ef4444", // Tailwind red-500
 //     });
-//   } finally {
-//     setUploading(false);
-//   }
-// };
+//   },
+// });
 
-//   // Delete handler
-//   const handleDelete = (id, name) => {
+//   /* ---------------- DELETE MUTATION ---------------- */
+//   const deleteMutation = useMutation({
+//     mutationFn: async (id) => {
+//       const res = await fetch(`http://localhost:5000/pdf/${id}`, {
+//         method: "DELETE",
+//       });
+//       return res.json();
+//     },
+//     onSuccess: () => {
+//       Swal.fire("Deleted", "PDF removed", "success");
+//       queryClient.invalidateQueries(["pdfs"]);
+//     },
+//   });
+
+
+
+//   /* ---------------- FILE SELECT ---------------- */
+//   const handleFileChange = (e) => {
+//     const selected = e.target.files[0];
+//     if (selected && selected.type === "application/pdf") {
+//       setFile(selected);
+//     } else {
+//       setMessage({ text: "Invalid file. Please upload PDF.", type: "error" });
+//     }
+//   };
+
+//   /* ---------------- DELETE WITH CONFIRM ---------------- */
+//   const handleDelete = (id) => {
 //     Swal.fire({
 //       title: "Are you sure?",
-//       text: `Do you want to delete "${name}"?`,
+//       text: "You won't be able to revert this!",
 //       icon: "warning",
 //       showCancelButton: true,
-//       confirmButtonColor: "#3085d6",
-//       cancelButtonColor: "#d33",
+//       confirmButtonColor: "#d33",
+//       cancelButtonColor: "#3085d6",
 //       confirmButtonText: "Yes, delete it!",
-//     }).then(async (result) => {
+//     }).then((result) => {
 //       if (result.isConfirmed) {
-//         try {
-//           const res = await fetch(`http://localhost:5000/pdf/${id}`, {
-//             method: "DELETE",
-//           });
-//           const data = await res.json();
-//           if (res.ok) {
-//             Swal.fire("Deleted!", data.message, "success");
-//             fetchPdfs(); // Refresh history
-//           } else {
-//             Swal.fire("Error", data.message || "Delete failed", "error");
-//           }
-//         } catch (err) {
-//           Swal.fire("Error", "Server error", "error");
-//         }
+//         deleteMutation.mutate(id);
 //       }
 //     });
 //   };
 
+//   /* ---------------- FORM SUBMIT ---------------- */
+//   const handleUpload = (data) => {
+//     if (!file) return setMessage({ text: "Select a PDF first", type: "error" });
+//     if (pdfType === "paid" && !price)
+//       return setMessage({ text: "Price required", type: "error" });
+
+//     const formData = new FormData();
+//     formData.append("pdf", file);
+//     formData.append("tittle", data.tittle);
+//     formData.append("description", data.description || "");
+//     if (data.PdfThumbnil) formData.append("PdfThumbnil", data.PdfThumbnil);
+//     formData.append("type", pdfType);
+//     if (pdfType === "paid") formData.append("price", price);
+
+//     // Console log for all data
+//     console.log({
+//       tittle: data.tittle,
+//       description: data.description,
+//       PdfThumbnil: data.PdfThumbnil,
+//       pdfFile: file,
+//       type: pdfType,
+//       price: pdfType === "paid" ? price : 0,
+//     });
+
+//     uploadMutation.mutate(formData);
+//   };
+
+//   const truncateHTML = (html = "", wordLimit = 10) => {
+//     if (!html || typeof html !== "string") return "";
+//     const text = html.replace(/<[^>]+>/g, " ");
+//     const words = text.split(/\s+/).filter(Boolean).slice(0, wordLimit);
+//     return (
+//       words.join(" ") + (text.split(/\s+/).length > wordLimit ? "..." : "")
+//     );
+//   };
+
 //   return (
-//     <div >
+//     <div className="space-y-10">
 //       <Helmet>
 //         <title>Admin | PDF Upload</title>
 //       </Helmet>
 
-//       {/* Upload Box */}
-//       <div className="w-full max-w-[1400px] mx-auto mt-10 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
-//         <div className="flex items-center justify-center mb-4">
-//           <FileText className="text-teal-600 w-7 h-7 mr-2" />
-//           <h1 className="text-xl font-bold text-gray-800">Upload PDF File</h1>
+//       <TittleAnimation
+//         tittle="PDF Management"
+//         subtittle="Upload and Manage PDFs"
+//       />
+
+//       {/* ================= UPLOAD CARD ================= */}
+//       <div className="w-full max-w-7xl mt-10 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6 mx-auto">
+//         {/* Title Input */}
+//         <div className="form-control w-full py-6">
+//           <label className="label">
+//             <span className="label-text text-base font-medium text-gray-700">
+//               Title:
+//             </span>
+//           </label>
+//           <Controller
+//             name="tittle"
+//             control={control}
+//             render={({ field }) => (
+//               <input
+//                 {...field}
+//                 placeholder="Enter title..."
+//                 className="w-full px-4 py-3 border rounded-md text-gray-700 focus:outline-none focus:ring-1 focus:ring-teal-300"
+//               />
+//             )}
+//           />
 //         </div>
 
-//         <label
-//           htmlFor="pdf-upload"
-//           className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-400 rounded-xl cursor-pointer hover:border-teal-500 transition-all bg-white/50"
-//         >
-//           {file ? (
-//             <>
-//               <FileText className="text-teal-500 w-10 h-10 mb-2" />
-//               <p className="text-gray-700 text-sm">{file.name}</p>
-//               <p className="text-gray-500 text-xs">{(file.size / 1024).toFixed(2)} KB</p>
-//             </>
-//           ) : (
-//             <>
-//               <Upload className="text-gray-500 w-10 h-10 mb-2" />
-//               <p className="text-gray-600 text-sm">Drag & Drop or Click to Select PDF</p>
-//             </>
-//           )}
-//           <input
-//             id="pdf-upload"
-//             type="file"
-//             accept="application/pdf"
-//             onChange={handleFileChange}
-//             className="hidden"
+//         {/* Description */}
+//         <div className="w-full">
+//           <RichTextField
+//             name="description"
+//             control={control}
+//             placeholder="Enter Your Description..."
+//             className="w-full "
 //           />
-//         </label>
+//         </div>
 
+//         {/* PDF Upload */}
+//         <div className="my-10">
+//           <div className="flex items-center justify-start mb-1 ">
+//             <FileText className="text-red-600 w-7 h-7 mr-2" />
+//             <h1 className="text-xl font-bold text-gray-800">Upload PDF File</h1>
+//           </div>
+//           <label
+//             htmlFor="pdf-upload"
+//             className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-400 rounded-xl cursor-pointer hover:border-red-500 transition-all bg-white/50"
+//           >
+//             {file ? (
+//               <>
+//                 <FileText className="text-red-500 w-10 h-10 mb-2" />
+//                 <p className="text-gray-700 text-sm">{file.name}</p>
+//                 <p className="text-gray-500 text-xs">
+//                   {(file.size / 1024).toFixed(2)} KB
+//                 </p>
+//               </>
+//             ) : (
+//               <>
+//                 <Upload className="text-gray-500 w-10 h-10 mb-2" />
+//                 <p className="text-gray-600 text-sm">
+//                   Drag & Drop or Click to Select PDF
+//                 </p>
+//               </>
+//             )}
+//             <input
+//               id="pdf-upload"
+//               type="file"
+//               accept="application/pdf"
+//               onChange={handleFileChange}
+//               className="hidden"
+//             />
+//           </label>
+//         </div>
+
+//         {/* MediaUpload Thumbnail */}
+//         <MediaUpload
+//           control={control}
+//           name="PdfThumbnil"
+//           label="PDF Thumbnail"
+//           type="image"
+//           maxSizeMB={5}
+//           resetSignal={resetSignal}
+//         />
+
+//         {/* TYPE TOGGLE */}
+//         <div className="flex gap-6 mt-4">
+//           <label className="flex items-center gap-2">
+//             <input
+//               type="radio"
+//               value="free"
+//               checked={pdfType === "free"}
+//               onChange={(e) => setPdfType(e.target.value)}
+//             />
+//             <Unlock className="w-4 h-4 text-green-600" />
+//             Free
+//           </label>
+
+//           <label className="flex items-center gap-2">
+//             <input
+//               type="radio"
+//               value="paid"
+//               checked={pdfType === "paid"}
+//               onChange={(e) => setPdfType(e.target.value)}
+//             />
+//             <Lock className="w-4 h-4 text-orange-600" />
+//             Paid
+//           </label>
+//         </div>
+
+//         {/* PRICE INPUT */}
+//         {pdfType === "paid" && (
+//           <input
+//             type="number"
+//             value={price}
+//             onChange={(e) => setPrice(e.target.value)}
+//             placeholder="Enter price"
+//             className="border p-2 rounded w-full mt-4"
+//           />
+//         )}
+
+//         {/* MESSAGE */}
 //         {message.text && (
 //           <div
 //             className={`flex items-center gap-2 mt-4 text-sm p-2 rounded-md ${
-//               message.type === "success" ? "bg-green-100 text-green-700" : "bg-teal-100 text-teal-700"
+//               message.type === "success"
+//                 ? "bg-green-100 text-green-700"
+//                 : "bg-red-100 text-red-700"
 //             }`}
 //           >
-//             {message.type === "success" ? <CheckCircle2 className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
+//             {message.type === "success" ? (
+//               <CheckCircle2 className="w-4 h-4" />
+//             ) : (
+//               <AlertCircle className="w-4 h-4" />
+//             )}
 //             <span>{message.text}</span>
 //           </div>
 //         )}
 
+//         {/* UPLOAD BUTTON */}
 //         <button
-//           onClick={handleUpload}
+//           onClick={handleSubmit(handleUpload)}
 //           disabled={uploading}
 //           className={`mt-6 w-full py-2 rounded-lg font-semibold text-white transition-all flex items-center justify-center gap-2 ${
-//             uploading ? "bg-gray-400 cursor-not-allowed" : "bg-teal-600 hover:bg-teal-700"
+//             uploading
+//               ? "bg-gray-400 cursor-not-allowed"
+//               : "bg-teal-600 hover:bg-teal-700"
 //           }`}
 //         >
 //           {uploading ? (
 //             <>
-//               <svg className="w-5 h-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-//                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-//                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+//               <svg
+//                 className="w-5 h-5 animate-spin text-white"
+//                 xmlns="http://www.w3.org/2000/svg"
+//                 fill="none"
+//                 viewBox="0 0 24 24"
+//               >
+//                 <circle
+//                   className="opacity-25"
+//                   cx="12"
+//                   cy="12"
+//                   r="10"
+//                   stroke="currentColor"
+//                   strokeWidth="4"
+//                 ></circle>
+//                 <path
+//                   className="opacity-75"
+//                   fill="currentColor"
+//                   d="M4 12a8 8 0 018-8v8z"
+//                 ></path>
 //               </svg>
 //               Uploading...
 //             </>
@@ -228,437 +350,91 @@
 //         </button>
 //       </div>
 
-//       {/* PDF History */}
-//       <div className="w-full max-w-[1400px] mx-auto mt-8 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
-//         <h2 className="text-lg font-bold text-gray-800 mb-4">Uploaded PDFs</h2>
+//       {/* ================= PDF HISTORY TABLE ================= */}
+//       <div className="max-w-7xl mx-auto bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
+//         <h2 className="text-lg font-semibold mb-4 text-teal-700">
+//           PDF History
+//         </h2>
 
-//         {loadingHistory ? (
-//           <p className="text-gray-600 text-sm">Loading...</p>
-//         ) : pdfs.length === 0 ? (
-//           <p className="text-gray-600 text-sm">No PDFs uploaded yet.</p>
-//         ) : (
-//           <ul className="flex flex-col gap-3">
-//             {pdfs.map((pdf) => (
-//               <li
-//                 key={pdf._id}
-//                 className="flex items-center justify-between bg-white/50 p-3 rounded-lg border border-gray-200 hover:bg-gray-100 transition"
-//               >
-//                 <div className="flex items-center gap-3">
-//                   <FileText className="w-5 h-5 text-teal-600" />
-//                   <div>
-//                     <p className="text-gray-700 text-sm">{pdf.originalName}</p>
-//                     <p className="text-gray-500 text-xs">{new Date(pdf.createdAt).toLocaleString()}</p>
-//                   </div>
-//                 </div>
-//                 <button
-//                   onClick={() => handleDelete(pdf._id, pdf.originalName)}
-//                   className="text-red-600 hover:text-teal-800"
-//                 >
-//                   <Trash2 className="w-5 h-5" />
-//                 </button>
-//               </li>
-//             ))}
-//           </ul>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
+//         <div className="overflow-x-auto">
+//           <table className="table-auto w-full text-sm">
+//             <thead className="bg-teal-600 text-white">
+//               <tr>
+//                 <th className="px-2 py-2">Image</th>
+//                 <th className="px-2 py-2">Title</th>
+//                 <th className="px-2 py-2">Description</th>
+//                 <th className="px-2 py-2">Price</th>
+//                 <th className="px-2 py-2">Status</th>
+//                 <th className="px-2 py-2">Action</th>
+//               </tr>
+//             </thead>
 
-// export default AdminPdfUpload;
+//             <tbody>
+//               {isLoading ? (
+//                 <tr>
+//                   <td colSpan={6} className="text-center py-4">
+//                     Loading...
+//                   </td>
+//                 </tr>
+//               ) : pdfs.length === 0 ? (
+//                 <tr>
+//                   <td colSpan={6} className="text-center py-4">
+//                     No PDFs uploaded
+//                   </td>
+//                 </tr>
+//               ) : (
+//                 pdfs.map((pdf) => (
+//                   <tr key={pdf._id} className="border-b hover:bg-gray-50">
+//                     <td className="text-center py-2">
+//                       {pdf.PdfThumbnil ? (
+//                         <img
+//                           src={pdf.PdfThumbnil}
+//                           className="w-12 h-12 object-cover rounded mx-auto"
+//                         />
+//                       ) : (
+//                         "No Image"
+//                       )}
+//                     </td>
 
+//                     <td className="text-center">
+//                       {truncateHTML(pdf.tittle, 5)}
+//                     </td>
+//                     <td
+//                       className="px-2 py-2 text-start"
+//                       dangerouslySetInnerHTML={{
+//                         __html: truncateHTML(pdf.description, 10),
+//                       }}
+//                     ></td>
+//                     <td className="text-center">
+//                       {pdf.type === "free" ? "Free" : `৳${pdf.price}`}
+//                     </td>
 
-
-// import { AlertCircle, CheckCircle2, FileText, Lock, Trash2, Unlock, Upload } from "lucide-react";
-// import { useEffect, useState } from "react";
-// import { Helmet } from "react-helmet-async";
-// import Swal from "sweetalert2";
-
-// const AdminPdfUpload = () => {
-//   const [file, setFile] = useState(null);
-//   const [uploading, setUploading] = useState(false);
-//   const [message, setMessage] = useState({ type: "", text: "" });
-//   const [pdfs, setPdfs] = useState([]);
-//   const [loadingHistory, setLoadingHistory] = useState(false);
-//   const [pdfType, setPdfType] = useState("free"); // "free" or "paid"
-//   const [price, setPrice] = useState("");
-
-//   // Load PDF history
-//   const fetchPdfs = async () => {
-//     setLoadingHistory(true);
-//     try {
-//       const res = await fetch("http://localhost:5000/pdf");
-//       const data = await res.json();
-//       if (res.ok) setPdfs(data);
-//     } catch (err) {
-//       console.error(err);
-//     } finally {
-//       setLoadingHistory(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchPdfs();
-//   }, []);
-
-//   // File select handler
-//   const handleFileChange = (e) => {
-//     const selected = e.target.files[0];
-//     if (selected && selected.type === "application/pdf") {
-//       setFile(selected);
-//       setMessage({ type: "", text: "" });
-//     } else {
-//       setFile(null);
-//       setMessage({ type: "error", text: "Please select a valid PDF file." });
-//     }
-//   };
-
-//   const handleUpload = async () => {
-//     if (!file) {
-//       Swal.fire({
-//         icon: "warning",
-//         title: "No File Selected",
-//         text: "Please choose a PDF file first.",
-//         confirmButtonColor: "#0d9488",
-//       });
-//       return;
-//     }
-
-//     if (pdfType === "paid" && !price) {
-//       Swal.fire({
-//         icon: "warning",
-//         title: "Price Required",
-//         text: "Please set a price for the paid PDF.",
-//         confirmButtonColor: "#0d9488",
-//       });
-//       return;
-//     }
-
-//     setUploading(true);
-
-//     try {
-//       const formData = new FormData();
-//       formData.append("pdf", file);
-//       formData.append("type", pdfType);
-//       if (pdfType === "paid") {
-//         formData.append("price", price);
-//       }
-
-//       const res = await fetch("http://localhost:5000/pdf/upload", {
-//         method: "POST",
-//         body: formData,
-//       });
-
-//       const data = await res.json();
-
-//       if (res.ok) {
-//         Swal.fire({
-//           icon: "success",
-//           title: "Upload Successful 🎉",
-//           text: data.message || "PDF uploaded successfully!",
-//           confirmButtonColor: "#0d9488",
-//         });
-
-//         setFile(null);
-//         setPrice("");
-//         setPdfType("free");
-//         fetchPdfs();
-//       } else {
-//         Swal.fire({
-//           icon: "error",
-//           title: "Upload Failed",
-//           text: data.message || "Something went wrong!",
-//           confirmButtonColor: "#dc2626",
-//         });
-//       }
-//     } catch (error) {
-//       Swal.fire({
-//         icon: "error",
-//         title: "Server Error",
-//         text: "Please try again later.",
-//         confirmButtonColor: "#dc2626",
-//       });
-//     } finally {
-//       setUploading(false);
-//     }
-//   };
-
-//   // Delete handler
-//   const handleDelete = (id, name) => {
-//     Swal.fire({
-//       title: "Are you sure?",
-//       text: `Do you want to delete "${name}"?`,
-//       icon: "warning",
-//       showCancelButton: true,
-//       confirmButtonColor: "#3085d6",
-//       cancelButtonColor: "#d33",
-//       confirmButtonText: "Yes, delete it!",
-//     }).then(async (result) => {
-//       if (result.isConfirmed) {
-//         try {
-//           const res = await fetch(`http://localhost:5000/pdf/${id}`, {
-//             method: "DELETE",
-//           });
-//           const data = await res.json();
-//           if (res.ok) {
-//             Swal.fire("Deleted!", data.message, "success");
-//             fetchPdfs();
-//           } else {
-//             Swal.fire("Error", data.message || "Delete failed", "error");
-//           }
-//         } catch (err) {
-//           Swal.fire("Error", "Server error", "error");
-//         }
-//       }
-//     });
-//   };
-
-//   // Toggle PDF free/paid status
-//   const handleToggleType = async (id, currentType, currentPrice) => {
-//     const newType = currentType === "free" ? "paid" : "free";
-//     let newPrice = currentPrice;
-
-//     if (newType === "paid") {
-//       const { value } = await Swal.fire({
-//         title: "Set Price",
-//         input: "number",
-//         inputLabel: "Enter price (in BDT)",
-//         inputValue: currentPrice || "",
-//         showCancelButton: true,
-//         confirmButtonColor: "#0d9488",
-//         inputValidator: (value) => {
-//           if (!value) {
-//             return "Price is required!";
-//           }
-//           if (value <= 0) {
-//             return "Price must be greater than 0!";
-//           }
-//         },
-//       });
-
-//       if (value) {
-//         newPrice = value;
-//       } else {
-//         return; // User cancelled
-//       }
-//     }
-
-//     try {
-//       const res = await fetch(`http://localhost:5000/pdf/${id}`, {
-//         method: "PATCH",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           type: newType,
-//           price: newPrice,
-//         }),
-//       });
-
-//       const data = await res.json();
-
-//       if (res.ok) {
-//         Swal.fire({
-//           icon: "success",
-//           title: "Updated!",
-//           text: `PDF is now ${newType === "free" ? "Free" : "Paid (৳" + newPrice + ")"}`,
-//           confirmButtonColor: "#0d9488",
-//         });
-//         fetchPdfs();
-//       } else {
-//         Swal.fire({
-//           icon: "error",
-//           title: "Update Failed",
-//           text: data.message || "Something went wrong!",
-//         });
-//       }
-//     } catch (err) {
-//       Swal.fire({
-//         icon: "error",
-//         title: "Server Error",
-//         text: "Please try again later.",
-//       });
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <Helmet>
-//         <title>Admin | PDF Upload</title>
-//       </Helmet>
-
-//       {/* Upload Box */}
-//       <div className="w-full max-w-[1400px] mx-auto mt-10 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
-//         <div className="flex items-center justify-center mb-4">
-//           <FileText className="text-teal-600 w-7 h-7 mr-2" />
-//           <h1 className="text-xl font-bold text-gray-800">Upload PDF File</h1>
-//         </div>
-
-//         <label
-//           htmlFor="pdf-upload"
-//           className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-400 rounded-xl cursor-pointer hover:border-teal-500 transition-all bg-white/50"
-//         >
-//           {file ? (
-//             <>
-//               <FileText className="text-teal-500 w-10 h-10 mb-2" />
-//               <p className="text-gray-700 text-sm">{file.name}</p>
-//               <p className="text-gray-500 text-xs">{(file.size / 1024).toFixed(2)} KB</p>
-//             </>
-//           ) : (
-//             <>
-//               <Upload className="text-gray-500 w-10 h-10 mb-2" />
-//               <p className="text-gray-600 text-sm">Drag & Drop or Click to Select PDF</p>
-//             </>
-//           )}
-//           <input
-//             id="pdf-upload"
-//             type="file"
-//             accept="application/pdf"
-//             onChange={handleFileChange}
-//             className="hidden"
-//           />
-//         </label>
-
-//         {/* PDF Type Selection */}
-//         <div className="mt-4">
-//           <label className="block text-sm font-medium text-gray-700 mb-2">PDF Type</label>
-//           <div className="flex gap-4">
-//             <label className="flex items-center gap-2">
-//               <input
-//                 type="radio"
-//                 name="pdfType"
-//                 value="free"
-//                 checked={pdfType === "free"}
-//                 onChange={(e) => setPdfType(e.target.value)}
-//                 className="text-teal-600"
-//               />
-//               <span className="flex items-center gap-1">
-//                 <Unlock className="w-4 h-4 text-green-600" /> Free
-//               </span>
-//             </label>
-//             <label className="flex items-center gap-2">
-//               <input
-//                 type="radio"
-//                 name="pdfType"
-//                 value="paid"
-//                 checked={pdfType === "paid"}
-//                 onChange={(e) => setPdfType(e.target.value)}
-//                 className="text-teal-600"
-//               />
-//               <span className="flex items-center gap-1">
-//                 <Lock className="w-4 h-4 text-orange-600" /> Paid
-//               </span>
-//             </label>
-//           </div>
-//         </div>
-
-//         {/* Price Input for Paid PDFs */}
-//         {pdfType === "paid" && (
-//           <div className="mt-4">
-//             <label className="block text-sm font-medium text-gray-700 mb-2">Price (BDT)</label>
-//             <input
-//               type="number"
-//               value={price}
-//               onChange={(e) => setPrice(e.target.value)}
-//               placeholder="Enter price"
-//               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-//               min="0"
-//               step="1"
-//             />
-//           </div>
-//         )}
-
-//         {message.text && (
-//           <div
-//             className={`flex items-center gap-2 mt-4 text-sm p-2 rounded-md ${
-//               message.type === "success" ? "bg-green-100 text-green-700" : "bg-teal-100 text-teal-700"
-//             }`}
-//           >
-//             {message.type === "success" ? <CheckCircle2 className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
-//             <span>{message.text}</span>
-//           </div>
-//         )}
-
-//         <button
-//           onClick={handleUpload}
-//           disabled={uploading}
-//           className={`mt-6 w-full py-2 rounded-lg font-semibold text-white transition-all flex items-center justify-center gap-2 ${
-//             uploading ? "bg-gray-400 cursor-not-allowed" : "bg-teal-600 hover:bg-teal-700"
-//           }`}
-//         >
-//           {uploading ? (
-//             <>
-//               <svg className="w-5 h-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-//                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-//                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-//               </svg>
-//               Uploading...
-//             </>
-//           ) : (
-//             <>
-//               <Upload className="w-5 h-5" /> Upload {pdfType === "paid" ? "Paid" : "Free"} PDF
-//             </>
-//           )}
-//         </button>
-//       </div>
-
-//       {/* PDF History */}
-//       <div className="w-full max-w-[1400px] mx-auto mt-8 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
-//         <h2 className="text-lg font-bold text-gray-800 mb-4">Uploaded PDFs</h2>
-
-//         {loadingHistory ? (
-//           <p className="text-gray-600 text-sm">Loading...</p>
-//         ) : pdfs.length === 0 ? (
-//           <p className="text-gray-600 text-sm">No PDFs uploaded yet.</p>
-//         ) : (
-//           <ul className="flex flex-col gap-3">
-//             {pdfs.map((pdf) => (
-//               <li
-//                 key={pdf._id}
-//                 className="flex items-center justify-between bg-white/50 p-3 rounded-lg border border-gray-200 hover:bg-gray-100 transition"
-//               >
-//                 <div className="flex items-center gap-3">
-//                   {pdf.type === "free" ? (
-//                     <Unlock className="w-5 h-5 text-green-600" />
-//                   ) : (
-//                     <Lock className="w-5 h-5 text-orange-600" />
-//                   )}
-//                   <div>
-//                     <p className="text-gray-700 text-sm font-medium">{pdf.originalName}</p>
-//                     <div className="flex items-center gap-2 text-xs">
-//                       <span className="text-gray-500">{new Date(pdf.createdAt).toLocaleString()}</span>
-//                       <span className={`px-2 py-0.5 rounded-full ${
-//                         pdf.type === "free" 
-//                           ? "bg-green-100 text-green-700" 
-//                           : "bg-orange-100 text-orange-700"
-//                       }`}>
-//                         {pdf.type === "free" ? "Free" : `Paid (৳${pdf.price})`}
+//                     <td className="text-center">
+//                       <span
+//                         className={`px-2 py-1 rounded text-xs ${
+//                           pdf.type === "free"
+//                             ? "bg-green-100 text-green-700"
+//                             : "bg-orange-100 text-orange-700"
+//                         }`}
+//                       >
+//                         {pdf.type === "free" ? "Free" : "Paid"}
 //                       </span>
-//                     </div>
-//                   </div>
-//                 </div>
-//                 <div className="flex items-center gap-2">
-//                   <button
-//                     onClick={() => handleToggleType(pdf._id, pdf.type, pdf.price)}
-//                     className={`text-sm px-3 py-1 rounded-lg transition-all ${
-//                       pdf.type === "free"
-//                         ? "bg-orange-100 text-orange-700 hover:bg-orange-200"
-//                         : "bg-green-100 text-green-700 hover:bg-green-200"
-//                     }`}
-//                   >
-//                     {pdf.type === "free" ? "Make Paid" : "Make Free"}
-//                   </button>
-//                   <button
-//                     onClick={() => handleDelete(pdf._id, pdf.originalName)}
-//                     className="text-red-600 hover:text-red-800"
-//                   >
-//                     <Trash2 className="w-5 h-5" />
-//                   </button>
-//                 </div>
-//               </li>
-//             ))}
-//           </ul>
-//         )}
+//                     </td>
+
+//                     <td className="text-center">
+//                       <button
+//                         onClick={() => handleDelete(pdf._id)}
+//                         className="text-red-600"
+//                       >
+//                         <Trash2 size={18} />
+//                       </button>
+//                     </td>
+//                   </tr>
+//                 ))
+//               )}
+//             </tbody>
+//           </table>
+//         </div>
 //       </div>
 //     </div>
 //   );
@@ -666,85 +442,222 @@
 
 // export default AdminPdfUpload;
 
-
-
-
-
-
-import { AlertCircle, CheckCircle2, CreditCard, FileText, Landmark, Lock, Smartphone, Trash2, Unlock, Upload } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  AlertCircle,
+  CheckCircle2,
+  CreditCard,
+  FileText,
+  Landmark,
+  Lock,
+  Save,
+  Smartphone,
+  Trash2,
+  Unlock,
+  Upload
+} from "lucide-react";
+import { useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { Controller, useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import TittleAnimation from "../../../components/TittleAnimation/TittleAnimation";
+import RichTextField from "../../../shared/TextEditor/RichTextField";
+import MediaUpload from "../../../utils/MediaUpload";
 
 const AdminPdfUpload = () => {
+  const queryClient = useQueryClient();
+
   const [file, setFile] = useState(null);
-  const [uploading, setUploading] = useState(false);
-  const [message, setMessage] = useState({ type: "", text: "" });
-  const [pdfs, setPdfs] = useState([]);
-  const [loadingHistory, setLoadingHistory] = useState(false);
   const [pdfType, setPdfType] = useState("free");
   const [price, setPrice] = useState("");
+  const [resetSignal, setResetSignal] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [message, setMessage] = useState({ text: "", type: "" });
   
   // Payment Methods State
   const [paymentMethods, setPaymentMethods] = useState({
     bkash: { enabled: false, number: "", type: "Personal" },
     nagad: { enabled: false, number: "", type: "Personal" },
     rocket: { enabled: false, number: "", type: "Personal" },
-    bank: { 
-      enabled: false, 
-      accountName: "", 
-      accountNumber: "", 
-      bankName: "", 
-      branchName: "", 
-      routingNumber: "" 
+    bank: {
+      enabled: false,
+      accountName: "",
+      accountNumber: "",
+      bankName: "",
+      branchName: "",
+      routingNumber: ""
     }
   });
+  const [savingPayment, setSavingPayment] = useState(false);
 
-  // Load PDF history
-  const fetchPdfs = async () => {
-    setLoadingHistory(true);
-    try {
+  const { control, handleSubmit, reset, getValues } = useForm({
+    defaultValues: {
+      tittle: "",
+      description: "",
+      PdfThumbnil: null,
+    },
+  });
+
+  /* ---------------- FETCH PDF LIST ---------------- */
+  const { data: pdfs = [], isLoading } = useQuery({
+    queryKey: ["pdfs"],
+    queryFn: async () => {
       const res = await fetch("http://localhost:5000/pdf");
-      const data = await res.json();
-      if (res.ok) setPdfs(data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoadingHistory(false);
-    }
-  };
+      return res.json();
+    },
+  });
 
-  // Load payment methods on mount
-  const fetchPaymentMethods = async () => {
-    try {
+  /* ---------------- FETCH PAYMENT METHODS ---------------- */
+  const { data: savedPaymentMethods, refetch: refetchPaymentMethods } = useQuery({
+    queryKey: ["paymentMethods"],
+    queryFn: async () => {
       const res = await fetch("http://localhost:5000/pdf/payment-methods");
       const data = await res.json();
       if (res.ok && data) {
         setPaymentMethods(data);
       }
-    } catch (err) {
-      console.error("Error fetching payment methods:", err);
-    }
-  };
+      return data;
+    },
+  });
+console.log(savedPaymentMethods)
+  /* ---------------- UPLOAD MUTATION ---------------- */
+  const uploadMutation = useMutation({
+    mutationFn: async (formData) => {
+      setUploading(true);
+      const res = await fetch("http://localhost:5000/pdf/upload", {
+        method: "POST",
+        body: formData,
+      });
+      return res.json();
+    },
+    onSuccess: () => {
+      setUploading(false);
+      queryClient.invalidateQueries(["pdfs"]);
 
-  useEffect(() => {
-    fetchPdfs();
-    fetchPaymentMethods();
-  }, []);
+      setFile(null);
+      setPrice("");
+      setPdfType("free");
+      reset();
+      setResetSignal((prev) => !prev);
 
-  // File select handler
+      Swal.fire({
+        icon: "success",
+        title: "Upload Successful",
+        text: "PDF uploaded successfully!",
+        confirmButtonColor: "#10b981",
+      });
+    },
+    onError: (error) => {
+      setUploading(false);
+      Swal.fire({
+        icon: "error",
+        title: "Upload Failed",
+        text: error?.message || "Something went wrong while uploading the PDF. Please try again.",
+        confirmButtonColor: "#ef4444",
+      });
+    },
+  });
+
+  /* ---------------- DELETE MUTATION ---------------- */
+  const deleteMutation = useMutation({
+    mutationFn: async (id) => {
+      const res = await fetch(`http://localhost:5000/pdf/${id}`, {
+        method: "DELETE",
+      });
+      return res.json();
+    },
+    onSuccess: () => {
+      Swal.fire("Deleted", "PDF removed", "success");
+      queryClient.invalidateQueries(["pdfs"]);
+    },
+  });
+
+  /* ---------------- SAVE PAYMENT METHODS MUTATION ---------------- */
+  const savePaymentMethodsMutation = useMutation({
+    mutationFn: async (methods) => {
+      setSavingPayment(true);
+      const res = await fetch("http://localhost:5000/pdf/payment-methods", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(methods),
+      });
+      return res.json();
+    },
+    onSuccess: () => {
+      setSavingPayment(false);
+      Swal.fire({
+        icon: "success",
+        title: "Payment Methods Saved",
+        text: "Payment methods have been updated successfully!",
+        confirmButtonColor: "#10b981",
+      });
+      refetchPaymentMethods();
+    },
+    onError: (error) => {
+      setSavingPayment(false);
+      Swal.fire({
+        icon: "error",
+        title: "Save Failed",
+        text: error?.message || "Failed to save payment methods.",
+        confirmButtonColor: "#ef4444",
+      });
+    },
+  });
+
+  /* ---------------- FILE SELECT ---------------- */
   const handleFileChange = (e) => {
     const selected = e.target.files[0];
     if (selected && selected.type === "application/pdf") {
       setFile(selected);
-      setMessage({ type: "", text: "" });
     } else {
-      setFile(null);
-      setMessage({ type: "error", text: "Please select a valid PDF file." });
+      setMessage({ text: "Invalid file. Please upload PDF.", type: "error" });
     }
   };
 
-  // Handle payment method changes
+  /* ---------------- DELETE WITH CONFIRM ---------------- */
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteMutation.mutate(id);
+      }
+    });
+  };
+
+  /* ---------------- FORM SUBMIT ---------------- */
+  const handleUpload = (data) => {
+    if (!file) return setMessage({ text: "Select a PDF first", type: "error" });
+    if (pdfType === "paid" && !price)
+      return setMessage({ text: "Price required", type: "error" });
+
+    const formData = new FormData();
+    formData.append("pdf", file);
+    formData.append("tittle", data.tittle);
+    formData.append("description", data.description || "");
+    if (data.PdfThumbnil) formData.append("PdfThumbnil", data.PdfThumbnil);
+    formData.append("type", pdfType);
+    if (pdfType === "paid") formData.append("price", price);
+
+    console.log({
+      tittle: data.tittle,
+      description: data.description,
+      PdfThumbnil: data.PdfThumbnil,
+      pdfFile: file,
+      type: pdfType,
+      price: pdfType === "paid" ? price : 0,
+    });
+
+    uploadMutation.mutate(formData);
+  };
+
+  /* ---------------- HANDLE PAYMENT METHOD CHANGE ---------------- */
   const handlePaymentMethodChange = (method, field, value) => {
     setPaymentMethods(prev => ({
       ...prev,
@@ -755,574 +668,529 @@ const AdminPdfUpload = () => {
     }));
   };
 
-  // Save payment methods
-  const savePaymentMethods = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/pdf/payment-methods", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(paymentMethods),
-      });
-
-      if (res.ok) {
+  /* ---------------- SAVE PAYMENT METHODS ---------------- */
+  const handleSavePaymentMethods = () => {
+    // Validate mobile payment numbers
+    const mobileMethods = ['bkash', 'nagad', 'rocket'];
+    for (let method of mobileMethods) {
+      if (paymentMethods[method].enabled && !paymentMethods[method].number) {
         Swal.fire({
-          icon: "success",
-          title: "Saved!",
-          text: "Payment methods updated successfully.",
-          confirmButtonColor: "#0d9488",
+          icon: "warning",
+          title: "Validation Error",
+          text: `Please enter ${method.charAt(0).toUpperCase() + method.slice(1)} number`,
+          confirmButtonColor: "#f59e0b",
         });
-      } else {
-        throw new Error("Failed to save");
-      }
-    } catch (err) {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Failed to save payment methods.",
-        confirmButtonColor: "#dc2626",
-      });
-    }
-  };
-
-  const handleUpload = async () => {
-    if (!file) {
-      Swal.fire({
-        icon: "warning",
-        title: "No File Selected",
-        text: "Please choose a PDF file first.",
-        confirmButtonColor: "#0d9488",
-      });
-      return;
-    }
-
-    if (pdfType === "paid" && !price) {
-      Swal.fire({
-        icon: "warning",
-        title: "Price Required",
-        text: "Please set a price for the paid PDF.",
-        confirmButtonColor: "#0d9488",
-      });
-      return;
-    }
-
-    setUploading(true);
-
-    try {
-      const formData = new FormData();
-      formData.append("pdf", file);
-      formData.append("type", pdfType);
-      if (pdfType === "paid") {
-        formData.append("price", price);
-      }
-
-      const res = await fetch("http://localhost:5000/pdf/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        Swal.fire({
-          icon: "success",
-          title: "Upload Successful 🎉",
-          text: data.message || "PDF uploaded successfully!",
-          confirmButtonColor: "#0d9488",
-        });
-
-        setFile(null);
-        setPrice("");
-        setPdfType("free");
-        fetchPdfs();
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Upload Failed",
-          text: data.message || "Something went wrong!",
-          confirmButtonColor: "#dc2626",
-        });
-      }
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Server Error",
-        text: "Please try again later.",
-        confirmButtonColor: "#dc2626",
-      });
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  // Delete handler
-  const handleDelete = (id, name) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: `Do you want to delete "${name}"?`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const res = await fetch(`http://localhost:5000/pdf/${id}`, {
-            method: "DELETE",
-          });
-          const data = await res.json();
-          if (res.ok) {
-            Swal.fire("Deleted!", data.message, "success");
-            fetchPdfs();
-          } else {
-            Swal.fire("Error", data.message || "Delete failed", "error");
-          }
-        } catch (err) {
-          Swal.fire("Error", "Server error", "error");
-        }
-      }
-    });
-  };
-
-  // Toggle PDF free/paid status
-  const handleToggleType = async (id, currentType, currentPrice) => {
-    const newType = currentType === "free" ? "paid" : "free";
-    let newPrice = currentPrice;
-
-    if (newType === "paid") {
-      const { value } = await Swal.fire({
-        title: "Set Price",
-        input: "number",
-        inputLabel: "Enter price (in BDT)",
-        inputValue: currentPrice || "",
-        showCancelButton: true,
-        confirmButtonColor: "#0d9488",
-        inputValidator: (value) => {
-          if (!value) {
-            return "Price is required!";
-          }
-          if (value <= 0) {
-            return "Price must be greater than 0!";
-          }
-        },
-      });
-
-      if (value) {
-        newPrice = value;
-      } else {
         return;
       }
     }
 
-    try {
-      const res = await fetch(`http://localhost:5000/pdf/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          type: newType,
-          price: newPrice,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
+    // Validate bank details
+    if (paymentMethods.bank.enabled) {
+      const bank = paymentMethods.bank;
+      if (!bank.accountName || !bank.accountNumber || !bank.bankName) {
         Swal.fire({
-          icon: "success",
-          title: "Updated!",
-          text: `PDF is now ${newType === "free" ? "Free" : "Paid (৳" + newPrice + ")"}`,
-          confirmButtonColor: "#0d9488",
+          icon: "warning",
+          title: "Validation Error",
+          text: "Please fill all required bank fields (Account Name, Account Number, Bank Name)",
+          confirmButtonColor: "#f59e0b",
         });
-        fetchPdfs();
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Update Failed",
-          text: data.message || "Something went wrong!",
-        });
+        return;
       }
-    } catch (err) {
-      Swal.fire({
-        icon: "error",
-        title: "Server Error",
-        text: "Please try again later.",
-      });
     }
+
+    savePaymentMethodsMutation.mutate(paymentMethods);
+  };
+
+  const truncateHTML = (html = "", wordLimit = 10) => {
+    if (!html || typeof html !== "string") return "";
+    const text = html.replace(/<[^>]+>/g, " ");
+    const words = text.split(/\s+/).filter(Boolean).slice(0, wordLimit);
+    return words.join(" ") + (text.split(/\s+/).length > wordLimit ? "..." : "");
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-10">
       <Helmet>
         <title>Admin | PDF Upload & Payment Settings</title>
       </Helmet>
 
-      {/* Payment Methods Section */}
-      <div className="w-full max-w-[1400px] mx-auto mt-10 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-2">
-            <CreditCard className="text-teal-600 w-7 h-7" />
-            <h2 className="text-xl font-bold text-gray-800">Payment Methods Configuration</h2>
-          </div>
-          <button
-            onClick={savePaymentMethods}
-            className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition"
-          >
-            Save Payment Methods
-          </button>
+      <TittleAnimation
+        tittle="PDF Management"
+        subtittle="Upload PDFs and Configure Payment Methods"
+      />
+
+      {/* ================= PAYMENT METHODS SECTION ================= */}
+      <div className="w-full max-w-7xl mx-auto bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
+        <div className="flex items-center gap-2 mb-6">
+          <CreditCard className="w-6 h-6 text-teal-600" />
+          <h2 className="text-xl font-bold text-gray-800">Payment Methods Configuration</h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* bKash */}
-          <div className="border rounded-lg p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Smartphone className="text-pink-600" />
-                <h3 className="font-semibold">bKash</h3>
+          {/* Mobile Banking Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-gray-700 flex items-center gap-2">
+              <Smartphone className="w-5 h-5 text-teal-600" />
+              Mobile Banking
+            </h3>
+
+            {/* bKash */}
+            <div className="p-4 border rounded-lg bg-gray-50">
+              <div className="flex items-center justify-between mb-3">
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={paymentMethods.bkash.enabled}
+                    onChange={(e) => handlePaymentMethodChange('bkash', 'enabled', e.target.checked)}
+                    className="w-4 h-4 text-teal-600"
+                  />
+                  <span className="font-medium">bKash</span>
+                </label>
               </div>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={paymentMethods.bkash.enabled}
-                  onChange={(e) => handlePaymentMethodChange("bkash", "enabled", e.target.checked)}
-                  className="text-teal-600"
-                />
-                <span className="text-sm">Enable</span>
-              </label>
+              {paymentMethods.bkash.enabled && (
+                <div className="space-y-3">
+                  <input
+                    type="text"
+                    placeholder="bKash Number"
+                    value={paymentMethods.bkash.number}
+                    onChange={(e) => handlePaymentMethodChange('bkash', 'number', e.target.value)}
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500"
+                  />
+                  <select
+                    value={paymentMethods.bkash.type}
+                    onChange={(e) => handlePaymentMethodChange('bkash', 'type', e.target.value)}
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500"
+                  >
+                    <option value="Personal">Personal</option>
+                    <option value="Merchant">Merchant</option>
+                    <option value="Agent">Agent</option>
+                  </select>
+                </div>
+              )}
             </div>
-            {paymentMethods.bkash.enabled && (
-              <>
-                <input
-                  type="text"
-                  placeholder="bKash Number"
-                  value={paymentMethods.bkash.number}
-                  onChange={(e) => handlePaymentMethodChange("bkash", "number", e.target.value)}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
-                <select
-                  value={paymentMethods.bkash.type}
-                  onChange={(e) => handlePaymentMethodChange("bkash", "type", e.target.value)}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                >
-                  <option value="Personal">Personal</option>
-                  <option value="Merchant">Merchant</option>
-                  <option value="Agent">Agent</option>
-                </select>
-              </>
-            )}
+
+            {/* Nagad */}
+            <div className="p-4 border rounded-lg bg-gray-50">
+              <div className="flex items-center justify-between mb-3">
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={paymentMethods.nagad.enabled}
+                    onChange={(e) => handlePaymentMethodChange('nagad', 'enabled', e.target.checked)}
+                    className="w-4 h-4 text-teal-600"
+                  />
+                  <span className="font-medium">Nagad</span>
+                </label>
+              </div>
+              {paymentMethods.nagad.enabled && (
+                <div className="space-y-3">
+                  <input
+                    type="text"
+                    placeholder="Nagad Number"
+                    value={paymentMethods.nagad.number}
+                    onChange={(e) => handlePaymentMethodChange('nagad', 'number', e.target.value)}
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500"
+                  />
+                  <select
+                    value={paymentMethods.nagad.type}
+                    onChange={(e) => handlePaymentMethodChange('nagad', 'type', e.target.value)}
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500"
+                  >
+                    <option value="Personal">Personal</option>
+                    <option value="Merchant">Merchant</option>
+                    <option value="Agent">Agent</option>
+                  </select>
+                </div>
+              )}
+            </div>
+
+            {/* Rocket */}
+            <div className="p-4 border rounded-lg bg-gray-50">
+              <div className="flex items-center justify-between mb-3">
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={paymentMethods.rocket.enabled}
+                    onChange={(e) => handlePaymentMethodChange('rocket', 'enabled', e.target.checked)}
+                    className="w-4 h-4 text-teal-600"
+                  />
+                  <span className="font-medium">Rocket</span>
+                </label>
+              </div>
+              {paymentMethods.rocket.enabled && (
+                <div className="space-y-3">
+                  <input
+                    type="text"
+                    placeholder="Rocket Number"
+                    value={paymentMethods.rocket.number}
+                    onChange={(e) => handlePaymentMethodChange('rocket', 'number', e.target.value)}
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500"
+                  />
+                  <select
+                    value={paymentMethods.rocket.type}
+                    onChange={(e) => handlePaymentMethodChange('rocket', 'type', e.target.value)}
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500"
+                  >
+                    <option value="Personal">Personal</option>
+                    <option value="Merchant">Merchant</option>
+                    <option value="Agent">Agent</option>
+                  </select>
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Nagad */}
-          <div className="border rounded-lg p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Smartphone className="text-orange-600" />
-                <h3 className="font-semibold">Nagad</h3>
+          {/* Bank Transfer Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-gray-700 flex items-center gap-2">
+              <Landmark className="w-5 h-5 text-teal-600" />
+              Bank Transfer
+            </h3>
+
+            <div className="p-4 border rounded-lg bg-gray-50">
+              <div className="flex items-center justify-between mb-3">
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={paymentMethods.bank.enabled}
+                    onChange={(e) => handlePaymentMethodChange('bank', 'enabled', e.target.checked)}
+                    className="w-4 h-4 text-teal-600"
+                  />
+                  <span className="font-medium">Enable Bank Transfer</span>
+                </label>
               </div>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={paymentMethods.nagad.enabled}
-                  onChange={(e) => handlePaymentMethodChange("nagad", "enabled", e.target.checked)}
-                  className="text-teal-600"
-                />
-                <span className="text-sm">Enable</span>
-              </label>
+
+              {paymentMethods.bank.enabled && (
+                <div className="space-y-3">
+                  <input
+                    type="text"
+                    placeholder="Account Name"
+                    value={paymentMethods.bank.accountName}
+                    onChange={(e) => handlePaymentMethodChange('bank', 'accountName', e.target.value)}
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Account Number"
+                    value={paymentMethods.bank.accountNumber}
+                    onChange={(e) => handlePaymentMethodChange('bank', 'accountNumber', e.target.value)}
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Bank Name"
+                    value={paymentMethods.bank.bankName}
+                    onChange={(e) => handlePaymentMethodChange('bank', 'bankName', e.target.value)}
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Branch Name"
+                    value={paymentMethods.bank.branchName}
+                    onChange={(e) => handlePaymentMethodChange('bank', 'branchName', e.target.value)}
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Routing Number"
+                    value={paymentMethods.bank.routingNumber}
+                    onChange={(e) => handlePaymentMethodChange('bank', 'routingNumber', e.target.value)}
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500"
+                  />
+                </div>
+              )}
             </div>
-            {paymentMethods.nagad.enabled && (
+          </div>
+        </div>
+
+        {/* Save Payment Methods Button */}
+        <div className="mt-6 flex justify-end">
+          <button
+            onClick={handleSavePaymentMethods}
+            disabled={savingPayment}
+            className={`flex items-center gap-2 px-6 py-2 rounded-lg font-semibold text-white transition-all ${
+              savingPayment
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-teal-600 hover:bg-teal-700"
+            }`}
+          >
+            {savingPayment ? (
               <>
-                <input
-                  type="text"
-                  placeholder="Nagad Number"
-                  value={paymentMethods.nagad.number}
-                  onChange={(e) => handlePaymentMethodChange("nagad", "number", e.target.value)}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
-                <select
-                  value={paymentMethods.nagad.type}
-                  onChange={(e) => handlePaymentMethodChange("nagad", "type", e.target.value)}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                >
-                  <option value="Personal">Personal</option>
-                  <option value="Merchant">Merchant</option>
-                </select>
+                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                </svg>
+                Saving...
+              </>
+            ) : (
+              <>
+                <Save className="w-5 h-5" />
+                Save Payment Methods
               </>
             )}
-          </div>
-
-          {/* Rocket */}
-          <div className="border rounded-lg p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Smartphone className="text-red-600" />
-                <h3 className="font-semibold">Rocket</h3>
-              </div>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={paymentMethods.rocket.enabled}
-                  onChange={(e) => handlePaymentMethodChange("rocket", "enabled", e.target.checked)}
-                  className="text-teal-600"
-                />
-                <span className="text-sm">Enable</span>
-              </label>
-            </div>
-            {paymentMethods.rocket.enabled && (
-              <>
-                <input
-                  type="text"
-                  placeholder="Rocket Number"
-                  value={paymentMethods.rocket.number}
-                  onChange={(e) => handlePaymentMethodChange("rocket", "number", e.target.value)}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
-                <select
-                  value={paymentMethods.rocket.type}
-                  onChange={(e) => handlePaymentMethodChange("rocket", "type", e.target.value)}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                >
-                  <option value="Personal">Personal</option>
-                  <option value="Merchant">Merchant</option>
-                </select>
-              </>
-            )}
-          </div>
-
-          {/* Bank Account */}
-          <div className="border rounded-lg p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Landmark className="text-blue-600" />
-                <h3 className="font-semibold">Bank Account</h3>
-              </div>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={paymentMethods.bank.enabled}
-                  onChange={(e) => handlePaymentMethodChange("bank", "enabled", e.target.checked)}
-                  className="text-teal-600"
-                />
-                <span className="text-sm">Enable</span>
-              </label>
-            </div>
-            {paymentMethods.bank.enabled && (
-              <div className="space-y-2">
-                <input
-                  type="text"
-                  placeholder="Account Holder Name"
-                  value={paymentMethods.bank.accountName}
-                  onChange={(e) => handlePaymentMethodChange("bank", "accountName", e.target.value)}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
-                <input
-                  type="text"
-                  placeholder="Account Number"
-                  value={paymentMethods.bank.accountNumber}
-                  onChange={(e) => handlePaymentMethodChange("bank", "accountNumber", e.target.value)}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
-                <input
-                  type="text"
-                  placeholder="Bank Name"
-                  value={paymentMethods.bank.bankName}
-                  onChange={(e) => handlePaymentMethodChange("bank", "bankName", e.target.value)}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
-                <input
-                  type="text"
-                  placeholder="Branch Name"
-                  value={paymentMethods.bank.branchName}
-                  onChange={(e) => handlePaymentMethodChange("bank", "branchName", e.target.value)}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
-                <input
-                  type="text"
-                  placeholder="Routing Number"
-                  value={paymentMethods.bank.routingNumber}
-                  onChange={(e) => handlePaymentMethodChange("bank", "routingNumber", e.target.value)}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
-              </div>
-            )}
-          </div>
+          </button>
         </div>
       </div>
 
-      {/* Upload Box */}
-      <div className="w-full max-w-[1400px] mx-auto bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
-        <div className="flex items-center justify-center mb-4">
-          <FileText className="text-teal-600 w-7 h-7 mr-2" />
-          <h1 className="text-xl font-bold text-gray-800">Upload PDF File</h1>
-        </div>
-
-        <label
-          htmlFor="pdf-upload"
-          className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-400 rounded-xl cursor-pointer hover:border-teal-500 transition-all bg-white/50"
-        >
-          {file ? (
-            <>
-              <FileText className="text-teal-500 w-10 h-10 mb-2" />
-              <p className="text-gray-700 text-sm">{file.name}</p>
-              <p className="text-gray-500 text-xs">{(file.size / 1024).toFixed(2)} KB</p>
-            </>
-          ) : (
-            <>
-              <Upload className="text-gray-500 w-10 h-10 mb-2" />
-              <p className="text-gray-600 text-sm">Drag & Drop or Click to Select PDF</p>
-            </>
-          )}
-          <input
-            id="pdf-upload"
-            type="file"
-            accept="application/pdf"
-            onChange={handleFileChange}
-            className="hidden"
+      {/* ================= UPLOAD CARD ================= */}
+      <div className="w-full max-w-7xl mx-auto bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
+        {/* Title Input */}
+        <div className="form-control w-full py-6">
+          <label className="label">
+            <span className="label-text text-base font-medium text-gray-700">
+              Title:
+            </span>
+          </label>
+          <Controller
+            name="tittle"
+            control={control}
+            render={({ field }) => (
+              <input
+                {...field}
+                placeholder="Enter title..."
+                className="w-full px-4 py-3 border rounded-md text-gray-700 focus:outline-none focus:ring-1 focus:ring-teal-300"
+              />
+            )}
           />
-        </label>
-
-        {/* PDF Type Selection */}
-        <div className="mt-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">PDF Type</label>
-          <div className="flex gap-4">
-            <label className="flex items-center gap-2">
-              <input
-                type="radio"
-                name="pdfType"
-                value="free"
-                checked={pdfType === "free"}
-                onChange={(e) => setPdfType(e.target.value)}
-                className="text-teal-600"
-              />
-              <span className="flex items-center gap-1">
-                <Unlock className="w-4 h-4 text-green-600" /> Free
-              </span>
-            </label>
-            <label className="flex items-center gap-2">
-              <input
-                type="radio"
-                name="pdfType"
-                value="paid"
-                checked={pdfType === "paid"}
-                onChange={(e) => setPdfType(e.target.value)}
-                className="text-teal-600"
-              />
-              <span className="flex items-center gap-1">
-                <Lock className="w-4 h-4 text-orange-600" /> Paid
-              </span>
-            </label>
-          </div>
         </div>
 
-        {/* Price Input for Paid PDFs */}
-        {pdfType === "paid" && (
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Price (BDT)</label>
-            <input
-              type="number"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              placeholder="Enter price"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-              min="0"
-              step="1"
-            />
+        {/* Description */}
+        <div className="w-full">
+          <RichTextField
+            name="description"
+            control={control}
+            placeholder="Enter Your Description..."
+            className="w-full "
+          />
+        </div>
+
+        {/* PDF Upload */}
+        <div className="my-10">
+          <div className="flex items-center justify-start mb-1 ">
+            <FileText className="text-red-600 w-7 h-7 mr-2" />
+            <h1 className="text-xl font-bold text-gray-800">Upload PDF File</h1>
           </div>
+          <label
+            htmlFor="pdf-upload"
+            className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-400 rounded-xl cursor-pointer hover:border-red-500 transition-all bg-white/50"
+          >
+            {file ? (
+              <>
+                <FileText className="text-red-500 w-10 h-10 mb-2" />
+                <p className="text-gray-700 text-sm">{file.name}</p>
+                <p className="text-gray-500 text-xs">
+                  {(file.size / 1024).toFixed(2)} KB
+                </p>
+              </>
+            ) : (
+              <>
+                <Upload className="text-gray-500 w-10 h-10 mb-2" />
+                <p className="text-gray-600 text-sm">
+                  Drag & Drop or Click to Select PDF
+                </p>
+              </>
+            )}
+            <input
+              id="pdf-upload"
+              type="file"
+              accept="application/pdf"
+              onChange={handleFileChange}
+              className="hidden"
+            />
+          </label>
+        </div>
+
+        {/* MediaUpload Thumbnail */}
+        <MediaUpload
+          control={control}
+          name="PdfThumbnil"
+          label="PDF Thumbnail"
+          type="image"
+          maxSizeMB={5}
+          resetSignal={resetSignal}
+        />
+
+        {/* TYPE TOGGLE */}
+        <div className="flex gap-6 mt-4">
+          <label className="flex items-center gap-2">
+            <input
+              type="radio"
+              value="free"
+              checked={pdfType === "free"}
+              onChange={(e) => setPdfType(e.target.value)}
+            />
+            <Unlock className="w-4 h-4 text-green-600" />
+            Free
+          </label>
+
+          <label className="flex items-center gap-2">
+            <input
+              type="radio"
+              value="paid"
+              checked={pdfType === "paid"}
+              onChange={(e) => setPdfType(e.target.value)}
+            />
+            <Lock className="w-4 h-4 text-orange-600" />
+            Paid
+          </label>
+        </div>
+
+        {/* PRICE INPUT */}
+        {pdfType === "paid" && (
+          <input
+            type="number"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            placeholder="Enter price"
+            className="border p-2 rounded w-full mt-4"
+          />
         )}
 
+        {/* MESSAGE */}
         {message.text && (
           <div
             className={`flex items-center gap-2 mt-4 text-sm p-2 rounded-md ${
-              message.type === "success" ? "bg-green-100 text-green-700" : "bg-teal-100 text-teal-700"
+              message.type === "success"
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-700"
             }`}
           >
-            {message.type === "success" ? <CheckCircle2 className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
+            {message.type === "success" ? (
+              <CheckCircle2 className="w-4 h-4" />
+            ) : (
+              <AlertCircle className="w-4 h-4" />
+            )}
             <span>{message.text}</span>
           </div>
         )}
 
+        {/* UPLOAD BUTTON */}
         <button
-          onClick={handleUpload}
+          onClick={handleSubmit(handleUpload)}
           disabled={uploading}
           className={`mt-6 w-full py-2 rounded-lg font-semibold text-white transition-all flex items-center justify-center gap-2 ${
-            uploading ? "bg-gray-400 cursor-not-allowed" : "bg-teal-600 hover:bg-teal-700"
+            uploading
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-teal-600 hover:bg-teal-700"
           }`}
         >
           {uploading ? (
             <>
-              <svg className="w-5 h-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+              <svg
+                className="w-5 h-5 animate-spin text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8z"
+                ></path>
               </svg>
               Uploading...
             </>
           ) : (
             <>
-              <Upload className="w-5 h-5" /> Upload {pdfType === "paid" ? "Paid" : "Free"} PDF
+              <Upload className="w-5 h-5" /> Upload
             </>
           )}
         </button>
       </div>
 
-      {/* PDF History */}
-      <div className="w-full max-w-[1400px] mx-auto bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
-        <h2 className="text-lg font-bold text-gray-800 mb-4">Uploaded PDFs</h2>
+      {/* ================= PDF HISTORY TABLE ================= */}
+      <div className="max-w-7xl mx-auto bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
+        <h2 className="text-lg font-semibold mb-4 text-teal-700">
+          PDF History
+        </h2>
 
-        {loadingHistory ? (
-          <p className="text-gray-600 text-sm">Loading...</p>
-        ) : pdfs.length === 0 ? (
-          <p className="text-gray-600 text-sm">No PDFs uploaded yet.</p>
-        ) : (
-          <ul className="flex flex-col gap-3">
-            {pdfs.map((pdf) => (
-              <li
-                key={pdf._id}
-                className="flex items-center justify-between bg-white/50 p-3 rounded-lg border border-gray-200 hover:bg-gray-100 transition"
-              >
-                <div className="flex items-center gap-3">
-                  {pdf.type === "free" ? (
-                    <Unlock className="w-5 h-5 text-green-600" />
-                  ) : (
-                    <Lock className="w-5 h-5 text-orange-600" />
-                  )}
-                  <div>
-                    <p className="text-gray-700 text-sm font-medium">{pdf.originalName}</p>
-                    <div className="flex items-center gap-2 text-xs">
-                      <span className="text-gray-500">{new Date(pdf.createdAt).toLocaleString()}</span>
-                      <span className={`px-2 py-0.5 rounded-full ${
-                        pdf.type === "free" 
-                          ? "bg-green-100 text-green-700" 
-                          : "bg-orange-100 text-orange-700"
-                      }`}>
-                        {pdf.type === "free" ? "Free" : `Paid (৳${pdf.price})`}
+        <div className="overflow-x-auto">
+          <table className="table-auto w-full text-sm">
+            <thead className="bg-teal-600 text-white">
+              <tr>
+                <th className="px-2 py-2">Image</th>
+                <th className="px-2 py-2">Title</th>
+                <th className="px-2 py-2">Description</th>
+                <th className="px-2 py-2">Price</th>
+                <th className="px-2 py-2">Status</th>
+                <th className="px-2 py-2">Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {isLoading ? (
+                <tr>
+                  <td colSpan={6} className="text-center py-4">
+                    Loading...
+                  </td>
+                </tr>
+              ) : pdfs.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="text-center py-4">
+                    No PDFs uploaded
+                  </td>
+                </tr>
+              ) : (
+                pdfs.map((pdf) => (
+                  <tr key={pdf._id} className="border-b hover:bg-gray-50">
+                    <td className="text-center py-2">
+                      {pdf.PdfThumbnil ? (
+                        <img
+                          src={pdf.PdfThumbnil}
+                          className="w-12 h-12 object-cover rounded mx-auto"
+                        />
+                      ) : (
+                        "No Image"
+                      )}
+                    </td>
+
+                    <td className="text-center">
+                      {truncateHTML(pdf.tittle, 5)}
+                    </td>
+                    <td
+                      className="px-2 py-2 text-start"
+                      dangerouslySetInnerHTML={{
+                        __html: truncateHTML(pdf.description, 10),
+                      }}
+                    ></td>
+                    <td className="text-center">
+                      {pdf.type === "free" ? "Free" : `৳${pdf.price}`}
+                    </td>
+
+                    <td className="text-center">
+                      <span
+                        className={`px-2 py-1 rounded text-xs ${
+                          pdf.type === "free"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-orange-100 text-orange-700"
+                        }`}
+                      >
+                        {pdf.type === "free" ? "Free" : "Paid"}
                       </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => handleToggleType(pdf._id, pdf.type, pdf.price)}
-                    className={`text-sm px-3 py-1 rounded-lg transition-all ${
-                      pdf.type === "free"
-                        ? "bg-orange-100 text-orange-700 hover:bg-orange-200"
-                        : "bg-green-100 text-green-700 hover:bg-green-200"
-                    }`}
-                  >
-                    {pdf.type === "free" ? "Make Paid" : "Make Free"}
-                  </button>
-                  <button
-                    onClick={() => handleDelete(pdf._id, pdf.originalName)}
-                    className="text-red-600 hover:text-red-800"
-                  >
-                    <Trash2 className="w-5 h-5" />
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
+                    </td>
+
+                    <td className="text-center">
+                      <button
+                        onClick={() => handleDelete(pdf._id)}
+                        className="text-red-600"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

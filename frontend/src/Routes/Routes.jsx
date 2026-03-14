@@ -16,6 +16,7 @@ import ManageUserNobel from "../Pages/AdminDashboardPages/AdminContributePages/M
 import SuccessVideoStorie from "../Pages/AdminDashboardPages/AdminHomePagesEdit/SuccessVideoStorie";
 import AllUserPayment from "../Pages/AdminDashboardPages/AdminPaymentPages/AllUserPayment";
 import AdminBlankPdfUpload from "../Pages/AdminDashboardPages/AdminPdfManagement/AdminBlankPdfUpload";
+import AdminPdfPayment from "../Pages/AdminDashboardPages/AdminPdfManagement/AdminPdfPayment";
 import AdminPdfUpload from "../Pages/AdminDashboardPages/AdminPdfManagement/AdminPdfUpload";
 import UserUploadPdfManage from "../Pages/AdminDashboardPages/AdminPdfManagement/UserUploadPdfManage";
 import AdminElegantEdit from "../Pages/AdminDashboardPages/BAShapeFormats/FirstLayer/Elegant/AdminElegantEdit";
@@ -1018,6 +1019,14 @@ export const routes = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <AdminBlankPdfUpload />
+          </Suspense>
+        ),
+      },
+      {
+        path: "paid-pdf-status",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminPdfPayment />
           </Suspense>
         ),
       },

@@ -586,6 +586,13 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
           description: "Blank PDF documents",
           color: "text-indigo-600",
         },
+        {
+          path: "/admin-dashboard/paid-pdf-status",
+          icon: CircleFadingArrowUp,
+          label: "Paid PDF Status",
+          description: "Accepts & Rejects",
+          color: "text-indigo-600",
+        },
       ],
     },
     {
