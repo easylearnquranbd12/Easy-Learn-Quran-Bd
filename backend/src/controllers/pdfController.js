@@ -752,10 +752,16 @@ const userDownloadPdf = async (req, res) => {
 // Admin Upload
 const uploadBlankPdf = async (req, res) => {
   try {
-    const file = req.file;
-    if (!file) return res.status(400).json({ message: "No file uploaded" });
+    const file = req.file; // PDF
+    const { tittle, description } = req.body;
+    const thumbnail = req.body.PdfThumbnil || null; // optional image URL/base64
+
+    if (!file) return res.status(400).json({ message: "No PDF uploaded" });
 
     const pdfData = {
+      tittle: tittle || "Untitled PDF",
+      description: description || "",
+      PdfThumbnil: thumbnail,
       originalName: file.originalname,
       filename: file.filename,
       path: file.path,

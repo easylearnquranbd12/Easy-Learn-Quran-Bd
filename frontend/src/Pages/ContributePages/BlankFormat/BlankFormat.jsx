@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Download, FileText } from "lucide-react";
+import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import CustomLoading from "../../../components/Loading/CustomLoading";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
@@ -14,6 +15,22 @@ const BlankFormat = () => {
       return res.data || [];
     },
   });
+
+  const [expandedDescriptions, setExpandedDescriptions] = useState({});
+
+  const toggleDescription = (id) => {
+    setExpandedDescriptions((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  const truncateText = (text = "", wordLimit = 15) => {
+    if (!text) return "";
+    const words = text.replace(/<[^>]+>/g, " ").split(/\s+/);
+    if (words.length <= wordLimit) return text;
+    return words.slice(0, wordLimit).join(" ") + "...";
+  };
 
   const handleDownload = (id) => {
     window.location.href = `http://localhost:5000/pdf/blank/download/${id}`;
@@ -31,7 +48,6 @@ const BlankFormat = () => {
 
         {/* ===== Header ===== */}
         <div className="text-center mb-16">
-
           <div className="w-20 h-20 mx-auto rounded-full border-4 border-teal-700 flex items-center justify-center text-teal-700 text-xl font-serif font-bold mb-6">
             PDF
           </div>
@@ -63,42 +79,80 @@ const BlankFormat = () => {
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-gray-300">
-            {pdfs.map((pdf) => (
-              <div
-                key={pdf._id}
-                className="py-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6"
-              >
-                {/* Left */}
-                <div className="flex items-start gap-4">
-                  <FileText className="w-8 h-8 text-teal-700 mt-1" />
+          <div className="bg-white rounded-lg shadow-sm divide-y divide-gray-200">
+            {pdfs.map((pdf) => {
+              const isExpanded = expandedDescriptions[pdf._id];
+              const showToggle =
+                pdf.description && pdf.description.split(/\s+/).length > 15;
 
-                  <div>
-                    <h3 className="text-xl font-serif text-gray-900">
-                      {pdf.originalName}
-                    </h3>
+              return (
+                <div
+                  key={pdf._id}
+                  className="p-6 flex flex-col md:flex-row md:items-start md:justify-between gap-4 hover:bg-gray-50 transition"
+                >
+                  <div className="flex flex-1 items-start gap-4">
+                    {pdf.PdfThumbnil ? (
+                      <img
+                        src={pdf.PdfThumbnil}
+                        alt="pdf thumbnail"
+                        className="w-16 h-16 object-cover rounded"
+                      />
+                    ) : (
+                      <div className="w-16 h-16 flex items-center justify-center bg-gray-100 rounded">
+                        <FileText className="w-8 h-8 text-gray-400" />
+                      </div>
+                    )}
 
-                    <p className="text-sm text-gray-500 mt-1">
-                      Uploaded on{" "}
-                      {new Date(pdf.createdAt).toLocaleDateString("en-GB", {
-                        day: "2-digit",
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </p>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {pdf.tittle || pdf.originalName}
+                      </h3>
+
+                      <p className="text-gray-700 text-sm mt-1">
+                        <span
+                          dangerouslySetInnerHTML={{
+                            __html: isExpanded
+                              ? pdf.description
+                              : truncateText(pdf.description),
+                          }}
+                        />
+                        {showToggle && (
+                          <button
+                            className="ml-2 text-teal-600 text-xs font-semibold"
+                            onClick={() => toggleDescription(pdf._id)}
+                          >
+                            {isExpanded ? "See less" : "See more"}
+                          </button>
+                        )}
+                      </p>
+
+                      <div className="flex items-center gap-3 mt-2 flex-wrap">
+                        <p className="text-sm text-gray-500">
+                          Added on{" "}
+                          {new Date(pdf.createdAt).toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "long",
+                            year: "numeric",
+                          })}
+                        </p>
+                        <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">
+                          Free
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex-shrink-0 self-start md:self-auto">
+                    <button
+                      onClick={() => handleDownload(pdf._id)}
+                      className="flex items-center justify-center gap-2 border border-teal-600 text-teal-600 hover:bg-teal-600 hover:text-white transition-all duration-300 px-6 py-2 rounded-lg font-medium"
+                    >
+                      <Download className="w-4 h-4" /> Download
+                    </button>
                   </div>
                 </div>
-
-                {/* Download */}
-                <button
-                  onClick={() => handleDownload(pdf._id)}
-                  className="flex items-center justify-center gap-2 border border-teal-700 text-teal-700 hover:bg-teal-700 hover:text-white transition-all duration-300 px-6 py-3 font-medium tracking-wide rounded-sm"
-                >
-                  <Download className="w-5 h-5" />
-                  Download Blank Format
-                </button>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
