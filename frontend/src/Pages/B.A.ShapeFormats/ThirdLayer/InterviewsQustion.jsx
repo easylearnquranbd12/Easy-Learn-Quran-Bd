@@ -25,25 +25,28 @@ const InterviewsQustion = () => {
   });
 
   // ✅ Fetch Interview Questions fields
-  const { data: interviewQuestionsFields = [], isLoading: fieldsLoading } = useQuery(
-    {
+  const { data: interviewQuestionsFields = [], isLoading: fieldsLoading } =
+    useQuery({
       queryKey: ["interviewQuestionsFields"],
       queryFn: async () => {
-        const res = await axiosPublic.get("/third-layer/interviewQuestionsField");
+        const res = await axiosPublic.get(
+          "/third-layer/interviewQuestionsField",
+        );
         return res.data?.data || [];
       },
-    },
-  );
+    });
 
   // ✅ Fetch Interview Questionss
-  const { data: interviewQuestions = [], isLoading: interviewQuestionsLoading } =
-    useQuery({
-      queryKey: ["interviewQuestions"],
-      queryFn: async () => {
-        const res = await axiosPublic.get("/third-layer/interviewQuestions");
-        return res.data || [];
-      },
-    });
+  const {
+    data: interviewQuestions = [],
+    isLoading: interviewQuestionsLoading,
+  } = useQuery({
+    queryKey: ["interviewQuestions"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/third-layer/interviewQuestions");
+      return res.data || [];
+    },
+  });
 
   const isLoading = fieldsLoading || interviewQuestionsLoading;
   useEffect(() => {
@@ -106,8 +109,13 @@ const InterviewsQustion = () => {
       {/* ✅ Title & Description */}
       <section className="text-center">
         {interviewQuestionsFields.map((field) => (
-          <div key={field._id} className="bg-gradient-to-br from-teal-50 via-white to-emerald-50 p-3 md:p-8 rounded-lg shadow-md border-l-4 border-teal-500 relative overflow-hidden mb-8">
-            <h3 className="font-semibold text-3xl text-teal-600">
+          <div
+            key={field._id}
+            className="bg-gradient-to-br from-teal-50 via-white to-emerald-50 p-3 md:p-8 rounded-lg shadow-md border-l-4 border-teal-500 relative overflow-hidden mb-8"
+          >
+            <div className="absolute top-0 left-0 w-40 h-40 bg-teal-300 opacity-10 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+            <div className="absolute bottom-0 right-0 w-56 h-56 bg-blue-300 opacity-10 rounded-full translate-x-1/4 translate-y-1/4"></div>
+            <h3 className="font-bold text-3xl text-teal-600">
               {field.title}
             </h3>
             <p className="text-gray-600 text-sm lg:text-base text-justify py-5">
@@ -163,12 +171,12 @@ const InterviewsQustion = () => {
       {/* ✅ Learning Your Exercise (ONLY if Active) */}
       {activeField && (
         <section className="card bg-white shadow-2xl rounded-2xl p-4 md:p-6 mt-10 space-y-5">
-        <h3 className="text-base md:text-xl font-semibold text-teal-600 flex items-center gap-2">
-  <BookOpenCheck className="w-6 h-6 text-teal-600" />
-  {activeField?.title
-    ? `${activeField.title} Practice Exercise`
-    : "Practice Exercise"}
-</h3>
+          <h3 className="text-base md:text-xl font-semibold text-teal-600 flex items-center gap-2">
+            <BookOpenCheck className="w-6 h-6 text-teal-600" />
+            {activeField?.title
+              ? `${activeField.title} Practice Exercise`
+              : "Practice Exercise"}
+          </h3>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div className="form-control w-full mb-5">

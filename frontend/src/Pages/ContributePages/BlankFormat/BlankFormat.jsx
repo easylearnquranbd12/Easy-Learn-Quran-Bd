@@ -79,7 +79,7 @@ const BlankFormat = () => {
             </p>
           </div>
         ) : (
-          <div className="bg-white rounded-lg shadow-sm divide-y divide-gray-200">
+          <div className=" rounded-lg shadow-sm divide-y divide-gray-200">
             {pdfs.map((pdf) => {
               const isExpanded = expandedDescriptions[pdf._id];
               const showToggle =

@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Download, FileText } from "lucide-react";
+import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import CustomLoading from "../../../components/Loading/CustomLoading";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
@@ -15,7 +16,22 @@ const UploadPDF = () => {
     },
   });
 
-  // Download PDF
+  const [expandedDescriptions, setExpandedDescriptions] = useState({});
+
+  const toggleDescription = (id) => {
+    setExpandedDescriptions((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  const truncateText = (text = "", wordLimit = 15) => {
+    if (!text) return "";
+    const words = text.replace(/<[^>]+>/g, " ").split(/\s+/);
+    if (words.length <= wordLimit) return text;
+    return words.slice(0, wordLimit).join(" ") + "...";
+  };
+
   const handleDownload = async (pdf) => {
     try {
       const res = await axiosPublic.get(`/pdf/user/download/${pdf._id}`, {
@@ -35,14 +51,14 @@ const UploadPDF = () => {
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error(error);
-      alert("Download failed. Please try again.");
+      alert("Download failed.");
     }
   };
 
   if (isLoading) return <CustomLoading />;
 
   return (
-    <div className="min-h-screen py-20">
+    <div className="min-h-screen py-10">
       <Helmet>
         <title>Official Approved Documents</title>
       </Helmet>
@@ -62,15 +78,15 @@ const UploadPDF = () => {
 
           <p className="mt-6 text-gray-600 max-w-2xl mx-auto leading-relaxed text-lg">
             The following documents have been formally reviewed and approved.
-            These files are preserved within the official archive for reference
-            and scholarly access.
+            These files are preserved within the official archive for
+            reference and public access.
           </p>
 
           <div className="w-28 h-[2px] bg-yellow-700 mx-auto mt-8"></div>
-
         </div>
 
         {/* ===== Content ===== */}
+
         {pdfs.length === 0 ? (
           <div className="text-center py-20 border-t border-b border-gray-300">
 
@@ -87,48 +103,100 @@ const UploadPDF = () => {
 
           </div>
         ) : (
-          <div className="divide-y divide-gray-300">
+          <div className=" rounded-lg shadow-sm divide-y divide-gray-200">
 
-            {pdfs.map((pdf) => (
-              <div
-                key={pdf._id}
-                className="py-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6"
-              >
+            {pdfs.map((pdf) => {
 
-                {/* Left Side */}
-                <div className="flex items-start gap-4">
+              const isExpanded = expandedDescriptions[pdf._id];
 
-                  <FileText className="w-8 h-8 text-yellow-700 mt-1" />
+              const showToggle =
+                pdf.description && pdf.description.split(/\s+/).length > 15;
 
-                  <div>
-                    <h3 className="text-xl font-serif text-gray-900">
-                      {pdf.originalName}
-                    </h3>
+              return (
+                <div
+                  key={pdf._id}
+                  className="p-6 flex flex-col md:flex-row md:items-start md:justify-between gap-4 hover:bg-gray-50 transition"
+                >
 
-                    <p className="text-sm text-gray-500 mt-1">
-                      Published on{" "}
-                      {new Date(pdf.createdAt).toLocaleDateString("en-GB", {
-                        day: "2-digit",
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </p>
+                  {/* Left Side */}
+                  <div className="flex flex-1 items-start gap-4">
+
+                    {pdf.PdfThumbnil ? (
+                      <img
+                        src={pdf.PdfThumbnil}
+                        alt="thumbnail"
+                        className="w-16 h-16 object-cover rounded"
+                      />
+                    ) : (
+                      <div className="w-16 h-16 flex items-center justify-center bg-gray-100 rounded">
+                        <FileText className="w-8 h-8 text-gray-400" />
+                      </div>
+                    )}
+
+                    <div className="flex-1">
+
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {pdf.tittle || pdf.originalName}
+                      </h3>
+
+                      {/* Description */}
+                      <p className="text-gray-700 text-sm mt-1">
+
+                        <span
+                          dangerouslySetInnerHTML={{
+                            __html: isExpanded
+                              ? pdf.description
+                              : truncateText(pdf.description),
+                          }}
+                        />
+
+                        {showToggle && (
+                          <button
+                            className="ml-2 text-yellow-700 text-xs font-semibold"
+                            onClick={() => toggleDescription(pdf._id)}
+                          >
+                            {isExpanded ? "See less" : "See more"}
+                          </button>
+                        )}
+
+                      </p>
+
+                      {/* Date + Status */}
+                      <div className="flex items-center gap-3 mt-2 flex-wrap">
+
+                        <p className="text-sm text-gray-500">
+                          Published on{" "}
+                          {new Date(pdf.createdAt).toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "long",
+                            year: "numeric",
+                          })}
+                        </p>
+
+                        <span className="px-2 py-0.5 bg-yellow-100 text-yellow-700 text-xs rounded-full">
+                          Approved
+                        </span>
+
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Download Button */}
+                  <div className="flex-shrink-0 self-start md:self-auto">
+
+                    <button
+                      onClick={() => handleDownload(pdf)}
+                      className="flex items-center justify-center gap-2 border border-yellow-700 text-yellow-700 hover:bg-yellow-700 hover:text-white transition-all duration-300 px-6 py-2 rounded-lg font-medium"
+                    >
+                      <Download className="w-4 h-4" />
+                      Download
+                    </button>
+
                   </div>
 
                 </div>
-
-                {/* Download Button */}
-                <button
-                  onClick={() => handleDownload(pdf)}
-                  className="flex items-center justify-center gap-2 border border-yellow-700 text-yellow-700 hover:bg-yellow-700 hover:text-white transition-all duration-300 px-6 py-3 font-medium tracking-wide"
-                >
-                  <Download className="w-5 h-5" />
-                  Download Official PDF
-                </button>
-
-              </div>
-            ))}
-
+              );
+            })}
           </div>
         )}
       </div>

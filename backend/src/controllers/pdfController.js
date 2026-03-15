@@ -631,12 +631,10 @@ const savePaymentMethods = async (req, res) => {
       .json({ message: "Payment methods saved successfully", data: updated });
   } catch (error) {
     console.error("Error saving payment methods:", error);
-    res
-      .status(500)
-      .json({
-        message: "Failed to save payment methods",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Failed to save payment methods",
+      error: error.message,
+    });
   }
 };
 
@@ -646,12 +644,16 @@ const savePaymentMethods = async (req, res) => {
 const userUploadPdf = async (req, res) => {
   try {
     const file = req.file;
-    const { email } = req.body; // ✅ frontend থেকে আসা email
+    const { email, tittle, description } = req.body;
+    const thumbnail = req.body.PdfThumbnil || null;
     if (!file) return res.status(400).json({ message: "No file uploaded" });
     if (!email) return res.status(400).json({ message: "Email is required" });
 
     const pdfData = {
-      email, // ✅ save user email
+      email,
+      tittle: tittle || "Untitled PDF",
+      description: description || "",
+      PdfThumbnil: thumbnail,
       originalName: file.originalname,
       filename: file.filename,
       path: file.path,

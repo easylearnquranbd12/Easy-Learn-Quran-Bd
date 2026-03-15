@@ -1,35 +1,61 @@
 import {
-    AlertCircle,
-    CheckCircle2,
-    FileText,
-    FileTextIcon,
-    Trash2,
-    Upload,
+  AlertCircle,
+  CheckCircle2,
+  FileText,
+  Trash2,
+  Upload,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { Controller, useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-import useAuth from "../../hooks/useAuth"; // ✅ must have user email
+import TittleAnimation from "../../components/TittleAnimation/TittleAnimation";
+import useAuth from "../../hooks/useAuth";
+import RichTextField from "../../shared/TextEditor/RichTextField";
+import MediaUpload from "../../utils/MediaUpload";
 
 const UserUploadPdf = () => {
-  const { user } = useAuth(); // ✅ get logged-in user
+  const { user } = useAuth();
+
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
   const [pdfs, setPdfs] = useState([]);
   const [loadingHistory, setLoadingHistory] = useState(false);
+  const [resetSignal, setResetSignal] = useState(false);
 
-  // ✅ Load PDF history (user-specific)
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: {
+      tittle: "",
+      description: "",
+      PdfThumbnil: null,
+    },
+  });
+
+  // truncate html
+  const truncateHTML = (html = "", wordLimit = 10) => {
+    const text = html.replace(/<[^>]+>/g, " ");
+    const words = text.split(/\s+/).filter(Boolean);
+    if (words.length <= wordLimit) return text;
+    return words.slice(0, wordLimit).join(" ") + "...";
+  };
+
+  // fetch history
   const fetchPdfs = async () => {
     if (!user?.email) return;
+
     setLoadingHistory(true);
+
     try {
       const res = await fetch(
         `http://localhost:5000/pdf/user?email=${user.email}`,
       );
+
       if (!res.ok) throw new Error("Failed to fetch PDFs");
+
       const data = await res.json();
-      setPdfs(data); // ✅ update state
+
+      setPdfs(data);
     } catch (err) {
       console.error(err);
     } finally {
@@ -41,9 +67,10 @@ const UserUploadPdf = () => {
     fetchPdfs();
   }, [user?.email]);
 
-  // File select handler
+  // file change
   const handleFileChange = (e) => {
     const selected = e.target.files[0];
+
     if (selected && selected.type === "application/pdf") {
       setFile(selected);
       setMessage({ type: "", text: "" });
@@ -53,12 +80,13 @@ const UserUploadPdf = () => {
     }
   };
 
-  // ✅ Upload handler with email
-  const handleUpload = async () => {
+  // upload
+  const handleUpload = async (formValues) => {
     if (!file) {
       setMessage({ type: "error", text: "Please choose a PDF file first." });
       return;
     }
+
     if (!user?.email) {
       setMessage({ type: "error", text: "User email not found!" });
       return;
@@ -69,30 +97,50 @@ const UserUploadPdf = () => {
 
     try {
       const formData = new FormData();
+
       formData.append("pdf", file);
-      formData.append("email", user.email); // ✅ send email
+      formData.append("email", user.email);
+      formData.append("tittle", formValues.tittle);
+      formData.append("description", formValues.description || "");
+
+      if (formValues.PdfThumbnil) {
+        formData.append("PdfThumbnil", formValues.PdfThumbnil);
+      }
 
       const res = await fetch("http://localhost:5000/pdf/user/upload", {
         method: "POST",
         body: formData,
       });
+
       const data = await res.json();
 
       if (res.ok) {
         setMessage({ type: "success", text: data.message });
+
         setFile(null);
-        fetchPdfs(); // Refresh history
+
+        reset();
+
+        setResetSignal((prev) => !prev);
+
+        fetchPdfs();
       } else {
-        setMessage({ type: "error", text: data.message || "Upload failed" });
+        setMessage({
+          type: "error",
+          text: data.message || "Upload failed",
+        });
       }
-    } catch (error) {
-      setMessage({ type: "error", text: "Server error, please try again." });
+    } catch {
+      setMessage({
+        type: "error",
+        text: "Server error, please try again.",
+      });
     } finally {
       setUploading(false);
     }
   };
 
-  // Delete handler
+  // delete
   const handleDelete = (id, name) => {
     Swal.fire({
       title: "Are you sure?",
@@ -108,14 +156,17 @@ const UserUploadPdf = () => {
           const res = await fetch(`http://localhost:5000/pdf/user/${id}`, {
             method: "DELETE",
           });
+
           const data = await res.json();
+
           if (res.ok) {
             Swal.fire("Deleted!", data.message, "success");
+
             fetchPdfs();
           } else {
             Swal.fire("Error", data.message || "Delete failed", "error");
           }
-        } catch (err) {
+        } catch {
           Swal.fire("Error", "Server error", "error");
         }
       }
@@ -129,15 +180,44 @@ const UserUploadPdf = () => {
       </Helmet>
 
       {/* Upload Box */}
-      <div className="w-full max-w-7xl mt-10 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
-        <div className="flex items-center justify-center mb-4">
+      <TittleAnimation
+        tittle="Upload PDF"
+        subtittle="Upload PDFs and Manage Files"
+      />
+      <div className="w-full max-w-[1400px] mt-10 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
+        <div className="form-control w-full py-4">
+          <label className="label">
+            <span className="label-text font-medium text-gray-700">Title:</span>
+          </label>
+
+          <Controller
+            name="tittle"
+            control={control}
+            render={({ field }) => (
+              <input
+                {...field}
+                placeholder="Enter title..."
+                className="w-full px-4 py-3 border rounded-md text-gray-700 focus:outline-none focus:ring-1 focus:ring-teal-300"
+              />
+            )}
+          />
+        </div>
+
+        <RichTextField
+          name="description"
+          control={control}
+          placeholder="Enter Description..."
+          className="w-full my-4"
+        />
+
+        <div className="flex items-start justify-start my-4">
           <FileText className="text-red-600 w-7 h-7 mr-2" />
           <h1 className="text-xl font-bold text-gray-800">Upload PDF File</h1>
         </div>
 
         <label
           htmlFor="pdf-upload"
-          className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-400 rounded-xl cursor-pointer hover:border-red-500 transition-all bg-white/50"
+          className="flex flex-col items-center justify-center w-full h-40 border-2 mb-4 border-dashed border-gray-400 rounded-xl cursor-pointer hover:border-red-500 transition-all bg-white/50"
         >
           {file ? (
             <>
@@ -155,6 +235,7 @@ const UserUploadPdf = () => {
               </p>
             </>
           )}
+
           <input
             id="pdf-upload"
             type="file"
@@ -163,6 +244,15 @@ const UserUploadPdf = () => {
             className="hidden"
           />
         </label>
+
+        <MediaUpload
+          control={control}
+          name="PdfThumbnil"
+          label="PDF Thumbnail"
+          type="image"
+          maxSizeMB={5}
+          resetSignal={resetSignal}
+        />
 
         {message.text && (
           <div
@@ -182,7 +272,7 @@ const UserUploadPdf = () => {
         )}
 
         <button
-          onClick={handleUpload}
+          onClick={handleSubmit(handleUpload)}
           disabled={uploading}
           className={`mt-6 w-full py-2 rounded-lg font-semibold text-white transition-all flex items-center justify-center gap-2 ${
             uploading
@@ -190,100 +280,91 @@ const UserUploadPdf = () => {
               : "bg-teal-600 hover:bg-teal-700"
           }`}
         >
-          {uploading ? (
-            <>
-              <svg
-                className="w-5 h-5 animate-spin text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8v8z"
-                ></path>
-              </svg>
-              Uploading...
-            </>
-          ) : (
-            <>
-              <Upload className="w-5 h-5" /> Upload
-            </>
-          )}
+          {uploading ? "Uploading..." : "Upload"}
         </button>
       </div>
 
       {/* PDF History */}
-      <div className="w-full max-w-7xl mt-8 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6">
-        <h2 className="text-lg font-bold text-gray-800 mb-4">Uploaded PDFs</h2>
 
-        {loadingHistory ? (
-          <p className="text-gray-600 text-sm">Loading...</p>
-        ) : pdfs.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-12 text-center bg-white/60 rounded-xl border border-dashed border-gray-300">
-            <div className="bg-red-50 p-5 rounded-full mb-4">
-              <FileTextIcon className="w-12 h-12 text-red-500" />
-            </div>
+      <div className="w-full max-w-[1400px] mx-auto bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 p-6 overflow-x-auto my-5">
+        <h2 className="text-lg font-semibold mb-4 text-teal-700">
+          PDF History
+        </h2>
 
-            <h3 className="text-xl font-bold text-gray-800 mb-2">
-              No PDF Uploaded Yet
-            </h3>
+        <table className="table-auto w-full text-sm border-collapse">
+          <thead className="bg-teal-600 text-white">
+            <tr>
+              <th className="px-2 py-2">Image</th>
+              <th className="px-2 py-2">Title</th>
+              <th className="px-2 py-2">Description</th>
+              <th className="px-2 py-2">Status</th>
+              <th className="px-2 py-2">Action</th>
+            </tr>
+          </thead>
 
-            <p className="text-gray-500 max-w-md text-sm">
-              You haven’t uploaded any PDF files yet. Once you upload a file, it
-              will appear here in your history.
-            </p>
-          </div>
-        ) : (
-          <ul className="flex flex-col gap-3">
-            {pdfs.map((pdf) => (
-              <li
-                key={pdf._id}
-                className="flex items-center justify-between bg-white/50 p-3 rounded-lg border border-gray-200 hover:bg-gray-100 transition"
-              >
-                <div className="flex items-center gap-3">
-                  <FileText className="w-5 h-5 text-teal-600" />
-                  <div>
-                    <p className="text-gray-700 text-sm">{pdf.originalName}</p>
-                    <p className="text-gray-500 text-xs">
-                      {new Date(pdf.createdAt).toLocaleString()}
-                    </p>
-                    <p className="text-xs mt-1">
-                      Status:{" "}
-                      <span
-                        className={`font-semibold ${
-                          pdf.status === "pending"
-                            ? "text-yellow-600"
-                            : pdf.status === "accepted"
-                              ? "text-green-600"
-                              : "text-red-600"
-                        }`}
-                      >
-                        {pdf.status}
-                      </span>
-                    </p>
-                  </div>
-                </div>
+          <tbody>
+            {loadingHistory ? (
+              <tr>
+                <td colSpan={5} className="text-center py-4">
+                  Loading...
+                </td>
+              </tr>
+            ) : pdfs.length === 0 ? (
+              <tr>
+                <td colSpan={5} className="text-center py-4">
+                  No PDFs uploaded
+                </td>
+              </tr>
+            ) : (
+              pdfs.map((pdf) => (
+                <tr key={pdf._id} className="border-b hover:bg-gray-50">
+                  <td className="text-center py-2">
+                    {pdf.PdfThumbnil ? (
+                      <img
+                        src={pdf.PdfThumbnil}
+                        className="w-12 h-12 object-cover rounded mx-auto"
+                      />
+                    ) : (
+                      "No Image"
+                    )}
+                  </td>
 
-                <button
-                  onClick={() => handleDelete(pdf._id, pdf.originalName)}
-                  className="text-red-600 hover:text-red-800"
-                >
-                  <Trash2 className="w-5 h-5" />
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
+                  <td className="text-center">{truncateHTML(pdf.tittle, 5)}</td>
+
+                  <td
+                    className="px-2 py-2 text-start"
+                    dangerouslySetInnerHTML={{
+                      __html: truncateHTML(pdf.description, 10),
+                    }}
+                  ></td>
+
+                  <td className="text-center text-xs">
+                    <span
+                      className={`font-semibold ${
+                        pdf.status === "pending"
+                          ? "text-yellow-600"
+                          : pdf.status === "accepted"
+                            ? "text-green-600"
+                            : "text-red-600"
+                      }`}
+                    >
+                      {pdf.status}
+                    </span>
+                  </td>
+
+                  <td className="text-center">
+                    <button
+                      onClick={() => handleDelete(pdf._id, pdf.tittle)}
+                      className="text-red-600 hover:text-red-800"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );
