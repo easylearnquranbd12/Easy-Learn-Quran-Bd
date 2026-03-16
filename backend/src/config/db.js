@@ -382,6 +382,162 @@ const getSixLayerNewTantusterFormatExerciseCollection = () => {
     .collection("CreateExerciseNewTantusterFormat");
 };
 
+// Six layer Format
+// sentence Format
+const getSixLayerSentenceFormatFieldsCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("SentenceFormatField");
+};
+const getSixLayerSentenceFormatCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("SentenceFormat");
+};
+const getSixLayerSentenceFormatExerciseCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("createExerciseSentenceFormat");
+};
+// Verb
+const getSixLayerVerbFormatFieldsCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("VerbFormatField");
+};
+const getSixLayerVerbFormatCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("VerbFormat");
+};
+const getSixLayerVerbFormatExerciseCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("createExerciseVerbFormat");
+};
+// Article
+const getSixLayerArticleFormatFieldsCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("ArticleFormatField");
+};
+const getSixLayerArticleFormatCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("ArticleFormat");
+};
+const getSixLayerArticleFormatExerciseCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("createExerciseArticleFormat");
+};
+// Tense
+const getSixLayerTenseFormatFieldsCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("TenseFormatField");
+};
+const getSixLayerTenseFormatCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("TenseFormat");
+};
+const getSixLayerTenseFormatExerciseCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("createExerciseTenseFormat");
+};
+// Preposition
+const getSixLayerPrepositionFormatFieldsCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("PrepositionFormatField");
+};
+const getSixLayerPrepositionFormatCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("PrepositionFormat");
+};
+const getSixLayerPrepositionFormatExerciseCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("createExercisePrepositionFormat");
+};
+
+// third layer Format
+
+// ✅ Good Life Style
+const getSixLayerGoodLifeStyleFormatFieldsCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("GoodLifeStyleFormatField");
+};
+const getSixLayerGoodLifeStyleFormatCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("GoodLifeStyleFormat");
+};
+const getSixLayerGoodLifeStyleFormatExerciseCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("createExerciseGoodLifeStyleFormat");
+};
+// ✅ Interviews Qustions
+const getSixLayerInterviewQuestionsFormatFieldsCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("InterviewQuestionsFormatField");
+};
+const getSixLayerInterviewQuestionsFormatCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("InterviewQuestionsFormat");
+};
+const getSixLayerInterviewQuestionsFormatExerciseCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("createExerciseInterviewQuestionsFormat");
+};
+
+// ✅ Before Professional
+const getSixLayerBeforeProfessionalFormatFieldsCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("BeforeProfessionalFormatField");
+};
+const getSixLayerBeforeProfessionalFormatCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("BeforeProfessionalFormat");
+};
+const getSixLayerBeforeProfessionalFormatExerciseCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("createExerciseBeforeProfessionalFormat");
+};
+
+// ✅ Corporate Email
+const getSixLayerCorporateEmailFormatFieldsCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("CorporateEmailFormatField");
+};
+const getSixLayerCorporateEmailFormatCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("CorporateEmailFormat");
+};
+const getSixLayerCorporateEmailFormatExerciseCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("createExerciseCorporateEmailFormat");
+};
+
+// ✅ Develop Your Skills
+const getSixLayerDevelopSkillsFormatFieldsCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("DevelopSkillsFormatField");
+};
+const getSixLayerDevelopSkillsFormatCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("DevelopSkillsFormat");
+};
+const getSixLayerDevelopSkillsFormatExerciseCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("createExerciseDevelopSkillsFormat");
+};
+// ✅ idea Sharre Your Skills
+const getSixLayerIdeaSharesFormatFieldsCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("IdeaSharesFormatField");
+};
+const getSixLayerIdeaSharesFormatCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("IdeaSharesFormat");
+};
+const getSixLayerIdeaSharesFormatExerciseCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("createExerciseIdeaSharesFormat");
+};
+
 const getOthersCollection = () =>
   client.db("Shapion-Quiz-Platform").collection("Others");
 const getForNextCollection = () =>
@@ -567,4 +723,39 @@ module.exports = {
   getSixLayerNewTantusterFormatFieldsCollection,
   getSixLayerNewTantusterFormatCollection,
   getSixLayerNewTantusterFormatExerciseCollection,
+  // second layer format
+  getSixLayerSentenceFormatFieldsCollection,
+  getSixLayerSentenceFormatCollection,
+  getSixLayerSentenceFormatExerciseCollection,
+  getSixLayerVerbFormatFieldsCollection,
+  getSixLayerVerbFormatCollection,
+  getSixLayerVerbFormatExerciseCollection,
+  getSixLayerArticleFormatFieldsCollection,
+  getSixLayerArticleFormatCollection,
+  getSixLayerArticleFormatExerciseCollection,
+  getSixLayerTenseFormatFieldsCollection,
+  getSixLayerTenseFormatCollection,
+  getSixLayerTenseFormatExerciseCollection,
+  getSixLayerPrepositionFormatFieldsCollection,
+  getSixLayerPrepositionFormatCollection,
+  getSixLayerPrepositionFormatExerciseCollection,
+  // Third layer format
+  getSixLayerGoodLifeStyleFormatFieldsCollection,
+  getSixLayerGoodLifeStyleFormatCollection,
+  getSixLayerGoodLifeStyleFormatExerciseCollection,
+  getSixLayerInterviewQuestionsFormatFieldsCollection,
+  getSixLayerInterviewQuestionsFormatCollection,
+  getSixLayerInterviewQuestionsFormatExerciseCollection,
+  getSixLayerBeforeProfessionalFormatFieldsCollection,
+  getSixLayerBeforeProfessionalFormatCollection,
+  getSixLayerBeforeProfessionalFormatExerciseCollection,
+  getSixLayerCorporateEmailFormatFieldsCollection,
+  getSixLayerCorporateEmailFormatCollection,
+  getSixLayerCorporateEmailFormatExerciseCollection,
+  getSixLayerDevelopSkillsFormatFieldsCollection,
+  getSixLayerDevelopSkillsFormatCollection,
+  getSixLayerDevelopSkillsFormatExerciseCollection,
+  getSixLayerIdeaSharesFormatFieldsCollection,
+  getSixLayerIdeaSharesFormatCollection,
+  getSixLayerIdeaSharesFormatExerciseCollection,
 };

@@ -1,25 +1,17 @@
-import Elegant from "../FirstLayer/Elegant";
-import Idiom from "../FirstLayer/Idiom";
-import NewTantuster from "../FirstLayer/NewTantuster";
-import Tantuster from "../FirstLayer/Tantuster";
-import Vocabulary from "../FirstLayer/Vocabulary";
-import Article from "../SecondLayer/Article";
-import Sentence from "../SecondLayer/Sentence";
-import Tense from "../SecondLayer/Tense";
-import Verb from "../SecondLayer/Verb";
+import ElegantFormat from "./ElegantFormat";
+import IdiomFormat from "./IdiomFormat";
+import NewtantusterFormat from "./NewTantusterFormat";
+import TantusterFormat from "./TantusterFormat";
+import VocabularyFormat from "./VocabularyFormat";
 
 const SixLayer = () => {
   return (
     <div>
-      <Vocabulary />
-      <Elegant />
-      <Idiom />
-      <Tantuster />
-      <NewTantuster />
-      <Sentence />
-      <Verb />
-      <Article />
-      <Tense />
+      <VocabularyFormat />
+      <ElegantFormat />
+      <IdiomFormat />
+      <TantusterFormat />
+      <NewtantusterFormat />
     </div>
   );
 };

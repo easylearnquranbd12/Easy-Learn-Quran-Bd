@@ -56,19 +56,46 @@ import AdminPrepositionEdit from "../Pages/AdminDashboardPages/BAShapeFormats/Se
 import AdminSentenceEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Sentence/AdminSentenceEdit";
 import AdminTenseEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Tense/AdminTenseEdit";
 import AdminVerbEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Verb/AdminVerbEdit";
+import AdminArticleFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/ArticleFormat/AdminArticleFormat";
+import AdminArticleFormatEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/ArticleFormat/AdminArticleFormatEdit";
+import AdminBeforeProfessionalFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/BeforeProfessionalFormat/AdminBeforeProfessionalFormat";
+import AdminCorporateEmailFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/CorporateEmailFormat/AdminCorporateEmailFormat";
+import AdminDevelopYourSkillsFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/DevelopYourSkillsFormat/AdminDevelopYourSkillsFormat";
 import AdminElegantFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/ElegantFormat/AdminElegantFormat";
 import AdminElegantFormatEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/ElegantFormat/AdminElegantFormatEdit";
+import BeforeProfessionalFormatExcersice from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/Excersice/BeforeProfessionalFormatExcersice";
+import CorporateEmailFormatExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/Excersice/CorporateEmailFormatExcersice";
+import DevelopYourSkillsFormatExcersice from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/Excersice/DevelopYourSkillsFormatExcersice";
+import GoodLifeStyleFormatExcersice from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/Excersice/GoodLifeStyleFormatExcersice";
+import IdeaShareFormatExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/Excersice/IdeaShareFormatExcersice";
+import InterviewsQustionsFormatExcersice from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/Excersice/InterviewsQustionsFormatExcersice";
 import ElegantFormatExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/ExerciseFormat/ElegantFormatExercise";
 import IdiomFormatExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/ExerciseFormat/IdiomFormatExercise";
 import NewTantusterFormatExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/ExerciseFormat/NewTantusterFormatExercise";
 import TantusterFormatExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/ExerciseFormat/TantusterFormatExercise";
 import VocabularyFormatExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/ExerciseFormat/VocabularyFormatExercise";
+import ArticleFormatExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/ExerciseFormats/ArticleFormatExercise";
+import PrepositionFormatExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/ExerciseFormats/PrepositionFormatExercise";
+import SentenceFormatExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/ExerciseFormats/SentenceFormatExercise";
+import TenseFormatExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/ExerciseFormats/TenseFormatExercise";
+import VerbFormatExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/ExerciseFormats/VerbFormatExercise";
+import AdminGoodLifeStyleFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/GoodLifeStyleFormat/AdminGoodLifeStyleFormat";
+import IdeaShareAnsSuggestionFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/IdeaShareAnsSuggestionFormat/IdeaShareAnsSuggestionFormat";
 import AdminIdiomFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/IdiomFormat/AdminIdiomFormat";
 import AdminIdiomFormatEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/IdiomFormat/AdminIdiomFormatEdit";
+import InterviewsQustionsFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/InterviewsQustionFormat/InterviewsQustionsFormat";
 import AdminNewTantusterFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/NewTantusterFormat/AdminNewTantusterFormat";
 import AdminNewTantusterFormatEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/NewTantusterFormat/AdminNewTantusterFormatEdit";
+import AdminPrepositionFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/PrepositionFormat/AdminPrepositionFormat";
+import AdminPrepositionFormatEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/PrepositionFormat/AdminPrepositionFormatEdit";
+import AdminSentenceFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/SentenceFormat/AdminSentenceFormat";
+import AdminSentenceFormatEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/SentenceFormat/AdminSentenceFormatEdit";
 import AdminTantusterFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/TantusterFormat/AdminTantusterFormat";
 import AdminTantusterFormatEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/TantusterFormat/AdminTantusterFormatEdit";
+import AdminTenseFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/TenseFormat/AdminTenseFormat";
+import AdminTenseFormatEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/TenseFormat/AdminTenseFormatEdit";
+import AdminVerbFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/VerbFormat/AdminVerbFormat";
+import AdminVerbFormatEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/VerbFormat/AdminVerbFormatEdit";
 import AdminVocabularyFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/VocabularyFormat/AdminVocabularyFormat";
 import AdminVocabularyFormatEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/VocabularyFormat/AdminVocabularyFormatEdit";
 import AdminBeforeProfessional from "../Pages/AdminDashboardPages/BAShapeFormats/ThirdLayer/BeforeProfessional/AdminBeforeProfessional";
@@ -853,7 +880,7 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
-       // Six Layer
+      // Six Layer
       {
         path: "create-vocabulary-format",
         element: (
@@ -974,6 +1001,225 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
+      // Second Layer Format
+      {
+        path: "create-sentence-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminSentenceFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-sentence-format/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminSentenceFormatEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "sentence-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <SentenceFormatExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-verb-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminVerbFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-verb-format/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminVerbFormatEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "verb-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <VerbFormatExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-article-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminArticleFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-article-format/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminArticleFormatEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "article-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <ArticleFormatExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-tense-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminTenseFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-tense-format/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminTenseFormatEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "tense-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <TenseFormatExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-preposition-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminPrepositionFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-preposition-format/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminPrepositionFormatEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "preposition-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <PrepositionFormatExercise />
+          </Suspense>
+        ),
+      },
+      // Third Layer
+      {
+        path: "good-life-style-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminGoodLifeStyleFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "good-life-style-format-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <GoodLifeStyleFormatExcersice />
+          </Suspense>
+        ),
+      },
+      {
+        path: "interviews-qustions-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <InterviewsQustionsFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "interviews-qustions-format-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <InterviewsQustionsFormatExcersice />
+          </Suspense>
+        ),
+      },
+      {
+        path: "professional-life-style-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminBeforeProfessionalFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "before-professional-format-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <BeforeProfessionalFormatExcersice />
+          </Suspense>
+        ),
+      },
+      {
+        path: "corporate-email-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminCorporateEmailFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "corporate-email-format-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <CorporateEmailFormatExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "develop-your-skills-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminDevelopYourSkillsFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "develop-your-skills-format-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <DevelopYourSkillsFormatExcersice />
+          </Suspense>
+        ),
+      },
+      {
+        path: "idea-share-and-suggestion-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <IdeaShareAnsSuggestionFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "idea-share-format-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <IdeaShareFormatExercise />
+          </Suspense>
+        ),
+      },
+      // Promotion
       {
         path: "create-a-new-promotion",
         element: (
