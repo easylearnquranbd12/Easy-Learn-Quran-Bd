@@ -138,7 +138,7 @@ const HometextCreateui = () => {
               <Link
                 data-translate="JOIN QUIZ"
                 to="/b-a-shape-formats/fifth-layer"
-                className="btn bg-bgButton text-white px-6 py-4 mb-12 rounded-md text-base hover:bg-inherit hover:text-hoverTextPrimary transition-colors duration-300"
+                className="btn bg-teal-600 text-white px-6 py-4 mb-12 rounded-md text-base hover:bg-inherit hover:text-teal-800 transition-colors duration-300"
               >
                 JOIN QUIZ
               </Link>

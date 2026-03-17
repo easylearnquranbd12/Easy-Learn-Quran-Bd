@@ -20,8 +20,9 @@ const OurSuccessstory = () => {
         <h2 className="text-3xl md:text-4xl font-extrabold text-[#0b1d46]">
           OUR SUCCESS STORIES
         </h2>
-        <p className="text-orange-500 mt-2">
-          A glimpse of our student's success stories
+        <p className="text-teal-500 mt-2">
+           See how students are improving their English skills and building
+            confidence through our structured learning system.
         </p>
       </div>
 

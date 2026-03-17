@@ -45,7 +45,7 @@ const faqData = [
   {
     question: "৯. যদি কোনো সমস্যায় পড়ি তাহলে কী করবো?",
     answer:
-      "আপনি যেকোনো ধরনের টেকনিক্যাল সমস্যা, পেমেন্ট সংক্রান্ত প্রশ্ন বা শেখার বিষয়ে সাহায্যের জন্য আমাদের support টিমের সাথে যোগাযোগ করতে পারেন। আমাদের Email: support@betheshape.com — আমরা যত দ্রুত সম্ভব আপনার সমস্যার সমাধান করার চেষ্টা করবো।",
+      "আপনি যেকোনো ধরনের টেকনিক্যাল সমস্যা, পেমেন্ট সংক্রান্ত প্রশ্ন বা শেখার বিষয়ে সাহায্যের জন্য আমাদের support টিমের সাথে যোগাযোগ করতে পারেন। Email: support@betheshape.com — আমরা যত দ্রুত সম্ভব আপনার সমস্যার সমাধান করার চেষ্টা করবো।",
   },
   {
     question: "১০. কেন এখনই শুরু করা উচিত?",
@@ -55,47 +55,77 @@ const faqData = [
 ];
 
 const BetheshapeFAQ = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(null);
 
   const toggle = (index) => {
     setActiveIndex(index === activeIndex ? null : index);
   };
 
   return (
-    <section className="bg-teal-50 py-20">
-      <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-teal-700 mb-12">
-          কেন Betheshape Package কিনবেন?
-        </h2>
+    <section className="bg-gradient-to-b from-white to-teal-50 py-20">
+      <div className="max-w-5xl mx-auto px-4">
 
-        <div className="space-y-4">
-          {faqData.map((item, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-xl shadow-md border border-teal-100"
-            >
-              <button
-                onClick={() => toggle(index)}
-                className="w-full flex justify-between items-center p-5 text-left"
-              >
-                <span className="font-semibold text-gray-800">
-                  {item.question}
-                </span>
-                <ChevronDown
-                  className={`w-5 h-5 text-teal-600 transition-transform duration-300 ${
-                    activeIndex === index ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
+        {/* Section Header */}
+        <div className="text-center mb-14">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#1f4e43]">
+            Frequently Asked Questions
+          </h2>
 
-              {activeIndex === index && (
-                <div className="px-5 pb-5 text-gray-600 text-sm leading-relaxed">
-                  {item.answer}
-                </div>
-              )}
-            </div>
-          ))}
+          <p className="text-gray-600 mt-3 max-w-xl mx-auto">
+            Betheshape নিয়ে আপনার সাধারণ প্রশ্নগুলোর উত্তর এখানে দেওয়া হয়েছে।
+            যদি আরও কিছু জানতে চান, আমাদের support team সবসময় সাহায্য করতে প্রস্তুত।
+          </p>
         </div>
+
+        {/* FAQ List */}
+        <div className="space-y-4">
+          {faqData.map((item, index) => {
+            const isActive = activeIndex === index;
+
+            return (
+              <div
+                key={index}
+                className={`bg-white rounded-xl border transition-all duration-300
+                ${
+                  isActive
+                    ? "border-teal-500 shadow-lg"
+                    : "border-gray-200 hover:shadow-md"
+                }`}
+              >
+                {/* Question */}
+                <button
+                  onClick={() => toggle(index)}
+                  className="w-full flex justify-between items-center p-5 text-left"
+                >
+                  <span className="font-semibold text-gray-800">
+                    {item.question}
+                  </span>
+
+                  <ChevronDown
+                    className={`w-5 h-5 transition-all duration-300
+                    ${isActive ? "rotate-180 text-teal-600" : "text-gray-400"}`}
+                  />
+                </button>
+
+                {/* Answer */}
+                <div
+                  className={`grid transition-all duration-300 ${
+                    isActive
+                      ? "grid-rows-[1fr] opacity-100"
+                      : "grid-rows-[0fr] opacity-0"
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <p className="px-5 pb-5 text-gray-600 text-sm leading-relaxed">
+                      {item.answer}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
       </div>
     </section>
   );

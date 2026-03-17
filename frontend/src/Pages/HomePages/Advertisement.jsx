@@ -24,7 +24,7 @@ const Advertisement = () => {
             {/* Features Grid */}
             <div className="grid md:grid-cols-3 gap-8 text-left">
               {/* Card 1 */}
-              <div className="bg-white p-6 rounded-2xl shadow hover:shadow-md transition-shadow duration-200">
+              <div className="bg-white p-6 rounded-2xl shadow hover:shadow-md transition-shadow duration-200 border-l-4 border-teal-500">
                 <h4 className="font-semibold text-teal-700 text-lg mb-2 flex items-center gap-2">
                   🎯 Targeted Audience
                 </h4>
@@ -34,7 +34,7 @@ const Advertisement = () => {
               </div>
 
               {/* Card 2 */}
-              <div className="bg-white p-6 rounded-2xl shadow hover:shadow-md transition-shadow duration-200">
+              <div className="bg-white p-6 rounded-2xl shadow hover:shadow-md transition-shadow duration-200 border-l-4 border-teal-500">
                 <h4 className="font-semibold text-teal-700 text-lg mb-2 flex items-center gap-2">
                   📈 Increase Visibility
                 </h4>
@@ -44,7 +44,7 @@ const Advertisement = () => {
               </div>
 
               {/* Card 3 */}
-              <div className="bg-white p-6 rounded-2xl shadow hover:shadow-md transition-shadow duration-200">
+              <div className="bg-white p-6 rounded-2xl shadow hover:shadow-md transition-shadow duration-200 border-l-4 border-teal-500">
                 <h4 className="font-semibold text-teal-700 text-lg mb-2 flex items-center gap-2">
                   💼 Flexible Ad Plans
                 </h4>
@@ -54,7 +54,7 @@ const Advertisement = () => {
               </div>
 
               {/* Card 4 */}
-              <div className="bg-white p-6 rounded-2xl shadow hover:shadow-md transition-shadow duration-200">
+              <div className="bg-white p-6 rounded-2xl shadow hover:shadow-md transition-shadow duration-200 border-l-4 border-teal-500">
                 <h4 className="font-semibold text-teal-700 text-lg mb-2 flex items-center gap-2">
                   🌟 Premium Support
                 </h4>
@@ -64,7 +64,7 @@ const Advertisement = () => {
               </div>
 
               {/* Card 5 */}
-              <div className="bg-white p-6 rounded-2xl shadow hover:shadow-md transition-shadow duration-200">
+              <div className="bg-white p-6 rounded-2xl shadow hover:shadow-md transition-shadow duration-200 border-l-4 border-teal-500">
                 <h4 className="font-semibold text-teal-700 text-lg mb-2 flex items-center gap-2">
                   🛠 Easy Setup
                 </h4>
@@ -74,7 +74,7 @@ const Advertisement = () => {
               </div>
 
               {/* Card 6 */}
-              <div className="bg-white p-6 rounded-2xl shadow hover:shadow-md transition-shadow duration-200">
+              <div className="bg-white p-6 rounded-2xl shadow hover:shadow-md transition-shadow duration-200 border-l-4 border-teal-500">
                 <h4 className="font-semibold text-teal-700 text-lg mb-2 flex items-center gap-2">
                   📊 Performance Tracking
                 </h4>

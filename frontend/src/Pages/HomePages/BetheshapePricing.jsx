@@ -54,7 +54,7 @@ const BetheshapePricing = () => {
         </div>
 
         {/* Basic Plan (Highlighted) */}
-        <div className="relative bg-white rounded-2xl shadow-2xl p-10 flex flex-col justify-between border-2 border-teal-400 scale-105">
+        <div className="relative bg-white rounded-2xl shadow-2xl p-10 flex flex-col justify-between border-2 border-teal-200 scale-105">
           
           <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-teal-600 text-white px-4 py-1 rounded-full text-sm font-semibold shadow-md">
             ⭐ জনপ্রিয়
