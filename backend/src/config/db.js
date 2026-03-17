@@ -538,6 +538,106 @@ const getSixLayerIdeaSharesFormatExerciseCollection = () => {
     .collection("createExerciseIdeaSharesFormat");
 };
 
+// Seven layer
+// Travelling
+const getSevenLayerTravelingFormatFieldsCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("TravelingFormatField");
+};
+const getSevenLayerTravelingFormatCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("TravelingFormat");
+};
+const getSevenLayerTravelingFormatExerciseCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("createExerciseTravelingFormat");
+};
+
+// Good Song
+const getSevenLayerGoodSongFormatFieldsCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("GoodSongFormatField");
+};
+const getSevenLayerGoodSongFormatCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("GoodSongFormat");
+};
+const getSevenLayerGoodSongFormatExerciseCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("createExerciseGoodSongFormat");
+};
+// Good Movie
+const getSevenLayerGoodMovieFormatFieldsCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("GoodMovieFormatField");
+};
+const getSevenLayerGoodMovieFormatCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("GoodMovieFormat");
+};
+const getSevenLayerGoodMovieFormatExerciseCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("createExerciseGoodMovieFormat");
+};
+// Good Porem
+const getSevenLayerGoodPoremFormatFieldsCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("GoodPoremFormatField");
+};
+const getSevenLayerGoodPoremFormatCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("GoodPoremFormat");
+};
+const getSevenLayerGoodPoremFormatExerciseCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("createExerciseGoodPoremFormat");
+};
+// Good Nobel
+const getSevenLayerGoodNobelFormatFieldsCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("GoodNobelFormatField");
+};
+const getSevenLayerGoodNobelFormatCollection = () => {
+  return client.db("Shapion-Quiz-Platform").collection("GoodNobelFormat");
+};
+const getSevenLayerGoodNobelFormatExerciseCollection = () => {
+  return client
+    .db("Shapion-Quiz-Platform")
+    .collection("createExerciseGoodNobelFormat");
+};
+
+// Five layer
+// ✅ Old Generation (Five Layer)
+const getSevenLayerOldGenerationFormatFieldsCollection = () =>
+  client.db("Shapion-Quiz-Platform").collection("OldGenerationFormatField");
+
+const getSevenLayerOldGenerationFormatCollection = () =>
+  client.db("Shapion-Quiz-Platform").collection("OldGenerationFormat");
+
+const getSevenLayerOldGenerationFormatExerciseCollection = () =>
+  client.db("Shapion-Quiz-Platform").collection("OldGenerationFormatExercise");
+
+// ✅ Story Writing (Five Layer)
+const getSevenLayerStoryWritingFormatFieldsCollection = () =>
+  client.db("Shapion-Quiz-Platform").collection("StoryWritingFormatField");
+
+const getSevenLayerStoryWritingFormatCollection = () =>
+  client.db("Shapion-Quiz-Platform").collection("StoryWritingFormat");
+
+const getSevenLayerStoryWritingFormatExerciseCollection = () =>
+  client.db("Shapion-Quiz-Platform").collection("StoryWritingFormatExercise");
+
+// ✅ Letter Writing (Five Layer)
+const getSevenLayerLetterWritingFormatFieldsCollection = () =>
+  client.db("Shapion-Quiz-Platform").collection("LetterWritingFormatField");
+
+const getSevenLayerLetterWritingFormatCollection = () =>
+  client.db("Shapion-Quiz-Platform").collection("LetterWritingFormat");
+
+const getSevenLayerLetterWritingFormatExerciseCollection = () =>
+  client.db("Shapion-Quiz-Platform").collection("LetterWritingFormatExercise");
+// ✅ MCq Writing (Five Layer)
+const getSevenLayerMcqFormatFieldsCollection = () =>
+  client.db("Shapion-Quiz-Platform").collection("McqFormatField");
+
+const getSevenLayerMcqFormatCollection = () =>
+  client.db("Shapion-Quiz-Platform").collection("McqFormat");
+
 const getOthersCollection = () =>
   client.db("Shapion-Quiz-Platform").collection("Others");
 const getForNextCollection = () =>
@@ -758,4 +858,31 @@ module.exports = {
   getSixLayerIdeaSharesFormatFieldsCollection,
   getSixLayerIdeaSharesFormatCollection,
   getSixLayerIdeaSharesFormatExerciseCollection,
+  // Seven layer format
+  getSevenLayerTravelingFormatFieldsCollection,
+  getSevenLayerTravelingFormatCollection,
+  getSevenLayerTravelingFormatExerciseCollection,
+  getSevenLayerGoodSongFormatFieldsCollection,
+  getSevenLayerGoodSongFormatCollection,
+  getSevenLayerGoodSongFormatExerciseCollection,
+  getSevenLayerGoodMovieFormatFieldsCollection,
+  getSevenLayerGoodMovieFormatCollection,
+  getSevenLayerGoodMovieFormatExerciseCollection,
+  getSevenLayerGoodPoremFormatFieldsCollection,
+  getSevenLayerGoodPoremFormatCollection,
+  getSevenLayerGoodPoremFormatExerciseCollection,
+  getSevenLayerGoodNobelFormatFieldsCollection,
+  getSevenLayerGoodNobelFormatCollection,
+  getSevenLayerGoodNobelFormatExerciseCollection,
+  getSevenLayerOldGenerationFormatFieldsCollection,
+  getSevenLayerOldGenerationFormatCollection,
+  getSevenLayerOldGenerationFormatExerciseCollection,
+  getSevenLayerStoryWritingFormatFieldsCollection,
+  getSevenLayerStoryWritingFormatCollection,
+  getSevenLayerStoryWritingFormatExerciseCollection,
+  getSevenLayerLetterWritingFormatFieldsCollection,
+  getSevenLayerLetterWritingFormatCollection,
+  getSevenLayerLetterWritingFormatExerciseCollection,
+  getSevenLayerMcqFormatFieldsCollection,
+  getSevenLayerMcqFormatCollection,
 };

@@ -56,6 +56,20 @@ import AdminPrepositionEdit from "../Pages/AdminDashboardPages/BAShapeFormats/Se
 import AdminSentenceEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Sentence/AdminSentenceEdit";
 import AdminTenseEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Tense/AdminTenseEdit";
 import AdminVerbEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SecondLayer/Verb/AdminVerbEdit";
+import GoodMovieFormatExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SevenLayer/ExerciseFormat/GoodMovieFormatExercise";
+import GoodNovelFormatExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SevenLayer/ExerciseFormat/GoodNovelFormatExercise";
+import GoodPoemFormatExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SevenLayer/ExerciseFormat/GoodPoemFormatExercise";
+import GoodSongFormatExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SevenLayer/ExerciseFormat/GoodSongFormatExercise";
+import TravelingFormatExercise from "../Pages/AdminDashboardPages/BAShapeFormats/SevenLayer/ExerciseFormat/TravelingFormatExercise";
+import AdminLetterWrittingFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SevenLayer/LetterWrittingFormat/AdminLetterWrittingFormat";
+import AdminmcqFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SevenLayer/MCQFormat/AdminmcqFormat";
+import AdminMovieFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SevenLayer/MovieFormat/AdminMovieFormat";
+import AdminNobelFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SevenLayer/NovelFormat/AdminNobel";
+import AdminOldGenarationFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SevenLayer/OldGenarationFormat/AdminOldGenarationFormat";
+import AdminPoremFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SevenLayer/PoremFormat/AdminPoremFormat";
+import AdminSongFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SevenLayer/SongFormat/AdminSongFormat";
+import AdminStoryWrittingFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SevenLayer/StoryWrittingFormat/AdminStoryWrittingFormat";
+import AdminTravelingFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SevenLayer/TravelingFormat/AdminTravelingFormat";
 import AdminArticleFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/ArticleFormat/AdminArticleFormat";
 import AdminArticleFormatEdit from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/ArticleFormat/AdminArticleFormatEdit";
 import AdminBeforeProfessionalFormat from "../Pages/AdminDashboardPages/BAShapeFormats/SixLayer/BeforeProfessionalFormat/AdminBeforeProfessionalFormat";
@@ -1219,6 +1233,124 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
+      // Seven Layer
+
+      {
+        path: "create-traveling-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminTravelingFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "traveling-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <TravelingFormatExercise />
+          </Suspense>
+        ),
+      },
+
+      {
+        path: "create-song-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminSongFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "song-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <GoodSongFormatExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-porem-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminPoremFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "poem-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <GoodPoemFormatExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-movie-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminMovieFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "movie-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <GoodMovieFormatExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-novel-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminNobelFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "novel-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <GoodNovelFormatExercise />
+          </Suspense>
+        ),
+      },
+
+      // Five Layer
+      {
+        path: "create-old-generation-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminOldGenarationFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-story-writting-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminStoryWrittingFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-letter-writting-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminLetterWrittingFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-mcq-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminmcqFormat />
+          </Suspense>
+        ),
+      },
+
       // Promotion
       {
         path: "create-a-new-promotion",

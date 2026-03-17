@@ -22,7 +22,11 @@ const About = () => {
   return (
     <div>
       <Helmet>
-        <title>Be The Shape | About</title>
+        <title>BetheShape | About</title>
+        <meta
+          name="description"
+          content="Learn more about Betheshape Learning Hub, our structured English learning platform, layers, exercises, and how we help learners master English skills."
+        />
       </Helmet>
       <div className="py-5 max-w-[1400px] mx-auto px-2 ">
         <TittleAnimation tittle="About" subtittle="About Us More Information" />
@@ -161,9 +165,9 @@ const About = () => {
           animate="visible"
           custom={10}
         >
-          Thousands of learners have already discovered the joy of learning
-          Be The Shape with us — completely free. We’re not just teaching
-          formulas; we’re building{" "}
+          Thousands of learners have already discovered the joy of learning Be
+          The Shape with us — completely free. We’re not just teaching formulas;
+          we’re building{" "}
           <strong>confidence, logic, and a lifelong love for learning</strong>.
         </motion.p>
 
@@ -183,4 +187,3 @@ const About = () => {
 };
 
 export default About;
-

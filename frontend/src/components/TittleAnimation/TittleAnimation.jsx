@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 
 const TittleAnimation = ({ tittle, subtittle }) => {
@@ -11,40 +12,45 @@ const TittleAnimation = ({ tittle, subtittle }) => {
   };
 
   return (
-    <div className="mb-2 md:mb-7 lg:mb-10 max-w-xl mx-auto">
+    <div className="mb-10 max-w-full">
       {/* Title */}
       <motion.h1
-        className="text-2xl md:text-3xl font-bold text-center text-[#3B6B53]"
+        className="text-2xl md:text-3xl font-bold text-center text-[#3B6B53] break-words"
         initial="hidden"
         animate="visible"
         variants={fadeUp}
       >
         {tittle}
       </motion.h1>
+
+      {/* Subtitle with gradient dividers */}
       <motion.div
-        className="w-full mt-5 rounded-full"
-        style={{
-          height: "2px",
-          backgroundImage: "",
-          transformOrigin: "left",
-        }}
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ duration: 0.8, delay: 0.5, ease: "easeInOut" }}
-      />
-      {/* Subtitle Divider */}
-      <motion.div
-        className="flex items-center justify-center -mt-2 "
+        className="flex items-center justify-center mt-4"
         initial="hidden"
         animate="visible"
         variants={fadeUp}
-        custom={2}
+        custom={1}
       >
-        <div className="flex-grow h-0.5 bg-gray-300"></div>
-        <span className="mx-4 text-lg md:text-xl font-semibold text-gray-800">
+        {/* Left thin gradient line (chokon → halka) */}
+        <div
+          className="h-[2px] w-16 rounded-full"
+          style={{
+            background: "linear-gradient(to right, #d3f0e0, #3B6B53)",
+          }}
+        ></div>
+
+        {/* Text / Subtitle */}
+        <span className="mx-4 text-lg md:text-xl font-semibold text-gray-800 break-words text-justify">
           {subtittle}
         </span>
-        <div className="flex-grow   h-0.5 bg-gray-300"></div>
+
+        {/* Right thick gradient line (mota → halka, reverse) */}
+        <div
+          className="h-[2px] w-16 rounded-full"
+          style={{
+            background: "linear-gradient(to right, #3B6B53, #d3f0e0)",
+          }}
+        ></div>
       </motion.div>
     </div>
   );

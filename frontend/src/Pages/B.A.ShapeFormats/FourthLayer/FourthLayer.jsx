@@ -1,3 +1,5 @@
+
+import { BookOpen, Film, Map, Music } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import TittleAnimation from "../../../components/TittleAnimation/TittleAnimation";
 import GoodMovie from "./GoodMovie";
@@ -8,24 +10,73 @@ import Traveling from "./Traveling";
 
 const FourthLayer = () => {
   return (
-    <div className="max-w-[1400px] mx-auto">
+    <div className="py-5">
+
       <Helmet>
-        <title> Learning Quiz |Fourth Layer</title>
-        <meta name="description" content="This is the fourth layer" />
+        <title>Culture & Entertainment | Betheshape</title>
+        <meta
+          name="description"
+          content="Explore English through culture and entertainment including travel topics, songs, movies, poems, and novels."
+        />
       </Helmet>
-      <div className="max-w-[1400px] mx-auto">
+
+      {/* Title Section */}
+      <div className="max-w-[1400px] mx-auto px-4">
         <TittleAnimation
-          tittle="Fourth Layer"
-          subtittle="This is the fourth layer"
+          tittle="Culture & Entertainment"
+          subtittle="Improve your English through travel experiences, songs, movies, poems, and novels while enjoying cultural learning."
         />
       </div>
-      <Traveling />
-      <GoodSong />
-      <GoodMovie />
-      <GoodPorem />
-      <GoodNobel />
+
+      {/* Feature Cards */}
+      <div className="max-w-[1400px] mx-auto  grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <div className="p-6 rounded-xl border bg-white shadow-sm hover:shadow-md transition">
+          <Map className="w-8 h-8 text-blue-600 mb-3" />
+          <h3 className="font-semibold text-lg">Travel & Exploration</h3>
+          <p className="text-sm text-gray-500">
+            Learn English through travel stories and global cultural experiences.
+          </p>
+        </div>
+
+        <div className="p-6 rounded-xl border bg-white shadow-sm hover:shadow-md transition">
+          <Music className="w-8 h-8 text-purple-600 mb-3" />
+          <h3 className="font-semibold text-lg">Songs & Lyrics</h3>
+          <p className="text-sm text-gray-500">
+            Improve listening and vocabulary skills through meaningful songs.
+          </p>
+        </div>
+
+        <div className="p-6 rounded-xl border bg-white shadow-sm hover:shadow-md transition">
+          <Film className="w-8 h-8 text-green-600 mb-3" />
+          <h3 className="font-semibold text-lg">Movies</h3>
+          <p className="text-sm text-gray-500">
+            Discover English expressions and storytelling through movies.
+          </p>
+        </div>
+
+        <div className="p-6 rounded-xl border bg-white shadow-sm hover:shadow-md transition">
+          <BookOpen className="w-8 h-8 text-orange-600 mb-3" />
+          <h3 className="font-semibold text-lg">Poems & Novels</h3>
+          <p className="text-sm text-gray-500">
+            Enhance reading and literary understanding with poems and novels.
+          </p>
+        </div>
+
+      </div>
+
+      {/* Learning Sections */}
+      <div >
+        <Traveling />
+        <GoodSong />
+        <GoodMovie />
+        <GoodPorem />
+        <GoodNobel />
+      </div>
+
     </div>
   );
 };
 
 export default FourthLayer;
+

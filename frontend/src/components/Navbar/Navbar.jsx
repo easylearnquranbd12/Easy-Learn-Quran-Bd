@@ -10,59 +10,6 @@ import { useTranslation } from "../../context/TranslationContext";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 
-// const getNavigationLinks = (user, setLanguage, field = [], isLoading) => {
-//   const dynamicLayers = isLoading
-//     ? [
-//         {
-//           title: "Loading...",
-//           link: "#",
-//           disabled: true,
-//         },
-//       ]
-//     : field.map((layer) => ({
-//         title: layer.layerName || layer.fieldName,
-//         link: `/b-a-shape-formats/${layer.fieldName}`,
-//         // disabled: layer.isActive !== "ON"
-//       }));
-
-//   // 🏠 Base Menu Links
-//   const baseLinks = [
-//     { title: "Home", link: "/" },
-//     { title: "About Us", link: "/about-us-more-information" },
-//     {
-//       title: "B.A. Shape Formats",
-//       subLinks: dynamicLayers,
-//     },
-//   ];
-
-//   // 👤 If user logged in, add Dashboard link
-//   if (user) {
-//     baseLinks.splice(3, 0, { title: "Dashboard", link: "/dashboard" });
-//   }
-
-//   // 🌐 Other Static Menu Links
-//   baseLinks.push(
-//     {
-//       title: "Contribute",
-//       subLinks: [
-//         { title: "Blank Format", link: "/contribute/blank-format" },
-//         { title: "Upload PDF", link: "/contribute/upload-pdf" },
-//       ],
-//     },
-//     { title: "PDF Download", link: "/pdf-download" },
-//     { title: "Blog", link: "/blog-us" },
-//     // {
-//     //   title: "Language",
-//     //   subLinks: [
-//     //     { title: "বাংলা", action: () => setLanguage("bn") },
-//     //     { title: "English", action: () => setLanguage("en") },
-//     //   ],
-//     // }
-//   );
-
-//   return baseLinks;
-// };
-
 const getNavigationLinks = (user, setLanguage, field = [], isLoading) => {
   // ✅ Serial Map
   const numberMap = {
@@ -106,7 +53,7 @@ const getNavigationLinks = (user, setLanguage, field = [], isLoading) => {
     { title: "Home", link: "/" },
     { title: "About Us", link: "/about-us-more-information" },
     {
-      title: "B.A. Shape Formats",
+      title: "Learning Modules",
       subLinks: dynamicLayers,
     },
   ];
@@ -126,7 +73,7 @@ const getNavigationLinks = (user, setLanguage, field = [], isLoading) => {
       ],
     },
     { title: "PDF Library - Download", link: "/pdf-download" },
-     {
+    {
       title: "Explore",
       subLinks: [
         { title: "Other", link: "explore/other" },
@@ -230,7 +177,7 @@ const Navbar = () => {
   return (
     <div className="fixed top-0 left-0 w-full bg-white shadow-2xl z-50 px-1 py-1.5">
       <div className="max-w-[1400px] mx-auto h-[70px] flex justify-between items-center">
-        <img className="h-16 w-24 cursor-pointer" src={imageLogo} alt="Logo" />
+        <img className="h-12 w-20 cursor-pointer" src={imageLogo} alt="Logo" />
 
         {/* Desktop Menu */}
         <div className="hidden md:flex flex-1 justify-end gap-2 items-center font-semibold text-xl">
@@ -374,7 +321,7 @@ const Navbar = () => {
             >
               <div className="flex justify-between items-center mb-4 border-b min-h-24">
                 <img
-                  className="h-16 w-24 cursor-pointer"
+                  className="h-12 w-20 cursor-pointer"
                   src={imageLogo}
                   alt="Logo"
                 />

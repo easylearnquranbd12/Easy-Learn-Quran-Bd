@@ -23,6 +23,7 @@ const fourLayerRoutes = require("./routes/fourLayerRoutes");
 const threeLayerRoutes = require("./routes/threeRoutes");
 const fiveLayerRoutes = require("./routes/fiveLayerRoutes");
 const sixLayerRoutes = require("./routes/sixLayerRoutes");
+const sevenLayerRoutes = require("./routes/sevenLayerRoutes");
 const layerManagementRoutes = require("./routes/layerManagementRoutes");
 const pdfRoutes = require("./routes/pdfRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
@@ -69,11 +70,13 @@ app.use("/third-layer", threeLayerRoutes);
 app.use("/fourth-layer", fourLayerRoutes);
 app.use("/five-layer", fiveLayerRoutes);
 app.use("/six-layer", sixLayerRoutes);
+app.use("/seven-layer", sevenLayerRoutes);
 app.use("/other", otherRoutes);
 app.use("/layer-management", layerManagementRoutes);
 app.use("/pdf", pdfRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/userNobel", userNobelRoutes);
+
 // Root route
 app.get("/", (req, res) => {
   res.send("Learning Quiz Platfrom Server Running");
