@@ -1,6 +1,7 @@
 import { Briefcase, Lightbulb, MessageSquare, Users } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import TittleAnimation from "../../../components/TittleAnimation/TittleAnimation";
+import Promotion from "../../HomePages/Promotion";
 import BeforeProfesional from "./BeforeProfesional";
 import CorporateEmail from "./CorporateEmail";
 import DevelopYourSkills from "./DevelopYourSkills";
@@ -67,6 +68,7 @@ const ThirdLayer = () => {
 
       {/* Learning Sections */}
       <div >
+         <Promotion position="layer_3_bottom" />
         <GoodLifeStyle />
         <InterviewsQustion />
         <BeforeProfesional />

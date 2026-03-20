@@ -1,7 +1,7 @@
-
 import { BookOpen, Brain, PenLine, Users } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import TittleAnimation from "../../../components/TittleAnimation/TittleAnimation";
+import Promotion from "../../HomePages/Promotion";
 import LetterWritting from "./LetterWritting";
 import OldGeneration from "./OldGeneration";
 import Quiz from "./Quiz";
@@ -10,7 +10,6 @@ import StoryWritting from "./StoryWritting";
 const FiveLayer = () => {
   return (
     <div className="py-5">
-
       <Helmet>
         <title>Writing & Expression | Betheshape</title>
         <meta
@@ -29,12 +28,12 @@ const FiveLayer = () => {
 
       {/* Feature Cards */}
       <div className="max-w-[1400px] mx-auto  grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-
         <div className="p-6 rounded-xl border bg-white shadow-sm hover:shadow-md transition">
           <Users className="w-8 h-8 text-blue-600 mb-3" />
           <h3 className="font-semibold text-lg">Life Perspectives</h3>
           <p className="text-sm text-gray-500">
-            Explore ideas and values from different generations and life experiences.
+            Explore ideas and values from different generations and life
+            experiences.
           </p>
         </div>
 
@@ -42,7 +41,8 @@ const FiveLayer = () => {
           <PenLine className="w-8 h-8 text-purple-600 mb-3" />
           <h3 className="font-semibold text-lg">Story Writing</h3>
           <p className="text-sm text-gray-500">
-            Improve creativity and storytelling skills through engaging writing exercises.
+            Improve creativity and storytelling skills through engaging writing
+            exercises.
           </p>
         </div>
 
@@ -61,20 +61,18 @@ const FiveLayer = () => {
             Test your understanding and reinforce your learning through quizzes.
           </p>
         </div>
-
       </div>
 
       {/* Learning Sections */}
-      <div >
+      <div>
+        <Promotion position="layer_5_bottom" />
         <OldGeneration />
         <StoryWritting />
         <LetterWritting />
         <Quiz />
       </div>
-
     </div>
   );
 };
 
 export default FiveLayer;
-

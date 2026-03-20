@@ -1,6 +1,7 @@
 import { BookOpen, Brain, Languages, PenTool } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import TittleAnimation from "../../../components/TittleAnimation/TittleAnimation";
+import Promotion from "../../HomePages/Promotion";
 import Elegant from "./Elegant";
 import Idiom from "./Idiom";
 import NewTantuster from "./NewTantuster";
@@ -63,6 +64,7 @@ const FirstLayer = () => {
 
       {/* Learning Sections */}
       <div >
+         <Promotion position="layer_1_bottom" />
         <Vocabulary />
         <Elegant />
         <Idiom />

@@ -1504,28 +1504,932 @@ export const routes = createBrowserRouter([
       </PrivateRoute>
     ),
     errorElement: <ErrorPage />,
-    children: [
+     children: [
       {
         index: true,
-        element: <h1>Moderator Dashboard</h1>,
-      },
-      {
-        path: "manage-users/all-users",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
-            <AllUsers />
+            <AdminDashboard />
+          </Suspense>
+        ),
+      },
+     
+     
+      // First Layer
+      {
+        path: "create-vocabulary",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminVocabulary />
           </Suspense>
         ),
       },
       {
-        path: "add-payment-method",
+        path: "edit-vocabulary/:id",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
-            <AddPaymentMethod />
+            <AdminVocabularyEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "vocabulary-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <VocabularyExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-elegant",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminElegant />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-elegant/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminElegantEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "elegant-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <ElegantExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-idiom",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminIdiom />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-idiom/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminIdiomEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "idiom-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <IdiomExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-tantuster",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminTantuster />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-tantuster/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminTantusterEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "tantuster-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <TantusterExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "new-tantuster",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminNewTantuster />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-newtantuster/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminNewTantusterEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "newtantuster-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <NewTantusterExercise />
+          </Suspense>
+        ),
+      },
+      // Second Layer
+      {
+        path: "create-sentence",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminSentence />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-sentence/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminSentenceEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "sentence-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <SentenceExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-verb",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminVerb />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-verb/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminVerbEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "verb-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <VerbExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-article",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminArticle />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-article/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminArticleEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "article-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <ArticleExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-tense",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminTense />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-tense/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminTenseEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "tense-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <TenseExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-preposition",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminPreposition />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-preposition/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminPrepositionEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "preposition-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <PrepositionExercise />
           </Suspense>
         ),
       },
 
+      // Third Layer
+      {
+        path: "good-life-style",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminGoodLifeStyle />
+          </Suspense>
+        ),
+      },
+      {
+        path: "good-life-style-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <GoodLifeStyleExcersice />
+          </Suspense>
+        ),
+      },
+      {
+        path: "interviews-qustions",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <InterviewsQustions />
+          </Suspense>
+        ),
+      },
+      {
+        path: "interviews-qustions-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <InterviewsQustionsExcersice />
+          </Suspense>
+        ),
+      },
+      {
+        path: "professional-life-style",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminBeforeProfessional />
+          </Suspense>
+        ),
+      },
+      {
+        path: "before-professional-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <BeforeProfessionalExcersice />
+          </Suspense>
+        ),
+      },
+      {
+        path: "corporate-email",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminCorporateEmail />
+          </Suspense>
+        ),
+      },
+      {
+        path: "corporate-email-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <CorporateEmailExcersice />
+          </Suspense>
+        ),
+      },
+      {
+        path: "develop-your-skills",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminDevelopYourSkills />
+          </Suspense>
+        ),
+      },
+      {
+        path: "develop-your-skills-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <DevelopYourSkillsExcersice />
+          </Suspense>
+        ),
+      },
+      {
+        path: "idea-share-and-suggestion",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <IdeaShareAnsSuggestion />
+          </Suspense>
+        ),
+      },
+      {
+        path: "idea-share-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <IdeaShareExcersice />
+          </Suspense>
+        ),
+      },
+      // Fourth Layer
+
+      {
+        path: "create-traveling",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminTraveling />
+          </Suspense>
+        ),
+      },
+      {
+        path: "traveling-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <TravelingExercise />
+          </Suspense>
+        ),
+      },
+
+      {
+        path: "create-song",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminSong />
+          </Suspense>
+        ),
+      },
+      {
+        path: "song-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <GoodSongExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-porem",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminPorem />
+          </Suspense>
+        ),
+      },
+      {
+        path: "poem-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <GoodPoemExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-movie",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminMovie />
+          </Suspense>
+        ),
+      },
+      {
+        path: "movie-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <GoodMovieExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-novel",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminNobel />
+          </Suspense>
+        ),
+      },
+      {
+        path: "novel-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <GoodNovelExercise />
+          </Suspense>
+        ),
+      },
+
+      // Five Layer
+      {
+        path: "create-old-generation",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminOldGenaration />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-story-writting",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminStoryWritting />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-letter-writting",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminLetterWritting />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-mcq",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <Adminmcq />
+          </Suspense>
+        ),
+      },
+      // Six Layer
+      {
+        path: "create-vocabulary-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminVocabularyFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-vocabulary-format/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminVocabularyFormatEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "vocabulary-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <VocabularyFormatExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-elegant-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminElegantFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-elegant-format/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminElegantFormatEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "elegant-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <ElegantFormatExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-idiom-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminIdiomFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-idiom-format/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminIdiomFormatEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "idiom-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <IdiomFormatExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-tantuster-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminTantusterFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-tantuster-format/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminTantusterFormatEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "tantuster-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <TantusterFormatExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "new-tantuster-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminNewTantusterFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-newtantuster-format/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminNewTantusterFormatEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "newtantuster-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <NewTantusterFormatExercise />
+          </Suspense>
+        ),
+      },
+      // Second Layer Format
+      {
+        path: "create-sentence-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminSentenceFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-sentence-format/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminSentenceFormatEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "sentence-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <SentenceFormatExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-verb-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminVerbFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-verb-format/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminVerbFormatEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "verb-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <VerbFormatExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-article-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminArticleFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-article-format/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminArticleFormatEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "article-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <ArticleFormatExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-tense-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminTenseFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-tense-format/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminTenseFormatEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "tense-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <TenseFormatExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-preposition-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminPrepositionFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "edit-preposition-format/:id",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminPrepositionFormatEdit />
+          </Suspense>
+        ),
+      },
+      {
+        path: "preposition-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <PrepositionFormatExercise />
+          </Suspense>
+        ),
+      },
+      // Third Layer
+      {
+        path: "good-life-style-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminGoodLifeStyleFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "good-life-style-format-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <GoodLifeStyleFormatExcersice />
+          </Suspense>
+        ),
+      },
+      {
+        path: "interviews-qustions-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <InterviewsQustionsFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "interviews-qustions-format-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <InterviewsQustionsFormatExcersice />
+          </Suspense>
+        ),
+      },
+      {
+        path: "professional-life-style-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminBeforeProfessionalFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "before-professional-format-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <BeforeProfessionalFormatExcersice />
+          </Suspense>
+        ),
+      },
+      {
+        path: "corporate-email-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminCorporateEmailFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "corporate-email-format-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <CorporateEmailFormatExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "develop-your-skills-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminDevelopYourSkillsFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "develop-your-skills-format-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <DevelopYourSkillsFormatExcersice />
+          </Suspense>
+        ),
+      },
+      {
+        path: "idea-share-and-suggestion-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <IdeaShareAnsSuggestionFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "idea-share-format-exercise",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <IdeaShareFormatExercise />
+          </Suspense>
+        ),
+      },
+      // Seven Layer
+
+      {
+        path: "create-traveling-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminTravelingFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "traveling-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <TravelingFormatExercise />
+          </Suspense>
+        ),
+      },
+
+      {
+        path: "create-song-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminSongFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "song-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <GoodSongFormatExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-porem-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminPoremFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "poem-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <GoodPoemFormatExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-movie-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminMovieFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "movie-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <GoodMovieFormatExercise />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-novel-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminNobelFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "novel-exercise-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <GoodNovelFormatExercise />
+          </Suspense>
+        ),
+      },
+
+      // Five Layer
+      {
+        path: "create-old-generation-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminOldGenarationFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-story-writting-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminStoryWrittingFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-letter-writting-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminLetterWrittingFormat />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-mcq-format",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminmcqFormat />
+          </Suspense>
+        ),
+      },
+
+      // Promotion
       {
         path: "create-a-new-promotion",
         element: (
@@ -1542,6 +2446,58 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
+      {
+        path: "upload-pdf",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminPdfUpload />
+          </Suspense>
+        ),
+      },
+      {
+        path: "manage-user-nobel",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <ManageUserNobel />
+          </Suspense>
+        ),
+      },
+      {
+        path: "manage-pdf",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <UserUploadPdfManage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "blank-pdf",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminBlankPdfUpload />
+          </Suspense>
+        ),
+      },
+      
+      {
+        path: "create-a-new-other",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminOtherPages />
+          </Suspense>
+        ),
+      },
+      {
+        path: "create-a-for-next",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminForNextPages />
+          </Suspense>
+        ),
+      },
+      // payment confirmed
+     
+
       // Admin Blog Routes
       {
         path: "create-a-new-blog",
@@ -1552,32 +2508,7 @@ export const routes = createBrowserRouter([
         ),
       },
 
-      // Home Pages text banner and instructor Profile Update
-      {
-        path: "create-a-home-text",
-        element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <HometextCreate />
-          </Suspense>
-        ),
-      },
-      // {
-      //   path: "video-player-and-image",
-      //   element: (
-      //     <Suspense fallback={<LoadingSpinner />}>
-      //       <YouTubeVideoPlayer />
-      //     </Suspense>
-      //   ),
-      // },
-
-      {
-        path: "footer-facebook-url-change",
-        element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <FooterFacebookLink />
-          </Suspense>
-        ),
-      },
+     
       {
         path: "*",
         element: <ErrorPage />,

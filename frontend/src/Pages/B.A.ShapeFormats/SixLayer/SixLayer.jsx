@@ -14,6 +14,7 @@ import VerbFormat from "./VerbFormat";
 import VocabularyFormat from "./VocabularyFormat";
 
 import { BookOpen, Brain, CheckCircle, Layers } from "lucide-react";
+import Promotion from "../../HomePages/Promotion";
 
 const SixLayer = () => {
   return (
@@ -74,6 +75,7 @@ const SixLayer = () => {
 
       {/* Learning Sections */}
       <div >
+         <Promotion position="layer_6_bottom" />
         <VocabularyFormat />
         <ElegantFormat />
         <IdiomFormat />

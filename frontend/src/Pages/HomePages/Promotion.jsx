@@ -5,53 +5,115 @@ const Promotion = ({ position }) => {
   const [ad, setAd] = useState(null);
   const [visible, setVisible] = useState(true);
 
-  const CLOSE_DURATION = 10 * 60 * 1000;
+  const CLOSE_DURATION = 1 * 60 * 1000;
 
-  useEffect(() => {
-    const closedData = localStorage.getItem(`promo_closed_${position}`);
+  // useEffect(() => {
+  //   const closedData = localStorage.getItem(`promo_closed_${position}`);
 
-    if (closedData) {
-      const closedTime = parseInt(closedData);
-      const now = Date.now();
+  //   if (closedData) {
+  //     const closedTime = parseInt(closedData);
+  //     const now = Date.now();
 
-      if (now - closedTime < CLOSE_DURATION) {
-        setVisible(false);
-        return;
-      } else {
+  //     if (now - closedTime < CLOSE_DURATION) {
+  //       setVisible(false);
+  //       return;
+  //     } else {
+  //       localStorage.removeItem(`promo_closed_${position}`);
+  //     }
+  //   }
+
+  //   const fetchAd = async () => {
+  //     try {
+  //       const res = await axios.get("https://api.betheshape.com/api/promotions");
+  //       const now = new Date();
+
+  //       const activeAds = res.data
+  //         .filter((item) => {
+  //           const start = new Date(item.startAt);
+  //           const expire = new Date(item.expireAt);
+  //           return (
+  //             item.position === position &&
+  //             start <= now &&
+  //             expire > now
+  //           );
+  //         })
+  //         .sort(
+  //           (a, b) =>
+  //             new Date(b.createdAt) - new Date(a.createdAt)
+  //         );
+
+  //       if (activeAds.length > 0) {
+  //         setAd(activeAds[0]);
+  //       }
+  //     } catch (error) {
+  //       console.error("Failed to fetch promotion", error);
+  //     }
+  //   };
+
+  //   fetchAd();
+  // }, [position]);
+
+
+
+
+useEffect(() => {
+  const closedData = localStorage.getItem(`promo_closed_${position}`);
+
+  if (closedData) {
+    const closedTime = parseInt(closedData);
+    const now = Date.now();
+
+    const remaining = CLOSE_DURATION - (now - closedTime);
+
+    if (remaining > 0) {
+      setVisible(false);
+
+      // ⏱ Show again after remaining time
+      setTimeout(() => {
         localStorage.removeItem(`promo_closed_${position}`);
-      }
+        setVisible(true);
+      }, remaining);
+
+      return;
+    } else {
+      localStorage.removeItem(`promo_closed_${position}`);
     }
+  }
 
-    const fetchAd = async () => {
-      try {
-        const res = await axios.get("http://localhost:5000/api/promotions");
-        const now = new Date();
+  const fetchAd = async () => {
+    try {
+      const res = await axios.get(
+        "https://api.betheshape.com/api/promotions"
+      );
 
-        const activeAds = res.data
-          .filter((item) => {
-            const start = new Date(item.startAt);
-            const expire = new Date(item.expireAt);
-            return (
-              item.position === position &&
-              start <= now &&
-              expire > now
-            );
-          })
-          .sort(
-            (a, b) =>
-              new Date(b.createdAt) - new Date(a.createdAt)
+      const now = new Date();
+
+      const activeAds = res.data
+        .filter((item) => {
+          const start = new Date(item.startAt);
+          const expire = new Date(item.expireAt);
+
+          return (
+            item.position === position &&
+            start <= now &&
+            expire > now
           );
+        })
+        .sort(
+          (a, b) =>
+            new Date(b.createdAt) - new Date(a.createdAt)
+        );
 
-        if (activeAds.length > 0) {
-          setAd(activeAds[0]);
-        }
-      } catch (error) {
-        console.error("Failed to fetch promotion", error);
+      if (activeAds.length > 0) {
+        setAd(activeAds[0]);
       }
-    };
+    } catch (error) {
+      console.error("Failed to fetch promotion", error);
+    }
+  };
 
-    fetchAd();
-  }, [position]);
+  fetchAd();
+}, [position]);
 
   const handleClose = () => {
     localStorage.setItem(`promo_closed_${position}`, Date.now());

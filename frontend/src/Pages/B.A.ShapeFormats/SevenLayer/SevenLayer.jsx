@@ -21,6 +21,7 @@ import {
   Star,
   Users,
 } from "lucide-react";
+import Promotion from "../../HomePages/Promotion";
 
 const SevenLayer = () => {
   return (
@@ -114,6 +115,7 @@ const SevenLayer = () => {
 
       {/* Learning Sections */}
       <div>
+        <Promotion position="layer_7_bottom" />
         <TravelingFormat />
         <GoodSongFormat />
         <GoodMovieFormat />

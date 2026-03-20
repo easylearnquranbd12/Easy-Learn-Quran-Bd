@@ -2,6 +2,7 @@
 import { BookOpen, Film, Map, Music } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import TittleAnimation from "../../../components/TittleAnimation/TittleAnimation";
+import Promotion from "../../HomePages/Promotion";
 import GoodMovie from "./GoodMovie";
 import GoodNobel from "./GoodNobel";
 import GoodPorem from "./GoodPorem";
@@ -67,6 +68,7 @@ const FourthLayer = () => {
 
       {/* Learning Sections */}
       <div >
+         <Promotion position="layer_4_bottom" />
         <Traveling />
         <GoodSong />
         <GoodMovie />
