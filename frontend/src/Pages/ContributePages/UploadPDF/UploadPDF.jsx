@@ -72,11 +72,11 @@ const UploadPDF = () => {
             PDF
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-serif font-semibold text-gray-900">
+          <h1 className="text-2xl md:text-4xl font-serif font-semibold text-gray-900 ">
             Official Approved Documents
           </h1>
 
-          <p className="mt-6 text-gray-600 max-w-2xl mx-auto leading-relaxed text-lg">
+          <p className="mt-6 text-gray-600 max-w-2xl mx-auto leading-relaxed text-base md:text-lg text-justify">
             The following documents have been formally reviewed and approved.
             These files are preserved within the official archive for
             reference and public access.
@@ -96,7 +96,7 @@ const UploadPDF = () => {
               No Archived Documents Available
             </h3>
 
-            <p className="text-gray-500 mt-4">
+            <p className="text-gray-500 mt-4 ">
               Approved PDF documents will appear here once they are verified
               and accepted by the administration.
             </p>

@@ -17,12 +17,15 @@ const OurSuccessstory = () => {
     <div className="py-16 max-w-[1400px] mx-auto">
       {/* Title */}
       <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-extrabold text-[#0b1d46]">
-          OUR SUCCESS STORIES
+        <h2 className="text-2xl md:text-4xl font-extrabold text-teal-600">
+          Our Success Stories
         </h2>
-        <p className="text-teal-500 mt-2">
-           See how students are improving their English skills and building
-            confidence through our structured learning system.
+
+        <p className=" mt-2 max-w-6xl mx-auto leading-relaxed text-justify">
+          দেখুন কীভাবে হাজারো শিক্ষার্থী Betheshape ব্যবহার করে তাদের English
+          skills উন্নত করছে। Grammar, Vocabulary এবং Sentence structure এ দক্ষতা
+          অর্জন করে তারা এখন আরও confident হয়ে উঠছে। আমাদের structured learning
+          system আপনাকেও সফলতার পথে এগিয়ে নিতে প্রস্তুত।
         </p>
       </div>
 

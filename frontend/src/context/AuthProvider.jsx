@@ -1,3 +1,124 @@
+// import {
+//   createUserWithEmailAndPassword,
+//   onAuthStateChanged,
+//   sendPasswordResetEmail,
+//   signInWithEmailAndPassword,
+//   signOut,
+//   updateProfile,
+// } from "firebase/auth";
+// import { createContext, useCallback, useEffect, useState } from "react";
+// import auth from "../firebase/firebase.config";
+// import useAxiosPublic from "../hooks/useAxiosPublic";
+
+// export const AuthContext = createContext();
+
+// const userCache = new Map();
+
+// const AuthProvider = ({ children }) => {
+//   const [user, setUser] = useState(null);
+//   const axiosPublic = useAxiosPublic();
+
+//   // Auth functions
+//   const createUser = (email, password) =>
+//     createUserWithEmailAndPassword(auth, email, password);
+
+//   const signIn = (email, password) =>
+//     signInWithEmailAndPassword(auth, email, password);
+
+//   const logout = async () => {
+//     userCache.clear();
+//     setUser(null);
+//     await signOut(auth);
+//   };
+
+//   const updateUserProfile = (profile) =>
+//     updateProfile(auth.currentUser, profile);
+
+//   const forgotPassword = (email) => sendPasswordResetEmail(auth, email);
+
+//   // Fetch user data (with cache)
+//   const fetchUserData = useCallback(
+//     async (currentUser) => {
+//       const cacheKey = currentUser.email;
+
+//       if (userCache.has(cacheKey)) {
+//         return userCache.get(cacheKey);
+//       }
+
+//       try {
+//         const res = await axiosPublic.get(`/users/${currentUser.email}`);
+//         if (res.data) {
+//           userCache.set(cacheKey, res.data);
+//           return res.data;
+//         }
+//       } catch (err) {
+//         console.error(err);
+//       }
+
+//       return null;
+//     },
+//     [axiosPublic]
+//   );
+
+//   // 🔥 MAIN FIX HERE
+//   useEffect(() => {
+//     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+//       if (currentUser?.email) {
+//         // ⚡ instant user set (NO WAIT)
+//         setUser({
+//           uid: currentUser.uid,
+//           email: currentUser.email,
+//           displayName: currentUser.displayName,
+//           photoURL: currentUser.photoURL,
+//           role: "user",
+//         });
+
+//         // 🚀 background API call
+//         fetchUserData(currentUser).then((backendUser) => {
+//           if (backendUser) {
+//             setUser((prev) => ({
+//               ...prev,
+//               displayName:
+//                 backendUser.name || prev.displayName,
+//               photoURL:
+//                 backendUser.imageUrl || prev.photoURL,
+//               role: backendUser.role || "user",
+//               _id: backendUser._id,
+//               phone: backendUser.phone || "",
+//               instituteName: backendUser.instituteName || "",
+//             }));
+//           }
+//         });
+//       } else {
+//         setUser(null);
+//       }
+//     });
+
+//     return () => unsubscribe();
+//   }, [fetchUserData]);
+
+//   const authInfo = {
+//     user,
+//     createUser,
+//     signIn,
+//     logout,
+//     updateUserProfile,
+//     forgotPassword,
+//   };
+
+//   return (
+//     <AuthContext.Provider value={authInfo}>
+//       {children}
+//     </AuthContext.Provider>
+//   );
+// };
+
+// export default AuthProvider;
+
+
+
+
+
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -16,6 +137,7 @@ const userCache = new Map();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // 🔥 important
   const axiosPublic = useAxiosPublic();
 
   // Auth functions
@@ -36,7 +158,7 @@ const AuthProvider = ({ children }) => {
 
   const forgotPassword = (email) => sendPasswordResetEmail(auth, email);
 
-  // Fetch user data (with cache)
+  // Fetch backend user (cached)
   const fetchUserData = useCallback(
     async (currentUser) => {
       const cacheKey = currentUser.email;
@@ -60,11 +182,11 @@ const AuthProvider = ({ children }) => {
     [axiosPublic]
   );
 
-  // 🔥 MAIN FIX HERE
+  // 🔥 Smart Auth Restore (NO UI BLOCK)
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser?.email) {
-        // ⚡ instant user set (NO WAIT)
+        // ⚡ instant user (NO WAIT → fast UI)
         setUser({
           uid: currentUser.uid,
           email: currentUser.email,
@@ -73,25 +195,25 @@ const AuthProvider = ({ children }) => {
           role: "user",
         });
 
-        // 🚀 background API call
+        // 🚀 background backend fetch (non-blocking)
         fetchUserData(currentUser).then((backendUser) => {
           if (backendUser) {
             setUser((prev) => ({
               ...prev,
-              displayName:
-                backendUser.name || prev.displayName,
-              photoURL:
-                backendUser.imageUrl || prev.photoURL,
+              displayName: backendUser.name || prev.displayName,
+              photoURL: backendUser.imageUrl || prev.photoURL,
               role: backendUser.role || "user",
               _id: backendUser._id,
               phone: backendUser.phone || "",
-              instituteName: backendUser.instituteName || "",
             }));
           }
         });
       } else {
         setUser(null);
       }
+
+      // 🔥 instantly stop loading (NO delay)
+      setLoading(false);
     });
 
     return () => unsubscribe();
@@ -99,6 +221,7 @@ const AuthProvider = ({ children }) => {
 
   const authInfo = {
     user,
+    loading,
     createUser,
     signIn,
     logout,
@@ -114,167 +237,3 @@ const AuthProvider = ({ children }) => {
 };
 
 export default AuthProvider;
-// import {
-//   createUserWithEmailAndPassword,
-//   onAuthStateChanged,
-//   sendPasswordResetEmail,
-//   signInWithEmailAndPassword,
-//   signOut,
-//   updateProfile,
-// } from "firebase/auth";
-// import { createContext, useCallback, useEffect, useState } from "react";
-// import auth from "../firebase/firebase.config";
-// import useAxiosPublic from "../hooks/useAxiosPublic";
-
-// export const AuthContext = createContext();
-
-// // Cache for user data to avoid unnecessary API calls
-// const userCache = new Map();
-
-// const AuthProvider = ({ children }) => {
-//   const [user, setUser] = useState(null);
-//   const [loading, setLoading] = useState(true);
-//   const [contextReady, setContextReady] = useState(false);
-//   const axiosPublic = useAxiosPublic();
-
-//   // Sign Up
-//   const createUser = async (email, password) => {
-//     setLoading(true);
-//     try {
-//       const result = await createUserWithEmailAndPassword(
-//         auth,
-//         email,
-//         password,
-//       );
-//       return result;
-//     } catch (error) {
-//       throw error;
-//     }
-//   };
-
-//   // Sign In
-//   const signIn = async (email, password) => {
-//     setLoading(true);
-//     try {
-//       const result = await signInWithEmailAndPassword(auth, email, password);
-//       return result;
-//     } catch (error) {
-//       throw error;
-//     }
-//   };
-
-//   // Sign Out
-//   const logout = async () => {
-//     try {
-//       // Clear cache on logout
-//       userCache.clear();
-//       setUser(null);
-//       await signOut(auth);
-//     } catch (error) {
-//       throw error;
-//     }
-//   };
-
-//   // Update profile
-//   const updateUserProfile = (profile) =>
-//     updateProfile(auth.currentUser, profile);
-
-//   // Forgot password
-//   const forgotPassword = (email) => sendPasswordResetEmail(auth, email);
-
-//   // Fetch user data with caching
-//   const fetchUserData = useCallback(
-//     async (currentUser) => {
-//       const cacheKey = currentUser.email;
-
-//       // Check cache first
-//       if (userCache.has(cacheKey)) {
-//         return userCache.get(cacheKey);
-//       }
-
-//       try {
-//         const res = await axiosPublic.get(`/users/${currentUser.email}`);
-//         if (res.data) {
-//           userCache.set(cacheKey, res.data); // Cache the result
-//           return res.data;
-//         }
-//       } catch (error) {
-//         console.error("Error fetching backend user:", error);
-//       }
-
-//       return null;
-//     },
-//     [axiosPublic],
-//   );
-
-//   // Optimized auth state observer
-//   useEffect(() => {
-//     let isMounted = true;
-
-//     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-//       if (!isMounted) return;
-
-//       try {
-//         if (currentUser?.email) {
-//           // User is signed in - get fresh ID token without full reload
-//           await currentUser.getIdToken(true);
-
-//           const backendUser = await fetchUserData(currentUser);
-
-//           if (backendUser) {
-//             setUser({
-//               uid: currentUser.uid,
-//               email: currentUser.email,
-//               displayName: backendUser.name || currentUser.displayName,
-//               photoURL: backendUser.imageUrl || currentUser.photoURL,
-//               role: backendUser.role || "user",
-//               _id: backendUser._id,
-//               phone: backendUser.phone || "",
-//               instituteName: backendUser.instituteName || "",
-//             });
-//           } else {
-//             setUser({
-//               uid: currentUser.uid,
-//               email: currentUser.email,
-//               displayName: currentUser.displayName,
-//               photoURL: currentUser.photoURL,
-//               role: "user",
-//             });
-//           }
-//         } else {
-//           // User is signed out
-//           setUser(null);
-//         }
-//       } catch (error) {
-//         console.error("Error in auth state change:", error);
-//         setUser(null);
-//       } finally {
-//         if (isMounted) {
-//           setLoading(false);
-//           setContextReady(true);
-//         }
-//       }
-//     });
-
-//     return () => {
-//       isMounted = false;
-//       unsubscribe();
-//     };
-//   }, [fetchUserData]);
-
-//   const authInfo = {
-//     user,
-//     loading,
-//     createUser,
-//     signIn,
-//     logout,
-//     updateUserProfile,
-//     forgotPassword,
-//   };
-
-//   return (
-//     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
-//   );
-// };
-
-// export default AuthProvider;

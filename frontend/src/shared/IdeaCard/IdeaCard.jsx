@@ -46,8 +46,8 @@ const IdeaCard = ({ item }) => {
       </div>
 
       {/* Content */}
-      <div className="p-5 space-y-3">
-        <h2 className="text-xl font-semibold text-teal-700">
+      <div className="p-2.5 md:p-5 space-y-3">
+        <h2 className="text-xl font-semibold text-teal-700 text-justify">
           {item.name}
         </h2>
 

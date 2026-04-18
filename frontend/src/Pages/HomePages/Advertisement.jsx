@@ -9,12 +9,12 @@ const Advertisement = () => {
           {/* Main Container */}
           <div>
             {/* Header */}
-            <h3 className="text-4xl md:text-5xl font-bold text-teal-700 mb-6 text-center">
+            <h3 className="text-2xl md:text-5xl font-bold text-teal-700 mb-6 text-center">
               🚀 Promote Your Business With Betheshape
             </h3>
 
             {/* Description */}
-            <p className="text-gray-600 max-w-6xl mx-auto mb-10 text-lg md:text-xl text-center">
+            <p className="text-gray-600 max-w-6xl mx-auto mb-10 text-base md:text-xl md:text-center text-justify">
               আপনি কি আপনার Website, Online Course, Product বা Service প্রচার করতে চান?
               <br className="hidden md:inline" />
               Betheshape প্ল্যাটফর্মে এখন Ads দেওয়ার সুযোগ রয়েছে। প্রতিদিন হাজারো ইংরেজি শেখার আগ্রহী শিক্ষার্থী আমাদের ওয়েবসাইট ভিজিট করে।

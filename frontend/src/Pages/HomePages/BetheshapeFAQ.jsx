@@ -67,11 +67,11 @@ const BetheshapeFAQ = () => {
 
         {/* Section Header */}
         <div className="text-center mb-14">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#1f4e43]">
+          <h2 className="text-2xl md:text-4xl font-bold text-[#1f4e43]">
             Frequently Asked Questions
           </h2>
 
-          <p className="text-gray-600 mt-3 max-w-xl mx-auto">
+          <p className="text-gray-600 mt-3 max-w-xl mx-auto text-justify">
             Betheshape নিয়ে আপনার সাধারণ প্রশ্নগুলোর উত্তর এখানে দেওয়া হয়েছে।
             যদি আরও কিছু জানতে চান, আমাদের support team সবসময় সাহায্য করতে প্রস্তুত।
           </p>

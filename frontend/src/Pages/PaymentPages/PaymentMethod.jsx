@@ -134,7 +134,7 @@ const PaymentMethod = () => {
     );
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-2 md:px-4">
+    <div className="min-h-[90vh] flex items-center justify-center px-2 md:px-4">
       <div className="w-full max-w-5xl  ">
         <div className="bg-[#f0f1f1] backdrop-blur-sm rounded-xl p-4 md:p-6 border border-gray-300 shadow-lg hover:shadow-2xl transition-shadow duration-300">
           <h2 className="text-xl font-bold text-teal-600 mb-6 flex items-center gap-3">
@@ -146,7 +146,7 @@ const PaymentMethod = () => {
 
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-5"
           >
             {/* Full Name */}
             <div>
@@ -161,7 +161,7 @@ const PaymentMethod = () => {
                 id="userName"
                 {...register("userName", { required: "Full name is required" })}
                 placeholder="Enter your full name"
-                className="w-full px-4 py-3 bg-white border border-gray-400 rounded-lg text-black focus:outline-none focus:ring-1 focus:ring-gray-500"
+                className="w-full px-4 py-2 bg-white border border-gray-400 rounded-lg text-black focus:outline-none focus:ring-1 focus:ring-gray-500"
               />
               {errors.userName && (
                 <p className="text-red-500 text-sm mt-1">
@@ -179,7 +179,7 @@ const PaymentMethod = () => {
                 disabled
                 type="email"
                 value={user?.email || ""}
-                className="w-full px-4 py-3 bg-white rounded-lg text-black focus:outline-none"
+                className="w-full px-4 py-2 bg-white rounded-lg text-black focus:outline-none"
               />
             </div>
 
@@ -192,7 +192,7 @@ const PaymentMethod = () => {
                 {...register("paymentMethod", {
                   required: "Please select a payment method",
                 })}
-                className="w-full px-4 py-3 bg-white border border-gray-300 focus:outline-none rounded-lg text-black"
+                className="w-full px-4 py-2 bg-white border border-gray-300 focus:outline-none rounded-lg text-black"
               >
                 <option value="">Select Payment Method</option>
                 {Object.entries(paymentNumbers).map(([key, val]) => (
@@ -214,14 +214,14 @@ const PaymentMethod = () => {
                 <label className="block text-sm font-medium text-black mb-2">
                   Payment Amount *
                 </label>
-                <div className="flex items-center justify-between bg-white rounded-lg px-4 py-3">
+                <div className="flex items-center justify-between bg-white rounded-lg px-4 py-2">
                   <span className="text-black font-bold tracking-wide">
                     {paymentNumbers[selectedPayment]?.amount} ৳
                   </span>
                   <button
                     type="button"
                     onClick={handleCopyAmount}
-                    className="ml-4 px-3 py-1.5 bg-teal-600 hover:bg-teal-900 text-white text-sm font-semibold rounded-md transition-all"
+                    className="ml-4 px-3 py-0.5 bg-teal-600 hover:bg-teal-900 text-white text-sm font-semibold rounded-md transition-all"
                   >
                     {copiedAmount ? "Copied!" : "Copy"}
                   </button>
@@ -236,21 +236,21 @@ const PaymentMethod = () => {
                   <label className="block text-sm font-medium text-black mb-2">
                     {paymentNumbers[selectedPayment]?.label} Number *
                   </label>
-                  <div className="flex items-center justify-between bg-white rounded-lg px-4 py-3">
+                  <div className="flex items-center justify-between bg-white rounded-lg px-4 py-2">
                     <span className="text-black font-bold tracking-wide">
                       {paymentNumbers[selectedPayment]?.adminNumber}
                     </span>
                     <button
                       type="button"
                       onClick={handleCopy}
-                      className="ml-4 px-3 py-1.5 bg-teal-600 hover:bg-teal-900 text-white text-sm font-semibold rounded-md transition-all"
+                      className="ml-4 px-3 py-0.5 bg-teal-600 hover:bg-teal-900 text-white text-sm font-semibold rounded-md transition-all"
                     >
                       {copied ? "Copied!" : "Copy"}
                     </button>
                   </div>
                 </>
               ) : (
-                <div className="bg-white border border-dashed border-red-400 text-red-500 text-sm px-4 py-3 rounded-lg">
+                <div className="bg-white border border-dashed border-red-400 text-red-500 text-sm px-4 py-2 rounded-lg">
                   Please select your payment method
                 </div>
               )}
@@ -274,7 +274,7 @@ const PaymentMethod = () => {
                 placeholder={`Enter your ${
                   paymentNumbers[selectedPayment]?.label?.split(" ")[0] || ""
                 } number`}
-                className="w-full px-4 py-3 bg-white border border-gray-400 rounded-lg text-black focus:outline-none focus:ring-1 focus:ring-gray-500"
+                className="w-full px-4 py-2 bg-white border border-gray-400 rounded-lg text-black focus:outline-none focus:ring-1 focus:ring-gray-500"
               />
               {errors.userPaymentMethod && (
                 <p className="text-red-500 text-sm mt-1">
@@ -298,7 +298,7 @@ const PaymentMethod = () => {
                   required: "Transaction ID is required",
                 })}
                 placeholder="Enter your transaction ID"
-                className="w-full px-4 py-3 bg-white border border-gray-400 rounded-lg text-black focus:outline-none focus:ring-1 focus:ring-gray-500"
+                className="w-full px-4 py-2 bg-white border border-gray-400 rounded-lg text-black focus:outline-none focus:ring-1 focus:ring-gray-500"
               />
               {errors.transactionId && (
                 <p className="text-red-500 text-sm mt-1">
@@ -342,7 +342,7 @@ const PaymentMethod = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-4 rounded-xl font-bold text-lg text-white shadow-xl hover:bg-teal-900 bg-teal-600 transition-all duration-300"
+                className="w-full py-2 rounded-xl font-bold text-lg text-white shadow-xl hover:bg-teal-900 bg-teal-600 transition-all duration-300"
               >
                 {loading ? "Processing..." : "Confirm Payment"}
               </button>

@@ -101,7 +101,7 @@ const StoryWrittingFormat = () => {
   }
 
   return (
-    <div className="min-h-screen py-10 px-4 md:px-10">
+    <div className="min-h-screen py-10 px-2 md:px-10">
       {/* ================= Field Section ================= */}
       <section className="text-center mb-12 max-w-[1400px] mx-auto">
         {storyWritingFields.map((field) => (
@@ -124,7 +124,7 @@ const StoryWrittingFormat = () => {
       {/* ================= Hidden Measuring Container ================= */}
       <div
         ref={measureRef}
-        className="absolute invisible w-[170mm] p-0 text-[15px] leading-relaxed"
+        className="absolute invisible w-[90mm] md:w-[170mm] p-0 text-[15px] leading-relaxed"
         style={{ height: `${PAGE_HEIGHT_MM}mm` }}
       />
 

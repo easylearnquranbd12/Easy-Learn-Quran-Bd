@@ -1,11 +1,11 @@
 import {
-    CheckCircle,
-    Download,
-    FileText,
-    Lock,
-    RefreshCw,
-    ShoppingCart,
-    Unlock,
+  CheckCircle,
+  Download,
+  FileText,
+  Lock,
+  RefreshCw,
+  ShoppingCart,
+  Unlock,
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -351,7 +351,7 @@ const PDFDownload = () => {
         <title>Official Document Archive</title>
       </Helmet>
 
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-2">
         {/* Header */}
         <div className="text-center mb-12">
           <div className="w-20 h-20 mx-auto rounded-full border-4 border-teal-700 flex items-center justify-center text-teal-700 font-serif text-xl font-bold mb-6">
@@ -360,16 +360,20 @@ const PDFDownload = () => {
           <h1 className="text-4xl md:text-5xl font-serif font-semibold text-gray-900">
             Official Document Archive
           </h1>
-          <p className="mt-6 text-gray-600 max-w-2xl mx-auto leading-relaxed text-lg">
+          <p className="mt-6 text-gray-600 max-w-2xl mx-auto leading-relaxed text-base md:text-lg text-justify">
             Access official documents, forms, and resources. Free documents are
             available for immediate download, while premium documents require
             purchase.
           </p>
           {user?.email && (
-            <div className="mt-4 flex items-center justify-center gap-4">
-              <p className="text-sm text-teal-600">
-                Logged in as: {user.email}
-              </p>
+            <div className="mt-4 flex items-center justify-center gap-2">
+             <p className="text-sm text-teal-600">
+  Logged in as: {
+    user.email
+      ? user.email.split("@")[0].slice(0, 5) + "*****@" + user.email.split("@")[1]
+      : ""
+  }
+</p>
               {activeTab === "paid" && (
                 <div className="flex items-center gap-2">
                   <button
@@ -398,7 +402,7 @@ const PDFDownload = () => {
         <div className="flex justify-center mb-10 border-b border-gray-300">
           <button
             onClick={() => handleTabChange("free")}
-            className={`flex items-center gap-2 px-8 py-3 font-medium transition-all ${
+            className={`flex items-center gap-2 px-1 md:px-6 py-1.5 md:py-3 font-medium transition-all ${
               activeTab === "free"
                 ? "text-teal-700 border-b-2 border-teal-700"
                 : "text-gray-500 hover:text-gray-700"
@@ -409,7 +413,7 @@ const PDFDownload = () => {
           </button>
           <button
             onClick={() => handleTabChange("paid")}
-            className={`flex items-center gap-2 px-8 py-3 font-medium transition-all ${
+            className={`flex items-center gap-2 px-1 md:px-6 py-1.5 md:py-3 font-medium transition-all ${
               activeTab === "paid"
                 ? "text-teal-700 border-b-2 border-teal-700"
                 : "text-gray-500 hover:text-gray-700"
@@ -446,7 +450,7 @@ const PDFDownload = () => {
                 return (
                   <div
                     key={pdf._id}
-                    className="p-6 flex flex-col md:flex-row md:items-start md:justify-between gap-4 hover:bg-gray-50 transition"
+                    className="p-3 md:p-6 flex flex-col md:flex-row md:items-start md:justify-between gap-4 hover:bg-gray-50 transition"
                   >
                     <div className="flex flex-1 items-start gap-4">
                       {pdf.PdfThumbnil ? (
@@ -461,7 +465,7 @@ const PDFDownload = () => {
                         </div>
                       )}
                       <div className="flex-1">
-                        <h3 className="text-lg font-semibold text-gray-900">
+                        <h3 className="text-base md:text-lg font-semibold text-gray-900">
                           {pdf.tittle || pdf.originalName}
                         </h3>
                         <p className="text-gray-700 text-sm mt-1">
@@ -505,7 +509,7 @@ const PDFDownload = () => {
                         onClick={() =>
                           handleDownload(pdf._id, pdf.originalName, "free")
                         }
-                        className="flex items-center justify-center gap-2 border border-teal-600 text-teal-600 hover:bg-teal-600 hover:text-white transition-all duration-300 px-6 py-2 rounded-lg font-medium"
+                        className="flex items-center justify-center gap-2 border border-teal-600 text-teal-600 hover:bg-teal-600 hover:text-white transition-all duration-300 px-4 md:px-6 py-1.5 md:py-2 rounded-lg font-medium"
                       >
                         <Download className="w-4 h-4" /> Download Free
                       </button>
@@ -541,7 +545,7 @@ const PDFDownload = () => {
                       </div>
                     )}
                     <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-gray-900">
+                      <h3 className="text-base md:text-lg font-semibold text-gray-900">
                         {pdf.tittle || pdf.originalName}
                       </h3>
                       <p className="text-gray-700 text-sm mt-1">

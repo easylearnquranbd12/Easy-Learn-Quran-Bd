@@ -32,9 +32,9 @@ const LetterWritting = () => {
       </div>
     );
   }
-console.log("letterWriting",letterWriting)
+
   return (
-    <div className="min-h-screen py-12 px-3 md:px-10 bg-gray-100">
+    <div className="min-h-screen py-12 px-2 md:px-10 bg-gray-100">
 
       {/* ================= Field Section ================= */}
       <section className="mb-16 max-w-[1400px] mx-auto text-center space-y-8">

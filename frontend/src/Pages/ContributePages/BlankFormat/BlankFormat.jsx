@@ -44,7 +44,7 @@ const BlankFormat = () => {
         <title>Blank Document Formats</title>
       </Helmet>
 
-      <div className="max-w-7xl mx-auto px-3 md:px-6">
+      <div className="max-w-7xl mx-auto px-2 md:px-6">
 
         {/* ===== Header ===== */}
         <div className="text-center mb-16">
@@ -52,11 +52,11 @@ const BlankFormat = () => {
             PDF
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-serif font-semibold text-gray-900">
+          <h1 className="text-2xl md:text-4xl font-serif font-semibold text-gray-900">
             Official Blank Document Formats
           </h1>
 
-          <p className="mt-6 text-gray-600 max-w-2xl mx-auto leading-relaxed text-lg">
+          <p className="mt-6 text-gray-600 max-w-2xl mx-auto leading-relaxed text-base md:text-lg text-justify">
             These blank document formats are provided for applicants and contributors
             to properly prepare and submit their documents according to the official
             submission guidelines of the platform.
@@ -79,7 +79,7 @@ const BlankFormat = () => {
             </p>
           </div>
         ) : (
-          <div className=" rounded-lg shadow-sm divide-y divide-gray-200">
+          <div className=" rounded-lg shadow-xl divide-y divide-gray-200 p-2">
             {pdfs.map((pdf) => {
               const isExpanded = expandedDescriptions[pdf._id];
               const showToggle =
@@ -88,7 +88,7 @@ const BlankFormat = () => {
               return (
                 <div
                   key={pdf._id}
-                  className="p-6 flex flex-col md:flex-row md:items-start md:justify-between gap-4 hover:bg-gray-50 transition"
+                  className="p-2 md:p-6 flex flex-col md:flex-row md:items-start md:justify-between gap-4 hover:bg-gray-50 transition"
                 >
                   <div className="flex flex-1 items-start gap-4">
                     {pdf.PdfThumbnil ? (
@@ -104,7 +104,7 @@ const BlankFormat = () => {
                     )}
 
                     <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-gray-900">
+                      <h3 className="text-base md:text-lg font-semibold text-gray-900">
                         {pdf.tittle || pdf.originalName}
                       </h3>
 
@@ -145,7 +145,7 @@ const BlankFormat = () => {
                   <div className="flex-shrink-0 self-start md:self-auto">
                     <button
                       onClick={() => handleDownload(pdf._id)}
-                      className="flex items-center justify-center gap-2 border border-teal-600 text-teal-600 hover:bg-teal-600 hover:text-white transition-all duration-300 px-6 py-2 rounded-lg font-medium"
+                      className="flex items-center justify-center gap-2 border border-teal-600 text-teal-600 hover:bg-teal-600 hover:text-white transition-all duration-300 px-3 md:px-6 py-1.5 md:py-2 rounded-lg font-medium"
                     >
                       <Download className="w-4 h-4" /> Download
                     </button>

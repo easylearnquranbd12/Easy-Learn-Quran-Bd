@@ -93,7 +93,7 @@ const WhyJoinQuizPlatform = () => {
           {/* Right Banner */}
           <div className="relative w-full h-full min-h-[500px] rounded-2xl overflow-hidden bg-white/90 backdrop-blur-sm shadow-lg flex items-center justify-center p-8">
             <div className="text-center max-w-md w-full">
-              <h1 className="text-4xl md:text-5xl font-bold text-[#1f4e43] mb-6 leading-tight">
+              <h1 className="text-2xl md:text-5xl font-bold text-[#1f4e43] mb-6 leading-tight ">
                 Master English Grammar With Structured Practice
               </h1>
 
@@ -138,9 +138,7 @@ const WhyJoinQuizPlatform = () => {
                 </li>
               </ul>
 
-              <button className="w-full bg-bgButton hover:bg-hoverBgButton text-white font-bold py-3 px-6 rounded-lg transition-all">
-                Start Learning Now
-              </button>
+            
             </div>
           </div>
         </div>

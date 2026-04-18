@@ -1,4 +1,3 @@
-
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
@@ -101,7 +100,7 @@ const StoryWritting = () => {
   }
 
   return (
-    <div className="min-h-screen py-10 px-4 md:px-10">
+    <div className="min-h-screen py-10 px-2 md:px-10">
       {/* ================= Field Section ================= */}
       <section className="text-center mb-12 max-w-[1400px] mx-auto">
         {storyWritingFields.map((field) => (
@@ -124,7 +123,7 @@ const StoryWritting = () => {
       {/* ================= Hidden Measuring Container ================= */}
       <div
         ref={measureRef}
-        className="absolute invisible w-[170mm] p-0 text-[15px] leading-relaxed"
+        className="absolute invisible w-[90mm] md:w-[170mm] p-0 text-[15px] leading-relaxed"
         style={{ height: `${PAGE_HEIGHT_MM}mm` }}
       />
 
@@ -158,7 +157,7 @@ const StoryWritting = () => {
                 <div className="relative z-10">
                   {/* Title only on first page */}
                   {index === 0 && story.title && (
-                    <h1 className="text-center text-xl md:text-3xl font-serif font-bold text-[#5a1f1f] mb-8">
+                    <h1 className=" text-xl md:text-3xl font-serif font-bold text-[#5a1f1f] mb-8 text-justify">
                       {story.title}
                     </h1>
                   )}
@@ -169,25 +168,22 @@ const StoryWritting = () => {
                     dangerouslySetInnerHTML={{ __html: page.content }}
                   />
 
-                 
-                 {/* Footer */}
-{/* Footer */}
-<div className="flex items-center mt-12 text-xs md:text-sm text-[#3e2c1c] w-full">
-  {/* Left */}
-  <div className="flex-1 text-left">
-    ✍ {page.writtingBy}
-  </div>
+                  {/* Footer */}
+                  {/* Footer */}
+                  <div className="flex items-center mt-12 text-xs md:text-sm text-[#3e2c1c] w-full">
+                    {/* Left */}
+                    <div className="flex-1 text-left">✍ {page.writtingBy}</div>
 
-  {/* Center */}
-  <div className="flex-1 text-center">
-    Page {index + 1} of {story.pages.length}
-  </div>
+                    {/* Center */}
+                    <div className="flex-1 text-center">
+                      Page {index + 1} of {story.pages.length}
+                    </div>
 
-  {/* Right */}
-  <div className="flex-1 text-right">
-    ~ {formatDate(page.createdAt)}
-  </div>
-</div>
+                    {/* Right */}
+                    <div className="flex-1 text-right">
+                      ~ {formatDate(page.createdAt)}
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}

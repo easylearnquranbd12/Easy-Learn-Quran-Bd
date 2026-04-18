@@ -1,134 +1,4 @@
-// import { useQuery } from "@tanstack/react-query";
-// import { ImageOff, Link2Off } from "lucide-react";
-// import { MdMenuBook } from "react-icons/md";
-// import CustomLoading from "../../../components/Loading/CustomLoading";
-// import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
-// const UserAcceptsNobel = () => {
-//   const axiosPublic = useAxiosPublic();
-
-//   // ✅ Fetch all goodNobels
-//   const { data: goodNobels = [], isLoading: goodNobelsLoading } = useQuery({
-//     queryKey: ["acceptedUserNobels"],
-//     queryFn: async () => {
-//       const res = await axiosPublic.get("/userNobel/public/accepted");
-//       return res.data || [];
-//     },
-//   });
-//   if (goodNobelsLoading) {
-//     return <CustomLoading />;
-//   }
-
-//   return (
-//     <div className="max-w-[1400px] mx-auto  my-10">
-//       <h1 className="text-3xl md:text-4xl font-bold text-center text-teal-700 tracking-tight">
-//         Approved Nobel Contributions
-//       </h1>
-//      <p className=" text-gray-500 my-6 text-lg  leading-relaxed text-justify">
-//   Discover a curated collection of officially approved Nobel ideas and inspiring contributions shared by our community members.
-// </p>
-//       {/* ✅ goodNobels Section */}
-//       <section className="max-w-[1300px] ml-auto">
-//         {goodNobels.length === 0 ? (
-//           <div className="flex flex-col items-center justify-center py-20 text-center">
-//             <div className="bg-gray-100 p-6 rounded-full mb-6">
-//               <MdMenuBook className="text-gray-400 text-5xl" />
-//             </div>
-
-//             <h3 className="text-xl font-semibold text-gray-700">
-//               No Approved Nobels Yet
-//             </h3>
-
-//             <p className="text-gray-500 mt-2 max-w-md">
-//               There are currently no approved Nobel contributions available.
-//               Please check back later for updates.
-//             </p>
-//           </div>
-//         ) : (
-//           <div className="grid grid-cols-1 gap-6">
-//             {goodNobels.map((item) => (
-//               <div
-//                 key={item._id}
-//                 className="group relative bg-white/70 backdrop-blur-md rounded-2xl overflow-hidden shadow-md hover:shadow-xl border border-gray-100 transition-all duration-300"
-//               >
-//                 {/* Image */}
-
-//                 {/* Content */}
-//                 <div className="p-5 space-y-3">
-//                   {/* Nobel Name */}
-//                   <div className="flex justify-start items-center gap-12">
-//                     <div>
-//                       <h2 className="text-xl font-semibold text-teal-700 flex items-center gap-2">
-//                         <MdMenuBook className="text-orange-600 text-2xl" />
-//                         <span>{item.name}</span>
-//                       </h2>
-//                     </div>
-//                     <div>
-//                       {item?.ideaShareImage ? (
-//                         <div className="h-12 w-full overflow-hidden">
-//                           <img
-//                             src={item.ideaShareImage}
-//                             alt={item.name}
-//                             className="w-full h-full object-cover rounded-md"
-//                           />
-//                         </div>
-//                       ) : (
-//                         <div className="flex flex-col items-center justify-center text-gray-400">
-//                           <ImageOff size={48} strokeWidth={1.5} />
-//                           <p className="text-sm mt-2 font-medium">
-//                             No Nobel Image Available
-//                           </p>
-//                         </div>
-//                       )}
-//                     </div>
-//                   </div>
-
-//                   {/* Description */}
-//                   <div
-//                     className="text-gray-700 text-sm leading-relaxed text-justify"
-//                     dangerouslySetInnerHTML={{ __html: item.description }}
-//                   />
-
-//                   {/* Footer */}
-//                   <div className="flex items-center justify-between pt-3 border-t mt-3">
-//                     {/* Link or Placeholder */}
-//                     {item?.link ? (
-//                       <a
-//                         href={item.link}
-//                         target="_blank"
-//                         rel="noopener noreferrer"
-//                         className="text-teal-600 hover:text-teal-800 text-sm font-medium transition-colors"
-//                       >
-//                         🔗 Visit Nobel
-//                       </a>
-//                     ) : (
-//                       <div className="flex items-center gap-2 text-gray-400 text-sm">
-//                         <Link2Off size={16} />
-//                         <span>No Link Available</span>
-//                       </div>
-//                     )}
-
-//                     {/* Date (always right) */}
-//                     <p className="text-xs text-gray-500">
-//                       {item?.createdAt &&
-//                         new Date(item.createdAt).toLocaleDateString("en-GB", {
-//                           day: "2-digit",
-//                           month: "short",
-//                           year: "numeric",
-//                         })}
-//                     </p>
-//                   </div>
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-//         )}
-//       </section>
-//     </div>
-//   );
-// };
-
-// export default UserAcceptsNobel;
 
 import { useQuery } from "@tanstack/react-query";
 import { ImageOff, Link2Off } from "lucide-react";
@@ -150,7 +20,7 @@ const UserAcceptsNobel = () => {
 
   return (
     <div className="bg-[#faf9f6] min-h-screen py-20">
-      <div className="max-w-[1400px] mx-auto px-6">
+      <div className="max-w-[1400px] mx-auto px-2">
 
         {/* ===== Official Header ===== */}
         <div className="text-center mb-20">
@@ -159,11 +29,11 @@ const UserAcceptsNobel = () => {
             N
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-serif font-semibold text-gray-900 tracking-wide">
+          <h1 className="text-2xl md:text-4xl font-serif font-semibold text-gray-900 tracking-wide">
             Official Nobel Laureate Contributions
           </h1>
 
-          <p className="mt-6 text-gray-600 max-w-2xl mx-auto leading-relaxed text-lg">
+          <p className="mt-6 text-gray-600 max-w-2xl mx-auto leading-relaxed text-base md:text-lg text-justify">
             The following works have been formally reviewed and recognized 
             for their intellectual merit, originality, and lasting contribution 
             to scholarly advancement.
@@ -188,7 +58,7 @@ const UserAcceptsNobel = () => {
               <div key={item._id} className="text-center">
 
                 {/* Title */}
-                <h2 className="text-3xl font-serif text-gray-900 mb-3">
+                <h2 className="text-2xl font-serif text-gray-900 mb-3">
                   {item.name}
                 </h2>
 

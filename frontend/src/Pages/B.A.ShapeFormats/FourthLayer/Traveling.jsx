@@ -113,9 +113,9 @@ const Traveling = () => {
                 key={field._id}
                 className="bg-gradient-to-br from-teal-50 via-white to-emerald-50 p-3 md:p-8 rounded-lg shadow-md border-l-4 border-teal-500 relative overflow-hidden mb-8"
               >
-                  <div className="absolute top-0 left-0 w-40 h-40 bg-teal-300 opacity-10 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
-            <div className="absolute bottom-0 right-0 w-56 h-56 bg-blue-300 opacity-10 rounded-full translate-x-1/4 translate-y-1/4"></div>
-                <h3 className="font-bold text-3xl text-teal-700 mb-4">
+                <div className="absolute top-0 left-0 w-40 h-40 bg-teal-300 opacity-10 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+                <div className="absolute bottom-0 right-0 w-56 h-56 bg-blue-300 opacity-10 rounded-full translate-x-1/4 translate-y-1/4"></div>
+                <h3 className="font-bold text-2xl md:text-3xl text-teal-700 mb-4  ">
                   {field.title}
                 </h3>
                 <p className="text-gray-700 text-base leading-relaxed text-justify">
@@ -128,17 +128,17 @@ const Traveling = () => {
       </section>
 
       {/* ✅ Travelings Section */}
-     <section>
-  {travelings.length === 0 ? (
-    <p className="text-gray-500 text-center">No ideas found.</p>
-  ) : (
-    <div className="grid grid-cols-1 gap-6">
-      {travelings.map((item) => (
-        <IdeaCard key={item._id} item={item} />
-      ))}
-    </div>
-  )}
-</section>
+      <section>
+        {travelings.length === 0 ? (
+          <p className="text-gray-500 text-center">No ideas found.</p>
+        ) : (
+          <div className="grid grid-cols-1 gap-6">
+            {travelings.map((item) => (
+              <IdeaCard key={item._id} item={item} />
+            ))}
+          </div>
+        )}
+      </section>
 
       {/* ✅ Learning Your Exercise (ONLY if Active) */}
       {activeField && (

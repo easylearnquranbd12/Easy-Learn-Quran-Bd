@@ -28,11 +28,11 @@ const Other = () => {
             <Sparkles className="text-green-600 w-8 h-8" />
           </div>
 
-          <h1 className="text-4xl font-semibold text-gray-900">
+          <h1 className="text-2xl md:text-4xl font-semibold text-gray-900">
             AI Tools & Learning Resources
           </h1>
 
-          <p className="mt-6 text-gray-600 max-w-2xl mx-auto text-lg">
+          <p className="mt-6 text-gray-600 max-w-2xl mx-auto text-base md:text-lg text-justify">
             Explore powerful AI tools with tutorials and official websites.
             Learn how to use them effectively for productivity and development.
           </p>
@@ -58,23 +58,23 @@ const Other = () => {
             {ideas.map((idea) => (
               <div
                 key={idea._id}
-                className="py-10 flex flex-col md:flex-row gap-6 md:items-center md:justify-between"
+                className="py-5 flex flex-col md:flex-row gap-4 md:items-start md:justify-between"
               >
                 {/* Left Side */}
 
                 <div className="flex gap-5">
                   <img
                     src={idea.ideaShareImage}
-                    className="w-24 h-24 object-cover rounded-lg border"
+                    className="w-16 h-16 md:w-24 md:h-24 object-cover rounded-lg border"
                   />
 
                   <div>
-                    <h3 className="text-xl font-semibold text-gray-900">
+                    <h3 className="text-base md:text-lg font-semibold text-gray-900">
                       {idea.name}
                     </h3>
 
                     <div
-                      className="text-gray-600 text-sm mt-2"
+                      className="text-gray-600 text-sm mt-2 text-justify"
                       dangerouslySetInnerHTML={{
                         __html: idea.description,
                       }}
@@ -93,13 +93,13 @@ const Other = () => {
 
                 {/* Buttons */}
 
-                <div className="flex gap-4">
+                <div className="flex gap-2 md:gap-4">
                   {idea?.videolink && (
                     <a
                       href={idea.videolink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition px-5 py-2 rounded"
+                      className="flex items-center gap-2 border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition px-3 md:px-5 py-1.5 md:py-2 rounded"
                     >
                       <PlayCircle size={18} />
                       Tutorial
@@ -111,7 +111,7 @@ const Other = () => {
                       href={idea.websitelink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 border border-green-600 text-green-600 hover:bg-green-600 hover:text-white transition px-5 py-2 rounded"
+                      className="flex items-center gap-2 border border-green-600 text-green-600 hover:bg-green-600 hover:text-white transition px-3 md:px-5 py-1.5 md:py-2 rounded"
                     >
                       <ExternalLink size={18} />
                       Website
@@ -124,7 +124,7 @@ const Other = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       title="Extra Website"
-                      className="flex items-center gap-2 border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition px-4 py-2 rounded"
+                      className="flex items-center gap-2 border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition px-3 md:px-5 py-1.5 md:py-2 rounded"
                     >
                       <ExternalLink size={18} />
                       Extra

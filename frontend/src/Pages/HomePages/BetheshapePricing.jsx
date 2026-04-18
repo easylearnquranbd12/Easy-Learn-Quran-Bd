@@ -2,12 +2,12 @@ import { Check } from "lucide-react";
 
 const BetheshapePricing = () => {
   return (
-    <section className="bg-white py-20">
+    <section className="bg-white py-10">
       
       {/* Section Header */}
-      <div className="text-center mb-16 px-4">
-        <h2 className="text-4xl md:text-5xl font-bold mb-4 text-teal-700">
-          Be the Shape Learning Plans <span className="text-2xl">(Upgrade Your English and Elevate Your Knowledge.)</span>
+      <div className="text-center mb-12 px-2 md:px-4">
+        <h2 className="text-3xl md:text-5xl font-bold mb-4 text-teal-700">
+          Be the Shape Learning Plans <span className="text-lg md:text-2xl">(Upgrade Your English and Elevate Your Knowledge.)</span>
         </h2>
         <p className="text-gray-600 max-w-2xl mx-auto">
           ইংরেজি শেখা এখন আরও সহজ। আপনার প্রয়োজন অনুযায়ী প্ল্যান বেছে নিন এবং

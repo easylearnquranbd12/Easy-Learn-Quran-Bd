@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Confetti from "react-confetti";
 import { FaCheckCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -8,6 +8,27 @@ import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const Quiz = () => {
   const axiosPublic = useAxiosPublic();
+
+
+
+
+const [size, setSize] = useState({
+  width: window.innerWidth,
+  height: window.innerHeight,
+});
+
+useEffect(() => {
+  const handleResize = () => {
+    setSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  };
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
+
+
 
   // ✅ Step 1: State গুলো
   const [answers, setAnswers] = useState({});
@@ -187,12 +208,13 @@ const Quiz = () => {
   // ----------------------------------------------------
 
   return (
-    <div className="max-w-[1400px] mx-auto bg-white shadow-lg rounded-2xl p-6 my-10">
+    <div className="max-w-[1400px] mx-auto bg-white shadow-lg rounded-xl p-2 my-10">
       {mcqFields.map((mcqField, index) => (
         <div
           key={index}
-          className="bg-gradient-to-br from-teal-50 via-white to-emerald-50 p-2 md:p-5 rounded-lg shadow-md border-l-4 border-teal-500 mb-10"
+          className="bg-gradient-to-br from-teal-50 via-white to-emerald-50 p-6 md:p-8 rounded-lg shadow-md border-l-4 border-teal-500 relative overflow-hidden mb-8"
         >
+              {/* Background Decorative Shape */}
             <div className="absolute top-0 left-0 w-40 h-40 bg-teal-300 opacity-10 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
             <div className="absolute bottom-0 right-0 w-56 h-56 bg-blue-300 opacity-10 rounded-full translate-x-1/4 translate-y-1/4"></div>
           <h2 className="text-2xl font-bold text-center text-teal-600 mb-6">
@@ -214,8 +236,8 @@ const Quiz = () => {
         >
           {/* 🎉 Confetti Animation */}
           <Confetti
-            width={window.innerWidth}
-            height={window.innerHeight}
+            width={size.width}
+            height={size.height}
             recycle={false}
             numberOfPieces={2000}
             gravity={0.25}
@@ -372,14 +394,14 @@ const Quiz = () => {
           </div>
 
           {/* নেভিগেশন বাটন */}
-          <div className="flex justify-between mt-6">
+          <div className="flex justify-between mt-6 pb-3">
             <button
               type="button"
               disabled={currentQuestionIndex === 0}
               onClick={() =>
                 setCurrentQuestionIndex((prev) => Math.max(prev - 1, 0))
               }
-              className={`px-6 py-3 rounded-lg font-semibold transition ${
+              className={`px-6 py-2 rounded-lg font-semibold transition ${
                 currentQuestionIndex === 0
                   ? "bg-gray-300 text-gray-600 cursor-not-allowed"
                   : "bg-gray-600 text-white hover:bg-gray-700"
@@ -393,7 +415,7 @@ const Quiz = () => {
               <button
                 type="submit"
                 disabled={!isAnswerSelected}
-                className={`px-6 py-3 rounded-lg font-semibold transition ${
+                className={`px-6  rounded-lg font-semibold transition ${
                   isAnswerSelected
                     ? "bg-teal-600 text-white hover:bg-teal-700"
                     : "bg-gray-300 text-gray-600 cursor-not-allowed"
@@ -409,7 +431,7 @@ const Quiz = () => {
                 type="button"
                 onClick={handleNextQuestion}
                 disabled={!isReviewing && !isAnswerSelected}
-                className={`px-6 py-3 rounded-lg font-semibold transition ${
+                className={`px-6  rounded-lg font-semibold transition ${
                   !isReviewing && !isAnswerSelected
                     ? "bg-gray-300 text-gray-600 cursor-not-allowed"
                     : "bg-teal-600 text-white hover:bg-teal-700"

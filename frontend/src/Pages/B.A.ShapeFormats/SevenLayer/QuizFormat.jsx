@@ -191,8 +191,9 @@ const QuizFormat = () => {
       {mcqFields.map((mcqField, index) => (
         <div
           key={index}
-          className="bg-gradient-to-br from-teal-50 via-white to-emerald-50 p-2 md:p-5 rounded-lg shadow-md border-l-4 border-teal-500 mb-10"
+          className="bg-gradient-to-br from-teal-50 via-white to-emerald-50 p-6 md:p-8 rounded-lg shadow-md border-l-4 border-teal-500 relative overflow-hidden mb-8"
         >
+              {/* Background Decorative Shape */}
             <div className="absolute top-0 left-0 w-40 h-40 bg-teal-300 opacity-10 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
             <div className="absolute bottom-0 right-0 w-56 h-56 bg-blue-300 opacity-10 rounded-full translate-x-1/4 translate-y-1/4"></div>
           <h2 className="text-2xl font-bold text-center text-teal-600 mb-6">
@@ -379,7 +380,7 @@ const QuizFormat = () => {
               onClick={() =>
                 setCurrentQuestionIndex((prev) => Math.max(prev - 1, 0))
               }
-              className={`px-6 py-3 rounded-lg font-semibold transition ${
+              className={`px-6 py-2 rounded-lg font-semibold transition ${
                 currentQuestionIndex === 0
                   ? "bg-gray-300 text-gray-600 cursor-not-allowed"
                   : "bg-gray-600 text-white hover:bg-gray-700"
@@ -393,7 +394,7 @@ const QuizFormat = () => {
               <button
                 type="submit"
                 disabled={!isAnswerSelected}
-                className={`px-6 py-3 rounded-lg font-semibold transition ${
+                className={`px-6 py-2 rounded-lg font-semibold transition ${
                   isAnswerSelected
                     ? "bg-teal-600 text-white hover:bg-teal-700"
                     : "bg-gray-300 text-gray-600 cursor-not-allowed"
@@ -409,7 +410,7 @@ const QuizFormat = () => {
                 type="button"
                 onClick={handleNextQuestion}
                 disabled={!isReviewing && !isAnswerSelected}
-                className={`px-6 py-3 rounded-lg font-semibold transition ${
+                className={`px-6 py-2 rounded-lg font-semibold transition ${
                   !isReviewing && !isAnswerSelected
                     ? "bg-gray-300 text-gray-600 cursor-not-allowed"
                     : "bg-teal-600 text-white hover:bg-teal-700"
@@ -425,7 +426,7 @@ const QuizFormat = () => {
                 <button
                   onClick={() => setIsReviewing(false)} // রেজাল্ট স্ক্রিনে ফিরে যান
                   type="button"
-                  className="px-6 py-3 bg-gray-500 text-white rounded-lg font-semibold hover:bg-gray-600 transition"
+                  className="px-6 py-2 bg-gray-500 text-white rounded-lg font-semibold hover:bg-gray-600 transition"
                 >
                   Go to Results
                 </button>

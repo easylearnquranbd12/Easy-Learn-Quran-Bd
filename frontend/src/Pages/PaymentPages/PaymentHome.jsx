@@ -7,7 +7,7 @@ const PaymentHome = () => {
   const [loading, setLoading] = useState(false);
 
   return (
-    <div className="flex flex-col items-center justify-center p-2 md:p-6 mt-12 md:mt-24">
+    <div className="flex flex-col items-center justify-center md:p-6 mt-12 md:mt-24">
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 30 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -18,7 +18,7 @@ const PaymentHome = () => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
-          className="text-3xl font-bold text-teal-600 mb-3"
+          className="text-2xl md:text-3xl font-bold text-teal-600 mb-3"
         >
           💳 Confirm Your Payment
         </motion.h1>
