@@ -130,7 +130,7 @@ const EnrollPages = () => {
                 name="gender"
                 control={control}
                 render={({ field }) => (
-                  <select {...field} className="w-full px-3 py-2 border rounded-md">
+                  <select {...field} className="w-full px-3 py-2 border border-green-700 rounded-md">
                     <option value="">Select Gender</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
