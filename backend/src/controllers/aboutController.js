@@ -1,29 +1,29 @@
 const { ObjectId } = require("mongodb");
-const { getBlogsCollection } = require("../config/db");
+const { getAboutPagesCollection } = require("../config/db");
 
 
-const blogsCollection = getBlogsCollection();
+const aboutPagesCollection = getAboutPagesCollection();
 
 
 
 // ✅ Create Good Life Style CURD
-const createBlog = async (req, res) => {
+const createAboutPage = async (req, res) => {
   try {
     const data = { ...req.body, createdAt: new Date().toISOString() };
-    const result = await blogsCollection.insertOne(data);
+    const result = await aboutPagesCollection.insertOne(data);
     res.status(201).json({
       success: true,
-      message: "Blog created successfully",
+      message: "About page created successfully",
       data: result,
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-const deleteBlog = async (req, res) => {
+const deleteAboutPage = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await blogsCollection.deleteOne({
+    const result = await aboutPagesCollection.deleteOne({
       _id: new ObjectId(id),
     });
     res.status(200).json(result);
@@ -31,26 +31,26 @@ const deleteBlog = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-const getAllBlogs = async (req, res) => {
+const getAllAboutPages = async (req, res) => {
   try {
-    const result = await blogsCollection.find().sort({ createdAt: -1 }).toArray();
+    const result = await aboutPagesCollection.find().sort({ createdAt: -1 }).toArray();
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
-const getBlogById = async (req, res) => {
+const getAboutPageById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const result = await blogsCollection.findOne({
+    const result = await aboutPagesCollection.findOne({
       _id: new ObjectId(id),
     });
 
     if (!result) {
       return res
         .status(404)
-        .json({ success: false, message: "Blog not found" });
+        .json({ success: false, message: "About page not found" });
     }
 
     res.json({ success: true, data: result });
@@ -58,12 +58,12 @@ const getBlogById = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-const updateBlog = async (req, res) => {
+const updateAboutPage = async (req, res) => {
   try {
     const { id } = req.params;
     const updateData = req.body;
 
-    const result = await blogsCollection.updateOne(
+    const result = await aboutPagesCollection.updateOne(
       { _id: new ObjectId(id) },
       { $set: updateData },
     );
@@ -71,12 +71,12 @@ const updateBlog = async (req, res) => {
     if (result.matchedCount === 0) {
       return res
         .status(404)
-        .json({ success: false, message: "Blog not found" });
+        .json({ success: false, message: "About page not found" });
     }
 
     res.json({
       success: true,
-      message: "Blog updated successfully",
+      message: "About page updated successfully",
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -86,9 +86,9 @@ const updateBlog = async (req, res) => {
 
 
 module.exports = {
-  createBlog,
-  getAllBlogs,
-  deleteBlog,
-  getBlogById,
-  updateBlog
+  createAboutPage,
+  deleteAboutPage,
+  getAllAboutPages,
+  getAboutPageById,
+  updateAboutPage,
 };

@@ -9,26 +9,13 @@ const { connectDB } = require("./config/db");
 const authRouter = require("./routes/authRoutes");
 const userRouter = require("./routes/userRoutes");
 const blogRouter = require("./routes/blogRoutes");
+const aboutRouter = require("./routes/aboutRoutes");
 const bannerRouter = require("./routes/bannerRoutes");
-const paymentMethodRouter = require("./routes/paymentMethodRoutes");
 const imageandTextRouter = require("./routes/authorRoutes");
 const authorRoute = require("./routes/authorRoutes");
 const socialLinksRouter = require("./routes/socialLinksRoutes");
-const promotionRoutes = require("./routes/promotionRoutes");
-const translateRoutes = require("./routes/translateRoutes");
 const mediaUploadRoutes = require("./routes/mediaUploadRoutes");
-const firstLayerRoutes = require("./routes/firstLayerRoutes");
-const secondLayerRoutes = require("./routes/secondLayerRoutes");
-const fourLayerRoutes = require("./routes/fourLayerRoutes");
-const threeLayerRoutes = require("./routes/threeRoutes");
-const fiveLayerRoutes = require("./routes/fiveLayerRoutes");
-const sixLayerRoutes = require("./routes/sixLayerRoutes");
-const sevenLayerRoutes = require("./routes/sevenLayerRoutes");
-const layerManagementRoutes = require("./routes/layerManagementRoutes");
-const pdfRoutes = require("./routes/pdfRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
-const userNobelRoutes = require("./routes/userNobelRoutes");
-const otherRoutes = require("./routes/otherRoutes");
 
 dotenv.config();
 
@@ -56,26 +43,15 @@ connectDB().catch((err) => console.error("MongoDB connection error:", err));
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/blog", blogRouter);
+app.use("/about", aboutRouter);
 app.use("/banner", bannerRouter);
-app.use("/payment", paymentMethodRouter);
 app.use("/imageandtext", imageandTextRouter);
 app.use("/authorInfo", authorRoute);
 app.use("/api/admin/social-links", socialLinksRouter);
-app.use("/api/promotions", promotionRoutes);
-app.use("/api/translate", translateRoutes);
 app.use("/delete-media", mediaUploadRoutes);
-app.use("/first-layer", firstLayerRoutes);
-app.use("/second-layer", secondLayerRoutes);
-app.use("/third-layer", threeLayerRoutes);
-app.use("/fourth-layer", fourLayerRoutes);
-app.use("/five-layer", fiveLayerRoutes);
-app.use("/six-layer", sixLayerRoutes);
-app.use("/seven-layer", sevenLayerRoutes);
-app.use("/other", otherRoutes);
-app.use("/layer-management", layerManagementRoutes);
-app.use("/pdf", pdfRoutes);
+
 app.use("/api/dashboard", dashboardRoutes);
-app.use("/userNobel", userNobelRoutes);
+
 
 // Root route
 app.get("/", (req, res) => {

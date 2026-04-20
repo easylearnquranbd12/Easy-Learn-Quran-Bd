@@ -117,7 +117,7 @@ const Login = () => {
                           <input
                             {...field}
                             id="email"
-                            className={`w-full pl-10 pr-3 py-3 border rounded-md text-gray-700 transition-colors hover:border-purple-300 focus:outline-none focus:ring-1 focus:ring-green-200 ${
+                            className={`w-full pl-10 pr-3 py-2 border rounded-md text-gray-700 transition-colors hover:border-purple-300 focus:outline-none focus:ring-1 focus:ring-green-200 ${
                               error
                                 ? "border-red-500"
                                 : field.value
@@ -180,7 +180,7 @@ const Login = () => {
                           {...field}
                           id="password"
                           type={showPassword ? "text" : "password"}
-                          className={`w-full pl-10 pr-3 py-3 border rounded-md text-gray-700 transition-colors hover:border-purple-300 focus:outline-none focus:ring-1 focus:ring-green-200 ${
+                          className={`w-full pl-10 pr-3 py-2 border rounded-md text-gray-700 transition-colors hover:border-purple-300 focus:outline-none focus:ring-1 focus:ring-green-200 ${
                             error
                               ? "border-red-500"
                               : field.value
@@ -199,10 +199,10 @@ const Login = () => {
                           {showPassword ? (
                             <AiFillEyeInvisible
                               size={20}
-                              className="text-textPrimary"
+                              className="text-green-600"
                             />
                           ) : (
-                            <AiFillEye size={20} className="text-textPrimary" />
+                            <AiFillEye size={20} className="text-green-900" />
                           )}
                         </button>
                       </div>
@@ -220,7 +220,7 @@ const Login = () => {
                 <div className="my-2">
                   <Link
                     to="/forgot-password"
-                    className="text-sm text-textPrimary hover:text-hoverTextPrimary font-medium"
+                    className="text-sm text-green-600 hover:text-green-900 font-medium"
                   >
                     Forgot Password?
                   </Link>
@@ -230,7 +230,7 @@ const Login = () => {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full py-3 px-4 bg-bgButton hover:bg-hoverBgButton text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-[#1f4e43] focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full py-2 px-4 bg-gradient-to-r from-[#0f3d2e] via-[#145c43] to-[#0f3d2e] text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-[#1f4e43] focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed"
                 disabled={loading}
               >
                 {loading ? (
@@ -258,7 +258,7 @@ const Login = () => {
                     <span>Signing In...</span>
                   </div>
                 ) : (
-                  <span className="font-semibold text-base tracking-wider">
+                  <span className="font-semibold text-base tracking-wider ">
                     Sign In
                   </span>
                 )}
@@ -271,7 +271,7 @@ const Login = () => {
                 Don't have an account?{" "}
                 <Link
                   to="/register"
-                  className="text-textPrimary hover:text-hoverTextPrimary font-medium"
+                  className="text-green-600 hover:text-green-900 font-medium"
                 >
                   Create Account
                 </Link>
@@ -307,7 +307,7 @@ const Login = () => {
 
               <h2
                 className={`text-xl font-bold ${
-                  modalType === "success" ? "text-teal-700" : "text-red-600"
+                  modalType === "success" ? "text-green-700" : "text-red-600"
                 }`}
               >
                 {modalType === "success" ? "Success!" : "Oops!"}
@@ -316,7 +316,7 @@ const Login = () => {
 
               {modalType === "success" ? (
                 <button
-                  className="mt-6 px-6 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-base font-medium transition-colors shadow-md"
+                  className="mt-6 px-6 py-2 bg-green-800 hover:bg-teal-700 text-white rounded-lg text-base font-medium transition-colors shadow-md"
                   onClick={() => navigate(from)}
                 >
                   Continue

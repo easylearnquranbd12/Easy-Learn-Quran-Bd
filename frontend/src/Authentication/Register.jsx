@@ -157,7 +157,7 @@ const Register = () => {
                               {...field}
                               id="fullName"
                               placeholder="Enter your full name"
-                              className={`w-full pl-10 pr-3 py-3 border rounded-md text-gray-700 transition-colors hover:border-purple-300 focus:outline-none focus:ring-1 focus:ring-green-200 ${
+                              className={`w-full pl-10 pr-3 py-2 border rounded-md text-gray-700 transition-colors hover:border-purple-300 focus:outline-none focus:ring-1 focus:ring-green-200 ${
                                 error
                                   ? "border-red-500"
                                   : field.value
@@ -219,7 +219,7 @@ const Register = () => {
                             <input
                               {...field}
                               id="email"
-                              className={`w-full pl-10 pr-3 py-3 border rounded-md text-gray-700 transition-colors hover:border-purple-300 focus:outline-none focus:ring-1 focus:ring-green-200 ${
+                              className={`w-full pl-10 pr-3 py-2 border rounded-md text-gray-700 transition-colors hover:border-purple-300 focus:outline-none focus:ring-1 focus:ring-green-200 ${
                                 error
                                   ? "border-red-500"
                                   : field.value
@@ -285,7 +285,7 @@ const Register = () => {
                               {...field}
                               id="phoneNumber"
                               placeholder="01XXXXXXXXX"
-                              className={`w-full pl-10 pr-3 py-3 border rounded-md text-gray-700 transition-colors hover:border-purple-300 focus:outline-none focus:ring-1 focus:ring-green-200 ${
+                              className={`w-full pl-10 pr-3 py-2 border rounded-md text-gray-700 transition-colors hover:border-purple-300 focus:outline-none focus:ring-1 focus:ring-green-200 ${
                                 error
                                   ? "border-red-500"
                                   : field.value
@@ -351,7 +351,7 @@ const Register = () => {
                             {...field}
                             id="password"
                             type={showPassword ? "text" : "password"}
-                            className={`w-full pl-10 pr-3 py-3 border rounded-md text-gray-700 transition-colors hover:border-purple-300 focus:outline-none focus:ring-1 focus:ring-green-200 ${
+                            className={`w-full pl-10 pr-3 py-2 border rounded-md text-gray-700 transition-colors hover:border-purple-300 focus:outline-none focus:ring-1 focus:ring-green-200 ${
                               error
                                 ? "border-red-500"
                                 : field.value
@@ -370,12 +370,12 @@ const Register = () => {
                             {showPassword ? (
                               <AiFillEyeInvisible
                                 size={20}
-                                className="text-textPrimary"
+                                className="text-green-700"
                               />
                             ) : (
                               <AiFillEye
                                 size={20}
-                                className="text-textPrimary"
+                                className="text-green-900"
                               />
                             )}
                           </button>
@@ -421,7 +421,7 @@ const Register = () => {
                             {...field}
                             id="confirmPassword"
                             type={showPassword ? "text" : "password"}
-                            className={`w-full pl-10 pr-3 py-3 border rounded-md text-gray-700 transition-colors hover:border-purple-300 focus:outline-none focus:ring-1 focus:ring-green-200 ${
+                            className={`w-full pl-10 pr-3 py-2 border rounded-md text-gray-700 transition-colors hover:border-purple-300 focus:outline-none focus:ring-1 focus:ring-green-200 ${
                               error
                                 ? "border-red-500"
                                 : field.value
@@ -440,12 +440,12 @@ const Register = () => {
                             {showPassword ? (
                               <AiFillEyeInvisible
                                 size={20}
-                                className="text-textPrimary"
+                                className="text-green-700"
                               />
                             ) : (
                               <AiFillEye
                                 size={20}
-                                className="text-textPrimary"
+                                className="text-green-900"
                               />
                             )}
                           </button>
@@ -467,7 +467,7 @@ const Register = () => {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full py-3 px-4 bg-bgButton hover:bg-hoverBgButton text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-textPrimary focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full py-2 px-4 bg-gradient-to-r from-[#0f3d2e] via-[#145c43] to-[#0f3d2e] text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed"
                 disabled={loading || isSubmitting}
               >
                 {loading || isSubmitting ? (
@@ -508,7 +508,7 @@ const Register = () => {
                 Already have an account?{" "}
                 <Link
                   to="/login"
-                  className="text-textPrimary hover:text-hoverTextPrimary font-medium"
+                  className="text-green-600 hover:text-green-700 font-medium"
                 >
                   Sign In
                 </Link>
@@ -544,7 +544,7 @@ const Register = () => {
 
               <h2
                 className={`text-xl font-bold ${
-                  modalType === "success" ? "text-indigo-700" : "text-red-600"
+                  modalType === "success" ? "text-green-700" : "text-red-600"
                 }`}
               >
                 {modalType === "success" ? "Success!" : "Oops!"}
@@ -553,7 +553,7 @@ const Register = () => {
 
               {modalType === "success" ? (
                 <button
-                  className="mt-6 px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-base font-medium transition-colors shadow-md"
+                  className="mt-6 px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-base font-medium transition-colors shadow-md"
                   onClick={() => navigate("/")}
                 >
                   Continue

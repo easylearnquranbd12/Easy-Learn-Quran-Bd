@@ -2,32 +2,20 @@
 const { ObjectId } = require("mongodb");
 const {
   getUserCollection,
-  getAdminPdfUploadCollection,
-  getUserPdfUploadCollection,
-  // example of some layer collections for counts
-  getFirstLayerVocabularyCollection,
-  getSecondLayerSentenceCollection,
-  getFiveLayerMcqCollection,
-  getUserPaymentCollection,
 } = require("../config/db");
 
 // Summary: users, admin pdfs, user pdfs
 const getSummary = async (req, res) => {
   try {
     const usersCol = getUserCollection();
-    const adminPdfCol = getAdminPdfUploadCollection();
-    const userPdfCol = getUserPdfUploadCollection();
 
-    const [usersCount, adminPdfCount, userPdfCount] = await Promise.all([
+    const [usersCount] = await Promise.all([
       usersCol.countDocuments(),
-      adminPdfCol.countDocuments(),
-      userPdfCol.countDocuments(),
     ]);
 
     res.status(200).json({
       usersCount,
-      adminPdfCount,
-      userPdfCount,
+     
     });
   } catch (err) {
     console.error("Dashboard summary error:", err);
@@ -35,27 +23,7 @@ const getSummary = async (req, res) => {
   }
 };
 
-// PDFs by status (user uploads)
-const getUserPdfsByStatus = async (req, res) => {
-  try {
-    const userPdfCol = getUserPdfUploadCollection();
-    const agg = await userPdfCol.aggregate([
-      {
-        $group: {
-          _id: { $ifNull: ["$status", "pending"] },
-          count: { $sum: 1 },
-        },
-      },
-    ]).toArray();
 
-    // convert to object map for ease
-    const result = agg.map((r) => ({ status: r._id, count: r.count }));
-    res.status(200).json(result);
-  } catch (err) {
-    console.error("getUserPdfsByStatus error:", err);
-    res.status(500).json({ message: "Failed to fetch pdfs by status" });
-  }
-};
 
 // Users per month (last 6 months)
 // Users per month (last 6 months)
@@ -110,29 +78,7 @@ const getUsersByMonth = async (req, res) => {
   }
 };
 
-// Top collections counts (example layers)
-const getTopCollections = async (req, res) => {
-  try {
-    const c1 = getFirstLayerVocabularyCollection();
-    const c2 = getSecondLayerSentenceCollection();
-    const c3 = getFiveLayerMcqCollection();
 
-    const [c1Count, c2Count, c3Count] = await Promise.all([
-      c1.countDocuments(),
-      c2.countDocuments(),
-      c3.countDocuments(),
-    ]);
-
-    res.status(200).json([
-      { name: "Vocabulary", count: c1Count },
-      { name: "Sentence", count: c2Count },
-      { name: "MCQ", count: c3Count },
-    ]);
-  } catch (err) {
-    console.error("getTopCollections error:", err);
-    res.status(500).json({ message: "Failed to fetch collections counts" });
-  }
-};
 
 // User Dashboard Summary
 const getUserDashboardSummary = async (req, res) => {
@@ -177,8 +123,8 @@ const getUserDashboardSummary = async (req, res) => {
 
 module.exports = {
   getSummary,
-  getUserPdfsByStatus,
+
   getUsersByMonth,
-  getTopCollections,
+
   getUserDashboardSummary
 };

@@ -1,0 +1,247 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Edit, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { Helmet } from "react-helmet-async";
+import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+import AdminLoading from "../../../components/Loading/AdminLoading";
+import TittleAnimation from "../../../components/TittleAnimation/TittleAnimation";
+import useAuth from "../../../hooks/useAuth";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import RichTextField from "../../../shared/TextEditor/RichTextField";
+import AdminEditAboutPage from "./AdminEditAboutPage";
+
+const AdminAboutPage = () => {
+  const axiosPublic = useAxiosPublic();
+  const queryClient = useQueryClient();
+  const [editOpen, setEditOpen] = useState(false);
+  const [selectedIdea, setSelectedIdea] = useState(null);
+  const { user } = useAuth();
+
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }) => axiosPublic.put(`/about/about/${id}`, data),
+    onSuccess: () => {
+      Swal.fire("Updated!", "About Pages updated successfully", "success");
+      queryClient.invalidateQueries(["about"]);
+    },
+    onError: () => Swal.fire("Error!", "Failed to update about", "error"),
+  });
+
+  const handleEdit = (idea) => {
+    setSelectedIdea(idea);
+    setEditOpen(true);
+  };
+
+  // ✅ Form Setup
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting },
+  } = useForm({
+    defaultValues: {
+      description: "",
+    },
+  });
+
+  // ✅ Create Song
+  const createMutation = useMutation({
+    mutationFn: (newData) => axiosPublic.post("/about/about", newData),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["about"]);
+      Swal.fire("✅ Success!", "About Pages  added successfully.", "success");
+      resetForm();
+    },
+    onError: () => Swal.fire("❌ Error!", "Failed to add song.", "error"),
+  });
+  // ✅ Get all song fetch Data
+  const { data: about = [], isLoading } = useQuery({
+    queryKey: ["about"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/about/about");
+      return res.data || [];
+    },
+  });
+
+  // ✅ Delete Song
+  const deleteMutation = useMutation({
+    mutationFn: (id) => axiosPublic.delete(`/about/about/${id}`),
+    onSuccess: (res) => {
+      if (res.data?.deletedCount > 0) {
+        Swal.fire("Deleted!", "About Pages  deleted successfully.", "success");
+      } else {
+        Swal.fire("Info", "About Pages not found or already deleted.", "info");
+      }
+      queryClient.invalidateQueries(["about"]);
+    },
+    onError: () => Swal.fire("Error!", "Failed to delete song.", "error"),
+  });
+
+  // ✅ Reset Form
+  const resetForm = () => {
+    reset({
+      description: "",
+    });
+  };
+
+  // ✅ Submit Handler
+  const onSubmit = async (data) => {
+    const payload = {
+      ...data,
+      user: {
+        _id: user?._id,
+        name: user?.displayName,
+        email: user?.email,
+        role: user?.role,
+      },
+    };
+
+    createMutation.mutate(payload);
+  };
+
+  // ✅ Delete Handler
+  const handleDelete = async (id) => {
+    const confirm = await Swal.fire({
+      title: "Are you sure?",
+      text: "This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    });
+    if (confirm.isConfirmed) deleteMutation.mutate(id);
+  };
+
+  // ✅ Safe truncate function
+  const truncateHTML = (html = "", wordLimit = 10) => {
+    if (!html || typeof html !== "string") return "";
+    const text = html.replace(/<[^>]+>/g, " ");
+    const words = text.split(/\s+/).filter(Boolean).slice(0, wordLimit);
+    return (
+      words.join(" ") + (text.split(/\s+/).length > wordLimit ? "..." : "")
+    );
+  };
+  if (isLoading) {
+    return <AdminLoading />;
+  }
+  return (
+    <>
+      <Helmet>
+        <title>Admin | Create About Pages</title>
+      </Helmet>
+
+      <TittleAnimation
+        tittle="Create About Page "
+        subtittle="Manage About Page"
+      />
+
+      <div className="mt-10 max-w-[1400px] mx-auto px-2">
+        <div className=" w-full bg-white shadow-md rounded-lg p-2 md:p-5">
+          {/* ✅ Create Song Form */}
+          <div className="w-full  bg-white shadow-2xl rounded-xl border p-4 sm:p-6 mb-10">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+              {/* Song Name */}
+
+              <div className="w-full">
+                <RichTextField
+                  name="description"
+                  control={control}
+                  placeholder="Enter Your Description..."
+                  className="w-full " // ensure editor is full width
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full py-2 px-4 bg-gradient-to-r from-[#0f3d2e] via-[#145c43] to-[#0f3d2e] text-white font-medium rounded-lg shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-teal-600 disabled:opacity-70 disabled:cursor-not-allowed"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Adding..." : "Add About Pages "}
+              </button>
+            </form>
+          </div>
+
+          {/* ✅ Songs List */}
+          <div className=" bg-white shadow-lg rounded-xl border p-4 sm:p-6 w-[350px] md:w-full">
+            <h2 className="text-lg sm:text-xl font-semibold mb-4 text-green-700">
+              List
+            </h2>
+
+            <div className="overflow-x-auto">
+              <table className="table-auto w-full text-sm sm:text-base">
+                <thead className="bg-gradient-to-r from-[#0f3d2e] via-[#145c43] to-[#0f3d2e] text-white">
+                  <tr>
+                    <th className="px-4 py-2">Serial</th>
+                    <th className="px-4 py-2">Description</th>
+                    <th className="px-4 py-2">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {isLoading ? (
+                    <tr>
+                      <td colSpan={3} className="text-center py-4">
+                        Loading...
+                      </td>
+                    </tr>
+                  ) : about.length === 0 ? (
+                    <tr>
+                      <td colSpan={3} className="text-center py-4">
+                        No About Page found.
+                      </td>
+                    </tr>
+                  ) : (
+                    about.map((item, index) => (
+                      <tr key={item._id} className="hover:bg-gray-50 border-b">
+                        <td className="px-4 py-2 text-start">{index + 1}</td>
+                        <td
+                          className="px-4 py-2 text-start"
+                          dangerouslySetInnerHTML={{
+                            __html: truncateHTML(item.description, 10),
+                          }}
+                        ></td>
+
+                        <td className="px-4 py-2 text-center flex gap-3 justify-center mt-2">
+                          <button
+                            onClick={() => handleEdit(item)}
+                            className="text-green-600 hover:text-green-800"
+                            title="Edit"
+                          >
+                            <Edit size={18} />
+                          </button>
+
+                          <button
+                            onClick={() => handleDelete(item._id)}
+                            className="text-red-600 hover:text-red-800"
+                            title="Delete"
+                          >
+                            <Trash2 size={18} />
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {editOpen && selectedIdea && (
+        <AdminEditAboutPage
+          isOpen={editOpen}
+          onClose={() => setEditOpen(false)}
+          idea={selectedIdea}
+          onUpdate={(data) =>
+            updateMutation.mutate({
+              id: selectedIdea._id,
+              data,
+            })
+          }
+        />
+      )}
+    </>
+  );
+};
+
+export default AdminAboutPage;
