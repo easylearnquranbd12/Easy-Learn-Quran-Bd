@@ -255,8 +255,24 @@ const EnrollPages = () => {
                       className="w-full px-3 py-2 border rounded-md"
                     >
                       <option value="">Select Course</option>
-                      <option value="quran">Quran</option>
-                      <option value="tajweed">Tajweed</option>
+                      <option value="islamic-studies-for-kids-course">
+                        Islamic Studies for Kids Course
+                      </option>
+                      <option value="quran-translation-course">
+                        Quran Translation Course
+                      </option>
+                      <option value="quran-reading-course">
+                        Quran Reading Course
+                      </option>
+                      <option value="tajweed">
+                        Rules of Tajweed – Quran Recitation
+                      </option>
+                      <option value="hifz-ul-quran">
+                        Quran Memorization Course (Hifz-ul-Quran)
+                      </option>
+                      <option value="arabic-for-beginners-noorani-qaida">
+                        Arabic For Beginners – Noorani Qaida
+                      </option>
                     </select>
                   )}
                 />
