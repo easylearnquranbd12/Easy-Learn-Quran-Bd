@@ -1,17 +1,71 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Controller, useForm } from "react-hook-form";
 import { FiMail, FiPhone, FiUser } from "react-icons/fi";
+import Swal from "sweetalert2";
 import TittleAnimation from "../../components/TittleAnimation/TittleAnimation";
+import useAuth from "../../hooks/useAuth";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const EnrollPages = () => {
-  const { handleSubmit, control } = useForm();
   const [loading, setLoading] = useState(false);
+  const axiosPublic = useAxiosPublic();
+  const { user } = useAuth();
 
+  const queryClient = useQueryClient();
+  const { handleSubmit, control, reset } = useForm({
+    defaultValues: {
+      fullName: "",
+      age: "",
+      guardianName: "",
+      guardianPhone: "",
+      email: "",
+      phone: "",
+      gender: "",
+      whatsapp: "",
+      address: "",
+      course: "",
+      country: "",
+      city: "",
+      description: "",
+    },
+  });
+  // ✅ Create Song
+  const createMutation = useMutation({
+    mutationFn: async (newData) => {
+      const res = await axiosPublic.post("/enroll/enroll", newData);
+      console.log("RESPONSE:", res); // 👈 add this
+      return res.data;
+    },
+
+    onSuccess: (data) => {
+      console.log("SUCCESS DATA:", data);
+      Swal.fire("✅ Success!", "Enroll added successfully.", "success");
+      reset();
+    },
+
+    onError: (error) => {
+      console.log("ERROR FULL:", error); // 👈 IMPORTANT
+      Swal.fire("❌ Error!", "Failed to enroll.", "error");
+    },
+  });
+
+  // ✅ Submit Handler
   const onSubmit = async (data) => {
-    setLoading(true);
     console.log(data);
-    setTimeout(() => setLoading(false), 1500);
+    const payload = {
+      ...data,
+      user: {
+        _id: user?._id,
+        name: user?.displayName,
+        email: user?.email,
+        role: user?.role,
+        photoURL: user?.photoURL,
+      },
+    };
+
+    createMutation.mutate(payload);
   };
 
   const inputClass = (error, value) =>
@@ -52,13 +106,9 @@ const EnrollPages = () => {
               </div>
 
               {error ? (
-                <p className="text-red-500 text-sm mt-1">
-                  {error.message}
-                </p>
+                <p className="text-red-500 text-sm mt-1">{error.message}</p>
               ) : field.value ? (
-                <p className="text-green-600 text-sm mt-1">
-                  {label} Valid
-                </p>
+                <p className="text-green-600 text-sm mt-1">{label} Valid</p>
               ) : null}
             </>
           );
@@ -73,172 +123,215 @@ const EnrollPages = () => {
         <title>Easy Learn Quran Bd | Enroll Pages</title>
       </Helmet>
 
-      <div className="py-5 max-w-[1400px] mx-auto px-2">
+      <div className="py-2 max-w-[1400px] mx-auto px-2">
         <TittleAnimation
           tittle="Enroll Now"
           subtittle="Enroll Now Easy Learn Free Quran Learn"
         />
       </div>
 
-      <div className="max-w-[1200px] mx-auto px-3 py-8">
+      <div className="max-w-[1200px] mx-auto px-3 py-2">
+        {/* 🔥 Card Container */}
+        <div className="bg-white/80 backdrop-blur-lg border border-gray-200 rounded-2xl shadow-xl p-6 md:p-10 transition-all duration-300 hover:shadow-2xl">
+          {/* 🔹 Optional Header */}
+          <div className="mb-6 text-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
+              Student Admission Form
+            </h2>
+            <p className="text-gray-500 text-sm mt-1">
+              Fill all information correctly
+            </p>
+          </div>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {/* 🔹 GRID */}
+            <div className="grid md:grid-cols-2 gap-4">
+              {renderField(
+                "fullName",
+                "Student Name",
+                FiUser,
+                "Enter full name",
+                {
+                  required: "Name is required",
+                },
+              )}
 
-  {/* 🔥 Card Container */}
-  <div className="bg-white/80 backdrop-blur-lg border border-gray-200 rounded-2xl shadow-xl p-6 md:p-10 transition-all duration-300 hover:shadow-2xl">
+              {renderField("age", "Student Age", FiUser, "Enter age", {
+                required: "Age is required",
+              })}
 
-    {/* 🔹 Optional Header */}
-    <div className="mb-6 text-center">
-      <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
-        Student Admission Form
-      </h2>
-      <p className="text-gray-500 text-sm mt-1">
-        Fill all information correctly
-      </p>
-    </div>
-         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              {renderField(
+                "guardianName",
+                "Guardian Name",
+                FiUser,
+                "Enter guardian name",
+              )}
 
-          {/* 🔹 GRID */}
-          <div className="grid md:grid-cols-2 gap-4">
+              {renderField(
+                "guardianPhone",
+                "Guardian Phone",
+                FiPhone,
+                "Enter guardian phone",
+              )}
 
-            {renderField("fullName", "Student Name", FiUser, "Enter full name", {
-              required: "Name is required",
-            })}
+              {renderField("email", "Email Address", FiMail, "Enter email", {
+                required: "Email is required",
+              })}
 
-            {renderField("age", "Student Age", FiUser, "Enter age", {
-              required: "Age is required",
-            })}
+              {renderField(
+                "phone",
+                "Phone Number",
+                FiPhone,
+                "Enter phone number",
+                {
+                  required: "Phone is required",
+                },
+              )}
 
-            {renderField("guardianName", "Guardian Name", FiUser, "Enter guardian name")}
+              {/* Gender */}
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text text-base mb-1 font-medium text-gray-700">
+                    Gender :
+                  </span>
+                </label>
+                <Controller
+                  name="gender"
+                  control={control}
+                  render={({ field }) => (
+                    <select
+                      {...field}
+                      className="w-full px-3 py-2 border border-green-700 rounded-md"
+                    >
+                      <option value="">Select Gender</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                    </select>
+                  )}
+                />
+              </div>
 
-            {renderField("guardianPhone", "Guardian Phone", FiPhone, "Enter guardian phone")}
+              {renderField(
+                "whatsapp",
+                "WhatsApp",
+                FiPhone,
+                "Enter WhatsApp number",
+              )}
+            </div>
 
-            {renderField("email", "Email Address", FiMail, "Enter email", {
-              required: "Email is required",
-            })}
-
-            {renderField("phone", "Phone Number", FiPhone, "Enter phone number", {
-              required: "Phone is required",
-            })}
-
-            {/* Gender */}
+            {/* Address */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text text-base mb-1 font-medium text-gray-700">
-                  Gender :
+                  Address :
                 </span>
               </label>
               <Controller
-                name="gender"
+                name="address"
                 control={control}
                 render={({ field }) => (
-                  <select {...field} className="w-full px-3 py-2 border border-green-700 rounded-md">
-                    <option value="">Select Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                  </select>
+                  <textarea
+                    {...field}
+                    placeholder="Enter address"
+                    className="w-full px-3 py-2 border rounded-md"
+                  />
                 )}
               />
             </div>
 
-            {renderField("whatsapp", "WhatsApp", FiPhone, "Enter WhatsApp number")}
+            {/* Course + Country */}
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text text-base mb-1 font-medium text-gray-700">
+                    Course Select :
+                  </span>
+                </label>
+                <Controller
+                  name="course"
+                  control={control}
+                  render={({ field }) => (
+                    <select
+                      {...field}
+                      className="w-full px-3 py-2 border rounded-md"
+                    >
+                      <option value="">Select Course</option>
+                      <option value="quran">Quran</option>
+                      <option value="tajweed">Tajweed</option>
+                    </select>
+                  )}
+                />
+              </div>
 
-          </div>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text text-base mb-1 font-medium text-gray-700">
+                    Country :
+                  </span>
+                </label>
+                <Controller
+                  name="country"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      {...field}
+                      placeholder="Enter country"
+                      className="w-full px-3 py-2 border rounded-md"
+                    />
+                  )}
+                />
+              </div>
+            </div>
 
-          {/* Address */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text text-base mb-1 font-medium text-gray-700">
-                Address :
-              </span>
-            </label>
-            <Controller
-              name="address"
-              control={control}
-              render={({ field }) => (
-                <textarea {...field} placeholder="Enter address" className="w-full px-3 py-2 border rounded-md" />
-              )}
-            />
-          </div>
-
-          {/* Course + Country */}
-          <div className="grid md:grid-cols-2 gap-4">
+            {/* City */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text text-base mb-1 font-medium text-gray-700">
-                  Course Select :
+                  City :
                 </span>
               </label>
               <Controller
-                name="course"
+                name="city"
                 control={control}
                 render={({ field }) => (
-                  <select {...field} className="w-full px-3 py-2 border rounded-md">
-                    <option value="">Select Course</option>
-                    <option value="quran">Quran</option>
-                    <option value="tajweed">Tajweed</option>
-                  </select>
+                  <input
+                    {...field}
+                    placeholder="Enter city"
+                    className="w-full px-3 py-2 border rounded-md"
+                  />
                 )}
               />
             </div>
 
+            {/* Description */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text text-base mb-1 font-medium text-gray-700">
-                  Country :
+                  Description :
                 </span>
               </label>
               <Controller
-                name="country"
+                name="description"
                 control={control}
                 render={({ field }) => (
-                  <input {...field} placeholder="Enter country" className="w-full px-3 py-2 border rounded-md" />
+                  <textarea
+                    {...field}
+                    placeholder="Write something..."
+                    className="w-full px-3 py-2 border rounded-md"
+                  />
                 )}
               />
             </div>
-          </div>
 
-          {/* City */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text text-base mb-1 font-medium text-gray-700">
-                City :
-              </span>
-            </label>
-            <Controller
-              name="city"
-              control={control}
-              render={({ field }) => (
-                <input {...field} placeholder="Enter city" className="w-full px-3 py-2 border rounded-md" />
-              )}
-            />
-          </div>
-
-          {/* Description */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text text-base mb-1 font-medium text-gray-700">
-                Description :
-              </span>
-            </label>
-            <Controller
-              name="description"
-              control={control}
-              render={({ field }) => (
-                <textarea {...field} placeholder="Write something..." className="w-full px-3 py-2 border rounded-md" />
-              )}
-            />
-          </div>
-
-          {/* Submit */}
-          <button
-            type="submit"
-            className="w-full py-3 bg-green-700 text-white rounded-lg font-semibold"
-            disabled={loading}
-          >
-            {loading ? "Submitting..." : "Submit Registration"}
-          </button>
-
-        </form>
-       </div>
+            {/* Submit */}
+            <button
+              type="submit"
+              className="w-full py-3 bg-gradient-to-r from-[#0f3d2e] via-[#145c43] to-[#0f3d2e] text-white rounded-lg font-semibold"
+              disabled={loading}
+            >
+              {loading ? "Submitting..." : "Enroll Now"}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

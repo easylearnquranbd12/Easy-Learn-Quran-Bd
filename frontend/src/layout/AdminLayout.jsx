@@ -46,7 +46,7 @@ const AdminLayout = () => {
           
           <div className="flex items-center gap-2">
             <button
-              className="lg:hidden text-indigo-800 hover:bg-indigo-100 rounded-md p-2"
+              className="lg:hidden text-green-800 hover:bg-green-100 rounded-md p-2"
               onClick={handleSidebarToggle}
             >
               <FaBars className="w-5 h-5 text-[#1f4e43]" />
@@ -64,7 +64,7 @@ const AdminLayout = () => {
 
             <button
               onClick={logout}
-              className="bg-indigo-600 text-white px-2.5 md:px-3 py-1 rounded-md text-xs md:text-sm hover:bg-indigo-700 transition"
+              className="bg-gradient-to-r from-[#0f3d2e] via-[#145c43] to-[#0f3d2e] text-white px-2.5 md:px-3 py-1 rounded-md text-xs md:text-sm  transition"
             >
               Logout
             </button>
@@ -77,7 +77,7 @@ const AdminLayout = () => {
         </main>
 
         {/* Footer */}
-        <footer className="fixed bottom-0 left-0 lg:left-64 right-0 bg-indigo-100 border-t border-indigo-700 py-2 md:py-3 text-center text-xs md:text-sm text-gray-800">
+        <footer className="fixed bottom-0 left-0 lg:left-64 right-0 bg-green-100 border-t border-green-700 py-2 md:py-3 text-center text-xs md:text-sm text-gray-800">
           © {new Date().getFullYear()} Admin Dashboard — Built with ❤️ by Mozammel Hosen
         </footer>
 

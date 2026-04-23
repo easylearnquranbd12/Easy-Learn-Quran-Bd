@@ -15,14 +15,16 @@ const RefundPolicy = () => {
   return (
     <>
       <Helmet>
-        <title>Be The Shape | Refund Policy</title>
+        <title>Easy Learn Quran BD | Refund Policy</title>
       </Helmet>
+
       <div className="px-2 py-6 max-w-7xl mx-auto">
         <TittleAnimation
           tittle="Refund Policy"
-          subtittle="Follow Refund Policy"
+          subtittle="Easy Learn Quran BD"
         />
 
+        {/* 🔥 Intro */}
         <motion.p
           className="text-lg text-justify mb-6"
           variants={fadeUp}
@@ -30,21 +32,23 @@ const RefundPolicy = () => {
           animate="visible"
           custom={1}
         >
-          At <strong>Be The Shape</strong>, we are committed to delivering
-          high-quality educational content and a smooth learning experience. To
-          ensure clarity and fairness for all users, please read our refund and
-          return policy carefully.
+          At <strong>Easy Learn Quran BD</strong>, we are committed to providing
+          high-quality Quran learning services with qualified teachers and a
+          smooth online experience. Please read our refund policy carefully
+          before making any payment.
         </motion.p>
 
+        {/* 🔁 Return Policy */}
         <motion.h2
-          className="text-xl font-semibold text-blue-700 mb-2"
+          className="text-xl font-semibold text-green-700 mb-2"
           variants={fadeUp}
           initial="hidden"
           animate="visible"
           custom={2}
         >
-          🔁 Return & Exchange Policy
+          🔁 Return Policy
         </motion.h2>
+
         <motion.ul
           className="list-disc list-inside mb-6 text-justify text-base space-y-2"
           variants={fadeUp}
@@ -53,18 +57,19 @@ const RefundPolicy = () => {
           custom={3}
         >
           <li>
-            Due to the digital nature of our courses and materials, we{" "}
-            <strong>do not accept returns</strong> once a course has been
-            purchased or accessed.
+            As our Quran classes are digital and service-based, we{" "}
+            <strong>do not accept returns</strong> once a class or course has
+            been started.
           </li>
           <li>
-            Course access is strictly <strong>non-transferable</strong> and
-            cannot be exchanged for another course.
+            Enrollment and class schedules are{" "}
+            <strong>non-transferable</strong> to another student.
           </li>
         </motion.ul>
 
+        {/* 💸 Refund */}
         <motion.h2
-          className="text-xl font-semibold text-blue-700 mb-2"
+          className="text-xl font-semibold text-green-700 mb-2"
           variants={fadeUp}
           initial="hidden"
           animate="visible"
@@ -72,6 +77,7 @@ const RefundPolicy = () => {
         >
           💸 Refund Eligibility
         </motion.h2>
+
         <motion.ul
           className="list-disc list-inside mb-6 text-justify text-base space-y-2"
           variants={fadeUp}
@@ -80,28 +86,39 @@ const RefundPolicy = () => {
           custom={5}
         >
           <li>
-            Refunds are <strong>not provided by default</strong> once a payment
-            is completed.
+            Refunds are <strong>not guaranteed</strong> once payment is
+            completed.
           </li>
           <li>
-            In rare cases (e.g., duplicate payment or complete technical failure
-            to access the course), you may request a refund within{" "}
-            <strong>48 hours</strong> of purchase.
+            Refund requests may be considered only in special cases such as:
+          </li>
+          <li className="ml-4">
+            • Duplicate payment  
+            <br />
+            • Technical issues preventing class access  
+            <br />
+            • Failure to provide scheduled classes
           </li>
           <li>
-            Refund requests must be submitted via email to{" "}
+            All refund requests must be submitted within{" "}
+            <strong>48 hours</strong> of payment.
+          </li>
+          <li>
+            Requests should be sent to:{" "}
             <a
-              href="mailto:support@betheshape.com"
+              href="mailto:info@easylearnquranbd.com"
               className="text-blue-600 underline"
             >
-              support@betheshape.com
-            </a>{" "}
-            along with payment details.
+              info@easylearnquranbd.com
+
+
+            </a>
           </li>
         </motion.ul>
 
+        {/* ⚠️ Notes */}
         <motion.h2
-          className="text-xl font-semibold text-blue-700 mb-2"
+          className="text-xl font-semibold text-green-700 mb-2"
           variants={fadeUp}
           initial="hidden"
           animate="visible"
@@ -109,6 +126,7 @@ const RefundPolicy = () => {
         >
           ⚠️ Important Notes
         </motion.h2>
+
         <motion.ul
           className="list-disc list-inside mb-6 text-justify text-base space-y-2"
           variants={fadeUp}
@@ -117,15 +135,20 @@ const RefundPolicy = () => {
           custom={7}
         >
           <li>
-            If more than <strong>20% of the course</strong> has been viewed or
-            downloaded, refund requests will not be accepted.
+            If classes have already started or been attended, refund requests
+            may not be approved.
           </li>
           <li>
-            Be The Shape reserves the right to <strong>deny refunds</strong> that
-            do not comply with our policy.
+            Easy Learn Quran BD reserves the right to{" "}
+            <strong>approve or reject</strong> any refund request.
+          </li>
+          <li>
+            Processing time for approved refunds may take{" "}
+            <strong>5–10 working days</strong>.
           </li>
         </motion.ul>
 
+        {/* ✅ Closing */}
         <motion.p
           className="text-base text-justify"
           variants={fadeUp}
@@ -133,8 +156,8 @@ const RefundPolicy = () => {
           animate="visible"
           custom={8}
         >
-          ✅ Our team is always here to support you. If you're experiencing
-          issues, please reach out — we’ll do our best to help!
+          ✅ Our goal is to provide the best Quran learning experience. If you
+          face any issues, please contact us — we are always here to help.
         </motion.p>
       </div>
     </>

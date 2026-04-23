@@ -9,6 +9,9 @@ const { connectDB } = require("./config/db");
 const authRouter = require("./routes/authRoutes");
 const userRouter = require("./routes/userRoutes");
 const blogRouter = require("./routes/blogRoutes");
+const techersRouter = require("./routes/techersRoutes");
+const testimonialRouter = require("./routes/testimonialRoutes");
+const enrollRouter = require("./routes/enrollRoutes");
 const aboutRouter = require("./routes/aboutRoutes");
 const bannerRouter = require("./routes/bannerRoutes");
 const imageandTextRouter = require("./routes/authorRoutes");
@@ -43,6 +46,9 @@ connectDB().catch((err) => console.error("MongoDB connection error:", err));
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/blog", blogRouter);
+app.use("/enroll", enrollRouter);
+app.use("/techers", techersRouter);
+app.use("/testimonials", testimonialRouter);
 app.use("/about", aboutRouter);
 app.use("/banner", bannerRouter);
 app.use("/imageandtext", imageandTextRouter);
@@ -51,7 +57,6 @@ app.use("/api/admin/social-links", socialLinksRouter);
 app.use("/delete-media", mediaUploadRoutes);
 
 app.use("/api/dashboard", dashboardRoutes);
-
 
 // Root route
 app.get("/", (req, res) => {

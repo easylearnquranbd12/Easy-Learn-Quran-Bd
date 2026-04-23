@@ -50,12 +50,12 @@ const ForgotPassword = () => {
   return (
     <div>
       <Helmet>
-        <title>Be The Shape | Forgot-Password</title>
+        <title>Easy Learn Quran | Forgot-Password</title>
       </Helmet>
       <div className="flex justify-center items-center min-h-[70vh]">
         <div className="w-[90%] max-w-md bg-white shadow-xl rounded-xl border overflow-hidden border-indigo-100">
           {/* Header */}
-          <div className="bg-[#1f4e43]  py-6 px-8 text-white">
+          <div className="bg-gradient-to-r from-[#0f3d2e] via-[#145c43] to-[#0f3d2e]  py-6 px-8 text-white">
             <h2 className="text-2xl font-bold">Reset Password</h2>
             <p className="text-white mt-1">
               We’ll send you a reset link via email

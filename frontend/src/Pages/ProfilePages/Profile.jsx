@@ -58,9 +58,9 @@ const Profile = () => {
       // ✅ Cloudinary Upload
       const formData = new FormData();
       formData.append("file", image);
-      formData.append("upload_preset", "Betheshape-images"); 
+      formData.append("upload_preset", "Easy-Learn-Quran"); 
       const cloudinaryRes = await fetch(
-        `https://api.cloudinary.com/v1_1/damrv9kir/image/upload`,
+        `https://api.cloudinary.com/v1_1/dl9un23kb/image/upload`,
         {
           method: "POST",
           body: formData,
@@ -132,13 +132,13 @@ const Profile = () => {
   return (
     <div className=" ">
       <Helmet>
-        <title>Be The Shape | Profile Management</title>
+        <title>Easy Learn Quran | Profile Management</title>
       </Helmet>
       <div className="mx-auto">
-        <div className="bg-white rounded-lg max-w-[1400px] mx-auto  border  shadow-xl hover:shadow-2xl overflow-hidden">
+        <div className=" rounded-lg max-w-[1400px] mx-auto  border  shadow-xl hover:shadow-2xl overflow-hidden">
           <div className="p-5 md:p-8 lg:p-12">
             <div className="flex justify-between items-center mb-8">
-              <h1 className="text-xl md:text-2xl font-bold text-primary">
+              <h1 className="text-xl md:text-2xl font-bold text-green-700">
                 Profile Management
               </h1>
               <button
@@ -146,7 +146,7 @@ const Profile = () => {
                 className={`text-2xl p-2 rounded-full ${
                   isEditing
                     ? "bg-green-500 text-white"
-                    : "bg-primary text-white hover:bg-hoverPrimary"
+                    : "bg-gradient-to-r from-[#0f3d2e] via-[#145c43] to-[#0f3d2e] text-white "
                 } transition-all duration-300 ease-in-out`}
               >
                 {isEditing ? <FaCheckCircle /> : <FaEdit />}
@@ -179,7 +179,7 @@ const Profile = () => {
                 {isEditing && (
                   <label
                     htmlFor="image-upload"
-                    className="absolute bottom-0 right-0 bg-primary text-white p-3 rounded-full cursor-pointer hover:bg-hoverPrimary transition-colors duration-200 shadow-lg"
+                    className="absolute bottom-0 right-0 bg-gradient-to-r from-[#0f3d2e] via-[#145c43] to-[#0f3d2e] text-white p-3 rounded-full cursor-pointer  transition-colors duration-200 shadow-lg"
                   >
                     <FaCamera />
                     <input
@@ -192,7 +192,7 @@ const Profile = () => {
                   </label>
                 )}
               </div>
-              <h2 className="mt-4 text-2xl font-semibold text-primary">
+              <h2 className="mt-4 text-2xl font-semibold text-green-700">
                 {userData?.name || ""}
               </h2>
               <p className="text-gray-600">{userData?.email}</p>
@@ -216,7 +216,7 @@ const Profile = () => {
                         message: "Name can only contain letters and spaces",
                       },
                     }}
-                    icon={<FaUser className="text-indigo-500" />}
+                    icon={<FaUser className="text-green-700" />}
                   />
                   <ProfileField
                     name="email"
@@ -224,7 +224,7 @@ const Profile = () => {
                     control={control}
                     defaultValue={userData?.email || userEmail}
                     readOnly
-                    icon={<FaEnvelope className="text-indigo-500" />}
+                    icon={<FaEnvelope className="text-green-700" />}
                   />
                   <ProfileField
                     name="address"
@@ -232,7 +232,7 @@ const Profile = () => {
                     control={control}
                     defaultValue={userData?.address}
                     rules={{ required: "Address is required" }}
-                    icon={<FaMapMarkerAlt className="text-indigo-500" />}
+                    icon={<FaMapMarkerAlt className="text-green-700" />}
                   />
                   <ProfileField
                     name="phone"
@@ -246,7 +246,7 @@ const Profile = () => {
                         message: "Enter a valid 11-digit phone number",
                       },
                     }}
-                    icon={<FaPhone className="text-indigo-500" />}
+                    icon={<FaPhone className="text-green-700" />}
                   />
                 </div>
                 <div className="flex justify-end space-x-4">
@@ -265,7 +265,7 @@ const Profile = () => {
                     className={`px-6 py-3 rounded-lg text-lg font-semibold ${
                       loading || (!isDirty && !image)
                         ? "bg-gray-300 cursor-not-allowed"
-                        : "bg-primary hover:bg-hoverPrimary text-white"
+                        : "bg-gradient-to-r from-[#0f3d2e] via-[#145c43] to-[#0f3d2e] text-white"
                     } transition-colors duration-200`}
                     disabled={loading || (!isDirty && !image)}
                   >
@@ -302,7 +302,7 @@ const Profile = () => {
                   />
                 </div>
                 <div className="bg-indigo-50 p-6 rounded-lg">
-                  <h3 className="text-xl font-semibold mb-4 text-indigo-600">
+                  <h3 className="text-xl font-semibold mb-4 text-green-700">
                     Profile Completeness
                   </h3>
                   <div className="flex items-center justify-between mb-2">
@@ -311,7 +311,7 @@ const Profile = () => {
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2.5">
                     <div
-                      className="bg-indigo-500 h-2.5 rounded-full"
+                      className="text-green-700 h-2.5 rounded-full"
                       style={{
                         width: `${calculateProfileCompleteness(userData)}%`,
                       }}
@@ -390,7 +390,7 @@ const ProfileInfo = ({ label, value, icon, bgColor }) => (
   <div
     className={`${bgColor} p-6 rounded-lg flex items-start space-x-4 shadow-md`}
   >
-    <div className="text-indigo-600 mt-1">{icon}</div>
+    <div className="text-green-700 mt-1">{icon}</div>
     <div>
       <p className="text-sm text-gray-500 mb-1">{label}</p>
       <p className="font-medium text-gray-800">{value || "Not provided"}</p>
@@ -400,7 +400,7 @@ const ProfileInfo = ({ label, value, icon, bgColor }) => (
 
 // const ProfileInfo = ({ label, value, icon,bgColor }) => (
 //   <div className="bg-gray-100 p-6 rounded-lg flex items-start space-x-4">
-//     <div className="text-indigo-600 mt-1">{icon}</div>
+//     <div className="text-green-700 mt-1">{icon}</div>
 //     <div>
 //       <p className="text-sm text-gray-600 mb-1">{label}</p>
 //       <p className="font-medium text-black">{value || "Not provided"}</p>

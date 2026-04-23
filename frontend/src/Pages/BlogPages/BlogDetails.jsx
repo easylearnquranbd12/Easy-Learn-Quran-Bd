@@ -16,7 +16,7 @@ const BlogDetails = () => {
   const [error, setError] = useState("");
   const [showShareModal, setShowShareModal] = useState(false);
 
-  const blogUrl = `https://betheshape.com/blog-us/${id}`;
+  const blogUrl = `https://easylearnquranbd.com/blog-us/${id}`;
 
   const fadeUp = {
     hidden: { opacity: 0, y: 40 },

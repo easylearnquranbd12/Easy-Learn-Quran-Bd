@@ -8,8 +8,12 @@ import UserLayout from "../layout/UserLayout";
 
 
 import AdminAboutPage from "../Pages/AdminDashboardPages/AboutPages/AdminAboutPage";
+import AdminEnrollPages from "../Pages/AdminDashboardPages/AdminEnrollPages";
+import AdminTeacher from "../Pages/AdminDashboardPages/AdminTecherAddPages/Admintecher";
+import AdminTestimonial from "../Pages/AdminDashboardPages/AdminTestimonialPages/AdminTestimonial";
 import DashboardRedirect from "../Pages/DashboardRedirect";
 import EnrollPages from "../Pages/EnrollPages/EnrollPages";
+import Teacher from "../Pages/TecherPages/Teacher";
 import UserDashboard from "../Pages/UserUploadPdf/UserDashboard";
 import AdminRoute from "./AdminRoute";
 import PrivateRoute from "./PrivateRoute";
@@ -95,6 +99,14 @@ export const routes = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <EnrollPages />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/teachers",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <Teacher />
           </Suspense>
         ),
       },
@@ -203,6 +215,30 @@ export const routes = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <AllUsers />
+          </Suspense>
+        ),
+      },
+      {
+        path: "manage-all-enroll",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminEnrollPages />
+          </Suspense>
+        ),
+      },
+      {
+        path: "add-techer",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminTeacher />
+          </Suspense>
+        ),
+      },
+      {
+        path: "add-testimonial",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminTestimonial />
           </Suspense>
         ),
       },

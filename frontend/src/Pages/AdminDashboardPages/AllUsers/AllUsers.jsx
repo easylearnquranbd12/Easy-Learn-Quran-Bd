@@ -1,4 +1,3 @@
-
 import { Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -105,7 +104,7 @@ const AllUsers = () => {
       <div className="py-6 px-4 md:py-10 max-w-7xl mx-auto">
         {/* History Table Section */}
         <div className="bg-white p-4 md:p-6 rounded-xl shadow-md border border-indigo-200">
-          <h3 className="text-xl font-semibold mb-4 text-indigo-600">
+          <h3 className="text-xl font-semibold mb-4 text-green-800">
             All Users
           </h3>
 
@@ -158,7 +157,7 @@ const AllUsers = () => {
                         className="border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-200"
                       >
                         <option value="user">User</option>
-                        <option value="moderator">Moderator</option>
+                        {/* <option value="moderator">Moderator</option> */}
                         <option value="admin">Admin</option>
                       </select>
                     </td>
@@ -194,7 +193,10 @@ const AllUsers = () => {
               </div>
             ) : (
               users.map((user, index) => (
-                <div key={user._id} className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                <div
+                  key={user._id}
+                  className="bg-gray-50 p-4 rounded-lg border border-gray-200"
+                >
                   <div className="flex justify-between items-start mb-3">
                     <span className="text-sm font-medium text-gray-500">
                       #{(page - 1) * limit + index + 1}
@@ -208,18 +210,18 @@ const AllUsers = () => {
                       </button>
                     )}
                   </div>
-                  
+
                   <div className="space-y-2">
                     <div>
                       <p className="text-xs text-gray-500">Name</p>
                       <p className="font-medium">{user.name}</p>
                     </div>
-                    
+
                     <div>
                       <p className="text-xs text-gray-500">Email</p>
                       <p className="font-medium break-all">{user.email}</p>
                     </div>
-                    
+
                     <div>
                       <p className="text-xs text-gray-500 mb-1">Role</p>
                       <select
@@ -230,7 +232,7 @@ const AllUsers = () => {
                         className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-indigo-200"
                       >
                         <option value="user">User</option>
-                        <option value="moderator">Moderator</option>
+                        {/* <option value="moderator">Moderator</option> */}
                         <option value="admin">Admin</option>
                       </select>
                     </div>
@@ -265,13 +267,13 @@ const AllUsers = () => {
                   onClick={() => setPage(btn)}
                   className={`px-3 py-1 md:px-4 md:py-2 border rounded-md text-sm ${
                     btn === page
-                      ? "bg-indigo-600 text-white"
+                      ? "bg-gradient-to-r from-[#0f3d2e] via-[#145c43] to-[#0f3d2e] text-white"
                       : "hover:bg-indigo-50"
                   }`}
                 >
                   {btn}
                 </button>
-              )
+              ),
             )}
 
             <button

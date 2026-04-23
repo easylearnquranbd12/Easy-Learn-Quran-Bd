@@ -73,7 +73,7 @@ const ChangePassword = () => {
     <>
       <div className="flex justify-center items-center min-h-[calc(100vh-9.5rem)]">
         <div className="w-full max-w-2xl bg-white rounded-2xl border border-indigo-100 shadow-xl overflow-hidden">
-          <div className="bg-teal-600 py-6 px-8 text-white">
+          <div className="bg-gradient-to-r from-[#0f3d2e] via-[#145c43] to-[#0f3d2e] py-6 px-8 text-white">
             <h2 className="text-2xl font-bold">Change Password</h2>
             <p className="mt-1 text-indigo-200">Enter your current and new password</p>
           </div>
@@ -209,7 +209,7 @@ const ChangePassword = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 bg-teal-600 hover:bg-hoverteal-800 text-white rounded-lg font-semibold transition disabled:opacity-60"
+                className="w-full py-3 bg-gradient-to-r from-[#0f3d2e] via-[#145c43] to-[#0f3d2e]  text-white rounded-lg font-semibold transition disabled:opacity-60"
               >
                 {loading ? "Processing..." : "Change Password"}
               </button>

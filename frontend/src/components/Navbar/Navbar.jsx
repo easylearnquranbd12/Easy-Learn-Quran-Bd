@@ -23,7 +23,8 @@ const getNavigationLinks = (user) => {
 
   baseLinks.push(
     { title: " Enroll Now", link: "/enroll-now" },
-    { title: "Contact", link: "/contact" },
+    { title: "Contact", link: "/contact-us" },
+    { title: "Blog", link: "/blog-us" },
   );
 
   return baseLinks;

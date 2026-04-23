@@ -3,7 +3,6 @@ require("dotenv").config();
 
 const uri =
   "mongodb+srv://easylearnquranbd12:ye4CqQNh8NMOzpKO@cluster0.wybtx5o.mongodb.net/Easy-Learn-Quran-BD?retryWrites=true&w=majority";
-  
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -27,7 +26,15 @@ const getBlogsCollection = () => {
 const getAboutPagesCollection = () => {
   return client.db("Easy-Learn-Quran-BD").collection("AboutPages");
 };
-
+const getEnrollCollection = () => {
+  return client.db("Easy-Learn-Quran-BD").collection("Enroll");
+};
+const getTechersCollection = () => {
+  return client.db("Easy-Learn-Quran-BD").collection("Techers");
+};
+const getTestimonialCollection = () => {
+  return client.db("Easy-Learn-Quran-BD").collection("Testimonials");
+};
 const getImageAndTextCollection = () => {
   return client.db("Easy-Learn-Quran-BD").collection("ImageAndText");
 };
@@ -48,6 +55,9 @@ module.exports = {
   getUserCollection,
   getBlogsCollection,
   getAboutPagesCollection,
+  getEnrollCollection,
+  getTechersCollection,
+  getTestimonialCollection,
   getBannersCollection,
   getImageAndTextCollection,
   getAuthorTextCollection,

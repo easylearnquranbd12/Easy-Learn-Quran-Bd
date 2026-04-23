@@ -23,22 +23,24 @@ const TermsAndConditions = () => {
   return (
     <>
       <Helmet>
-        <title>Be The Shape | Terms & Conditions</title>
+        <title>Easy Learn Quran BD | Terms & Conditions</title>
       </Helmet>
+
       <div className="px-2 py-5 max-w-7xl mx-auto">
         <TittleAnimation
           tittle="Terms & Conditions"
-          subtittle="Follow Terms & Conditions"
+          subtittle="Easy Learn Quran BD"
         />
 
+        {/* 🔥 Intro */}
         <motion.h1
-          className="text-2xl lg:text-3xl font-bold mb-8 text-justify"
+          className="text-2xl lg:text-3xl font-bold mb-6 text-justify"
           variants={fadeUp}
           initial="hidden"
           animate="visible"
           custom={1}
         >
-          Welcome to Be The Shape
+          Welcome to Easy Learn Quran BD
         </motion.h1>
 
         <motion.p
@@ -48,19 +50,13 @@ const TermsAndConditions = () => {
           animate="visible"
           custom={2}
         >
-          By accessing and using our website at{" "}
-          <a
-            href="https://betheshape.com"
-            className="text-blue-600 underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            betheshape.com
-          </a>
-          , you agree to be bound by these terms and conditions. Please read
-          them carefully.
+          By accessing and using our platform, you agree to follow the terms and
+          conditions of Easy Learn Quran BD. These terms are designed to ensure a
+          respectful, safe, and effective Quran learning environment for all
+          students.
         </motion.p>
 
+        {/* 🔥 Cookies */}
         <motion.h2
           className="text-2xl font-semibold mb-4 flex items-center gap-2"
           variants={fadeUp}
@@ -71,6 +67,7 @@ const TermsAndConditions = () => {
           <ShieldCheck className="text-green-600" />
           Use of Cookies
         </motion.h2>
+
         <motion.p
           className="mb-6 text-lg text-justify"
           variants={fadeUp}
@@ -78,11 +75,12 @@ const TermsAndConditions = () => {
           animate="visible"
           custom={4}
         >
-          We use cookies to enhance your experience. By continuing to browse our
-          site, you consent to our use of cookies in accordance with our Privacy
-          Policy.
+          We use cookies to improve your browsing experience and analyze website
+          performance. By continuing to use our website, you agree to our use of
+          cookies in accordance with our Privacy Policy.
         </motion.p>
 
+        {/* 🔥 Content Ownership */}
         <motion.h2
           className="text-2xl font-semibold mb-4 flex items-center gap-2"
           variants={fadeUp}
@@ -93,6 +91,7 @@ const TermsAndConditions = () => {
           <FileText className="text-purple-600" />
           Intellectual Property
         </motion.h2>
+
         <motion.p
           className="mb-6 text-lg text-justify"
           variants={fadeUp}
@@ -100,12 +99,13 @@ const TermsAndConditions = () => {
           animate="visible"
           custom={6}
         >
-          All content on Be The Shape is protected by copyright and belongs to
-          Be The Shape or its licensors. You may use content for personal,
-          non-commercial purposes only. You may not reproduce, sell, or
-          redistribute any material.
+          All course materials, videos, and content provided by Easy Learn Quran
+          BD are protected by copyright. These materials are for personal
+          learning use only and must not be copied, shared, or distributed
+          without permission.
         </motion.p>
 
+        {/* 🔥 Linking */}
         <motion.h2
           className="text-2xl font-semibold mb-4 flex items-center gap-2"
           variants={fadeUp}
@@ -116,6 +116,7 @@ const TermsAndConditions = () => {
           <Link2 className="text-cyan-600" />
           Hyperlinking
         </motion.h2>
+
         <motion.p
           className="mb-6 text-lg text-justify"
           variants={fadeUp}
@@ -123,11 +124,12 @@ const TermsAndConditions = () => {
           animate="visible"
           custom={8}
         >
-          Certain organizations such as government bodies, search engines, and
-          news outlets may link to our site without prior approval. Others must
-          request permission first.
+          Trusted organizations may link to our website without prior approval.
+          However, others must request permission before linking to Easy Learn
+          Quran BD.
         </motion.p>
 
+        {/* 🔥 iFrame */}
         <motion.h2
           className="text-2xl font-semibold mb-4 flex items-center gap-2"
           variants={fadeUp}
@@ -138,6 +140,7 @@ const TermsAndConditions = () => {
           <Ban className="text-red-600" />
           iFrames Policy
         </motion.h2>
+
         <motion.p
           className="mb-6 text-lg text-justify"
           variants={fadeUp}
@@ -145,10 +148,11 @@ const TermsAndConditions = () => {
           animate="visible"
           custom={10}
         >
-          You may not create frames or alter the visual presentation of our
-          pages without prior written consent.
+          You may not embed or display our website content within frames or
+          modify its visual presentation without written permission.
         </motion.p>
 
+        {/* 🔥 Liability */}
         <motion.h2
           className="text-2xl font-semibold mb-4 flex items-center gap-2"
           variants={fadeUp}
@@ -159,6 +163,7 @@ const TermsAndConditions = () => {
           <AlertCircle className="text-orange-500" />
           Content Liability
         </motion.h2>
+
         <motion.p
           className="mb-6 text-lg text-justify"
           variants={fadeUp}
@@ -166,11 +171,12 @@ const TermsAndConditions = () => {
           animate="visible"
           custom={12}
         >
-          We are not responsible for content that appears on external websites
-          linking to us. You agree to defend us against claims arising from
-          content on your site that links to Be The Shape.
+          We are not responsible for any external content linked to or from our
+          website. Users are responsible for ensuring their use of content
+          complies with applicable laws.
         </motion.p>
 
+        {/* 🔥 Link Removal */}
         <motion.h2
           className="text-2xl font-semibold mb-4 flex items-center gap-2"
           variants={fadeUp}
@@ -181,6 +187,7 @@ const TermsAndConditions = () => {
           <Globe className="text-blue-500" />
           Link Removal
         </motion.h2>
+
         <motion.p
           className="mb-6 text-lg text-justify"
           variants={fadeUp}
@@ -188,11 +195,12 @@ const TermsAndConditions = () => {
           animate="visible"
           custom={14}
         >
-          If you find any link on our site objectionable, you may inform us. We
-          will consider removal requests, but we are not obligated to act or
-          respond directly.
+          If you find any content or link on our website inappropriate, you may
+          contact us. We will review requests but are not obligated to remove
+          content immediately.
         </motion.p>
 
+        {/* 🔥 Disclaimer */}
         <motion.h2
           className="text-2xl font-semibold mb-4 flex items-center gap-2"
           variants={fadeUp}
@@ -203,6 +211,7 @@ const TermsAndConditions = () => {
           <ShieldCheck className="text-gray-700" />
           Disclaimer
         </motion.h2>
+
         <motion.p
           className="mb-6 text-lg text-justify"
           variants={fadeUp}
@@ -210,20 +219,22 @@ const TermsAndConditions = () => {
           animate="visible"
           custom={16}
         >
-          We do not guarantee the accuracy, completeness, or availability of
-          information on our site. Be The Shape will not be liable for any
-          damages resulting from the use of our website.
+          While we strive to provide accurate and high-quality Quran learning
+          services, Easy Learn Quran BD does not guarantee uninterrupted service
+          or error-free content. We are not liable for any damages arising from
+          the use of our platform.
         </motion.p>
 
+        {/* 🔥 Closing */}
         <motion.p
-          className="text-xl font-semibold text-emerald-700 mt-10 text-justify"
+          className="text-xl font-semibold text-green-700 mt-10 text-justify"
           variants={fadeUp}
           initial="hidden"
           animate="visible"
           custom={17}
         >
-          📘 Thank you for trusting Be The Shape. If you have any questions about
-          these terms, please contact us.
+          📘 Thank you for choosing Easy Learn Quran BD. We appreciate your trust
+          and are committed to helping you on your Quran learning journey.
         </motion.p>
       </div>
     </>

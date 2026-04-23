@@ -187,7 +187,7 @@ const AdminBlogCreate = () => {
               </div>
               <button
                 type="submit"
-                className="w-full py-3 px-4 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-medium rounded-lg shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-teal-600 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full py-3 px-4 bg-gradient-to-r from-[#0f3d2e] via-[#145c43] to-[#0f3d2e] text-white font-medium rounded-lg shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-teal-600 disabled:opacity-70 disabled:cursor-not-allowed"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "Adding..." : "Add Blog "}
@@ -203,7 +203,7 @@ const AdminBlogCreate = () => {
 
             <div className="overflow-x-auto">
               <table className="table-auto w-full text-sm sm:text-base">
-                <thead className="bg-teal-600 text-white">
+                <thead className="bg-gradient-to-r from-[#0f3d2e] via-[#145c43] to-[#0f3d2e] text-white">
                   <tr>
                     <th className="px-4 py-2">Image</th>
                     <th className="px-4 py-2">Name</th>

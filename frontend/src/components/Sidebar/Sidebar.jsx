@@ -7,10 +7,9 @@ import { FaChartLine, FaHome, FaKey, FaUsers } from "react-icons/fa";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { HiLogout, HiX } from "react-icons/hi";
 import {
-  MdAppBlocking,
   MdDashboard,
   MdPayment,
-  MdSchool,
+  MdSchool
 } from "react-icons/md";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
@@ -49,7 +48,7 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
         <div
           className={`relative flex items-center gap-3 p-3 rounded-lg transition-all duration-200 cursor-pointer select-none w-full ${
             isMenuActive
-              ? "bg-blue-600 text-white shadow-md"
+              ? "bg-gradient-to-r from-[#0f3d2e] via-[#145c43] to-[#0f3d2e] text-white shadow-md"
               : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
           } ${indentClass}`}
           onClick={() => {
@@ -130,6 +129,27 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
       color: "text-green-600",
     },
     {
+      path: "/admin-dashboard/manage-all-enroll",
+      icon: FaUsers,
+      label: "All Enroll",
+      description: "Manage All Enroll",
+      color: "text-green-600",
+    },
+    {
+      path: "/admin-dashboard/add-techer",
+      icon: FaUsers,
+      label: "Add Techer",
+      description: "Manage All Techer",
+      color: "text-green-600",
+    },
+    {
+      path: "/admin-dashboard/add-testimonial",
+      icon: FaUsers,
+      label: "Add Testimonial",
+      description: "Manage All Testimonial",
+      color: "text-green-600",
+    },
+    {
       path: "/admin-dashboard/manage-about-page",
       icon: FaUsers,
       label: "About Page",
@@ -138,51 +158,25 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
     },
 
     {
-      path: "/admin-dashboard/blog",
-      icon: MdAppBlocking,
-      label: "Blog",
-      description: "Post Of Blog",
+      path: "/admin-dashboard/create-a-home-text",
+      icon: BiEdit,
+      label: "Create a Banner",
+      description: "Manage banner",
       color: "text-indigo-600",
-      subItems: [
-        {
-          path: "/admin-dashboard/create-a-new-blog",
-          icon: BiEdit,
-          label: "Create Blog",
-          description: "Create New Blog",
-          color: "text-indigo-600",
-        },
-      ],
     },
     {
-      path: "/admin-dashboard/home-pages-control",
-      icon: FaHome,
-      label: "Home Pages Control",
-      description: "Home Pages Edit",
+      path: "/admin-dashboard/footer-facebook-url-change",
+      icon: MdPayment,
+      label: "Footer Social URL",
+      description: "Footer Social URL Change",
+      color: "text-indigo-400",
+    },
+    {
+      path: "/admin-dashboard/create-a-new-blog",
+      icon: BiEdit,
+      label: "Create Blog",
+      description: "Create New Blog",
       color: "text-indigo-600",
-      subItems: [
-        {
-          path: "/admin-dashboard/create-a-home-text",
-          icon: BiEdit,
-          label: "Text & Banner",
-          description: "Text & Banner Create",
-          color: "text-indigo-600",
-        },
-
-        {
-          path: "/admin-dashboard/success-video-player",
-          icon: MdPayment,
-          label: "Success video Player ",
-          description: "Success Video Player Create",
-          color: "text-indigo-400",
-        },
-        {
-          path: "/admin-dashboard/footer-facebook-url-change",
-          icon: MdPayment,
-          label: "Footer Facebook URL",
-          description: "Footer Facebook URL Change",
-          color: "text-indigo-400",
-        },
-      ],
     },
   ];
 
@@ -228,7 +222,7 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
                         : "/user-dashboard/my-profile"
                   }
                 >
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-md overflow-hidden cursor-pointer">
+                  <div className="w-12 h-12 bg-gradient-to-r from-[#0f3d2e] via-[#145c43] to-[#0f3d2e] rounded-xl flex items-center justify-center shadow-md overflow-hidden cursor-pointer">
                     <img
                       src={user?.photoURL || "/default-avatar.png"}
                       alt="Profile"

@@ -1,13 +1,18 @@
 const express = require("express");
-const { getAllAuthors, createAuthor, deleteAuthor } = require("../controllers/testimonialController");
-
-
+const {
+  createTestimonial,
+  getAllTestimonials,
+  getTestimonialById,
+  deleteTestimonial,
+  updateTestimonial,
+} = require("../controllers/testimonialController");
 
 const router = express.Router();
 
-
-router.get("/", getAllAuthors);
-router.post("/", createAuthor);
-router.delete("/:id", deleteAuthor);
+router.post("/", createTestimonial);
+router.get("/", getAllTestimonials);
+router.get("/:id", getTestimonialById);
+router.delete("/:id", deleteTestimonial);
+router.put("/:id", updateTestimonial);
 
 module.exports = router;
