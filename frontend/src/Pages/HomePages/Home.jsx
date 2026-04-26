@@ -9,6 +9,7 @@ import LearningPath from "./LearningPath";
 import MessengerIcon from "./MessengerIcon";
 import PricingSection from "./PricingSection";
 import StartQuranJourney from "./StartQuranJourney";
+import Teacher from "./Teacher";
 import TestimonialSection from "./TestimonialSection";
 
 const Home = () => {
@@ -21,10 +22,11 @@ const Home = () => {
       <AboutSection />
       <CourseSection />
       <LearningPath />
+      <Teacher/>
+       <PricingSection />
       <TestimonialSection />
-      <StartQuranJourney />
-      <PricingSection />
       <FAQSection />
+      <StartQuranJourney />
       <MessengerIcon />
     </div>
   );

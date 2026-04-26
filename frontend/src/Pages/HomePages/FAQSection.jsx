@@ -48,7 +48,7 @@ const FAQSection = () => {
                 onClick={() => setOpen(isOpen ? null : i)}
                 className="w-full flex justify-between items-center px-6 py-4 text-left"
               >
-                <span className="text-[14px] font-semibold text-gray-800">
+                <span className="text-base md:text-lg font-semibold text-gray-800">
                   {item.question}
                 </span>
 

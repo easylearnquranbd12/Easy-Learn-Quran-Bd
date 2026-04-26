@@ -13,7 +13,6 @@ const getNavigationLinks = (user) => {
   const baseLinks = [
     { title: "Home", link: "/" },
     { title: "About Us", link: "/about-us-more-information" },
-    { title: "Teachers", link: "/teachers" },
   ];
 
   // 👤 Dashboard If Logged In
@@ -83,7 +82,7 @@ const Navbar = () => {
   return (
     <div className="fixed top-0 left-0 w-full bg-gradient-to-r from-[#0f3d2e] via-[#145c43] to-[#0f3d2e] shadow-2xl z-50 px-1 py-1">
       <div className="max-w-[1400px] mx-auto h-[70px] flex justify-between items-center">
-        <img className="h-40 w-44 cursor-pointer " src={imageLogo} alt="Logo" />
+        <img className="h-42 w-56 cursor-pointer brightness-105 invert" src={imageLogo} alt="Logo" />
 
         {/* Desktop Menu */}
         <div className="hidden md:flex flex-1 justify-end gap-2 items-center font-medium">
@@ -172,11 +171,7 @@ const Navbar = () => {
               className="fixed inset-y-0 left-0 w-4/5 max-w-sm bg-gradient-to-r from-[#0f3d2e] via-[#145c43] to-[#0f3d2e] px-4 z-50 shadow-2xl flex flex-col"
             >
               <div className="flex justify-between items-center mb-4 border-b min-h-24">
-                <img
-                  className="h-12 w-20 cursor-pointer"
-                  src={imageLogo}
-                  alt="Logo"
-                />
+                <img className="h-20 w-32 cursor-pointer brightness-105 invert" src={imageLogo} alt="Logo" />
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}

@@ -32,7 +32,7 @@ const Footer = () => {
 
   const fetchSocialLinks = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/admin/social-links");
+      const { data } = await axios.get("https://easy-learn-quran-bd.vercel.app/api/admin/social-links");
       setSocialLinks(data || {});
     } catch (err) {
       console.error(err);
@@ -63,7 +63,7 @@ const Footer = () => {
 
         {/* Logo & Contact */}
         <div>
-          <img src={imageLogo} alt="Logo" className="h-16 w-24 mb-4" />
+         <img className="h-42 w-56 cursor-pointer brightness-105 invert" src={imageLogo} alt="Logo" />
           <p className="font-bold uppercase mb-4 text-gray-200">Office Address</p>
 
           <p className="flex items-center gap-2 mb-2 text-gray-300">

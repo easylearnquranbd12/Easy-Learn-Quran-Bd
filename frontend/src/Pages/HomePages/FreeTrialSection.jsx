@@ -1,6 +1,6 @@
 const FreeTrialSection = () => {
   return (
-    <div className="w-full py-16 bg-gray-50">
+    <div className="w-full py-8 bg-gray-50">
       
       {/* TITLE */}
       <h2 className="text-center text-lg md:text-xl font-semibold text-green-900 mb-10">
@@ -56,9 +56,24 @@ const FreeTrialSection = () => {
             {/* COURSE */}
             <select className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-600">
               <option>Course</option>
-              <option>Quran Reading</option>
-              <option>Tajweed</option>
-              <option>Islamic Studies</option>
+             <option value="islamic-studies-for-kids-course">
+                        Islamic Studies for Kids Course
+                      </option>
+                      <option value="quran-translation-course">
+                        Quran Translation Course
+                      </option>
+                      <option value="quran-reading-course">
+                        Quran Reading Course
+                      </option>
+                      <option value="tajweed">
+                        Rules of Tajweed – Quran Recitation
+                      </option>
+                      <option value="hifz-ul-quran">
+                        Quran Memorization Course (Hifz-ul-Quran)
+                      </option>
+                      <option value="arabic-for-beginners-noorani-qaida">
+                        Arabic For Beginners – Noorani Qaida
+                      </option>
             </select>
 
             {/* BUTTON */}

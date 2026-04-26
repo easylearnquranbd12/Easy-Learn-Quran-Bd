@@ -2,7 +2,7 @@ const LearningPath = () => {
   const steps = ["Qaida", "Reading", "Tajweed", "Hifz"];
 
   return (
-    <div className="w-full py-16 bg-gray-50">
+    <div className="w-full py-8 bg-gray-50">
       
       {/* TITLE */}
       <h2 className="text-center text-lg md:text-xl font-semibold text-gray-700 mb-12">

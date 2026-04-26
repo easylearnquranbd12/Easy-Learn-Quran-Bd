@@ -2,12 +2,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import {
-  CartesianGrid,
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis, YAxis
+    CartesianGrid,
+    Line,
+    LineChart,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis, YAxis
 } from "recharts";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#A28BFF"];
@@ -18,7 +18,7 @@ export default function AdminDashboard() {
 
   const [loading, setLoading] = useState(false);
 
-  const base = "http://localhost:5000/api/dashboard";
+  const base = "https://easy-learn-quran-bd.vercel.app/api/dashboard";
 
   const fetchAll = async () => {
     try {

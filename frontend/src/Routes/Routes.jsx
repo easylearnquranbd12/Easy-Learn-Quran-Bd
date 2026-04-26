@@ -16,7 +16,6 @@ import AdminTeacher from "../Pages/AdminDashboardPages/AdminTecherAddPages/Admin
 import AdminTestimonial from "../Pages/AdminDashboardPages/AdminTestimonialPages/AdminTestimonial";
 import DashboardRedirect from "../Pages/DashboardRedirect";
 import EnrollPages from "../Pages/EnrollPages/EnrollPages";
-import Teacher from "../Pages/TecherPages/Teacher";
 import UserDashboard from "../Pages/UserUploadPdf/UserDashboard";
 import AdminRoute from "./AdminRoute";
 import PrivateRoute from "./PrivateRoute";
@@ -105,14 +104,7 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
-      {
-        path: "/teachers",
-        element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <Teacher />
-          </Suspense>
-        ),
-      },
+     
     
 
       // Blog

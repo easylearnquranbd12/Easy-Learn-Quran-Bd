@@ -40,7 +40,7 @@ const TestimonialSection = () => {
   }
 
   return (
-    <div className="relative py-16 overflow-hidden max-w-[1400px] mx-auto">
+    <div className="relative py-8 overflow-hidden max-w-[1400px] mx-auto">
 
       {/* 🔥 TITLE */}
       <div className="text-center mb-14">

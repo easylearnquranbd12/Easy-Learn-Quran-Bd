@@ -6,7 +6,7 @@ const AboutSection = () => {
     <div className="max-w-[1400px] mx-auto md:px-2 py-6">
       <div className="text-center mb-10">
         <p className="text-xl font-bold text-green-800 uppercase relative inline-block">
-          About Section
+          About 
           {/* Wavy Underline */}
           <span className="absolute left-0 -bottom-2 w-full">
             <svg viewBox="0 0 200 10" className="w-full h-3">

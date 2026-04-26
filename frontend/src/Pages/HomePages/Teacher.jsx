@@ -30,10 +30,10 @@ const Teacher = () => {
   }
 
   return (
-    <div className="w-full py-20 px-4 bg-gray-50">
+    <div className="w-full py-5 px-4 ">
       {/* 🔥 TITLE */}
       <div className="text-center mb-14">
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-800 uppercase">
+        <h2 className="text-xl font-bold text-green-800 uppercase relative inline-block">
           TEACHERS SECTION
         </h2>
         <p className="text-sm text-gray-500 mt-2">
@@ -42,7 +42,7 @@ const Teacher = () => {
       </div>
 
       {/* 🔥 CARDS */}
-      <div className="max-w-[1100px] mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <div className="max-w-[1350px] mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         {techers.map((t, index) => (
           <motion.div
             key={t._id}

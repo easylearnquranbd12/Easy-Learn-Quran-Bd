@@ -1,9 +1,9 @@
 const PricingSection = () => {
   return (
-    <div className="py-20 bg-[#eef5f1]">
+    <div className="py-5 bg-[#eaeeec]">
       {/* TITLE */}
       <h2 className="text-center text-xl md:text-3xl font-bold text-gray-600 tracking-[3px] mb-14">
-        PRICING SECTION
+        PRICING 
       </h2>
 
       {/* CARDS */}

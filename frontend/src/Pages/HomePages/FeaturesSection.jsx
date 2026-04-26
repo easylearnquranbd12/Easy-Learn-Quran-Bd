@@ -13,11 +13,11 @@ const FeaturesSection = () => {
   });
 
   return (
-    <div className="w-full py-10 md:px-2">
+    <div className="w-full py-5 md:px-2">
       {/* TITLE */}
       <div className="text-center mb-10">
         <p className="text-xl font-bold text-green-800 uppercase relative inline-block">
-          Features
+          WHY CHOOSE US
           <span className="absolute left-0 -bottom-2 w-full">
             <svg viewBox="0 0 200 10" className="w-full h-3">
               <path
@@ -56,7 +56,7 @@ const FeaturesSection = () => {
               </h3>
 
               {/* DESCRIPTION */}
-              <p className="text-xs md:text-sm text-gray-500 leading-relaxed">
+              <p className="text-xs md:text-sm text-gray-500 leading-relaxed text-justify">
                 {item.description}
               </p>
             </div>

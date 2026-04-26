@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const BannerSection = () => {
@@ -58,12 +59,12 @@ const BannerSection = () => {
 
           <div className="mt-2 md:mt-6">
             <div className="flex flex-wrap gap-3 sm:gap-4">
-              <button className="bg-white text-green-800 px-2 md:px-4 py-1 md:py-1.5  rounded-lg font-medium text-xs md:text-sm hover:bg-gray-100 transition-colors">
+              <Link to="/enroll-now" className="bg-white text-green-800 px-2 md:px-4 py-1 md:py-1.5  rounded-lg font-medium text-xs md:text-sm hover:bg-gray-100 transition-colors">
                 Start Free Trial
-              </button>
-              <button className="border border-white px-2 md:px-4 py-1 md:py-1.5   rounded-lg text-xs md:text-sm hover:bg-white/10 transition-colors">
+              </Link>
+              <Link to="/enroll-now" className="border border-white px-2 md:px-4 py-1 md:py-1.5   rounded-lg text-xs md:text-sm hover:bg-white/10 transition-colors">
                 Join Now
-              </button>
+              </Link>
             </div>
 
             {/* FEATURES */}

@@ -13,7 +13,7 @@ const CourseSection = () => {
   });
 
   return (
-    <div className="w-full py-10 md:px-2">
+    <div className="w-full py-5 md:px-2">
       {/* TITLE */}
       <div className="text-center mb-10">
         <p className="text-xl font-bold text-green-800 uppercase relative inline-block">

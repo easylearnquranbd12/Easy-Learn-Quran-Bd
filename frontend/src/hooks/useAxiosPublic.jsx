@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const axiosPublic = axios.create({
-    baseURL: 'http://localhost:5000',
-    // baseURL: 'http://localhost:5000',
+    baseURL: 'https://easy-learn-quran-bd.vercel.app',
+    // baseURL: 'https://easy-learn-quran-bd.vercel.app',
     withCredentials: true, // ✅ REQUIRED for cookies to be sent
 });
 
