@@ -1,8 +1,13 @@
 import AboutSection from "./AboutSection";
+import Achievements from "./Achievements";
 import BannerSection from "./BannerSection";
 import CourseSection from "./CourseSection";
+import FAQSection from "./FAQSection";
 import FeaturesSection from "./FeaturesSection";
+import FreeTrialSection from "./FreeTrialSection";
+import LearningPath from "./LearningPath";
 import MessengerIcon from "./MessengerIcon";
+import PricingSection from "./PricingSection";
 import StartQuranJourney from "./StartQuranJourney";
 import TestimonialSection from "./TestimonialSection";
 
@@ -10,11 +15,16 @@ const Home = () => {
   return (
     <div>
       <BannerSection />
-      <FeaturesSection/>
-      <AboutSection/>
-      <CourseSection/>
-      <TestimonialSection/>
-      <StartQuranJourney/>
+      <Achievements />
+      <FeaturesSection />
+      <FreeTrialSection />
+      <AboutSection />
+      <CourseSection />
+      <LearningPath />
+      <TestimonialSection />
+      <StartQuranJourney />
+      <PricingSection />
+      <FAQSection />
       <MessengerIcon />
     </div>
   );

@@ -6,11 +6,7 @@ import { CgProfile } from "react-icons/cg";
 import { FaChartLine, FaHome, FaKey, FaUsers } from "react-icons/fa";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { HiLogout, HiX } from "react-icons/hi";
-import {
-  MdDashboard,
-  MdPayment,
-  MdSchool
-} from "react-icons/md";
+import { MdDashboard, MdPayment, MdSchool } from "react-icons/md";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useRole from "../../hooks/useRole";
@@ -136,10 +132,31 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
       color: "text-green-600",
     },
     {
+      path: "/admin-dashboard/manage-all-features",
+      icon: FaUsers,
+      label: "Add Features",
+      description: "Manage All Features",
+      color: "text-green-600",
+    },
+    {
+      path: "/admin-dashboard/manage-all-achievements",
+      icon: FaUsers,
+      label: "Add Achievements",
+      description: "Manage All Achievements",
+      color: "text-green-600",
+    },
+    {
       path: "/admin-dashboard/add-techer",
       icon: FaUsers,
       label: "Add Techer",
       description: "Manage All Techer",
+      color: "text-green-600",
+    },
+     {
+      path: "/admin-dashboard/manage-all-courses",
+      icon: FaUsers,
+      label: "Add Courses",
+      description: "Manage All Courses",
       color: "text-green-600",
     },
     {

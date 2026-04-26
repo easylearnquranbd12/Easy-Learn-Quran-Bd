@@ -1,23 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 
-const FeaturesSection = () => {
+const Achievements = () => {
   const axiosPublic = useAxiosPublic();
 
-  const { data: features = [], isLoading } = useQuery({
-    queryKey: ["features"],
+  const { data: achievements = [], isLoading } = useQuery({
+    queryKey: ["achievements"],
     queryFn: async () => {
-      const res = await axiosPublic.get("/features");
+      const res = await axiosPublic.get("/features/achievements");
       return res.data;
     },
   });
 
   return (
     <div className="w-full py-10 md:px-2">
+      
       {/* TITLE */}
       <div className="text-center mb-10">
         <p className="text-xl font-bold text-green-800 uppercase relative inline-block">
-          Features
+          Achievements
           <span className="absolute left-0 -bottom-2 w-full">
             <svg viewBox="0 0 200 10" className="w-full h-3">
               <path
@@ -36,35 +37,43 @@ const FeaturesSection = () => {
         <p className="text-center">Loading...</p>
       ) : (
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-          {features.map((item) => (
+          
+          {achievements.map((item) => (
             <div
               key={item._id}
-              className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all p-6 text-center"
+              className="group bg-white rounded-xl shadow-md hover:shadow-xl transition-all p-6 text-center"
             >
-              {/* IMAGE ICON */}
-              <div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center rounded-lg bg-yellow-100 group-hover:bg-yellow-200 transition">
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="w-8 h-8 object-contain transition-transform duration-300 group-hover:scale-110"
-                />
+              
+              {/* ICON */}
+              <div className="w-14 h-14 mx-auto mb-4 flex items-center justify-center rounded-xl bg-yellow-100 group-hover:bg-yellow-200 transition">
+                {item.image ? (
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-8 h-8 object-contain transition-transform duration-300 group-hover:scale-110"
+                  />
+                ) : (
+                  <span className="text-gray-400 text-xs">No Icon</span>
+                )}
               </div>
 
+              {/* COUNT (Main Highlight) */}
+              <h2 className="text-2xl md:text-3xl font-bold text-green-700 mb-1">
+                +{item.count}
+              </h2>
+
               {/* TITLE */}
-              <h3 className="font-semibold text-gray-800 text-sm md:text-base mb-2">
+              <h3 className="font-medium text-gray-700 text-sm md:text-base">
                 {item.name}
               </h3>
 
-              {/* DESCRIPTION */}
-              <p className="text-xs md:text-sm text-gray-500 leading-relaxed">
-                {item.description}
-              </p>
             </div>
           ))}
+
         </div>
       )}
     </div>
   );
 };
 
-export default FeaturesSection;
+export default Achievements;

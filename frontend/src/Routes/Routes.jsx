@@ -8,7 +8,10 @@ import UserLayout from "../layout/UserLayout";
 
 
 import AdminAboutPage from "../Pages/AdminDashboardPages/AboutPages/AdminAboutPage";
+import AdminAchievements from "../Pages/AdminDashboardPages/AchievementsPages/AdminAchievements";
+import AdminCourse from "../Pages/AdminDashboardPages/AdminCoursePages/AdminCourse";
 import AdminEnrollPages from "../Pages/AdminDashboardPages/AdminEnrollPages";
+import AdminFeatures from "../Pages/AdminDashboardPages/AdminFeaturesPages/AdminFeatures";
 import AdminTeacher from "../Pages/AdminDashboardPages/AdminTecherAddPages/Admintecher";
 import AdminTestimonial from "../Pages/AdminDashboardPages/AdminTestimonialPages/AdminTestimonial";
 import DashboardRedirect from "../Pages/DashboardRedirect";
@@ -223,6 +226,30 @@ export const routes = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <AdminEnrollPages />
+          </Suspense>
+        ),
+      },
+      {
+        path: "manage-all-features",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminFeatures />
+          </Suspense>
+        ),
+      },
+      {
+        path: "manage-all-courses",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminCourse />
+          </Suspense>
+        ),
+      },
+      {
+        path: "manage-all-achievements",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminAchievements />
           </Suspense>
         ),
       },

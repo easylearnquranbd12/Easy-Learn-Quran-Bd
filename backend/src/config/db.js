@@ -35,6 +35,15 @@ const getTechersCollection = () => {
 const getTestimonialCollection = () => {
   return client.db("Easy-Learn-Quran-BD").collection("Testimonials");
 };
+const getFeaturesCollection = () => {
+  return client.db("Easy-Learn-Quran-BD").collection("Features");
+};
+const getAchievementsCollection = () => {
+  return client.db("Easy-Learn-Quran-BD").collection("Achievements");
+};
+const getCoursesCollection = () => {
+  return client.db("Easy-Learn-Quran-BD").collection("Courses");
+};
 const getImageAndTextCollection = () => {
   return client.db("Easy-Learn-Quran-BD").collection("ImageAndText");
 };
@@ -58,6 +67,9 @@ module.exports = {
   getEnrollCollection,
   getTechersCollection,
   getTestimonialCollection,
+  getFeaturesCollection,
+  getAchievementsCollection,
+  getCoursesCollection,
   getBannersCollection,
   getImageAndTextCollection,
   getAuthorTextCollection,
