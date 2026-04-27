@@ -22,8 +22,8 @@ const Home = () => {
       <AboutSection />
       <CourseSection />
       <LearningPath />
-      <Teacher/>
-       <PricingSection />
+      <Teacher />
+      <PricingSection />
       <TestimonialSection />
       <FAQSection />
       <StartQuranJourney />
