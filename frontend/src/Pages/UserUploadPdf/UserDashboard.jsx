@@ -6,7 +6,7 @@ const UserDashboard = () => {
   const { user } = useAuth();
 
   return (
-    <div className="mt-16 px-3">
+    <div className="mt-20 md:mt-0 px-2">
 
       {/* 🔥 CONTAINER */}
       <div className="max-w-[1200px] mx-auto">

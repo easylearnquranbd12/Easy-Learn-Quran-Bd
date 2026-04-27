@@ -130,7 +130,7 @@ const Profile = () => {
   }
 
   return (
-    <div className=" ">
+    <div className="mt-20 md:mt-0">
       <Helmet>
         <title>Easy Learn Quran | Profile Management</title>
       </Helmet>

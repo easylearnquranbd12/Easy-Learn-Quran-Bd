@@ -130,7 +130,7 @@ const EnrollPages = () => {
         />
       </div>
 
-      <div className="max-w-[1200px] mx-auto px-3 py-2">
+      <div className="max-w-[1200px] mx-auto  py-2">
         {/* 🔥 Card Container */}
         <div className="bg-white/80 backdrop-blur-lg border border-gray-200 rounded-2xl shadow-xl p-6 md:p-10 transition-all duration-300 hover:shadow-2xl">
           {/* 🔹 Optional Header */}

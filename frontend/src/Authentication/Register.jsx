@@ -106,7 +106,7 @@ const Register = () => {
         <div className="w-full max-w-xl bg-white shadow-2xl rounded-xl overflow-hidden border border-gray-200">
           <div className="text-center mt-8">
             <img
-              className="h-16 w-24 cursor-pointer mx-auto "
+              className="h-24 w-32 cursor-pointer mx-auto "
               src={imageLogo}
               alt="Logo"
             />

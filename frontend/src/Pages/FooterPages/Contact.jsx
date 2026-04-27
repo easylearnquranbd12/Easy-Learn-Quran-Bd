@@ -86,7 +86,7 @@ const Contact = () => {
         <title>Easy Learn Quran BD | Contact</title>
       </Helmet>
 
-      <div className="py-12 px-4">
+      <div className="py-12 ">
         {/* 🔥 TITLE */}
         <div className="text-center mb-12">
           <TittleAnimation

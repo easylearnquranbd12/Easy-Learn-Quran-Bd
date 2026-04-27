@@ -71,7 +71,7 @@ const ChangePassword = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center min-h-[calc(100vh-9.5rem)]">
+      <div className="mt-20 md:mt-0 flex justify-center items-center min-h-[calc(100vh-9.5rem)]">
         <div className="w-full max-w-2xl bg-white rounded-2xl border border-indigo-100 shadow-xl overflow-hidden">
           <div className="bg-gradient-to-r from-[#0f3d2e] via-[#145c43] to-[#0f3d2e] py-6 px-8 text-white">
             <h2 className="text-2xl font-bold">Change Password</h2>
