@@ -32,7 +32,7 @@ const Footer = () => {
 
   const fetchSocialLinks = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/admin/social-links");
+      const { data } = await axios.get("https://easy-learn-quran-bd.vercel.app/api/admin/social-links");
       setSocialLinks(data || {});
     } catch (err) {
       console.error(err);

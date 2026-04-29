@@ -18,7 +18,7 @@ export default function AdminDashboard() {
 
   const [loading, setLoading] = useState(false);
 
-  const base = "http://localhost:5000/api/dashboard";
+  const base = "https://easy-learn-quran-bd.vercel.app/api/dashboard";
 
   const fetchAll = async () => {
     try {
