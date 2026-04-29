@@ -66,7 +66,7 @@ const MediaUpload = ({
 
     if (media?.public_id) {
       try {
-        await axios.post(`https://easy-learn-quran-bd.vercel.app/delete-media/${type}`, {
+        await axios.post(`http://localhost:5000/delete-media/${type}`, {
           publicId: media.public_id,
         });
       } catch (error) {

@@ -18,7 +18,7 @@
 //   const mutation = useMutation({
 //     mutationFn: async (newValue) => {
 //       const res = await fetch(
-//         `https://easy-learn-quran-bd.vercel.app/first-layer/VocabularyField/${vocabId}`,
+//         `http://localhost:5000/first-layer/VocabularyField/${vocabId}`,
 //         {
 //           method: "PUT",
 //           headers: { "Content-Type": "application/json" },
@@ -129,7 +129,7 @@ const EditModal = ({ isOpen, onClose, fieldName, currentValue, vocabId }) => {
   const mutation = useMutation({
     mutationFn: async (newValue) => {
       const res = await fetch(
-        `https://easy-learn-quran-bd.vercel.app/first-layer/VocabularyField/${vocabId}`,
+        `http://localhost:5000/first-layer/VocabularyField/${vocabId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

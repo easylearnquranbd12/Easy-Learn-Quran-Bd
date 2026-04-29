@@ -1,7 +1,8 @@
 const { ObjectId } = require("mongodb");
-const { getTestimonialCollection } = require("../config/db");
+const { getTestimonialCollection, getFaqCollection } = require("../config/db");
 
 const testimonialCollection = getTestimonialCollection();
+
 
 // ✅ Create Good Life Style CURD
 const createTestimonial = async (req, res) => {
@@ -82,10 +83,13 @@ const updateTestimonial = async (req, res) => {
   }
 };
 
+
+
 module.exports = {
   createTestimonial,
   getAllTestimonials,
   deleteTestimonial,
   getTestimonialById,
   updateTestimonial,
+
 };

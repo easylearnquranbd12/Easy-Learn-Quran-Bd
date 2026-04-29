@@ -18,7 +18,7 @@ const Blog = () => {
       setLoading(true);
       setError(null);
 
-      const res = await axios.get(`https://easy-learn-quran-bd.vercel.app/blog/blog`, {
+      const res = await axios.get(`http://localhost:5000/blog/blog`, {
         withCredentials: true,
       });
     

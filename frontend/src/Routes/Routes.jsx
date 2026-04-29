@@ -9,8 +9,10 @@ import UserLayout from "../layout/UserLayout";
 
 import AdminAboutPage from "../Pages/AdminDashboardPages/AboutPages/AdminAboutPage";
 import AdminAchievements from "../Pages/AdminDashboardPages/AchievementsPages/AdminAchievements";
+import AdminCountry from "../Pages/AdminDashboardPages/AdminCountryPages/AdminCountry";
 import AdminCourse from "../Pages/AdminDashboardPages/AdminCoursePages/AdminCourse";
 import AdminEnrollPages from "../Pages/AdminDashboardPages/AdminEnrollPages";
+import AdminFaq from "../Pages/AdminDashboardPages/AdminFaqPages/AdminFaq";
 import AdminFeatures from "../Pages/AdminDashboardPages/AdminFeaturesPages/AdminFeatures";
 import AdminTeacher from "../Pages/AdminDashboardPages/AdminTecherAddPages/Admintecher";
 import AdminTestimonial from "../Pages/AdminDashboardPages/AdminTestimonialPages/AdminTestimonial";
@@ -230,6 +232,14 @@ export const routes = createBrowserRouter([
         ),
       },
       {
+        path: "manage-all-country",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminCountry />
+          </Suspense>
+        ),
+      },
+      {
         path: "manage-all-courses",
         element: (
           <Suspense fallback={<LoadingSpinner />}>
@@ -258,6 +268,14 @@ export const routes = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <AdminTestimonial />
+          </Suspense>
+        ),
+      },
+      {
+        path: "add-faq",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminFaq />
           </Suspense>
         ),
       },

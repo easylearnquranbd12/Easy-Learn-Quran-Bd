@@ -9,6 +9,9 @@ const {
   createCourses,
   getAllCourses,
   deleteCourses,
+  createCountry,
+  deleteCountry,
+  getAllCountry,
 } = require("../controllers/featuresController");
 
 const router = express.Router();
@@ -24,4 +27,8 @@ router.delete("/achievements/:id", deleteAchievements);
 router.post("/courses", createCourses);
 router.get("/courses", getAllCourses);
 router.delete("/courses/:id", deleteCourses);
+// Country   Routes
+router.post("/country", createCountry);
+router.get("/country", getAllCountry);
+router.delete("/country/:id", deleteCountry);
 module.exports = router;

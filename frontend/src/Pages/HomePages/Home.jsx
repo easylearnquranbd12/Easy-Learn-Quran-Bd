@@ -1,6 +1,7 @@
 import AboutSection from "./AboutSection";
 import Achievements from "./Achievements";
 import BannerSection from "./BannerSection";
+import Countries from "./Countries";
 import CourseSection from "./CourseSection";
 import FAQSection from "./FAQSection";
 import FeaturesSection from "./FeaturesSection";
@@ -16,6 +17,7 @@ const Home = () => {
   return (
     <div>
       <BannerSection />
+      <Countries/>
       <Achievements />
       <FeaturesSection />
       <FreeTrialSection />

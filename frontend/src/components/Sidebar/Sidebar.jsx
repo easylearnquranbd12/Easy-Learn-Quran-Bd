@@ -146,6 +146,14 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
       color: "text-green-600",
     },
     {
+      path: "/admin-dashboard/manage-all-country",
+      icon: FaUsers,
+      label: "Add Country",
+      description: "Manage All Country",
+      color: "text-green-600",
+    },
+   
+    {
       path: "/admin-dashboard/add-techer",
       icon: FaUsers,
       label: "Add Techer",
@@ -164,6 +172,13 @@ const Sidebar = ({ isSidebarOpen, handleSidebarToggle }) => {
       icon: FaUsers,
       label: "Add Testimonial",
       description: "Manage All Testimonial",
+      color: "text-green-600",
+    },
+    {
+      path: "/admin-dashboard/add-faq",
+      icon: FaUsers,
+      label: "Add FAQ",
+      description: "Manage All FAQ",
       color: "text-green-600",
     },
     {

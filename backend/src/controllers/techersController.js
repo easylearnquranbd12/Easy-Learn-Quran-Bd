@@ -1,7 +1,8 @@
 const { ObjectId } = require("mongodb");
-const { getTechersCollection } = require("../config/db");
+const { getTechersCollection, getFaqsCollection } = require("../config/db");
 
 const TechersCollection = getTechersCollection();
+
 
 // ✅ Create Good Life Style CURD
 const createTecher = async (req, res) => {
@@ -82,10 +83,13 @@ const updateTecher = async (req, res) => {
   }
 };
 
+
 module.exports = {
   createTecher,
   getAllTechers,
   deleteTecher,
   getTecherById,
   updateTecher,
+
+ 
 };

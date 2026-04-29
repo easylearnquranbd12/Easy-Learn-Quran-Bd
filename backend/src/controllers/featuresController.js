@@ -3,11 +3,13 @@ const {
   getFeaturesCollection,
   getAchievementsCollection,
   getCoursesCollection,
+  getCountryCollection,
 } = require("../config/db");
 
 const FeaturesCollection = getFeaturesCollection();
 const AchievementsCollection = getAchievementsCollection();
 const coursesCollection = getCoursesCollection();
+const countrysCollection = getCountryCollection();
 
 
 
@@ -117,6 +119,43 @@ const getAllCourses = async (req, res) => {
   }
 };
 
+
+
+// ✅ Create Good Life Style CURD
+const createCountry = async (req, res) => {
+  try {
+    const data = { ...req.body, createdAt: new Date().toISOString() };
+    const result = await countrysCollection.insertOne(data);
+    res.status(201).json({
+      success: true,
+      message: "Country created successfully",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+const deleteCountry = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await countrysCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+const getAllCountry = async (req, res) => {
+  try {
+    const result = await countrysCollection.find()
+      .sort({ createdAt: -1 })
+      .toArray();
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 module.exports = {
   createFeature,
   getAllFeatures,
@@ -127,4 +166,7 @@ module.exports = {
   createCourses,
   getAllCourses,
   deleteCourses,
+  createCountry,
+  getAllCountry,
+  deleteCountry,
 };

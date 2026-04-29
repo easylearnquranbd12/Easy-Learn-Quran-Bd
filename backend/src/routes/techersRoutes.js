@@ -14,4 +14,6 @@ router.get("/", getAllTechers);
 router.get("/:id", getTecherById);
 router.delete("/:id", deleteTecher);
 router.put("/:id", updateTecher);
+
+
 module.exports = router;

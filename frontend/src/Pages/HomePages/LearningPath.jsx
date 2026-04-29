@@ -38,7 +38,7 @@ const LearningPath = () => {
               <div key={index} className="flex flex-col items-center">
                 
                 {/* DOT */}
-                <div className="w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center text-xs font-semibold shadow z-10">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-[#145c43] via-[#1f8a63] to-[#83e6c1] text-white flex items-center justify-center text-xs font-semibold shadow z-10">
                   {index + 1}
                 </div>
 

@@ -7,44 +7,102 @@ body {
   font-family: "Roboto", sans-serif;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
+/* App.css / index.css
+
+.testimonialSwiper {
+  overflow: visible !important;
+}
+
+.testimonialSwiper .swiper-wrapper {
+  overflow: visible !important;
+}
+
+.testimonialSwiper .swiper-slide {
+  overflow: visible !important;
+}
+
+.testimonialSwiper .swiper-pagination {
+  bottom: -40px !important;
+}
+.testimonialSwiper .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: #bfd8ce;
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.testimonialSwiper .swiper-pagination-bullet-active {
+  width: 30px;
+  border-radius: 999px;
+  background: #145c43;
+} */
+/* 🔥 Swiper overflow fix */
+.testimonialSwiper,
+.testimonialSwiper .swiper-wrapper,
+.testimonialSwiper .swiper-slide {
+  overflow: visible !important;
+}
+
+/* ✅ Pagination স্টাইল */
+.testimonialSwiper {
+  padding-bottom: 50px !important;
+}
+
+.testimonialSwiper .swiper-pagination {
+  bottom: 0px !important;
+  position: relative !important;
+  margin-top: 20px;
+}
+
+.testimonialSwiper .swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  background-color: #145c43;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+  margin: 0 6px !important;
+}
+
+.testimonialSwiper .swiper-pagination-bullet-active {
+  width: 24px;
+  border-radius: 4px;
+  background-color: #145c43;
+  opacity: 1;
+}
+
+/* ✅ Image perfect control */
+.testimonialSwiper .swiper-slide img {
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+/* ✅ Avatar image fix */
+.rounded-full img {
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+/* 🔥 Mobile Fix */
+@media (max-width: 767px) {
+  .testimonialSwiper {
+    padding-bottom: 40px !important;
   }
 
-  to {
-    opacity: 1;
-    transform: scale(1);
+  .testimonialSwiper .swiper-pagination-bullet {
+    width: 6px;
+    height: 6px;
+    margin: 0 4px !important;
+  }
+
+  .testimonialSwiper .swiper-pagination-bullet-active {
+    width: 20px;
   }
 }
 
-.animate-fadeIn {
-  animation: fadeIn 0.3s ease-out forwards;
-}
-/* ===== Global Scrollbar Style ===== */
-@layer base {
-  /* Global Scrollbar Style */
-  ::-webkit-scrollbar {
-    width: 10px;
-    height: 8px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #bb874a;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: #5e4528;
-  }
-
-  /* Firefox Support */
-  * {
-    scrollbar-width: thin;
-    scrollbar-color: #bb874a #f1f1f1;
+/* 🔥 Desktop Fix */
+@media (min-width: 1024px) {
+  .testimonialSwiper {
+    padding-bottom: 60px !important;
   }
 }

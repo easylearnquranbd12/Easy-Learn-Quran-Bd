@@ -15,31 +15,26 @@ const FeaturesSection = () => {
   return (
     <div className="w-full py-5 md:px-2">
       {/* TITLE */}
-      <div className="text-center mb-10">
-        <p className="text-xl font-bold text-green-800 uppercase relative inline-block">
-          WHY CHOOSE US
-          <span className="absolute left-0 -bottom-2 w-full">
-            <svg viewBox="0 0 200 10" className="w-full h-3">
-              <path
-                d="M0 5 Q 10 0, 20 5 T 40 5 T 60 5 T 80 5 T 100 5 T 120 5 T 140 5 T 160 5 T 180 5 T 200 5"
-                fill="transparent"
-                stroke="#065f46"
-                strokeWidth="2"
-              />
-            </svg>
-          </span>
-        </p>
-      </div>
+      
+
+      <div className="text-center mb-12">
+  <p className="text-xl md:text-2xl font-bold uppercase tracking-wide inline-block bg-gradient-to-r from-[#145c43] via-[#1f8a63] to-[#83e6c1] bg-clip-text text-transparent">
+    WHY CHOOSE US
+
+    {/* GRADIENT LINE */}
+    <span className="block w-24 h-0.5 mx-auto mt-3 rounded-full bg-gradient-to-r from-[#145c43] via-[#1f8a63] to-[#5be7b4]"></span>
+  </p>
+</div>
 
       {/* LOADING */}
       {isLoading ? (
         <p className="text-center">Loading...</p>
       ) : (
-        <div className="max-w-[1400px] mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="max-w-[1400px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
           {features.map((item) => (
             <div
               key={item._id}
-              className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all p-6 text-center"
+              className="bg-white rounded-xl border-l-4 border-[#145c43] shadow-md hover:shadow-lg transition-all p-6 text-center"
             >
               {/* IMAGE ICON */}
               <div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center rounded-lg bg-yellow-100 group-hover:bg-yellow-200 transition">

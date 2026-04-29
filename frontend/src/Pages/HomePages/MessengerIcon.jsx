@@ -16,7 +16,7 @@ const MessengerIcon = () => {
 
       {/* 🔥 Messenger */}
       <a
-        href="https://web.facebook.com/profile.php?id=61572039370539"
+        href="https://www.facebook.com/Easylearnquranbd"
         target="_blank"
         rel="noopener noreferrer"
         className="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg transition-all duration-300"
