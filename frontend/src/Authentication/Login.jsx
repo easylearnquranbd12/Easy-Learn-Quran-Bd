@@ -69,22 +69,27 @@ const Login = () => {
   return (
     <div>
       <Helmet>
-        <title>Be The Shape | Sign In</title>
+        <title>Easy Learn Quran | Sign In</title>
       </Helmet>
       <div className="flex justify-center items-center min-h-[70vh]">
         <div className="w-full max-w-xl bg-white shadow-2xl rounded-xl overflow-hidden border border-gray-200">
           {/* Header */}
-          <div className="text-center mt-8">
-            <img
-              className="h-24 w-32 cursor-pointer mx-auto "
-              src={imageLogo}
-              alt="Logo"
-            />
-           <p className="mt-2 text-gray-600 text-sm">
-  Welcome back! Log in to shape your success.
-</p>
+        {/* Header */}
+<div className="text-center mt-4">
 
-          </div>
+  {/* LOGO BOX */}
+  <div className="inline-block bg-gradient-to-r from-[#0f3d2e] via-[#145c43] to-[#0f3d2e] border border-[#d4af37]/20 rounded-xl px-4 py-3 shadow-2xl">
+    <img
+      className="h-[40px] md:h-[55px] w-auto object-contain mx-auto"
+      src={imageLogo}
+      alt="Logo"
+    />
+  </div>
+
+  <p className="mt-2 text-gray-600 text-sm">
+    Welcome back! Log in to Easy Learn Quran your success.
+  </p>
+</div>
 
           {/* Form */}
           <div className="p-7">
