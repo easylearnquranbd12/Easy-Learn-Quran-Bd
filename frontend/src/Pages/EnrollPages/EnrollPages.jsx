@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Controller, useForm } from "react-hook-form";
 import { FiMail, FiPhone, FiUser } from "react-icons/fi";
@@ -9,51 +8,60 @@ import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const EnrollPages = () => {
-  const [loading, setLoading] = useState(false);
   const axiosPublic = useAxiosPublic();
   const { user } = useAuth();
-
   const queryClient = useQueryClient();
+
   const { handleSubmit, control, reset } = useForm({
     defaultValues: {
       fullName: "",
       age: "",
       guardianName: "",
-      guardianPhone: "",
       email: "",
       phone: "",
       gender: "",
       whatsapp: "",
-      address: "",
       course: "",
-      country: "",
-      city: "",
+      address: "",
       description: "",
     },
   });
-  // ✅ Create Song
+
+  // ✅ Mutation
   const createMutation = useMutation({
     mutationFn: async (newData) => {
       const res = await axiosPublic.post("/enroll/enroll", newData);
-      console.log("RESPONSE:", res); // 👈 add this
       return res.data;
     },
 
-    onSuccess: (data) => {
-      console.log("SUCCESS DATA:", data);
-      Swal.fire("✅ Success!", "Enroll added successfully.", "success");
+    onSuccess: () => {
+      Swal.fire({
+        icon: "success",
+        title: "Success!",
+        text: "Enroll added successfully.",
+        confirmButtonColor: "#145c43",
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["enroll"],
+      });
+
       reset();
     },
 
     onError: (error) => {
-      console.log("ERROR FULL:", error); // 👈 IMPORTANT
-      Swal.fire("❌ Error!", "Failed to enroll.", "error");
+      console.log(error);
+
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "Failed to enroll.",
+      });
     },
   });
 
-  // ✅ Submit Handler
-  const onSubmit = async (data) => {
-    console.log(data);
+  // ✅ Submit
+  const onSubmit = (data) => {
     const payload = {
       ...data,
       user: {
@@ -68,16 +76,29 @@ const EnrollPages = () => {
     createMutation.mutate(payload);
   };
 
+  // ✅ Input Style
   const inputClass = (error, value) =>
-    `w-full pl-10 pr-3 py-2 border rounded-md text-gray-700 transition-colors focus:outline-none focus:ring-1 focus:ring-green-200 ${
-      error ? "border-red-500" : value ? "border-green-200" : "border-gray-300"
+    `w-full pl-10 pr-3 py-3 border rounded-xl text-gray-700 transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-[#145c43] ${
+      error
+        ? "border-red-500"
+        : value
+          ? "border-green-300"
+          : "border-gray-300"
     }`;
 
-  const renderField = (name, label, icon, placeholder, rules = {}) => (
+  // ✅ Reusable Field
+  const renderField = (
+    name,
+    label,
+    icon,
+    placeholder,
+    rules = {},
+    type = "text",
+  ) => (
     <div className="form-control">
       <label htmlFor={name} className="label">
-        <span className="label-text text-base mb-1 font-medium text-gray-700">
-          {label} :
+        <span className="label-text text-base mb-1 font-semibold text-gray-700">
+          {label}
         </span>
       </label>
 
@@ -85,7 +106,6 @@ const EnrollPages = () => {
         name={name}
         control={control}
         rules={rules}
-        defaultValue=""
         render={({ field, fieldState }) => {
           const { error } = fieldState;
           const Icon = icon;
@@ -93,23 +113,24 @@ const EnrollPages = () => {
           return (
             <>
               <div className="relative">
-                <div className="absolute left-0 inset-y-0 flex items-center pl-3 pointer-events-none">
-                  <Icon className="h-5 w-5 text-gray-400" />
+                <div className="absolute left-0 inset-y-0 flex items-center pl-3">
+                  <Icon className="h-5 w-5 text-[#145c43]" />
                 </div>
 
                 <input
                   {...field}
                   id={name}
+                  type={type}
                   placeholder={placeholder}
                   className={inputClass(error, field.value)}
                 />
               </div>
 
-              {error ? (
-                <p className="text-red-500 text-sm mt-1">{error.message}</p>
-              ) : field.value ? (
-                <p className="text-green-600 text-sm mt-1">{label} Valid</p>
-              ) : null}
+              {error && (
+                <p className="text-red-500 text-sm mt-1">
+                  {error.message}
+                </p>
+              )}
             </>
           );
         }}
@@ -118,46 +139,60 @@ const EnrollPages = () => {
   );
 
   return (
-    <div>
+    <div className="bg-gradient-to-b from-[#f7faf8] to-[#eef7f2] min-h-screen py-10 ">
       <Helmet>
         <title>Easy Learn Quran Bd | Enroll Pages</title>
       </Helmet>
 
-      <div className="py-2 max-w-[1400px] mx-auto px-2">
+      {/* TITLE */}
+      <div className="max-w-[1400px] mx-auto">
         <TittleAnimation
           tittle="Enroll Now"
           subtittle="Enroll Now Easy Learn Free Quran Learn"
         />
       </div>
 
-      <div className="max-w-[1200px] mx-auto  py-2">
-        {/* 🔥 Card Container */}
-        <div className="bg-white/80 backdrop-blur-lg border border-gray-200 rounded-2xl shadow-xl p-6 md:p-10 transition-all duration-300 hover:shadow-2xl">
-          {/* 🔹 Optional Header */}
-          <div className="mb-6 text-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
+      {/* FORM */}
+      <div className="max-w-[1200px] mx-auto mt-6">
+        <div className="bg-white border border-[#dff3e9] rounded-[30px] shadow-2xl p-6 md:p-10">
+
+          {/* HEADER */}
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-800">
               Student Admission Form
             </h2>
-            <p className="text-gray-500 text-sm mt-1">
+
+            <p className="text-gray-500 mt-2">
               Fill all information correctly
             </p>
           </div>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {/* 🔹 GRID */}
-            <div className="grid md:grid-cols-2 gap-4">
+
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-3"
+          >
+            {/* GRID */}
+            <div className="grid md:grid-cols-2 gap-5">
+
               {renderField(
                 "fullName",
                 "Student Name",
                 FiUser,
                 "Enter full name",
                 {
-                  required: "Name is required",
+                  required: "Student name is required",
                 },
               )}
 
-              {renderField("age", "Student Age", FiUser, "Enter age", {
-                required: "Age is required",
-              })}
+              {renderField(
+                "age",
+                "Student Age",
+                FiUser,
+                "Enter age",
+                {
+                  required: "Age is required",
+                },
+              )}
 
               {renderField(
                 "guardianName",
@@ -166,41 +201,21 @@ const EnrollPages = () => {
                 "Enter guardian name",
               )}
 
-              {renderField(
-                "guardianPhone",
-                "Guardian Phone",
-                FiPhone,
-                "Enter guardian phone",
-              )}
-
-              {renderField("email", "Email Address", FiMail, "Enter email", {
-                required: "Email is required",
-              })}
-
-              {renderField(
-                "phone",
-                "Phone Number",
-                FiPhone,
-                "Enter phone number",
-                {
-                  required: "Phone is required",
-                },
-              )}
-
-              {/* Gender */}
+              {/* GENDER */}
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text text-base mb-1 font-medium text-gray-700">
-                    Gender :
+                  <span className="label-text text-base mb-1 font-semibold text-gray-700">
+                    Gender
                   </span>
                 </label>
+
                 <Controller
                   name="gender"
                   control={control}
                   render={({ field }) => (
                     <select
                       {...field}
-                      className="w-full px-3 py-2 border border-green-700 rounded-md"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#145c43]/20"
                     >
                       <option value="">Select Gender</option>
                       <option value="male">Male</option>
@@ -211,65 +226,72 @@ const EnrollPages = () => {
               </div>
 
               {renderField(
+                "email",
+                "Email Address",
+                FiMail,
+                "Enter email address",
+                {
+                  required: "Email is required",
+                },
+                "email",
+              )}
+
+              {renderField(
+                "phone",
+                "Phone Number",
+                FiPhone,
+                "Enter phone number",
+                {
+                  required: "Phone number is required",
+                },
+              )}
+
+              {/* WHATSAPP */}
+              {renderField(
                 "whatsapp",
-                "WhatsApp",
+                "WhatsApp Number",
                 FiPhone,
                 "Enter WhatsApp number",
               )}
-            </div>
 
-            {/* Address */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text text-base mb-1 font-medium text-gray-700">
-                  Address :
-                </span>
-              </label>
-              <Controller
-                name="address"
-                control={control}
-                render={({ field }) => (
-                  <textarea
-                    {...field}
-                    placeholder="Enter address"
-                    className="w-full px-3 py-2 border rounded-md"
-                  />
-                )}
-              />
-            </div>
-
-            {/* Course + Country */}
-            <div className="grid md:grid-cols-2 gap-4">
+              {/* COURSE */}
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text text-base mb-1 font-medium text-gray-700">
-                    Course Select :
+                  <span className="label-text text-base mb-1 font-semibold text-gray-700">
+                    Course Select
                   </span>
                 </label>
+
                 <Controller
                   name="course"
                   control={control}
                   render={({ field }) => (
                     <select
                       {...field}
-                      className="w-full px-3 py-2 border rounded-md"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#145c43]/20"
                     >
                       <option value="">Select Course</option>
+
                       <option value="islamic-studies-for-kids-course">
                         Islamic Studies for Kids Course
                       </option>
+
                       <option value="quran-translation-course">
                         Quran Translation Course
                       </option>
+
                       <option value="quran-reading-course">
                         Quran Reading Course
                       </option>
+
                       <option value="tajweed">
                         Rules of Tajweed – Quran Recitation
                       </option>
+
                       <option value="hifz-ul-quran">
                         Quran Memorization Course (Hifz-ul-Quran)
                       </option>
+
                       <option value="arabic-for-beginners-noorani-qaida">
                         Arabic For Beginners – Noorani Qaida
                       </option>
@@ -277,74 +299,61 @@ const EnrollPages = () => {
                   )}
                 />
               </div>
-
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text text-base mb-1 font-medium text-gray-700">
-                    Country :
-                  </span>
-                </label>
-                <Controller
-                  name="country"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      placeholder="Enter country"
-                      className="w-full px-3 py-2 border rounded-md"
-                    />
-                  )}
-                />
-              </div>
             </div>
 
-            {/* City */}
+            {/* ADDRESS */}
             <div className="form-control">
               <label className="label">
-                <span className="label-text text-base mb-1 font-medium text-gray-700">
-                  City :
+                <span className="label-text text-base mb-1 font-semibold text-gray-700">
+                  Address
                 </span>
               </label>
+
               <Controller
-                name="city"
+                name="address"
                 control={control}
                 render={({ field }) => (
-                  <input
+                  <textarea
                     {...field}
-                    placeholder="Enter city"
-                    className="w-full px-3 py-2 border rounded-md"
+                    rows={4}
+                    placeholder="Enter address"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#145c43]/20"
                   />
                 )}
               />
             </div>
 
-            {/* Description */}
+            {/* DESCRIPTION */}
             <div className="form-control">
               <label className="label">
-                <span className="label-text text-base mb-1 font-medium text-gray-700">
-                  Description :
+                <span className="label-text text-base mb-1 font-semibold text-gray-700">
+                  Description
                 </span>
               </label>
+
               <Controller
                 name="description"
                 control={control}
                 render={({ field }) => (
                   <textarea
                     {...field}
+                    rows={4}
                     placeholder="Write something..."
-                    className="w-full px-3 py-2 border rounded-md"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#145c43]/20"
                   />
                 )}
               />
             </div>
 
-            {/* Submit */}
+            {/* BUTTON */}
             <button
               type="submit"
-              className="w-full py-3 bg-gradient-to-r from-[#0f3d2e] via-[#145c43] to-[#0f3d2e] text-white rounded-lg font-semibold"
-              disabled={loading}
+              disabled={createMutation.isPending}
+              className="w-full py-3 rounded-xl text-white font-semibold text-lg bg-gradient-to-r from-[#0f3d2e] via-[#145c43] to-[#0f3d2e] hover:scale-[1.01] transition-all duration-300 disabled:opacity-70"
             >
-              {loading ? "Submitting..." : "Enroll Now"}
+              {createMutation.isPending
+                ? "Submitting..."
+                : "Enroll Now"}
             </button>
           </form>
         </div>

@@ -1,9 +1,13 @@
-import Lottie from "lottie-react";
 import { useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { FiEdit3, FiMessageSquare, FiPhone, FiUser } from "react-icons/fi";
+import {
+  FiEdit3,
+  FiMessageSquare,
+  FiPhone,
+  FiUser,
+} from "react-icons/fi";
 import { toast } from "react-toastify";
-import contactAnimation from "../../../lottie-animation/contact.json";
+import support from "../../assets/image/support.png";
 import TittleAnimation from "../../components/TittleAnimation/TittleAnimation";
 
 const Contact = () => {
@@ -19,18 +23,37 @@ const Contact = () => {
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: "" });
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+
+    setErrors({
+      ...errors,
+      [e.target.name]: "",
+    });
   };
 
   const sendEmail = (e) => {
     e.preventDefault();
 
     const newErrors = {};
-    if (!formData.user_name.trim()) newErrors.user_name = "Name is required.";
-    if (!formData.user_phone.trim()) newErrors.user_phone = "Phone is required.";
-    if (!formData.subject.trim()) newErrors.subject = "Subject is required.";
-    if (!formData.message.trim()) newErrors.message = "Message is required.";
+
+    if (!formData.user_name.trim()) {
+      newErrors.user_name = "Name is required.";
+    }
+
+    if (!formData.user_phone.trim()) {
+      newErrors.user_phone = "Phone is required.";
+    }
+
+    if (!formData.subject.trim()) {
+      newErrors.subject = "Subject is required.";
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = "Message is required.";
+    }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -47,7 +70,12 @@ const Contact = () => {
     });
   };
 
-  const renderInput = (name, placeholder, Icon, type = "text") => (
+  const renderInput = (
+    name,
+    placeholder,
+    Icon,
+    type = "text",
+  ) => (
     <div className="form-control">
       <label className="label">
         <span className="label-text font-medium text-gray-700">
@@ -68,25 +96,27 @@ const Contact = () => {
             errors[name]
               ? "border-red-500 focus:ring-red-200"
               : formData[name]
-              ? "border-green-400 focus:ring-green-200"
-              : "border-gray-300 focus:ring-teal-200"
+                ? "border-green-400 focus:ring-green-200"
+                : "border-gray-300 focus:ring-teal-200"
           }`}
         />
       </div>
 
       {errors[name] && (
-        <p className="text-red-500 text-sm mt-1">{errors[name]}</p>
+        <p className="text-red-500 text-sm mt-1">
+          {errors[name]}
+        </p>
       )}
     </div>
   );
 
   return (
-    <div >
+    <div className="bg-gradient-to-b from-[#f8faf9] to-[#eef7f2] min-h-screen">
       <Helmet>
         <title>Easy Learn Quran BD | Contact</title>
       </Helmet>
 
-      <div className="py-12 ">
+      <div className="py-12 px-1">
         {/* 🔥 TITLE */}
         <div className="text-center mb-12">
           <TittleAnimation
@@ -98,12 +128,13 @@ const Contact = () => {
         {/* 🔥 MAIN GRID */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center max-w-6xl mx-auto">
 
-          {/* 🎥 Lottie */}
+          {/* 🖼️ IMAGE */}
           <div className="flex justify-center">
-            <div className="bg-white p-6 rounded-2xl shadow-lg">
-              <Lottie
-                animationData={contactAnimation}
-                className="w-full max-w-sm"
+            <div className="bg-white p-6 rounded-[30px] shadow-2xl border border-[#dff3e9] overflow-hidden group">
+              <img
+                src={support}
+                alt="Support"
+                className="w-full max-w-md object-cover group-hover:scale-105 transition-all duration-500"
               />
             </div>
           </div>
@@ -112,11 +143,21 @@ const Contact = () => {
           <form
             ref={form}
             onSubmit={sendEmail}
-            className="bg-white p-6 md:p-8 rounded-2xl shadow-xl space-y-5 border"
+            className="bg-white p-6 md:p-8 rounded-[30px] shadow-2xl space-y-5 border border-[#dff3e9]"
           >
             {renderInput("user_name", "Name", FiUser)}
-            {renderInput("user_phone", "Mobile Number", FiPhone)}
-            {renderInput("subject", "Subject", FiEdit3)}
+
+            {renderInput(
+              "user_phone",
+              "Mobile Number",
+              FiPhone,
+            )}
+
+            {renderInput(
+              "subject",
+              "Subject",
+              FiEdit3,
+            )}
 
             {/* MESSAGE */}
             <div className="form-control">
@@ -138,8 +179,8 @@ const Contact = () => {
                     errors.message
                       ? "border-red-500 focus:ring-red-200"
                       : formData.message
-                      ? "border-green-400 focus:ring-green-200"
-                      : "border-gray-300 focus:ring-teal-200"
+                        ? "border-green-400 focus:ring-green-200"
+                        : "border-gray-300 focus:ring-teal-200"
                   }`}
                 />
               </div>
@@ -154,7 +195,7 @@ const Contact = () => {
             {/* 🔥 BUTTON */}
             <button
               type="submit"
-              className="w-full py-3 rounded-lg bg-gradient-to-r from-green-600 to-emerald-500 text-white font-semibold text-lg hover:scale-[1.02] transition-all duration-300 shadow-md"
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-[#145c43] via-[#1f8a63] to-[#145c43] text-white font-semibold text-lg hover:scale-[1.02] transition-all duration-300 shadow-lg"
             >
               Send Message
             </button>

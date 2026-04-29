@@ -5,8 +5,6 @@ import AdminLayout from "../layout/AdminLayout";
 import MainLayout from "../layout/MainLayout";
 import UserLayout from "../layout/UserLayout";
 
-
-
 import AdminAboutPage from "../Pages/AdminDashboardPages/AboutPages/AdminAboutPage";
 import AdminAchievements from "../Pages/AdminDashboardPages/AchievementsPages/AdminAchievements";
 import AdminCountry from "../Pages/AdminDashboardPages/AdminCountryPages/AdminCountry";
@@ -45,7 +43,6 @@ const HometextCreate = lazy(
   () =>
     import("../Pages/AdminDashboardPages/AdminHomePagesEdit/HometextCreate"),
 );
-
 
 const AllUsers = lazy(
   () => import("../Pages/AdminDashboardPages/AllUsers/AllUsers"),
@@ -101,13 +98,13 @@ export const routes = createBrowserRouter([
       {
         path: "/enroll-now",
         element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <EnrollPages />
-          </Suspense>
+          <PrivateRoute>
+            <Suspense fallback={<LoadingSpinner />}>
+              <EnrollPages />
+            </Suspense>
+          </PrivateRoute>
         ),
       },
-     
-    
 
       // Blog
       {
@@ -287,7 +284,6 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
-      
 
       // Admin Blog Routes
       {
@@ -308,7 +304,6 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
-     
 
       {
         path: "footer-facebook-url-change",
@@ -341,7 +336,7 @@ export const routes = createBrowserRouter([
       },
     ],
   },
- 
+
   // User Dashboard
   {
     path: "user-dashboard",
@@ -365,7 +360,7 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
-     
+
       {
         path: "change-password",
         element: (
@@ -384,5 +379,4 @@ export const routes = createBrowserRouter([
       </PrivateRoute>
     ),
   },
-  
 ]);
