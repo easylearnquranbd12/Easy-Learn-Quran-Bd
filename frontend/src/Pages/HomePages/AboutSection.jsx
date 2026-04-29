@@ -36,9 +36,6 @@ const AboutSection = () => {
 
       {/* MAIN GRID */}
       <div className="grid grid-cols-1  gap-6">
-
-        {/* ABOUT CARD */}
-{/* ABOUT CARD */}
 {/* ABOUT CARD */}
 <div className="relative overflow-hidden rounded-[35px] shadow-2xl group">
 
@@ -116,12 +113,12 @@ const AboutSection = () => {
           </div>
 
           {/* IMAGE */}
-          <div className="px-4 pb-4">
+          <div className="px-1 pb-4">
             <div className="rounded-2xl overflow-hidden">
               <img
                 src={liveClass}
                 alt="live class"
-                className="w-full h-[300px] md:h-[450px] object-cover hover:scale-105 transition duration-700"
+                className="w-full h-[300px] md:h-[450px] object-fit hover:scale-105 transition duration-700"
               />
             </div>
           </div>
